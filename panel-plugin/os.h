@@ -3,21 +3,6 @@
 
 #include <stdio.h>
 
-class OSBase
-{
-public:
-	virtual long GetCPUUsage (void) { return 0; }
-protected:
-	long m_OldUsage;
-	long m_OldTotal;
-};
-
-class CPULinux : public OSBase
-{
-public:
-	long GetCPUUsage (void);
-};
-
 #if defined (__FreeBSD__)
 #include <osreldate.h>
 #include <sys/types.h>
@@ -32,12 +17,6 @@ public:
 #include <nlist.h>
 #endif
 
-class CPUFreeBSD : public OSBase
-{
-public:
-	long GetCPUUsage (void);
-};
-
 #if defined (__NetBSD__)
 #include <sys/param.h>
 #include <sys/sched.h>
@@ -45,12 +24,6 @@ public:
 #include <fcntl.h>
 #include <nlist.h>
 #endif
-
-class CPUNetBSD : public OSBase
-{
-public:
-	long GetCPUUsage (void);
-};
 
 #if defined (__OpenBSD__)
 #include <sys/param.h>
@@ -61,10 +34,6 @@ public:
 #include <nlist.h>
 #endif
 
-class CPUOpenBSD : public OSBase
-{
-public:
-	long GetCPUUsage (void);
-};
+long GetCPUUsage (int *oldusage, int *oldtotal);
 
 #endif
