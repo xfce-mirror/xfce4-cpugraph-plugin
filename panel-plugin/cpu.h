@@ -87,7 +87,7 @@ void Kill (Control *control);
 void ReadSettings (Control *control, xmlNode *node);
 void WriteSettings (Control *control, xmlNode *node);
 void SetSize (Control *control, int size);
-void UpdateCPU (CPUGraph *base);
+bool UpdateCPU (CPUGraph *base);
 void UpdateTooltip (CPUGraph *base);
 void DrawGraph (CPUGraph *base);
 void DrawAreaExposeEvent (GtkWidget *da, GdkEventExpose *event, gpointer data);
