@@ -635,6 +635,8 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 }
 gboolean UpdateCPU (CPUGraph *base)
 {
+  XFCE_PANEL_LOCK();
+
 	base->m_CPUUsage = GetCPUUsage (&base->m_OldUsage, &base->m_OldTotal);
 
 	memmove (base->m_History+1, base->m_History, (base->m_Values-1)*sizeof (int));
@@ -645,6 +647,8 @@ gboolean UpdateCPU (CPUGraph *base)
 	
 	/* Draw the graph. */
 	gtk_widget_queue_draw (base->m_DrawArea);
+
+  XFCE_PANEL_UNLOCK();
 
 	return TRUE;
 }
