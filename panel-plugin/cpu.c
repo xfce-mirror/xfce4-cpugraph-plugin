@@ -51,7 +51,16 @@ void ReadSettings (Control *control, xmlNode *node)
 				base->m_UpdateInterval = atoi ((const char *)value);
 				if (base->m_TimeoutID)
 					g_source_remove (base->m_TimeoutID);	
-				base->m_TimeoutID = g_timeout_add (base->m_UpdateInterval, (GtkFunction) UpdateCPU, base);
+				int update = 1000;
+				if (base->m_UpdateInterval == 0)
+					update = 250;
+				else if (base->m_UpdateInterval == 1)
+					update = 500;
+				else if (base->m_UpdateInterval == 2)
+					update = 750;
+				else
+					update = 1000;
+				base->m_TimeoutID = g_timeout_add (update, (GtkFunction) UpdateCPU, base);
 
 				g_free (value);
 			}
@@ -117,7 +126,7 @@ void WriteSettings (Control *control, xmlNode *node)
 	
 	xmlNodePtr root = xmlNewTextChild (node, NULL, (xmlChar *)"cpugraph", NULL);
 
-	g_snprintf (value, 8, "%d", base->m_UpdateInterval);
+	g_snprintf (value, 4, "%d", base->m_UpdateInterval);
 	xmlSetProp (root, (xmlChar *)"UpdateInterval", (const xmlChar *)value);
 	
 	g_snprintf (value, 8, "%d", base->m_Width);
@@ -204,9 +213,10 @@ CPUGraph *NewCPU ()
 	
 	base->m_Frame = 0;
 	base->m_ColorMode = 0;
+	base->m_Mode = 1;
 
 	base->m_Tooltip = gtk_tooltips_new ();
-	base->m_UpdateInterval = 1000;
+	base->m_UpdateInterval = 3;
 	gtk_widget_show_all (base->m_Parent);
 
 	return base;
@@ -215,8 +225,18 @@ gboolean CreateControl (Control *control)
 {
 	CPUGraph *base = NewCPU ();
 	gtk_container_add (GTK_CONTAINER (control->base), GTK_WIDGET (base->m_Parent));
+
+	int update = 1000;
+	if (base->m_UpdateInterval == 0)
+		update = 250;
+	else if (base->m_UpdateInterval == 1)
+		update = 500;
+	else if (base->m_UpdateInterval == 2)
+		update = 750;
+	else
+		update = 1000;
 		
-	base->m_TimeoutID = g_timeout_add (base->m_UpdateInterval, (GtkFunction) UpdateCPU, base);
+	base->m_TimeoutID = g_timeout_add (update, (GtkFunction) UpdateCPU, base);
 	
 	control->data = (gpointer)base;
 	control->with_popup = FALSE;
@@ -265,7 +285,16 @@ void SetOrientation (Control *control, int orientation)
 	gtk_widget_show (base->m_Parent);
 	g_signal_connect (base->m_DrawArea, "expose_event", G_CALLBACK (DrawAreaExposeEvent), control->data);
 
-	base->m_TimeoutID = g_timeout_add (base->m_UpdateInterval,
+	int update=1000;
+	if (base->m_UpdateInterval == 0)
+		update = 250;
+	else if (base->m_UpdateInterval == 1)
+		update = 500;
+	else if (base->m_UpdateInterval == 2)
+		update = 750;
+	else
+		update = 1000;
+	base->m_TimeoutID = g_timeout_add (update,
 					  (GtkFunction)UpdateCPU, base);
 
 	UserSetSize (base);
@@ -297,7 +326,7 @@ void UserSetSize (CPUGraph *base)
 void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 {
 	CPUGraph *base = (CPUGraph *)control->data;
-	GtkBox *globalvbox, *vbox, *vbox2, *vbox3, *hbox;
+	GtkBox *vbox, *vbox2, *hbox;
 	GtkWidget *label;
 	GtkSizeGroup *sg = base->m_Sg;
 	SOptions *op = &base->m_Options;
@@ -305,38 +334,49 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 	sg = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
 	base->m_OptionsDialog = gtk_widget_get_toplevel (done);
-
-	globalvbox = GTK_BOX (gtk_vbox_new (FALSE, 0));
-	gtk_widget_show (GTK_WIDGET (globalvbox));
-
-	op->m_FrameApperance = gtk_frame_new ("Apperance");
-	gtk_box_pack_start (GTK_BOX (globalvbox), GTK_WIDGET (op->m_FrameApperance), FALSE, FALSE, 0);
-	gtk_widget_show (GTK_WIDGET (op->m_FrameApperance));
-
+	   
 	vbox = GTK_BOX (gtk_vbox_new (FALSE, 5));
 	gtk_widget_show (GTK_WIDGET (vbox));
-	gtk_container_set_border_width (GTK_CONTAINER (vbox), 5);
-	gtk_container_add (GTK_CONTAINER (op->m_FrameApperance), GTK_WIDGET (vbox));
+	gtk_container_set_border_width (GTK_CONTAINER (vbox), 8);
+   
+        /* Update Interval */
 
-	/* Update Interval */
 	hbox = GTK_BOX (gtk_hbox_new (FALSE, 5));
-	gtk_widget_show (GTK_WIDGET (hbox));
-	gtk_box_pack_start (GTK_BOX (vbox),
-			    GTK_WIDGET (hbox), FALSE, FALSE, 0);
-
-	label = gtk_label_new (_("Update interval: "));
+        gtk_widget_show (GTK_WIDGET (hbox));
+        gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (hbox), FALSE, FALSE, 0);
+        label = gtk_label_new (_("Update Interval: "));
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
 	gtk_size_group_add_widget (sg, label);
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (label), FALSE, FALSE, 0);
+                  
+        op->m_UpdateOption = gtk_option_menu_new ();
+        gtk_widget_show (op->m_UpdateOption);
+        gtk_box_pack_start (GTK_BOX (hbox), op->m_UpdateOption, FALSE, FALSE, 0);
+                                                                                                                           
+        op->m_UpdateMenu = gtk_menu_new ();
+        gtk_option_menu_set_menu (GTK_OPTION_MENU (op->m_UpdateOption), op->m_UpdateMenu);
+                                                                                     
+        op->m_UpdateMenuItem = gtk_menu_item_new_with_label (_("Fastest (~250ms)"));
+        gtk_widget_show (op->m_UpdateMenuItem);
+        gtk_menu_shell_append (GTK_MENU_SHELL (op->m_UpdateMenu), op->m_UpdateMenuItem);
+                                                                                                                                                                
+        op->m_UpdateMenuItem = gtk_menu_item_new_with_label (_("Fast (~500ms)"));
+        gtk_widget_show (op->m_UpdateMenuItem);
+        gtk_menu_shell_append (GTK_MENU_SHELL (op->m_UpdateMenu), op->m_UpdateMenuItem);
+                                                                                                         
+        op->m_UpdateMenuItem = gtk_menu_item_new_with_label (_("Normal (~750ms)"));
+        gtk_widget_show (op->m_UpdateMenuItem);
+        gtk_menu_shell_append (GTK_MENU_SHELL (op->m_UpdateMenu), op->m_UpdateMenuItem);
 
-	op->m_Updater = gtk_spin_button_new_with_range (250, 5000, 50);
-	gtk_spin_button_set_value (GTK_SPIN_BUTTON (op->m_Updater), base->m_UpdateInterval);
-	gtk_widget_show (op->m_Updater);
-	gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (op->m_Updater), FALSE, FALSE, 0);
-	g_signal_connect (op->m_Updater, "value-changed", G_CALLBACK (SpinChange), &base->m_UpdateInterval);
+	op->m_UpdateMenuItem = gtk_menu_item_new_with_label (_("Slow (~1s)"));
+	gtk_widget_show (op->m_UpdateMenuItem);
+	gtk_menu_shell_append (GTK_MENU_SHELL (op->m_UpdateMenu), op->m_UpdateMenuItem);
 
-	/* Width */
+        gtk_option_menu_set_history (GTK_OPTION_MENU (op->m_UpdateOption), base->m_UpdateInterval);
+                                                                                                                               
+        g_signal_connect (op->m_UpdateOption, "changed", G_CALLBACK (UpdateChange), base);   
+        /* Width */
 
 	hbox = GTK_BOX (gtk_hbox_new (FALSE, 5));
 	gtk_widget_show (GTK_WIDGET (hbox));
@@ -384,27 +424,9 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 	gtk_widget_show (op->m_GraphFrame);
 	gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (op->m_GraphFrame), FALSE, FALSE, 0);
 	g_signal_connect (op->m_GraphFrame, "toggled", G_CALLBACK (FrameChange), base);
+	gtk_size_group_add_widget (sg, op->m_GraphFrame);
 
-        op->m_FrameColor = gtk_frame_new ("Colors");
-        gtk_box_pack_start (GTK_BOX (globalvbox), GTK_WIDGET (op->m_FrameColor), FALSE, FALSE, 0);
-        gtk_widget_show (GTK_WIDGET (op->m_FrameColor));
-                                                                                                                                                                 
-        vbox2 = GTK_BOX (gtk_vbox_new (FALSE, 5));
-        gtk_widget_show (GTK_WIDGET (vbox2));
-        gtk_container_set_border_width (GTK_CONTAINER (vbox2), 5);
-        gtk_container_add (GTK_CONTAINER (op->m_FrameColor), GTK_WIDGET (vbox2));								  
-
-	/* Frame color */
-
-	hbox = GTK_BOX (gtk_hbox_new (FALSE, 5));
-	gtk_widget_show (GTK_WIDGET (hbox));
-	gtk_box_pack_start (GTK_BOX (vbox2), GTK_WIDGET (hbox), FALSE, FALSE, 0);
-
-	label = gtk_label_new (_("Frame color: "));
-	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
-	gtk_size_group_add_widget (sg, label);
-	gtk_widget_show (label);
-	gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (label), FALSE, FALSE, 0);
+   	/* Frame color */
 
 	op->m_FC = gtk_button_new ();
 	op->m_ColorDA4 = gtk_drawing_area_new ();
@@ -417,8 +439,11 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 	gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (op->m_FC), FALSE, FALSE, 0);
 	gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FC), base->m_Frame);
 	
-	
 	g_signal_connect (op->m_FC, "clicked", G_CALLBACK (ChangeColor4), base);
+   
+        vbox2 = GTK_BOX (gtk_vbox_new (FALSE, 5));
+        gtk_widget_show (GTK_WIDGET (vbox2));
+        gtk_container_set_border_width (GTK_CONTAINER (vbox2), 8);
 
 	/* Foreground 1 */
 	
@@ -431,7 +456,7 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 	gtk_size_group_add_widget (sg, label);
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (label), FALSE, FALSE, 0);
-
+   
 	op->m_FG1 = gtk_button_new ();
 	op->m_ColorDA = gtk_drawing_area_new ();
 
@@ -492,11 +517,10 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
         gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (op->m_FG3), FALSE, FALSE, 0);
         g_signal_connect (op->m_FG3, "clicked", G_CALLBACK (ChangeColor5), base);
 	
-        if (base->m_Mode == 0 || base->m_Mode == 2)
+        if (base->m_Mode == 0 || base->m_Mode == 2 || base->m_ColorMode == 0)
 	        gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), FALSE);
 	else
-		if (base->m_ColorMode > 0)
-			gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), TRUE);
+		gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), TRUE);
 																		
 	
 	/* Background */
@@ -523,22 +547,13 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 
 	g_signal_connect (op->m_BG, "clicked", G_CALLBACK (ChangeColor3), base);
 
-        op->m_FrameMode = gtk_frame_new ("Modes");
-        gtk_box_pack_start (GTK_BOX (globalvbox), GTK_WIDGET (op->m_FrameMode), FALSE, FALSE, 0);
-        gtk_widget_show (GTK_WIDGET (op->m_FrameMode));
-                                                                                                                                                                       
-        vbox3 = GTK_BOX (gtk_vbox_new (FALSE, 5));
-        gtk_widget_show (GTK_WIDGET (vbox3));
-        gtk_container_set_border_width (GTK_CONTAINER (vbox3), 5);
-        gtk_container_add (GTK_CONTAINER (op->m_FrameMode), GTK_WIDGET (vbox3));
-
 	/* Modes */
 
 	hbox = GTK_BOX (gtk_hbox_new (FALSE, 5));
 	gtk_widget_show (GTK_WIDGET (hbox));
-	gtk_box_pack_start (GTK_BOX (vbox3), GTK_WIDGET (hbox), FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox2), GTK_WIDGET (hbox), FALSE, FALSE, 0);
 
-	label = gtk_label_new (_("Modes: "));
+	label = gtk_label_new (_("Mode: "));
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
 	gtk_size_group_add_widget (sg, label);
 	gtk_widget_show (label);
@@ -571,55 +586,51 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 
 	hbox = GTK_BOX (gtk_hbox_new (FALSE, 5));
         gtk_widget_show (GTK_WIDGET (hbox));
-        gtk_box_pack_start (GTK_BOX (vbox3), GTK_WIDGET (hbox), FALSE, FALSE, 0);
-                                                                                                                                                                         
+        gtk_box_pack_start (GTK_BOX (vbox2), GTK_WIDGET (hbox), FALSE, FALSE, 0);
         label = gtk_label_new (_("Color mode: "));
-        gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
-        gtk_size_group_add_widget (sg, label);
-        gtk_widget_show (label);
-        gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (label), FALSE, FALSE, 0);
+	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+	gtk_size_group_add_widget (sg, label);
+	gtk_widget_show (label);
+	gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (label), FALSE, FALSE, 0);
+                  
+        op->m_ModeOption = gtk_option_menu_new ();
+        gtk_widget_show (op->m_ModeOption);
+        gtk_box_pack_start (GTK_BOX (hbox), op->m_ModeOption, FALSE, FALSE, 0);
+                                                                                                                           
+        op->m_ModeMenu = gtk_menu_new ();
+        gtk_option_menu_set_menu (GTK_OPTION_MENU (op->m_ModeOption), op->m_ModeMenu);
+                                                                                     
+        op->m_ModeMenuItem = gtk_menu_item_new_with_label (_("None"));
+        gtk_widget_show (op->m_ModeMenuItem);
+        gtk_menu_shell_append (GTK_MENU_SHELL (op->m_ModeMenu), op->m_ModeMenuItem);
+                                                                                                                                                                
+        op->m_ModeMenuItem = gtk_menu_item_new_with_label (_("Gradient"));
+        gtk_widget_show (op->m_ModeMenuItem);
+        gtk_menu_shell_append (GTK_MENU_SHELL (op->m_ModeMenu), op->m_ModeMenuItem);
+                                                                                                         
+        op->m_ModeMenuItem = gtk_menu_item_new_with_label (_("Fire"));
+        gtk_widget_show (op->m_ModeMenuItem);
+        gtk_menu_shell_append (GTK_MENU_SHELL (op->m_ModeMenu), op->m_ModeMenuItem);
 
-	op->m_Table = gtk_table_new (3, 1, FALSE);
-	gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (op->m_Table), FALSE, FALSE, 0);
-
-	op->m_ModeNone = gtk_radio_button_new_with_label (NULL, _("None"));
-	gtk_widget_show (op->m_ModeNone);
-	gtk_table_attach_defaults (GTK_TABLE (op->m_Table), GTK_WIDGET (op->m_ModeNone), 0, 1, 0, 1);
+        gtk_option_menu_set_history (GTK_OPTION_MENU (op->m_ModeOption), base->m_ColorMode);
+                                                                                                                               
+        g_signal_connect (op->m_ModeOption, "changed", G_CALLBACK (ColorModeChange), base);
 	
-	op->m_ModeGradient = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (op->m_ModeNone), _("Gradient"));
-	gtk_widget_show (op->m_ModeGradient);
-	gtk_table_attach_defaults (GTK_TABLE (op->m_Table), GTK_WIDGET (op->m_ModeGradient), 0, 1, 1, 2);
-	
-	op->m_ModeFire = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (op->m_ModeNone), _("Fire"));
-	gtk_widget_show (op->m_ModeFire);
-	gtk_table_attach_defaults (GTK_TABLE (op->m_Table), GTK_WIDGET (op->m_ModeFire), 0, 1, 2, 3);
-
-	if (base->m_ColorMode == 0)
-	{
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (op->m_ModeNone), TRUE);
-		gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), FALSE);	
-	}
-	else if (base->m_ColorMode == 1)
-	{
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (op->m_ModeGradient), TRUE);
-                gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), TRUE);
-	}
-	else if (base->m_ColorMode == 2)
-	{
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (op->m_ModeFire), TRUE);
-                gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), TRUE);
-	}
-	
-	g_signal_connect (op->m_ModeNone, "toggled", G_CALLBACK (ColorModeChange1), base);
-	g_signal_connect (op->m_ModeGradient, "toggled", G_CALLBACK (ColorModeChange2), base);
-	g_signal_connect (op->m_ModeFire, "toggled", G_CALLBACK (ColorModeChange3), base);
-
+                                                                                                                 
 	/* Done */
 
 	g_signal_connect_swapped (done, "clicked", G_CALLBACK (ApplyChanges), base);
 			
 	gtk_widget_show_all (GTK_WIDGET (hbox));
-	gtk_container_add (container, GTK_WIDGET (globalvbox));
+
+	op->m_Notebook = gtk_notebook_new ();
+        label = gtk_label_new (_("Apperance"));
+	gtk_notebook_append_page (GTK_NOTEBOOK (op->m_Notebook), GTK_WIDGET (vbox2), GTK_WIDGET (label));
+	label = gtk_label_new (_("Advanced"));
+	gtk_notebook_append_page (GTK_NOTEBOOK (op->m_Notebook), GTK_WIDGET (vbox), GTK_WIDGET (label));
+	gtk_widget_show (op->m_Notebook);
+
+	gtk_container_add (container, GTK_WIDGET (op->m_Notebook));
 	
 }
 gboolean UpdateCPU (CPUGraph *base)
@@ -822,7 +833,16 @@ void ApplyChanges (CPUGraph *base)
 {
 	if (base->m_TimeoutID)
 		g_source_remove (base->m_TimeoutID);	
-	base->m_TimeoutID = g_timeout_add (base->m_UpdateInterval, (GtkFunction) UpdateCPU, base);
+	int update=1000;
+	if (base->m_UpdateInterval == 0)
+		update = 250;
+	else if (base->m_UpdateInterval == 1)
+		update = 500;
+	else if (base->m_UpdateInterval == 2)
+		update = 750;
+	else
+		update = 1000;
+	base->m_TimeoutID = g_timeout_add (update, (GtkFunction) UpdateCPU, base);
 
 	base->m_Width = base->m_TmpWidth;
 	base->m_Height = base->m_TmpHeight;
@@ -962,7 +982,10 @@ void ModeChange (GtkOptionMenu *om, CPUGraph *base)
 		gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), FALSE);
 	}
 }
-
+void UpdateChange (GtkOptionMenu *om, CPUGraph *base)
+{
+	base->m_UpdateInterval = gtk_option_menu_get_history (om);
+}
 void FrameChange (GtkToggleButton *button, CPUGraph *base)
 {
 	base->m_Frame = gtk_toggle_button_get_active (button);
@@ -970,34 +993,34 @@ void FrameChange (GtkToggleButton *button, CPUGraph *base)
 	UserSetSize (base);
 }
 
-void ColorModeChange1 (GtkRadioButton *button, CPUGraph *base)
+void ColorModeChange (GtkOptionMenu *om, CPUGraph *base)
 {
-	base->m_ColorMode = 0;
-	if (base->m_Mode == 0 || base->m_Mode == 2)
-		gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), FALSE);
-	else
-		gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), TRUE);
-	gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), FALSE);
-}
-
-void ColorModeChange2 (GtkRadioButton *button, CPUGraph *base)
-{
-	base->m_ColorMode = 1;
-	gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), TRUE);
-	if (base->m_Mode == 1)
-		gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), TRUE);
-	else
+	base->m_ColorMode = gtk_option_menu_get_history (om);
+        
+   	if (base->m_ColorMode == 0)
+	{
+		if (base->m_Mode == 0 || base->m_Mode == 2)
+	      		 gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), FALSE);
+		else
+			gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), TRUE);
 		gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), FALSE);
-}
-
-void ColorModeChange3 (GtkRadioButton *button, CPUGraph *base)
-{
-	base->m_ColorMode = 2;
-	gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), TRUE);
-        if (base->m_Mode == 1)
-                gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), TRUE);
-        else
-                gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), FALSE);						
+	}
+	else if (base->m_ColorMode == 1)
+	{
+		gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), TRUE);
+		if (base->m_Mode == 1)
+			gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), TRUE);
+		else
+			gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), FALSE);
+   	}
+	else if (base->m_ColorMode == 2)
+	{
+		gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), TRUE);
+	        if (base->m_Mode == 1)
+        	        gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), TRUE);
+	        else
+        	        gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), FALSE);						
+	}
 }
 
 XFCE_PLUGIN_CHECK_INIT

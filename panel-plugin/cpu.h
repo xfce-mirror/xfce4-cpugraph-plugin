@@ -22,7 +22,12 @@
 
 typedef struct
 {
-	GtkWidget *m_Updater;
+	GtkWidget *m_Notebook;
+	/* Update */
+	GtkWidget *m_UpdateOption;
+	GtkWidget *m_UpdateMenu;
+	GtkWidget *m_UpdateMenuItem;
+	
 	GtkWidget *m_Width;
 	GtkWidget *m_Height;
 	GtkWidget *m_GraphFrame;
@@ -42,10 +47,9 @@ typedef struct
 	GtkWidget *m_FrameColor;
 	GtkWidget *m_FrameMode;
 
-	GtkWidget *m_Table;
-	GtkWidget *m_ModeNone;
-	GtkWidget *m_ModeGradient;
-	GtkWidget *m_ModeFire;
+	GtkWidget *m_ModeOption;
+	GtkWidget *m_ModeMenu;
+	GtkWidget *m_ModeMenuItem;
 	
 	GtkWidget *m_OptionMenu;
 	GtkWidget *m_Menu;
@@ -116,12 +120,10 @@ void ChangeColor4 (GtkButton *button, CPUGraph *base);
 void ChangeColor5 (GtkButton *button, CPUGraph *base);
 void ChangeColor (int color, CPUGraph *base);
 void SpinChange (GtkSpinButton *sb, int *value);
+void UpdateChange (GtkOptionMenu *om, CPUGraph *base);
 void ModeChange (GtkOptionMenu *om, CPUGraph *base);
 void ApplyChanges (CPUGraph *base);
 void FrameChange (GtkToggleButton *button, CPUGraph *base);
-void ColorModeChange1 (GtkRadioButton *button, CPUGraph *base);
-void ColorModeChange2 (GtkRadioButton *button, CPUGraph *base);
-void ColorModeChange3 (GtkRadioButton *button, CPUGraph *base);
-
+void ColorModeChange (GtkOptionMenu *om, CPUGraph *base);
 
 #endif
