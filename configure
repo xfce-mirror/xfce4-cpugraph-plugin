@@ -20639,7 +20639,7 @@ echo "$as_me: error: Library requirements (xfce4-panel-1.0 >= 4.0.0) not met; co
     ac_CFLAGS=$XFCE4_PANEL_CFLAGS
   echo "$as_me:$LINENO: checking whether the panel is threaded" >&5
 echo $ECHO_N "checking whether the panel is threaded... $ECHO_C" >&6
-  if $PKG_CONFIG --atleast-version=4.1.8 xfce4-panel-1.0; then
+  if $PKG_CONFIG --atleast-version=4.1.7 xfce4-panel-1.0; then
     XFCE4_PANEL_CFLAGS="$ac_CFLAGS -DXFCE_PANEL_THREADED=1 -DXFCE_PANEL_LOCK\(\)=gdk_threads_enter\(\) -DXFCE_PANEL_UNLOCK\(\)=gdk_threads_leave\(\)"
     echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
