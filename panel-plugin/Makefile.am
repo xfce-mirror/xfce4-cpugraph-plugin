@@ -9,9 +9,9 @@ libcpugraph_la_LDFLAGS =					\
 	-module							
 
 libcpugraph_la_SOURCES =					\
-	cpu.cc							\
+	cpu.c							\
 	cpu.h						\
-	os.cc							\
+	os.c							\
 	os.h
 
 libcpugraph_la_CFLAGS =						\
@@ -20,9 +20,6 @@ libcpugraph_la_CFLAGS =						\
 
 INCLUDES = 							\
 	@XFCE4_PANEL_CFLAGS@
-
-LIBS = 								\
-	-lstdc++
 
 libcpugraph_la_LIBADD = 					\
 	@XFCE4_PANEL_LIBS@
