@@ -20,11 +20,6 @@
 
 #define MAX_WIDTH 64
 
-static guint16 _lerp (float t, guint16 a, guint16 b)
-{
-	return (guint16)(a + t*(b - a));
-}
-
 typedef struct
 {
 	GtkWidget *m_Updater;
@@ -42,9 +37,8 @@ typedef struct
 	GtkWidget *m_MenuItem;
 }SOptions;
 
-class CPUGraph
+typedef struct
 {
-public:
    	GtkWidget *m_Parent; // Parent.
 	GtkWidget *m_Alignment;
 	GtkBox	  *m_Box;
@@ -75,19 +69,17 @@ public:
 
 	int m_Orientation;
 
-	long GetUsage () { return currentos->GetCPUUsage (); }
-	void SetOS (OSBase *os) { currentos = os; }
-private:
-	OSBase *currentos;
-};
+	int m_OldUsage;
+	int m_OldTotal;
+}CPUGraph;
 
-bool CreateControl (Control *control);
+gboolean CreateControl (Control *control);
 void AttachCallback (Control *control, const char *signal, GCallback callback, gpointer data);
 void Kill (Control *control);
 void ReadSettings (Control *control, xmlNode *node);
 void WriteSettings (Control *control, xmlNode *node);
 void SetSize (Control *control, int size);
-bool UpdateCPU (CPUGraph *base);
+gboolean UpdateCPU (CPUGraph *base);
 void UpdateTooltip (CPUGraph *base);
 void DrawGraph (CPUGraph *base);
 void DrawAreaExposeEvent (GtkWidget *da, GdkEventExpose *event, gpointer data);
@@ -95,6 +87,7 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done);
 void SetOrientation (Control *control, int orientation);
 void SetHistorySize (CPUGraph *base, int size);
 void SetRealGeometry (CPUGraph *base);
+	
 
 void ChangeColor1 (GtkButton *button, CPUGraph *base);
 void ChangeColor2 (GtkButton *button, CPUGraph *base);
