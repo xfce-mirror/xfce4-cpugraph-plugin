@@ -458,7 +458,7 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 	gtk_container_add (container, GTK_WIDGET (vbox));
 	
 }
-void UpdateCPU (CPUGraph *base)
+bool UpdateCPU (CPUGraph *base)
 {
 	base->m_CPUUsage = base->GetUsage ();
 
@@ -467,8 +467,11 @@ void UpdateCPU (CPUGraph *base)
 
 	/* Tooltip */
 	UpdateTooltip (base);
+	
 	/* Draw the graph. */
-	DrawGraph (base);
+	gtk_widget_queue_draw (base->m_DrawArea);
+
+	return true;
 }
 
 void DrawGraph (CPUGraph *base)
