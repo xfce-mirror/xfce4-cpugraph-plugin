@@ -42,7 +42,7 @@ long CPUFreeBSD::GetCPUUsage (void)
 
 	if (sysctlbyname ("kern.cp_time", &cp_time, &len, NULL, 0) < 0)
 	{
-		g_warning ("Cannot get kern.cp_time");
+		printf ("Cannot get kern.cp_time.\n");
 		return -1;
 	}
 
@@ -75,7 +75,7 @@ long CPUNetBSD::GetCPUUsage (void)
 
 	if (sysctl (mib, 2, &cp_time, &len, NULL, 0) < 0)
 	{
-		g_warning ("Cannot get kern.cp_time");
+		printf ("Cannot get kern.cp_time\n");
 		return -1;
 	}
 
@@ -108,7 +108,7 @@ long CPUOpenBSD::GetCPUUsage (void)
          size_t len = sizeof (cp_time);
          if (sysctl (mib, 2, &cp_time, &len, NULL, 0) < 0)
          {
-                 g_warning ("Cannot get kern.cp_time");
+                 printf ("Cannot get kern.cp_time\n");
                  return -1;
          }
 
