@@ -44,6 +44,9 @@ Color description:
 		 	LED: The end color of the leds.
 			No History: This color isn't used.
 
+* "Use frame"? If this option is checked it draws a frame around the plugin.
+* The color next to the checkbox is opens a color dialog so you set the frame(s) color.
+
 Please report any bugs to <alex.nordfelth@telia.com>
 
 Hope this suite your needs.

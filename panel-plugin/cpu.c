@@ -699,7 +699,7 @@ void DrawGraph (CPUGraph *base)
 			gc = gdk_gc_new (da->window);
 		for (x=base->m_Width - 1;x >= 0;x--)
         	{
-			int usage = base->m_History[base->m_Width - 1 - x]*step;
+			float usage = base->m_History[base->m_Width - 1 - x]*step;
 			int tmp = 0;
 			int length = base->m_Height - (base->m_Height - usage);
 			for (y=base->m_Height-1;y >= base->m_Height - usage;y--)
@@ -731,13 +731,13 @@ void DrawGraph (CPUGraph *base)
                 GdkGC *gc;
 		if (base->m_ColorMode > 0)
 			gc = gdk_gc_new (da->window);
-                int nrx = base->m_Width/3.0;
-                int nry = base->m_Height/2.0;
+                int nrx = (base->m_Width+1)/3.0;
+                int nry = (base->m_Height+1)/2.0;
                 float tstep = nry/100.0;
                 int x, y;
                 for (x=nrx-1;x>=0;x--)
                 {
-	                int usage = (int)(base->m_History[nrx - 1 - x]*tstep);
+	                float usage = base->m_History[nrx - 1 - x]*tstep;
 			int tmp=0;
 			int length = nry - (nry - usage);
                         for (y=nry-1;y>=0;y--)
@@ -775,7 +775,7 @@ void DrawGraph (CPUGraph *base)
 		if (base->m_ColorMode > 0)
 			gc = gdk_gc_new (da->window);
 		int y;
-		int usage = (int)(base->m_History[0]*step);
+		float usage = base->m_History[0]*step;
 		int tmp=0;
 		int length = base->m_Height - (base->m_Height - usage);
 		for (y=base->m_Height-1;y>=base->m_Height - usage;y--)

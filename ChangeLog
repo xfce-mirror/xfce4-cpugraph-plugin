@@ -1,3 +1,8 @@
+2004-06-12 03:00 phase
+
+	* panel-plugin/cpu.c: Fixed bug where LED-mode was not being 
+	drawn correctly. Removed some ugly code that wasn't used.
+
 2004-06-11 07:15 phase
 
 	* panel-plugin/cpu.c, panel-plugin/cpu.h: Added description
