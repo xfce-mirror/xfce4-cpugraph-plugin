@@ -1,3 +1,10 @@
+2004-06-08 17:48 phase
+
+	* panel-plugin/cpu.c, panel-plugin/cpu.h: 
+	Version 0.2, even more changes to the settings dialog. Added
+	None, Gradiant and Fire support to all modes which currently 
+	are Normal, LED and No History. Some minor bug fixes etc.
+
 2004-06-08 03:15 phase
 
 	* panel-plugin/cpu.c, panel-plugin/cpu.h: You can now change

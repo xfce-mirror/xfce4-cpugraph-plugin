@@ -77,7 +77,11 @@ void ReadSettings (Control *control, xmlNode *node)
 				base->m_Frame = atoi ((const xmlChar *)value);
 				UserSetSize (base);
 				g_free (value);
-						
+			}
+			if ((value = xmlGetProp (node, (const xmlChar *)"ColorMode")))
+			{
+				base->m_ColorMode = atoi ((const char *)value);
+				g_free (value);
 			}
 			if ((value = xmlGetProp (node, (const xmlChar *)"Foreground1")))
 			{
@@ -93,6 +97,15 @@ void ReadSettings (Control *control, xmlNode *node)
 			{
 				gdk_color_parse ((const char *)value, &base->m_BackGround);
 				g_free (value);
+			}
+			if ((value = xmlGetProp (node, (const xmlChar *)"Framecolor")))
+			{
+				gdk_color_parse ((const char *)value, &base->m_FrameColor);
+				g_free (value);
+			}
+			if ((value = xmlGetProp (node, (const xmlChar *)"Foreground3")))
+			{
+				gdk_color_parse ((const char *)value, &base->m_ForeGround3);
 			}
 		}
 	}
@@ -118,6 +131,9 @@ void WriteSettings (Control *control, xmlNode *node)
 
 	g_snprintf (value, 2, "%d", base->m_Frame);
 	xmlSetProp (root, (xmlChar *)"Frame", (const xmlChar *)value);
+	
+	g_snprintf (value, 4, "%d", base->m_ColorMode);
+	xmlSetProp (root, (xmlChar *)"ColorMode", (const xmlChar *)value);
 
 	g_snprintf (value, 8, "#%02X%02X%02X", base->m_ForeGround1.red >> 8,
 					       base->m_ForeGround1.green >> 8,
@@ -133,6 +149,18 @@ void WriteSettings (Control *control, xmlNode *node)
                                                base->m_BackGround.green >> 8,
                                                base->m_BackGround.blue >> 8);
         xmlSetProp (root, (xmlChar *)"Background", (const xmlChar *)value);
+
+        g_snprintf (value, 8, "#%02X%02X%02X", base->m_FrameColor.red >> 8,
+                                               base->m_FrameColor.green >> 8,
+                                               base->m_FrameColor.blue >> 8);
+        xmlSetProp (root, (xmlChar *)"Framecolor", (const xmlChar *)value);
+
+        g_snprintf (value, 8, "#%02X%02X%02X", base->m_ForeGround3.red >> 8,
+		                               base->m_ForeGround3.green >> 8,
+		                               base->m_ForeGround3.blue >> 8);
+        xmlSetProp (root, (xmlChar *)"Foreground3", (const xmlChar *)value);
+														      
+														      
 }
 CPUGraph *NewCPU ()
 {
@@ -166,10 +194,16 @@ CPUGraph *NewCPU ()
 	base->m_ForeGround2.green = 0;
 	base->m_ForeGround2.blue = 0;
 
+	base->m_ForeGround3.red = 0;
+	base->m_ForeGround3.green = 0;
+	base->m_ForeGround3.blue = 65535;
+
 	base->m_BackGround.red = 65535;
 	base->m_BackGround.green = 65535;
 	base->m_BackGround.blue = 65535;
+	
 	base->m_Frame = 0;
+	base->m_ColorMode = 0;
 
 	base->m_Tooltip = gtk_tooltips_new ();
 	base->m_UpdateInterval = 1000;
@@ -381,7 +415,9 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 	gtk_widget_show (GTK_WIDGET (op->m_FC));
 	gtk_widget_show (GTK_WIDGET (op->m_ColorDA4));
 	gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (op->m_FC), FALSE, FALSE, 0);
-
+	gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FC), base->m_Frame);
+	
+	
 	g_signal_connect (op->m_FC, "clicked", G_CALLBACK (ChangeColor4), base);
 
 	/* Foreground 1 */
@@ -432,7 +468,37 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 
 	g_signal_connect (op->m_FG2, "clicked", G_CALLBACK (ChangeColor2), base);
 
+	if (base->m_Mode == 1)
+		gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), TRUE);
 
+	/* Foreground3 */
+	
+	hbox = GTK_BOX (gtk_hbox_new (FALSE, 5));
+        gtk_widget_show (GTK_WIDGET (hbox));
+        gtk_box_pack_start (GTK_BOX (vbox2), GTK_WIDGET (hbox), FALSE, FALSE, 0);
+                                                                                                                                                                          
+        label = gtk_label_new (_("Color 3: "));
+        gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+        gtk_size_group_add_widget (sg, label);
+        gtk_widget_show (label);
+        gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (label), FALSE, FALSE, 0);
+	                                                                                                                                                                          op->m_FG3 = gtk_button_new ();
+        op->m_ColorDA5 = gtk_drawing_area_new ();
+        gtk_widget_modify_bg(op->m_ColorDA5, GTK_STATE_NORMAL, &base->m_ForeGround3);
+        gtk_widget_set_size_request (op->m_ColorDA5, 12, 12);
+        gtk_container_add (GTK_CONTAINER (op->m_FG3), op->m_ColorDA5);
+        gtk_widget_show (GTK_WIDGET (op->m_FG3));
+        gtk_widget_show (GTK_WIDGET (op->m_ColorDA5));
+        gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (op->m_FG3), FALSE, FALSE, 0);
+        g_signal_connect (op->m_FG3, "clicked", G_CALLBACK (ChangeColor5), base);
+	
+        if (base->m_Mode == 0 || base->m_Mode == 2)
+	        gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), FALSE);
+	else
+		if (base->m_ColorMode > 0)
+			gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), TRUE);
+																		
+	
 	/* Background */
 
 	hbox = GTK_BOX (gtk_hbox_new (FALSE, 5));
@@ -489,14 +555,6 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 	gtk_widget_show (op->m_MenuItem);
 	gtk_menu_shell_append (GTK_MENU_SHELL (op->m_Menu), op->m_MenuItem);
 	
-	op->m_MenuItem = gtk_menu_item_new_with_label (_("Gradient"));
-	gtk_widget_show (op->m_MenuItem);
-	gtk_menu_shell_append (GTK_MENU_SHELL (op->m_Menu), op->m_MenuItem);
-
-	op->m_MenuItem = gtk_menu_item_new_with_label (_("Fire"));
-	gtk_widget_show (op->m_MenuItem);
-	gtk_menu_shell_append (GTK_MENU_SHELL (op->m_Menu), op->m_MenuItem);
-
 	op->m_MenuItem = gtk_menu_item_new_with_label (_("LED"));
 	gtk_widget_show (op->m_MenuItem);
 	gtk_menu_shell_append (GTK_MENU_SHELL (op->m_Menu), op->m_MenuItem);
@@ -507,15 +565,59 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 
 	gtk_option_menu_set_history (GTK_OPTION_MENU (op->m_OptionMenu), base->m_Mode);
 
-	g_signal_connect (op->m_OptionMenu, "changed", G_CALLBACK (ModeChange), &base->m_Mode);
+	g_signal_connect (op->m_OptionMenu, "changed", G_CALLBACK (ModeChange), base);
+
+	/* Color mode */
+
+	hbox = GTK_BOX (gtk_hbox_new (FALSE, 5));
+        gtk_widget_show (GTK_WIDGET (hbox));
+        gtk_box_pack_start (GTK_BOX (vbox3), GTK_WIDGET (hbox), FALSE, FALSE, 0);
+                                                                                                                                                                         
+        label = gtk_label_new (_("Color mode: "));
+        gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+        gtk_size_group_add_widget (sg, label);
+        gtk_widget_show (label);
+        gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (label), FALSE, FALSE, 0);
+
+	op->m_Table = gtk_table_new (3, 1, FALSE);
+	gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (op->m_Table), FALSE, FALSE, 0);
+
+	op->m_ModeNone = gtk_radio_button_new_with_label (NULL, _("None"));
+	gtk_widget_show (op->m_ModeNone);
+	gtk_table_attach_defaults (GTK_TABLE (op->m_Table), GTK_WIDGET (op->m_ModeNone), 0, 1, 0, 1);
 	
+	op->m_ModeGradient = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (op->m_ModeNone), _("Gradient"));
+	gtk_widget_show (op->m_ModeGradient);
+	gtk_table_attach_defaults (GTK_TABLE (op->m_Table), GTK_WIDGET (op->m_ModeGradient), 0, 1, 1, 2);
 	
+	op->m_ModeFire = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (op->m_ModeNone), _("Fire"));
+	gtk_widget_show (op->m_ModeFire);
+	gtk_table_attach_defaults (GTK_TABLE (op->m_Table), GTK_WIDGET (op->m_ModeFire), 0, 1, 2, 3);
+
+	if (base->m_ColorMode == 0)
+	{
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (op->m_ModeNone), TRUE);
+		gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), FALSE);	
+	}
+	else if (base->m_ColorMode == 1)
+	{
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (op->m_ModeGradient), TRUE);
+                gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), TRUE);
+	}
+	else if (base->m_ColorMode == 2)
+	{
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (op->m_ModeFire), TRUE);
+                gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), TRUE);
+	}
+	
+	g_signal_connect (op->m_ModeNone, "toggled", G_CALLBACK (ColorModeChange1), base);
+	g_signal_connect (op->m_ModeGradient, "toggled", G_CALLBACK (ColorModeChange2), base);
+	g_signal_connect (op->m_ModeFire, "toggled", G_CALLBACK (ColorModeChange3), base);
+
 	/* Done */
 
 	g_signal_connect_swapped (done, "clicked", G_CALLBACK (ApplyChanges), base);
-		
-
-		
+			
 	gtk_widget_show_all (GTK_WIDGET (hbox));
 	gtk_container_add (container, GTK_WIDGET (globalvbox));
 	
@@ -581,95 +683,112 @@ void DrawGraph (CPUGraph *base)
 	if (base->m_Mode == 0)
         {
 		int x, y;
+		GdkGC *gc;
+		if (base->m_ColorMode > 0)
+			gc = gdk_gc_new (da->window);
 		for (x=base->m_Width - 1;x >= 0;x--)
         	{
-			float usage = base->m_History[base->m_Width - 1 - x]*step;
-		
+			int usage = base->m_History[base->m_Width - 1 - x]*step;
+			int tmp = 0;
+			int length = base->m_Height - (base->m_Height - usage);
 			for (y=base->m_Height-1;y >= base->m_Height - usage;y--)
 			{
-				gdk_draw_point (da->window, fg1, base->m_Frame ? x+1 : x, base->m_Frame ? y+1 : y);
+				if (base->m_ColorMode > 0)
+				{
+					GdkColor color;
+					double t = (base->m_ColorMode == 1) ? (tmp / (double)(base->m_Height-1)) : (tmp / (double)(length-1));
+					color.red = _lerp (	t,
+								base->m_ForeGround1.red,
+								base->m_ForeGround2.red);
+					color.green = _lerp (	t,
+								base->m_ForeGround1.green,
+								base->m_ForeGround2.green);
+					color.blue = _lerp (	t,
+								base->m_ForeGround1.blue,
+								base->m_ForeGround2.blue);
+					gdk_gc_set_rgb_fg_color (gc, &color);
+					tmp++;
+				}
+				gdk_draw_point (da->window, (base->m_ColorMode > 0) ? gc : fg1, base->m_Frame ? x+1 : x, base->m_Frame ? y+1 : y);
 			}
 		}
+		if (base->m_ColorMode > 0)
+			g_object_unref (gc);
 	}
 	else if (base->m_Mode == 1)
 	{
-		GdkGC *gc;
-		gc = gdk_gc_new (da->window);
-		int x, y;
-		for (x=base->m_Width-1;x >= 0;x--)
-		{
-			int tmp = 0;
-			float usage = base->m_History[base->m_Width - 1 - x]*step;
-			for (y=base->m_Height-1;y >= base->m_Height - usage;y--)
-			{
-				GdkColor color;
-				double t = tmp / (double)(base->m_Height-1);
-				color.red = _lerp (t, 
-							   base->m_ForeGround1.red,
-							   base->m_ForeGround2.red);
-				color.green = _lerp (t,
-							     base->m_ForeGround1.green,
-							     base->m_ForeGround2.green);
-				color.blue = _lerp (t,
-							    base->m_ForeGround1.blue,
-							    base->m_ForeGround2.blue),
-				gdk_gc_set_rgb_fg_color (gc, &color);
-				gdk_draw_point (da->window, gc, base->m_Frame ? x+1 : x, base->m_Frame ? y+1 : y);
-				tmp++;	
-			}
-		}
-
-		g_object_unref (gc);
+                GdkGC *gc;
+		if (base->m_ColorMode > 0)
+			gc = gdk_gc_new (da->window);
+                int nrx = base->m_Width/3.0;
+                int nry = base->m_Height/2.0;
+                float tstep = nry/100.0;
+                int x, y;
+                for (x=nrx-1;x>=0;x--)
+                {
+	                int usage = (int)(base->m_History[nrx - 1 - x]*tstep);
+			int tmp=0;
+			int length = nry - (nry - usage);
+                        for (y=nry-1;y>=0;y--)
+                        {
+				GdkGC *draw = fg2;
+				if (base->m_ColorMode > 0)
+				{
+					GdkColor color;
+					double t = (base->m_ColorMode == 1) ? (tmp / (double)(nry-1)) : (tmp / (double)(length-1));
+					color.red = _lerp (	t,
+								base->m_ForeGround2.red,
+								base->m_ForeGround3.red);
+					color.green = _lerp (	t,
+								base->m_ForeGround2.green,
+								base->m_ForeGround3.green);
+					color.blue = _lerp (	t,
+								base->m_ForeGround2.blue,
+								base->m_ForeGround3.blue);
+					gdk_gc_set_rgb_fg_color (gc, &color);
+					tmp++;
+					draw = gc;
+				}
+				
+	                        gdk_draw_rectangle (    da->window,
+	                                                ((nry - usage) > y) ? fg1 : draw,
+	                                                TRUE,
+	                                                base->m_Frame ? x*3+1 : x*3, base->m_Frame ? y*2+1 : y*2,
+	                                                2, 1);
+	                }
+	        }
 	}
 	else if (base->m_Mode == 2)
 	{
 		GdkGC *gc;
-		gc = gdk_gc_new (da->window);
-		int x, y;
-		for (x=base->m_Width-1;x >= 0;x--)
+		if (base->m_ColorMode > 0)
+			gc = gdk_gc_new (da->window);
+		int y;
+		int usage = (int)(base->m_History[0]*step);
+		int tmp=0;
+		int length = base->m_Height - (base->m_Height - usage);
+		for (y=base->m_Height-1;y>=base->m_Height - usage;y--)
 		{
-			float usage = base->m_History[base->m_Width - 1 - x]*step;
-			int length=base->m_Height - (base->m_Height - (int)usage);
-			int tmp=0;
-			for (y=base->m_Height-1;y >= base->m_Height - usage;y--)
-			{	
+			if (base->m_ColorMode > 0)
+			{
 				GdkColor color;
-				double t = tmp / (double)(length-1);
-				color.red = _lerp (t, 
-							   base->m_ForeGround1.red,
-							   base->m_ForeGround2.red);
-				color.green = _lerp (t,
-							     base->m_ForeGround1.green,
-							     base->m_ForeGround2.green);
-				color.blue = _lerp (t,
-							    base->m_ForeGround1.blue,
-							    base->m_ForeGround2.blue),
+				double t = (base->m_ColorMode == 1) ? (tmp / (double)(base->m_Height-1)) : (tmp / (double)(length-1));
+				color.red = _lerp (	t,
+							base->m_ForeGround1.red,
+							base->m_ForeGround2.red);
+				color.green = _lerp (	t,
+							base->m_ForeGround1.green,
+							base->m_ForeGround2.green);
+				color.blue = _lerp (	t,
+							base->m_ForeGround1.blue,
+							base->m_ForeGround2.blue);
 				gdk_gc_set_rgb_fg_color (gc, &color);
-				gdk_draw_point (da->window, gc, base->m_Frame ? x+1 : x, base->m_Frame ? y+1 : y);
 				tmp++;
 			}
-		}
-		g_object_unref (gc);
-	}
-	else if (base->m_Mode == 3)
-	{
-		GdkGC *gc;
-		gc = gdk_gc_new (da->window);
-		int nrx = base->m_Width/3.0;
-		int nry = base->m_Height/2.0;
-		float tstep = nry/100.0;
-		int x, y;
-		for (x=nrx-1;x>=0;x--)
-		{
-			int usage = (int)(base->m_History[nrx - 1 - x]*tstep);
-			for (y=nry-1;y>=0;y--)
-			{
-				gdk_draw_rectangle ( 	da->window,
-							((nry - usage) > y) ? fg1 : fg2,
-							TRUE,
-							base->m_Frame ? x*3+1 : x*3, base->m_Frame ? y*2+1 : y*2,
-							2, 1);
-			}
+			gdk_draw_line (	da->window, 
+					(base->m_ColorMode > 0) ? gc : fg1,
+					base->m_Frame ? 1 : 0, base->m_Frame ? y+1 : y,
+					base->m_Width, base->m_Frame ? y+1 : y);
 		}
 	}
 	else if (base->m_Mode == 4)
@@ -696,7 +815,7 @@ void DrawAreaExposeEvent (GtkWidget *da, GdkEventExpose *event, gpointer data)
 
 void SpinChange (GtkSpinButton *sb, int *value)
 {
-	*value = gtk_spin_button_get_value_as_int (sb);
+	(*value) = gtk_spin_button_get_value_as_int (sb);
 }
 
 void ApplyChanges (CPUGraph *base)
@@ -728,7 +847,10 @@ void ChangeColor4 (GtkButton *button, CPUGraph *base)
 {
 	ChangeColor (3, base);
 }
-
+void ChangeColor5 (GtkButton *button, CPUGraph *base)
+{
+	ChangeColor (4, base);
+}
 void ChangeColor (int color, CPUGraph *base)
 {
 	GtkWidget *dialog;
@@ -760,6 +882,11 @@ void ChangeColor (int color, CPUGraph *base)
 		gtk_color_selection_set_previous_color (colorsel, &base->m_FrameColor);
 		gtk_color_selection_set_current_color (colorsel, &base->m_FrameColor);
 	}
+	else if (color == 4)
+	{
+		gtk_color_selection_set_previous_color (colorsel, &base->m_ForeGround3);
+		gtk_color_selection_set_current_color (colorsel, &base->m_ForeGround3);
+	}
 
 	gtk_color_selection_set_has_palette (colorsel, TRUE);
 
@@ -786,6 +913,11 @@ void ChangeColor (int color, CPUGraph *base)
 			gtk_color_selection_get_current_color (colorsel, &base->m_FrameColor);
 			gtk_widget_modify_bg (base->m_Options.m_ColorDA4, GTK_STATE_NORMAL, &base->m_FrameColor);
 		}
+		else if (color == 4)
+		{
+			gtk_color_selection_get_current_color (colorsel, &base->m_ForeGround3);
+			gtk_widget_modify_bg (base->m_Options.m_ColorDA5, GTK_STATE_NORMAL, &base->m_ForeGround3);
+		}
 	}
 
 	gtk_widget_destroy (dialog);
@@ -802,15 +934,70 @@ void SetHistorySize (CPUGraph *base, int size)
 
 }
 
-void ModeChange (GtkOptionMenu *om, int *value)
+void ModeChange (GtkOptionMenu *om, CPUGraph *base)
 {
-	*value = gtk_option_menu_get_history (om);
+	base->m_Mode = gtk_option_menu_get_history (om);
+	if (base->m_Mode == 0)
+	{
+		if (base->m_ColorMode > 0)
+			gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), TRUE);
+		else
+			gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), FALSE);
+		gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), FALSE);
+	}
+	else if (base->m_Mode == 1)
+	{
+		if (base->m_ColorMode > 0)
+			gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), TRUE);
+		else
+			gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), FALSE);
+		gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), TRUE);
+	}
+	else if (base->m_Mode == 2)
+	{
+	        if (base->m_ColorMode > 0)
+	                gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), TRUE);
+	        else
+	                gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), FALSE);							
+		gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), FALSE);
+	}
 }
 
 void FrameChange (GtkToggleButton *button, CPUGraph *base)
 {
 	base->m_Frame = gtk_toggle_button_get_active (button);
+	gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FC), base->m_Frame);
 	UserSetSize (base);
+}
+
+void ColorModeChange1 (GtkRadioButton *button, CPUGraph *base)
+{
+	base->m_ColorMode = 0;
+	if (base->m_Mode == 0 || base->m_Mode == 2)
+		gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), FALSE);
+	else
+		gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), TRUE);
+	gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), FALSE);
+}
+
+void ColorModeChange2 (GtkRadioButton *button, CPUGraph *base)
+{
+	base->m_ColorMode = 1;
+	gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), TRUE);
+	if (base->m_Mode == 1)
+		gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), TRUE);
+	else
+		gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), FALSE);
+}
+
+void ColorModeChange3 (GtkRadioButton *button, CPUGraph *base)
+{
+	base->m_ColorMode = 2;
+	gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), TRUE);
+        if (base->m_Mode == 1)
+                gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), TRUE);
+        else
+                gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), FALSE);						
 }
 
 XFCE_PLUGIN_CHECK_INIT
