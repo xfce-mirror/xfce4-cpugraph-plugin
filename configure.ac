@@ -1,8 +1,8 @@
 dnl configure.ac
 dnl
-dnl xfce4-showdesktop-plugin - <Plugin for xfce4-panel>
+dnl xfce4-cpugraph-plugin - A new system load XFce4 panel-plugin.
 dnl
-dnl 2003 Benedikt Meurer <benedikt.meurer@unix-ag.uni-siegen.de>
+dnl 2004 Alexander Nordfelth <alex.nordfelth@telia.com>
 dnl
 
 AC_INIT([panel-plugin/cpu.c])
