@@ -1,0 +1,52 @@
+2004-06-06 18:03 phase
+
+	* panel-plugin/cpu.cc: Fixed bug in "normal mode".
+
+2004-06-06 17:01 phase
+
+	* panel-plugin/cpu.cc, panel-plugin/cpu.h: Forgot to update 
+	some funtions after removing global variables.
+
+2004-06-06 16:40 phase
+
+	* panel-plugin/cpu.cc, panel-plugin/cpu.h: Removed global 
+	variables and fixed bug where expose_event didn't work.
+	Fixed alignment setting for the width spin-button.
+
+2004-06-05 03:13 phase
+
+	* panel-plugin/cpu.cc: Fixed bug where the width was set
+	to 4 if you switched to vertical panel mode.
+
+2004-06-05 02:59 phase
+
+	* panel-plugin/cpu.cc: Much nicer solution when centering
+	the plugin.
+	Now the plugin is strictly following the icon_size 
+	defined sizes. (Which imo every plugin should follow.)
+	
+2004-06-05 01:25 phase
+
+	* panel-plugin/cpu.cc: Fixed bug where the plugin didn't
+	resize itself upon reading width/height.
+
+2004-06-03 19:01 phase
+
+	* panel-plugin/cpu.cc: Fixed bug where the plugin could 
+	get larger than icon_size when changing orientation.
+	
+2004-06-03 15:40 phase
+	
+	* panel-plugin/cpu.cc: Added support for vertical panel 
+	aswell.
+
+2004-06-02 17:50 phase
+	
+	* panel-plugin/cpu.cc, panel-plugin/os.cc, 
+	panel-plugin/os.h: Added support for FreeBSD, NetBSD 
+	and OpenBSD. (Code from Riccardo's systemload plugin.)
+
+2004-06-02 13:22 phase
+	
+	* panel-plugin/cpu.cc: Reconstructing the Get-CPU-Usage 
+	part for better support of other OS's.
