@@ -1,3 +1,19 @@
+2004-06-06 03:30 phase
+
+	* panel-plugin/cpu.c, panel-plugin/cpu.h, panel-plguin/os.c,
+	panel-plugin/os.h, panel-plugin/Makefile.am, configure.ac:
+	Version 0.1.1, removed some text from configure.ac that
+	didn't belong there.
+	Converted all C++ related code to plain C due to possible
+	bugs with the panel. The drawing area should also be 
+	doublebufferd now.
+
+2004-06-06 01:50 phase
+
+	* panel-plugin/cpu.cc, panel-plugin/cpu.h, panel-plugin/os.cc:
+	UpdateCPU now returns true instead of nothing. Fixed bug where
+	plugin couldn't	compile on *BSD systems. (Thanks benny)
+
 2004-06-06 18:03 phase
 
 	* panel-plugin/cpu.cc: Fixed bug in "normal mode".
