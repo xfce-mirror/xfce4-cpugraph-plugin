@@ -1,3 +1,9 @@
+2004-06-11 07:15 phase
+
+	* panel-plugin/cpu.c, panel-plugin/cpu.h: Added description
+	of "Color *" in the REAMDE file. Even more changes to the 
+	settings dialog.
+
 2004-06-08 17:48 phase
 
 	* panel-plugin/cpu.c, panel-plugin/cpu.h: 
