@@ -1,7 +1,7 @@
 #include "os.h"
 
 #if defined (__linux__)
-long CPULinux::GetCPUUsage (void)
+long GetCPUUsage (int *oldusage, int *oldtotal)
 {
 	long cpu, nice, system, idle, used, total;
 	long usage;
@@ -19,19 +19,18 @@ long CPULinux::GetCPUUsage (void)
 	used = cpu+nice+system;
 	total = used+idle;
 
-	if (total - m_OldTotal != 0)
-		usage = (100*(double)(used-m_OldUsage))/(double)(total - m_OldTotal);
+	if (total - (long)*oldtotal != 0)
+		usage = (100*(double)(used-(long)*oldusage))/(double)(total - (long)*oldtotal);
 	else
 		usage = 0;
 
-	m_OldUsage = used;
-	m_OldTotal = total;
+	*oldusage = (int)used;
+	*oldtotal = (int)total;
 
 	return usage;
 }
-#endif
-#if defined (__FreeBSD__)
-long CPUFreeBSD::GetCPUUsage (void)
+#elif defined (__FreeBSD__)
+long GetCPUUsage (int *oldusage, int *oldtotal)
 {
 	long user, nice, sys, bsdidle, idle;
 	long used, total;
@@ -54,18 +53,18 @@ long CPUFreeBSD::GetCPUUsage (void)
 
 	used = user+nice+sys;
 	total = used+bsdidle;
-	if ((total - m_OldTotal) != 0)
-		usage = (100 * (double)(used - m_OldUsage))/(double)(total - m_OldTotal);
+	if ((total - (long)*oldtotal) != 0)
+		usage = (100 * (double)(used - (long)*oldusage))/(double)(total - (long)*oldtotal);
 	else
 		usage = 0;
 
-	m_OlsUsage = used;
-	m_OldTotal = total;
+	*oldusage = (int)used;
+	*oldtotal = (int)total;
+	
 	return usage;
 }
-#endif
-#if defined (__NetBSD__)
-long CPUNetBSD::GetCPUUsage (void)
+#elif defined (__NetBSD__)
+long GetCPUUsage (int *oldusage, int *oldtotal)
 {
 	long user, nice, sys, bsdidle, idle;
 	long used, total, usage;
@@ -88,18 +87,18 @@ long CPUNetBSD::GetCPUUsage (void)
 	used = user+nice+sys;
 	total = used+bsdidle;
 
-	if (total - m_OldTotal != 0)
-		usage = (100 * (double)(used - m_OldUsage))/(double)(total - m_OldTotal);
+	if (total - (long)*oldtotal != 0)
+		usage = (100 * (double)(used - (long)*oldusage))/(double)(total - (long)*oldtotal);
 	else
 		usage = 0;
 	
-	m_OldUsage = used;
-	m_OldTotal = total;
+	*oldusage = (int)used;
+	*oldtotal = (int)total;
+	
 	return usage;
 }
-#endif
-#if defined (__OpenBSD_)
-long CPUOpenBSD::GetCPUUsage (void)
+#elif defined (__OpenBSD_)
+long GetCPUUsage (int *oldusage, int *oldtotal)
 {
 	 long user, nice, sys, bsdidle, idle;
          long used, total, usage;
@@ -121,12 +120,15 @@ long CPUOpenBSD::GetCPUUsage (void)
         used = user+nice+sys;
         total = used+bsdidle;
 
-        if (total - m_OldTotal != 0)
-		usage = (100 * (double)(used - m_OldUsage))/(double)(total - m_OldTotal);
+        if (total - (long)*oldtotal != 0)
+		usage = (100 * (double)(used - (long)*oldusage))/(double)(total - (long)*oldtotal);
 	else
                 usage = 0;
-        m_OldUsage = used;
-        m_OldTotal = total;
+        *oldusage = (int)used;
+        *oldtotal = (int)total;
+	
         return usage;							
-}	
+}
+#else
+#error "You're OS is not supported."
 #endif

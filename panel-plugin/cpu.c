@@ -1,5 +1,11 @@
 #include "cpu.h"
 
+guint16 _lerp (double t, guint16 a, guint16 b)
+{
+        return (guint16)(a + t*(b - a));
+}
+	
+
 G_MODULE_EXPORT void xfce_control_class_init(ControlClass *cc)
 {
 	xfce_textdomain(GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR, "UTF-8");
@@ -22,7 +28,7 @@ void Kill (Control *control)
 		g_source_remove (base->m_TimeoutID);
 		
 	if (base->m_History)
-		delete [] base->m_History;
+		g_free (base->m_History);
 	
 	g_free (base);
 }
@@ -167,20 +173,9 @@ CPUGraph *NewCPU ()
 
 	return base;
 }
-bool CreateControl (Control *control)
+gboolean CreateControl (Control *control)
 {
 	CPUGraph *base = NewCPU ();
-	#if defined (__linux__)
-	base->SetOS (new CPULinux);
-	#elif defined (__FreeBSD__)
-	base->SetOS (new CPUFreeBSD);
-	#elif defined (__NetBSD__)
-	base->SetOS (new CPUNetBSD);
-	#elif defined (__OpenBSD__)
-	base->SetOS (new CPUOpenBSD);
-	#else
-	#error "You're OS is not supported."
-	#endif
 	gtk_container_add (GTK_CONTAINER (control->base), GTK_WIDGET (base->m_Parent));
 		
 	base->m_TimeoutID = g_timeout_add (base->m_UpdateInterval, (GtkFunction) UpdateCPU, base);
@@ -313,7 +308,7 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 	g_signal_connect (op->m_Width, "value-changed", G_CALLBACK (SpinChange), &base->m_TmpWidth);
 
 	/* Height */
-	hbox = GTK_BOX (gtk_hbox_new (false, 5));
+	hbox = GTK_BOX (gtk_hbox_new (FALSE, 5));
 	gtk_widget_show (GTK_WIDGET (hbox));
 	gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (hbox), FALSE, FALSE, 0);
 
@@ -458,9 +453,9 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 	gtk_container_add (container, GTK_WIDGET (vbox));
 	
 }
-bool UpdateCPU (CPUGraph *base)
+gboolean UpdateCPU (CPUGraph *base)
 {
-	base->m_CPUUsage = base->GetUsage ();
+	base->m_CPUUsage = GetCPUUsage (&base->m_OldUsage, &base->m_OldTotal);
 
 	memmove (base->m_History+1, base->m_History, (base->m_Values-1)*sizeof (int));
 	base->m_History[0] = base->m_CPUUsage;
@@ -471,7 +466,7 @@ bool UpdateCPU (CPUGraph *base)
 	/* Draw the graph. */
 	gtk_widget_queue_draw (base->m_DrawArea);
 
-	return true;
+	return TRUE;
 }
 
 void DrawGraph (CPUGraph *base)
@@ -502,11 +497,12 @@ void DrawGraph (CPUGraph *base)
 
 	if (base->m_Mode == 0)
         {
-		for (int x=base->m_Width - 1;x >= 0;x--)
+		int x, y;
+		for (x=base->m_Width - 1;x >= 0;x--)
         	{
 			float usage = base->m_History[base->m_Width - 1 - x]*step;
 		
-			for (int y=base->m_RealHeight/2+base->m_Height/2;y >= base->m_Height - usage;y--)
+			for (y=base->m_RealHeight/2+base->m_Height/2;y >= base->m_Height - usage;y--)
 			{
 				gdk_draw_point (da->window, fg1, x, y);
 			}
@@ -516,21 +512,22 @@ void DrawGraph (CPUGraph *base)
 	{
 		GdkGC *gc;
 		gc = gdk_gc_new (da->window);
-		for (int x=base->m_Width-1;x >= 0;x--)
+		int x, y;
+		for (x=base->m_Width-1;x >= 0;x--)
 		{
+			int tmp = 0;
 			float usage = base->m_History[base->m_Width - 1 - x]*step;
-			int tmp=0;
-			for (int y=base->m_RealHeight/2+base->m_Height/2;y >= (base->m_RealHeight/2+base->m_Height/2+1) - usage;y--)
+			for (y=base->m_RealHeight/2+base->m_Height/2;y >= (base->m_RealHeight/2+base->m_Height/2+1) - usage;y--)
 			{
-				
 				GdkColor color;
-				color.red = _lerp (tmp/float(base->m_Height), 
+				double t = tmp / (double)(base->m_Height);
+				color.red = _lerp (t, 
 							   base->m_ForeGround1.red,
 							   base->m_ForeGround2.red);
-				color.green = _lerp (tmp/float(base->m_Height),
+				color.green = _lerp (t,
 							     base->m_ForeGround1.green,
 							     base->m_ForeGround2.green);
-				color.blue = _lerp (tmp/float(base->m_Height),
+				color.blue = _lerp (t,
 							    base->m_ForeGround1.blue,
 							    base->m_ForeGround2.blue),
 				gdk_gc_set_rgb_fg_color (gc, &color);
@@ -545,21 +542,23 @@ void DrawGraph (CPUGraph *base)
 	{
 		GdkGC *gc;
 		gc = gdk_gc_new (da->window);
-		for (int x=base->m_Width-1;x >= 0;x--)
+		int x, y;
+		for (x=base->m_Width-1;x >= 0;x--)
 		{
 			float usage = base->m_History[base->m_Width - 1 - x]*step;
 			int length=(base->m_RealHeight/2+base->m_Height/2) - ((base->m_RealHeight/2+base->m_Height/2) - (int)usage);
 			int tmp=0;
-			for (int y=base->m_RealHeight/2+base->m_Height/2;y >= (base->m_RealHeight/2+base->m_Height/2+1) - usage;y--)
+			for (y=base->m_RealHeight/2+base->m_Height/2;y >= (base->m_RealHeight/2+base->m_Height/2+1) - usage;y--)
 			{	
 				GdkColor color;
-				color.red = _lerp (tmp/float(length), 
+				double t = tmp / (double)(length);
+				color.red = _lerp (t, 
 							   base->m_ForeGround1.red,
 							   base->m_ForeGround2.red);
-				color.green = _lerp (tmp/float(length),
+				color.green = _lerp (t,
 							     base->m_ForeGround1.green,
 							     base->m_ForeGround2.green);
-				color.blue = _lerp (tmp/float(length),
+				color.blue = _lerp (t,
 							    base->m_ForeGround1.blue,
 							    base->m_ForeGround2.blue),
 				gdk_gc_set_rgb_fg_color (gc, &color);
@@ -575,11 +574,12 @@ void DrawGraph (CPUGraph *base)
 		gc = gdk_gc_new (da->window);
 		int nrx = (base->m_Width+1)/3;
 		int nry = (base->m_Height+1)/2;
-		float step = nry/100.0;
-		for (int x=nrx-1;x>=0;x--)
+		float tstep = nry/100.0;
+		int x, y;
+		for (x=nrx-1;x>=0;x--)
 		{
-			int usage = (int)(base->m_History[nrx - 1 - x]*step)+1;
-			for (int y=nry-1;y>=0;y--)
+			int usage = (int)(base->m_History[nrx - 1 - x]*tstep)+1;
+			for (y=nry-1;y>=0;y--)
 			{
 				gdk_draw_rectangle ( 	da->window,
 							((nry - usage) > y) ? fg1 : fg2,
@@ -698,7 +698,8 @@ void ChangeColor (int color, CPUGraph *base)
 void SetHistorySize (CPUGraph *base, int size)
 {
 	base->m_History = (long *)realloc (base->m_History, size*sizeof (long));
-	for (int i=size-1;i>=base->m_Values;i--)
+	int i;
+	for (i=size-1;i>=base->m_Values;i--)
 		base->m_History[i] = 0;
 	base->m_Values = size;
 
