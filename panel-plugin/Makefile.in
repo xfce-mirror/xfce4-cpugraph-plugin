@@ -49,9 +49,6 @@ CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
-CXX = @CXX@
-CXXDEPMODE = @CXXDEPMODE@
-CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
@@ -67,10 +64,7 @@ INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
-
-LIBS = \
-	-lstdc++
-
+LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
@@ -97,13 +91,10 @@ XFCE4_PANEL_LIBS = @XFCE4_PANEL_LIBS@
 XFCE4_PANEL_PLUGINSDIR = @XFCE4_PANEL_PLUGINSDIR@
 XFCE4_PANEL_REQUIRED_VERSION = @XFCE4_PANEL_REQUIRED_VERSION@
 ac_ct_CC = @ac_ct_CC@
-ac_ct_CXX = @ac_ct_CXX@
 ac_ct_RANLIB = @ac_ct_RANLIB@
 ac_ct_STRIP = @ac_ct_STRIP@
 am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
 am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
-am__fastdepCXX_FALSE = @am__fastdepCXX_FALSE@
-am__fastdepCXX_TRUE = @am__fastdepCXX_TRUE@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
 am__quote = @am__quote@
@@ -155,9 +146,9 @@ libcpugraph_la_LDFLAGS = \
 
 
 libcpugraph_la_SOURCES = \
-	cpu.cc							\
+	cpu.c							\
 	cpu.h						\
-	os.cc							\
+	os.c							\
 	os.h
 
 
@@ -181,21 +172,14 @@ CONFIG_CLEAN_FILES =
 LTLIBRARIES = $(plugin_LTLIBRARIES)
 
 libcpugraph_la_DEPENDENCIES =
-am_libcpugraph_la_OBJECTS = cpu.lo os.lo
+am_libcpugraph_la_OBJECTS = libcpugraph_la-cpu.lo libcpugraph_la-os.lo
 libcpugraph_la_OBJECTS = $(am_libcpugraph_la_OBJECTS)
 
 DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
-@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/cpu.Plo ./$(DEPDIR)/os.Plo
-CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
-LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
-	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
-	$(AM_CXXFLAGS) $(CXXFLAGS)
-CXXLD = $(CXX)
-CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/libcpugraph_la-cpu.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/libcpugraph_la-os.Plo
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
@@ -210,7 +194,7 @@ SOURCES = $(libcpugraph_la_SOURCES)
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .cc .lo .o .obj
+.SUFFIXES: .c .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  panel-plugin/Makefile
@@ -245,7 +229,7 @@ clean-pluginLTLIBRARIES:
 	  rm -f "$${dir}/so_locations"; \
 	done
 libcpugraph.la: $(libcpugraph_la_OBJECTS) $(libcpugraph_la_DEPENDENCIES) 
-	$(CXXLINK) -rpath $(plugindir) $(libcpugraph_la_LDFLAGS) $(libcpugraph_la_OBJECTS) $(libcpugraph_la_LIBADD) $(LIBS)
+	$(LINK) -rpath $(plugindir) $(libcpugraph_la_LDFLAGS) $(libcpugraph_la_OBJECTS) $(libcpugraph_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT) core *.core
@@ -253,41 +237,107 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cpu.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/os.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcpugraph_la-cpu.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcpugraph_la-os.Plo@am__quote@
 
-.cc.o:
-@am__fastdepCXX_TRUE@	if $(CXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+.c.o:
+@am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(COMPILE) -c `test -f '$<' || echo '$(srcdir)/'`$<
 
-.cc.obj:
-@am__fastdepCXX_TRUE@	if $(CXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o $@ `if test -f '$<'; then $(CYGPATH_W) '$<'; else $(CYGPATH_W) '$(srcdir)/$<'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `if test -f '$<'; then $(CYGPATH_W) '$<'; else $(CYGPATH_W) '$(srcdir)/$<'; fi`
+.c.obj:
+@am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o $@ `if test -f '$<'; then $(CYGPATH_W) '$<'; else $(CYGPATH_W) '$(srcdir)/$<'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(COMPILE) -c `if test -f '$<'; then $(CYGPATH_W) '$<'; else $(CYGPATH_W) '$(srcdir)/$<'; fi`
 
-.cc.lo:
-@am__fastdepCXX_TRUE@	if $(LTCXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
-@am__fastdepCXX_TRUE@	  -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Plo"; \
-@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
-@am__fastdepCXX_TRUE@	fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+.c.lo:
+@am__fastdepCC_TRUE@	if $(LTCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Plo"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+libcpugraph_la-cpu.o: cpu.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcpugraph_la_CFLAGS) $(CFLAGS) -MT libcpugraph_la-cpu.o -MD -MP -MF "$(DEPDIR)/libcpugraph_la-cpu.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libcpugraph_la-cpu.o `test -f 'cpu.c' || echo '$(srcdir)/'`cpu.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libcpugraph_la-cpu.Tpo" "$(DEPDIR)/libcpugraph_la-cpu.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libcpugraph_la-cpu.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cpu.c' object='libcpugraph_la-cpu.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libcpugraph_la-cpu.Po' tmpdepfile='$(DEPDIR)/libcpugraph_la-cpu.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcpugraph_la_CFLAGS) $(CFLAGS) -c -o libcpugraph_la-cpu.o `test -f 'cpu.c' || echo '$(srcdir)/'`cpu.c
+
+libcpugraph_la-cpu.obj: cpu.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcpugraph_la_CFLAGS) $(CFLAGS) -MT libcpugraph_la-cpu.obj -MD -MP -MF "$(DEPDIR)/libcpugraph_la-cpu.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libcpugraph_la-cpu.obj `if test -f 'cpu.c'; then $(CYGPATH_W) 'cpu.c'; else $(CYGPATH_W) '$(srcdir)/cpu.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libcpugraph_la-cpu.Tpo" "$(DEPDIR)/libcpugraph_la-cpu.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libcpugraph_la-cpu.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cpu.c' object='libcpugraph_la-cpu.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libcpugraph_la-cpu.Po' tmpdepfile='$(DEPDIR)/libcpugraph_la-cpu.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcpugraph_la_CFLAGS) $(CFLAGS) -c -o libcpugraph_la-cpu.obj `if test -f 'cpu.c'; then $(CYGPATH_W) 'cpu.c'; else $(CYGPATH_W) '$(srcdir)/cpu.c'; fi`
+
+libcpugraph_la-cpu.lo: cpu.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcpugraph_la_CFLAGS) $(CFLAGS) -MT libcpugraph_la-cpu.lo -MD -MP -MF "$(DEPDIR)/libcpugraph_la-cpu.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libcpugraph_la-cpu.lo `test -f 'cpu.c' || echo '$(srcdir)/'`cpu.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libcpugraph_la-cpu.Tpo" "$(DEPDIR)/libcpugraph_la-cpu.Plo"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libcpugraph_la-cpu.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cpu.c' object='libcpugraph_la-cpu.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libcpugraph_la-cpu.Plo' tmpdepfile='$(DEPDIR)/libcpugraph_la-cpu.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcpugraph_la_CFLAGS) $(CFLAGS) -c -o libcpugraph_la-cpu.lo `test -f 'cpu.c' || echo '$(srcdir)/'`cpu.c
+
+libcpugraph_la-os.o: os.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcpugraph_la_CFLAGS) $(CFLAGS) -MT libcpugraph_la-os.o -MD -MP -MF "$(DEPDIR)/libcpugraph_la-os.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libcpugraph_la-os.o `test -f 'os.c' || echo '$(srcdir)/'`os.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libcpugraph_la-os.Tpo" "$(DEPDIR)/libcpugraph_la-os.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libcpugraph_la-os.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='os.c' object='libcpugraph_la-os.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libcpugraph_la-os.Po' tmpdepfile='$(DEPDIR)/libcpugraph_la-os.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcpugraph_la_CFLAGS) $(CFLAGS) -c -o libcpugraph_la-os.o `test -f 'os.c' || echo '$(srcdir)/'`os.c
+
+libcpugraph_la-os.obj: os.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcpugraph_la_CFLAGS) $(CFLAGS) -MT libcpugraph_la-os.obj -MD -MP -MF "$(DEPDIR)/libcpugraph_la-os.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libcpugraph_la-os.obj `if test -f 'os.c'; then $(CYGPATH_W) 'os.c'; else $(CYGPATH_W) '$(srcdir)/os.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libcpugraph_la-os.Tpo" "$(DEPDIR)/libcpugraph_la-os.Po"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libcpugraph_la-os.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='os.c' object='libcpugraph_la-os.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libcpugraph_la-os.Po' tmpdepfile='$(DEPDIR)/libcpugraph_la-os.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcpugraph_la_CFLAGS) $(CFLAGS) -c -o libcpugraph_la-os.obj `if test -f 'os.c'; then $(CYGPATH_W) 'os.c'; else $(CYGPATH_W) '$(srcdir)/os.c'; fi`
+
+libcpugraph_la-os.lo: os.c
+@am__fastdepCC_TRUE@	if $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcpugraph_la_CFLAGS) $(CFLAGS) -MT libcpugraph_la-os.lo -MD -MP -MF "$(DEPDIR)/libcpugraph_la-os.Tpo" \
+@am__fastdepCC_TRUE@	  -c -o libcpugraph_la-os.lo `test -f 'os.c' || echo '$(srcdir)/'`os.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libcpugraph_la-os.Tpo" "$(DEPDIR)/libcpugraph_la-os.Plo"; \
+@am__fastdepCC_TRUE@	else rm -f "$(DEPDIR)/libcpugraph_la-os.Tpo"; exit 1; \
+@am__fastdepCC_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='os.c' object='libcpugraph_la-os.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/libcpugraph_la-os.Plo' tmpdepfile='$(DEPDIR)/libcpugraph_la-os.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcpugraph_la_CFLAGS) $(CFLAGS) -c -o libcpugraph_la-os.lo `test -f 'os.c' || echo '$(srcdir)/'`os.c
 
 mostlyclean-libtool:
 	-rm -f *.lo

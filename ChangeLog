@@ -1,4 +1,23 @@
-2004-06-06 03:30 phase
+2004-06-08 03:15 phase
+
+	* panel-plugin/cpu.c, panel-plugin/cpu.h: You can now change
+	the color of the frame too. Rewrote the drawing algorithms to
+	match better with the frame. I also removed some useless code
+	from the algorithms, so everything should work much smoother 
+	now.
+
+2004-06-08 01:45 phase
+
+	* panel-plugin/cpu.c, panel-plugin/cpu.h: Reconstructed the
+	settings dialog and added a option to draw a frame with the 
+	graph.
+
+2004-06-07 14:28 phase
+
+	* panel-plugin/cpu.c: Fixed bug where the plugin didn't
+	center itself after panel resizing.
+
+2004-06-07 03:30 phase
 
 	* panel-plugin/cpu.c, panel-plugin/cpu.h, panel-plguin/os.c,
 	panel-plugin/os.h, panel-plugin/Makefile.am, configure.ac:
@@ -8,7 +27,7 @@
 	bugs with the panel. The drawing area should also be 
 	doublebufferd now.
 
-2004-06-06 01:50 phase
+2004-06-07 01:50 phase
 
 	* panel-plugin/cpu.cc, panel-plugin/cpu.h, panel-plugin/os.cc:
 	UpdateCPU now returns true instead of nothing. Fixed bug where
@@ -29,19 +48,19 @@
 	variables and fixed bug where expose_event didn't work.
 	Fixed alignment setting for the width spin-button.
 
-2004-06-05 03:13 phase
+2004-06-06 03:13 phase
 
 	* panel-plugin/cpu.cc: Fixed bug where the width was set
 	to 4 if you switched to vertical panel mode.
 
-2004-06-05 02:59 phase
+2004-06-06 02:59 phase
 
 	* panel-plugin/cpu.cc: Much nicer solution when centering
 	the plugin.
 	Now the plugin is strictly following the icon_size 
 	defined sizes. (Which imo every plugin should follow.)
 	
-2004-06-05 01:25 phase
+2004-06-06 01:25 phase
 
 	* panel-plugin/cpu.cc: Fixed bug where the plugin didn't
 	resize itself upon reading width/height.

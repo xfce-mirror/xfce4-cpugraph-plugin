@@ -25,12 +25,18 @@ typedef struct
 	GtkWidget *m_Updater;
 	GtkWidget *m_Width;
 	GtkWidget *m_Height;
+	GtkWidget *m_GraphFrame;
 	GtkWidget *m_FG1;
 	GtkWidget *m_FG2;
 	GtkWidget *m_BG;
+	GtkWidget *m_FC;
 	GtkWidget *m_ColorDA;
 	GtkWidget *m_ColorDA2;
 	GtkWidget *m_ColorDA3;
+	GtkWidget *m_ColorDA4;
+	GtkWidget *m_FrameApperance;
+	GtkWidget *m_FrameColor;
+	GtkWidget *m_FrameMode;
 	
 	GtkWidget *m_OptionMenu;
 	GtkWidget *m_Menu;
@@ -55,10 +61,12 @@ typedef struct
 	int m_TmpHeight;
 	int m_RealHeight;
    	int m_Mode; // Eventual mode of the plugin.
+	int m_Frame;
    
    	GdkColor m_ForeGround1; // Inactive color.
    	GdkColor m_ForeGround2; // Active color.
    	GdkColor m_BackGround; // Background color.
+	GdkColor m_FrameColor;
 	
 	GtkTooltips *m_Tooltip; // Eventual tooltip.
 	
@@ -79,6 +87,7 @@ void Kill (Control *control);
 void ReadSettings (Control *control, xmlNode *node);
 void WriteSettings (Control *control, xmlNode *node);
 void SetSize (Control *control, int size);
+void UserSetSize (CPUGraph *base);
 gboolean UpdateCPU (CPUGraph *base);
 void UpdateTooltip (CPUGraph *base);
 void DrawGraph (CPUGraph *base);
@@ -92,9 +101,11 @@ void SetRealGeometry (CPUGraph *base);
 void ChangeColor1 (GtkButton *button, CPUGraph *base);
 void ChangeColor2 (GtkButton *button, CPUGraph *base);
 void ChangeColor3 (GtkButton *button, CPUGraph *base);
+void ChangeColor4 (GtkButton *button, CPUGraph *base);
 void ChangeColor (int color, CPUGraph *base);
 void SpinChange (GtkSpinButton *sb, int *value);
 void ModeChange (GtkOptionMenu *om, int *value);
 void ApplyChanges (CPUGraph *base);
+void FrameChange (GtkToggleButton *button, CPUGraph *base);
 
 #endif

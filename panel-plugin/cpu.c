@@ -65,16 +65,19 @@ void ReadSettings (Control *control, xmlNode *node)
 			if ((value = xmlGetProp (node, (const xmlChar *)"Height")))
 			{
 				base->m_Height = atoi ((const char *)value);
-				gtk_widget_set_size_request (base->m_Parent, base->m_Width, base->m_Height);
-                                gtk_widget_set_size_request (base->m_DrawArea, base->m_Width, base->m_Height);
-                                gtk_widget_queue_resize (GTK_WIDGET (base->m_DrawArea));
-					
-				g_free (value);
+                		g_free (value);
 			}
 			if ((value = xmlGetProp (node, (const xmlChar *)"Mode")))
 			{
 				base->m_Mode = atoi ((const char *)value);
 				g_free (value);
+			}
+			if ((value = xmlGetProp (node, (const xmlChar *)"Frame")))
+			{
+				base->m_Frame = atoi ((const xmlChar *)value);
+				UserSetSize (base);
+				g_free (value);
+						
 			}
 			if ((value = xmlGetProp (node, (const xmlChar *)"Foreground1")))
 			{
@@ -112,6 +115,9 @@ void WriteSettings (Control *control, xmlNode *node)
 
 	g_snprintf (value, 4, "%d", base->m_Mode);
 	xmlSetProp (root, (xmlChar *)"Mode", (const xmlChar *)value);
+
+	g_snprintf (value, 2, "%d", base->m_Frame);
+	xmlSetProp (root, (xmlChar *)"Frame", (const xmlChar *)value);
 
 	g_snprintf (value, 8, "#%02X%02X%02X", base->m_ForeGround1.red >> 8,
 					       base->m_ForeGround1.green >> 8,
@@ -163,10 +169,8 @@ CPUGraph *NewCPU ()
 	base->m_BackGround.red = 65535;
 	base->m_BackGround.green = 65535;
 	base->m_BackGround.blue = 65535;
+	base->m_Frame = 0;
 
-	//gpointer data = (gpointer)base;
-	//g_signal_connect (base->m_DrawArea, "expose_event", G_CALLBACK (DrawGraph), data);
-	
 	base->m_Tooltip = gtk_tooltips_new ();
 	base->m_UpdateInterval = 1000;
 	gtk_widget_show_all (base->m_Parent);
@@ -204,10 +208,6 @@ void SetOrientation (Control *control, int orientation)
 	if (base->m_Height > base->m_RealHeight && base->m_Orientation == HORIZONTAL)
 		base->m_Height = base->m_RealHeight;
 
-	gtk_widget_set_size_request (base->m_Parent, base->m_Width, base->m_Height);
-	gtk_widget_set_size_request (base->m_DrawArea, base->m_Width, base->m_Height);
-	gtk_widget_queue_resize (GTK_WIDGET (base->m_DrawArea));
-
 	if (base->m_TimeoutID)
 		g_source_remove (base->m_TimeoutID);
 
@@ -233,6 +233,8 @@ void SetOrientation (Control *control, int orientation)
 
 	base->m_TimeoutID = g_timeout_add (base->m_UpdateInterval,
 					  (GtkFunction)UpdateCPU, base);
+
+	UserSetSize (base);
 }
 void AttachCallback (Control *control, const char *signal, GCallback callback, gpointer data)
 {
@@ -248,16 +250,20 @@ void UpdateTooltip (CPUGraph *base)
 void SetSize (Control *control, int size)
 {
 	CPUGraph *base = (CPUGraph *)control->data;
-	SetRealGeometry (base);
 
-	gtk_widget_set_size_request (base->m_Parent, base->m_Width, base->m_Height);
-	gtk_widget_set_size_request (base->m_DrawArea, base->m_Width, base->m_Height);
+	SetOrientation (control, settings.orientation);
+}
+void UserSetSize (CPUGraph *base)
+{
+	int toadd = base->m_Frame ? 2 : 0;
+	gtk_widget_set_size_request (base->m_Parent, base->m_Width + toadd, base->m_Height + toadd);
+	gtk_widget_set_size_request (base->m_DrawArea, base->m_Width + toadd, base->m_Height + toadd);
 	gtk_widget_queue_resize (GTK_WIDGET (base->m_DrawArea));
 }
 void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 {
 	CPUGraph *base = (CPUGraph *)control->data;
-	GtkBox *vbox, *hbox;
+	GtkBox *globalvbox, *vbox, *vbox2, *vbox3, *hbox;
 	GtkWidget *label;
 	GtkSizeGroup *sg = base->m_Sg;
 	SOptions *op = &base->m_Options;
@@ -265,9 +271,18 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 	sg = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
 	base->m_OptionsDialog = gtk_widget_get_toplevel (done);
-	
+
+	globalvbox = GTK_BOX (gtk_vbox_new (FALSE, 0));
+	gtk_widget_show (GTK_WIDGET (globalvbox));
+
+	op->m_FrameApperance = gtk_frame_new ("Apperance");
+	gtk_box_pack_start (GTK_BOX (globalvbox), GTK_WIDGET (op->m_FrameApperance), FALSE, FALSE, 0);
+	gtk_widget_show (GTK_WIDGET (op->m_FrameApperance));
+
 	vbox = GTK_BOX (gtk_vbox_new (FALSE, 5));
 	gtk_widget_show (GTK_WIDGET (vbox));
+	gtk_container_set_border_width (GTK_CONTAINER (vbox), 5);
+	gtk_container_add (GTK_CONTAINER (op->m_FrameApperance), GTK_WIDGET (vbox));
 
 	/* Update Interval */
 	hbox = GTK_BOX (gtk_hbox_new (FALSE, 5));
@@ -325,11 +340,55 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 	gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (op->m_Height), FALSE, FALSE, 0);
 	g_signal_connect (op->m_Height, "value-changed", G_CALLBACK (SpinChange), &base->m_TmpHeight);
 
+	/* Frame */
+	hbox = GTK_BOX (gtk_hbox_new (FALSE, 5));
+	gtk_widget_show (GTK_WIDGET (hbox));
+	gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (hbox), FALSE, FALSE, 0);
+
+	op->m_GraphFrame = gtk_check_button_new_with_mnemonic (_("Use frame"));
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (op->m_GraphFrame), base->m_Frame);
+	gtk_widget_show (op->m_GraphFrame);
+	gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (op->m_GraphFrame), FALSE, FALSE, 0);
+	g_signal_connect (op->m_GraphFrame, "toggled", G_CALLBACK (FrameChange), base);
+
+        op->m_FrameColor = gtk_frame_new ("Colors");
+        gtk_box_pack_start (GTK_BOX (globalvbox), GTK_WIDGET (op->m_FrameColor), FALSE, FALSE, 0);
+        gtk_widget_show (GTK_WIDGET (op->m_FrameColor));
+                                                                                                                                                                 
+        vbox2 = GTK_BOX (gtk_vbox_new (FALSE, 5));
+        gtk_widget_show (GTK_WIDGET (vbox2));
+        gtk_container_set_border_width (GTK_CONTAINER (vbox2), 5);
+        gtk_container_add (GTK_CONTAINER (op->m_FrameColor), GTK_WIDGET (vbox2));								  
+
+	/* Frame color */
+
+	hbox = GTK_BOX (gtk_hbox_new (FALSE, 5));
+	gtk_widget_show (GTK_WIDGET (hbox));
+	gtk_box_pack_start (GTK_BOX (vbox2), GTK_WIDGET (hbox), FALSE, FALSE, 0);
+
+	label = gtk_label_new (_("Frame color: "));
+	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+	gtk_size_group_add_widget (sg, label);
+	gtk_widget_show (label);
+	gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (label), FALSE, FALSE, 0);
+
+	op->m_FC = gtk_button_new ();
+	op->m_ColorDA4 = gtk_drawing_area_new ();
+
+	gtk_widget_modify_bg (op->m_ColorDA4, GTK_STATE_NORMAL, &base->m_FrameColor);
+	gtk_widget_set_size_request (op->m_ColorDA4, 12, 12);
+	gtk_container_add (GTK_CONTAINER (op->m_FC), op->m_ColorDA4);
+	gtk_widget_show (GTK_WIDGET (op->m_FC));
+	gtk_widget_show (GTK_WIDGET (op->m_ColorDA4));
+	gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (op->m_FC), FALSE, FALSE, 0);
+
+	g_signal_connect (op->m_FC, "clicked", G_CALLBACK (ChangeColor4), base);
+
 	/* Foreground 1 */
 	
 	hbox = GTK_BOX (gtk_hbox_new (FALSE, 5));
 	gtk_widget_show (GTK_WIDGET (hbox));
-	gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (hbox), FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox2), GTK_WIDGET (hbox), FALSE, FALSE, 0);
 
 	label = gtk_label_new (_("Color 1: "));
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
@@ -353,7 +412,7 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 
 	hbox = GTK_BOX (gtk_hbox_new (FALSE, 5));
 	gtk_widget_show (GTK_WIDGET (hbox));
-	gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (hbox), FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox2), GTK_WIDGET (hbox), FALSE, FALSE, 0);
 
 	label = gtk_label_new (_("Color 2: "));
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
@@ -378,7 +437,7 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 
 	hbox = GTK_BOX (gtk_hbox_new (FALSE, 5));
 	gtk_widget_show (GTK_WIDGET (hbox));
-	gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (hbox), FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox2), GTK_WIDGET (hbox), FALSE, FALSE, 0);
 
 	label = gtk_label_new (_("Background: "));
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
@@ -398,12 +457,20 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 
 	g_signal_connect (op->m_BG, "clicked", G_CALLBACK (ChangeColor3), base);
 
+        op->m_FrameMode = gtk_frame_new ("Modes");
+        gtk_box_pack_start (GTK_BOX (globalvbox), GTK_WIDGET (op->m_FrameMode), FALSE, FALSE, 0);
+        gtk_widget_show (GTK_WIDGET (op->m_FrameMode));
+                                                                                                                                                                       
+        vbox3 = GTK_BOX (gtk_vbox_new (FALSE, 5));
+        gtk_widget_show (GTK_WIDGET (vbox3));
+        gtk_container_set_border_width (GTK_CONTAINER (vbox3), 5);
+        gtk_container_add (GTK_CONTAINER (op->m_FrameMode), GTK_WIDGET (vbox3));
+
 	/* Modes */
-	
 
 	hbox = GTK_BOX (gtk_hbox_new (FALSE, 5));
 	gtk_widget_show (GTK_WIDGET (hbox));
-	gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (hbox), FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox3), GTK_WIDGET (hbox), FALSE, FALSE, 0);
 
 	label = gtk_label_new (_("Modes: "));
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
@@ -450,7 +517,7 @@ void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done)
 
 		
 	gtk_widget_show_all (GTK_WIDGET (hbox));
-	gtk_container_add (container, GTK_WIDGET (vbox));
+	gtk_container_add (container, GTK_WIDGET (globalvbox));
 	
 }
 gboolean UpdateCPU (CPUGraph *base)
@@ -471,7 +538,7 @@ gboolean UpdateCPU (CPUGraph *base)
 
 void DrawGraph (CPUGraph *base)
 {
-        GdkGC *fg1, *fg2, *bg;
+        GdkGC *fg1, *fg2, *bg, *fc;
 	GtkWidget *da = base->m_DrawArea;
 
 	fg1 = gdk_gc_new (da->window);
@@ -483,8 +550,14 @@ void DrawGraph (CPUGraph *base)
 	bg = gdk_gc_new (da->window);
         gdk_gc_set_rgb_fg_color (bg, &base->m_BackGround);
 
-	int startx = 0;
-	int starty = base->m_RealHeight/2-base->m_Height/2+1;
+	if (base->m_Frame)
+	{
+		fc = gdk_gc_new (da->window);
+		gdk_gc_set_rgb_fg_color (fc, &base->m_FrameColor);
+	}
+
+	int startx = base->m_Frame ? 1 : 0;
+	int starty = base->m_Frame ? 1 : 0;
 
 	gdk_draw_rectangle (da->window,
 			    bg,
@@ -492,6 +565,16 @@ void DrawGraph (CPUGraph *base)
 			    startx, starty,
 			    base->m_Width, base->m_Height);
 
+
+        if (base->m_Frame)
+        {
+                gdk_draw_rectangle (da->window,
+                                    fc,
+                                    FALSE,
+                                    0, 0,
+                                    base->m_Width+1, base->m_Height+1);
+        }
+																							
 
 	float step = base->m_Height/100.0;
 
@@ -502,9 +585,9 @@ void DrawGraph (CPUGraph *base)
         	{
 			float usage = base->m_History[base->m_Width - 1 - x]*step;
 		
-			for (y=base->m_RealHeight/2+base->m_Height/2;y >= base->m_Height - usage;y--)
+			for (y=base->m_Height-1;y >= base->m_Height - usage;y--)
 			{
-				gdk_draw_point (da->window, fg1, x, y);
+				gdk_draw_point (da->window, fg1, base->m_Frame ? x+1 : x, base->m_Frame ? y+1 : y);
 			}
 		}
 	}
@@ -517,10 +600,10 @@ void DrawGraph (CPUGraph *base)
 		{
 			int tmp = 0;
 			float usage = base->m_History[base->m_Width - 1 - x]*step;
-			for (y=base->m_RealHeight/2+base->m_Height/2;y >= (base->m_RealHeight/2+base->m_Height/2+1) - usage;y--)
+			for (y=base->m_Height-1;y >= base->m_Height - usage;y--)
 			{
 				GdkColor color;
-				double t = tmp / (double)(base->m_Height);
+				double t = tmp / (double)(base->m_Height-1);
 				color.red = _lerp (t, 
 							   base->m_ForeGround1.red,
 							   base->m_ForeGround2.red);
@@ -531,7 +614,7 @@ void DrawGraph (CPUGraph *base)
 							    base->m_ForeGround1.blue,
 							    base->m_ForeGround2.blue),
 				gdk_gc_set_rgb_fg_color (gc, &color);
-				gdk_draw_point (da->window, gc, x, y);
+				gdk_draw_point (da->window, gc, base->m_Frame ? x+1 : x, base->m_Frame ? y+1 : y);
 				tmp++;	
 			}
 		}
@@ -546,12 +629,12 @@ void DrawGraph (CPUGraph *base)
 		for (x=base->m_Width-1;x >= 0;x--)
 		{
 			float usage = base->m_History[base->m_Width - 1 - x]*step;
-			int length=(base->m_RealHeight/2+base->m_Height/2) - ((base->m_RealHeight/2+base->m_Height/2) - (int)usage);
+			int length=base->m_Height - (base->m_Height - (int)usage);
 			int tmp=0;
-			for (y=base->m_RealHeight/2+base->m_Height/2;y >= (base->m_RealHeight/2+base->m_Height/2+1) - usage;y--)
+			for (y=base->m_Height-1;y >= base->m_Height - usage;y--)
 			{	
 				GdkColor color;
-				double t = tmp / (double)(length);
+				double t = tmp / (double)(length-1);
 				color.red = _lerp (t, 
 							   base->m_ForeGround1.red,
 							   base->m_ForeGround2.red);
@@ -562,7 +645,7 @@ void DrawGraph (CPUGraph *base)
 							    base->m_ForeGround1.blue,
 							    base->m_ForeGround2.blue),
 				gdk_gc_set_rgb_fg_color (gc, &color);
-				gdk_draw_point (da->window, gc, x, y);
+				gdk_draw_point (da->window, gc, base->m_Frame ? x+1 : x, base->m_Frame ? y+1 : y);
 				tmp++;
 			}
 		}
@@ -572,19 +655,19 @@ void DrawGraph (CPUGraph *base)
 	{
 		GdkGC *gc;
 		gc = gdk_gc_new (da->window);
-		int nrx = (base->m_Width+1)/3;
-		int nry = (base->m_Height+1)/2;
+		int nrx = base->m_Width/3.0;
+		int nry = base->m_Height/2.0;
 		float tstep = nry/100.0;
 		int x, y;
 		for (x=nrx-1;x>=0;x--)
 		{
-			int usage = (int)(base->m_History[nrx - 1 - x]*tstep)+1;
+			int usage = (int)(base->m_History[nrx - 1 - x]*tstep);
 			for (y=nry-1;y>=0;y--)
 			{
 				gdk_draw_rectangle ( 	da->window,
 							((nry - usage) > y) ? fg1 : fg2,
 							TRUE,
-							x*3, (base->m_RealHeight/2-base->m_Height/2)+y*2+1,
+							base->m_Frame ? x*3+1 : x*3, base->m_Frame ? y*2+1 : y*2,
 							2, 1);
 			}
 		}
@@ -594,13 +677,15 @@ void DrawGraph (CPUGraph *base)
 		gdk_draw_rectangle (da->window,
 				    fg1,
 				    TRUE,
-				    0, (base->m_RealHeight/2+base->m_Height/2+1)-(int)(base->m_History[0]*step),
-				    base->m_Width, (int)(base->m_History[0]*step)+1);
+				    base->m_Frame ? 1 : 0, base->m_Frame ? (base->m_Height - (int)(base->m_History[0]*step))+1 : (base->m_Height-(int)(base->m_History[0]*step)),
+				    base->m_Width, (int)(base->m_History[0]*step));
 	}
 	
 	g_object_unref (fg2);
         g_object_unref (fg1);
 	g_object_unref (bg);
+	if (base->m_Frame)
+		g_object_unref (fc);
 
 }
 void DrawAreaExposeEvent (GtkWidget *da, GdkEventExpose *event, gpointer data)
@@ -623,9 +708,7 @@ void ApplyChanges (CPUGraph *base)
 	base->m_Width = base->m_TmpWidth;
 	base->m_Height = base->m_TmpHeight;
 
-	gtk_widget_set_size_request (base->m_Parent, base->m_Width, base->m_Height);
-	gtk_widget_set_size_request (base->m_DrawArea, base->m_Width, base->m_Height);
-	gtk_widget_queue_resize (GTK_WIDGET (base->m_DrawArea));
+	UserSetSize (base);
 	SetHistorySize (base, base->m_Width);
 }
 
@@ -640,6 +723,10 @@ void ChangeColor2 (GtkButton *button, CPUGraph *base)
 void ChangeColor3 (GtkButton *button, CPUGraph *base)
 {
 	ChangeColor (2, base);
+}
+void ChangeColor4 (GtkButton *button, CPUGraph *base)
+{
+	ChangeColor (3, base);
 }
 
 void ChangeColor (int color, CPUGraph *base)
@@ -668,6 +755,11 @@ void ChangeColor (int color, CPUGraph *base)
 		gtk_color_selection_set_previous_color (colorsel, &base->m_BackGround);
 		gtk_color_selection_set_current_color (colorsel, &base->m_BackGround);
 	}
+	else if (color == 3)
+	{
+		gtk_color_selection_set_previous_color (colorsel, &base->m_FrameColor);
+		gtk_color_selection_set_current_color (colorsel, &base->m_FrameColor);
+	}
 
 	gtk_color_selection_set_has_palette (colorsel, TRUE);
 
@@ -689,6 +781,11 @@ void ChangeColor (int color, CPUGraph *base)
 			gtk_color_selection_get_current_color (colorsel, &base->m_BackGround);
 			gtk_widget_modify_bg (base->m_Options.m_ColorDA3, GTK_STATE_NORMAL, &base->m_BackGround);
 		}
+		else if (color == 3)
+		{
+			gtk_color_selection_get_current_color (colorsel, &base->m_FrameColor);
+			gtk_widget_modify_bg (base->m_Options.m_ColorDA4, GTK_STATE_NORMAL, &base->m_FrameColor);
+		}
 	}
 
 	gtk_widget_destroy (dialog);
@@ -708,6 +805,12 @@ void SetHistorySize (CPUGraph *base, int size)
 void ModeChange (GtkOptionMenu *om, int *value)
 {
 	*value = gtk_option_menu_get_history (om);
+}
+
+void FrameChange (GtkToggleButton *button, CPUGraph *base)
+{
+	base->m_Frame = gtk_toggle_button_get_active (button);
+	UserSetSize (base);
 }
 
 XFCE_PLUGIN_CHECK_INIT
