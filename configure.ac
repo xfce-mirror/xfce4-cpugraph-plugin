@@ -5,11 +5,11 @@ dnl
 dnl 2003 Benedikt Meurer <benedikt.meurer@unix-ag.uni-siegen.de>
 dnl
 
-AC_INIT([panel-plugin/cpu.cc])
+AC_INIT([panel-plugin/cpu.c])
 
 AC_CONFIG_HEADERS([config.h])
 
-AM_INIT_AUTOMAKE([xfce4-cpugraph-plugin], [0.1])
+AM_INIT_AUTOMAKE([xfce4-cpugraph-plugin], [0.1.1])
 
 AM_MAINTAINER_MODE
 
@@ -20,7 +20,6 @@ AC_MINIX
 
 dnl Check for basic programs
 AC_PROG_CC
-AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 
