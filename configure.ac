@@ -9,7 +9,7 @@ AC_INIT([panel-plugin/cpu.c])
 
 AC_CONFIG_HEADERS([config.h])
 
-AM_INIT_AUTOMAKE([xfce4-cpugraph-plugin], [0.2.3])
+AM_INIT_AUTOMAKE([xfce4-cpugraph-plugin], [0.2.2])
 
 AM_MAINTAINER_MODE
 
