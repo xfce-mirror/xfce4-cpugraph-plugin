@@ -1,105 +1,134 @@
-2004-06-12 03:00 phase
+2004-07-28 21:49  benny
 
-	* panel-plugin/cpu.c: Fixed bug where LED-mode was not being 
-	drawn correctly. Removed some ugly code that wasn't used.
+	* m4/depends.m4: Fix BM_DEPEND_CHECK().
 
-2004-06-11 07:15 phase
+2004-07-24 17:30  benny
 
-	* panel-plugin/cpu.c, panel-plugin/cpu.h: Added description
-	of "Color *" in the REAMDE file. Even more changes to the 
-	settings dialog.
+	* configure: Panel version was wrong for the threaded test.
 
-2004-06-08 17:48 phase
+2004-07-24 17:29  benny
 
-	* panel-plugin/cpu.c, panel-plugin/cpu.h: 
-	Version 0.2, even more changes to the settings dialog. Added
-	None, Gradiant and Fire support to all modes which currently 
-	are Normal, LED and No History. Some minor bug fixes etc.
+	* m4/depends.m4: Correct min. required panel version.
 
-2004-06-08 03:15 phase
+2004-07-24 17:25  benny
 
-	* panel-plugin/cpu.c, panel-plugin/cpu.h: You can now change
-	the color of the frame too. Rewrote the drawing algorithms to
-	match better with the frame. I also removed some useless code
-	from the algorithms, so everything should work much smoother 
-	now.
+	* Makefile.in, aclocal.m4, compile, config.guess, config.sub,
+	  configure, depcomp, install-sh, ltmain.sh, m4/depends.m4,
+	  missing, mkinstalldirs, panel-plugin/Makefile.in,
+	  panel-plugin/cpu.c, panel-plugin/os.c: Make this work with
+	  threaded panel.
 
-2004-06-08 01:45 phase
+2004-07-21 09:00  benny
 
-	* panel-plugin/cpu.c, panel-plugin/cpu.h: Reconstructed the
-	settings dialog and added a option to draw a frame with the 
-	graph.
+	* m4/depends.m4: New panel plugin check
 
-2004-06-07 14:28 phase
+2004-06-12 02:13  phase
 
-	* panel-plugin/cpu.c: Fixed bug where the plugin didn't
-	center itself after panel resizing.
+	* configure.ac: Trying to remove some sticky Tag i accidently
+	  added :(
 
-2004-06-07 03:30 phase
+2004-06-12 01:25  phase
 
-	* panel-plugin/cpu.c, panel-plugin/cpu.h, panel-plguin/os.c,
-	panel-plugin/os.h, panel-plugin/Makefile.am, configure.ac:
-	Version 0.1.1, removed some text from configure.ac that
-	didn't belong there.
-	Converted all C++ related code to plain C due to possible
-	bugs with the panel. The drawing area should also be 
-	doublebufferd now.
+	* ChangeLog, README, panel-plugin/cpu.c: Read ChangeLog for
+	  changes.
 
-2004-06-07 01:50 phase
+2004-06-11 05:24  phase
 
-	* panel-plugin/cpu.cc, panel-plugin/cpu.h, panel-plugin/os.cc:
-	UpdateCPU now returns true instead of nothing. Fixed bug where
-	plugin couldn't	compile on *BSD systems. (Thanks benny)
+	* ChangeLog: Updated settings dialog.
 
-2004-06-06 18:03 phase
+2004-06-11 05:18  phase
 
-	* panel-plugin/cpu.cc: Fixed bug in "normal mode".
+	* panel-plugin/cpu.c, panel-plugin/cpu.h: Even MORE changes to the
+	  settings dialog.
 
-2004-06-06 17:01 phase
+2004-06-11 05:10  phase
 
-	* panel-plugin/cpu.cc, panel-plugin/cpu.h: Forgot to update 
-	some funtions after removing global variables.
+	* README: Updated with description of the colors.
 
-2004-06-06 16:40 phase
+2004-06-08 16:30  phase
 
-	* panel-plugin/cpu.cc, panel-plugin/cpu.h: Removed global 
-	variables and fixed bug where expose_event didn't work.
-	Fixed alignment setting for the width spin-button.
+	* autogen.sh: Added autogen.sh
 
-2004-06-06 03:13 phase
+2004-06-08 15:58  phase
 
-	* panel-plugin/cpu.cc: Fixed bug where the width was set
-	to 4 if you switched to vertical panel mode.
+	* ChangeLog, Makefile.in, TODO, config.guess, config.h.in,
+	  config.sub, configure, configure.ac, depcomp, ltmain.sh,
+	  missing, panel-plugin/Makefile.am, panel-plugin/Makefile.in,
+	  panel-plugin/cpu.c, panel-plugin/cpu.h: Read ChangeLog for
+	  changes.
 
-2004-06-06 02:59 phase
+2004-06-08 01:22  phase
 
-	* panel-plugin/cpu.cc: Much nicer solution when centering
-	the plugin.
-	Now the plugin is strictly following the icon_size 
-	defined sizes. (Which imo every plugin should follow.)
-	
-2004-06-06 01:25 phase
+	* ChangeLog, Makefile.in, configure, panel-plugin/Makefile.in,
+	  panel-plugin/cpu.c, panel-plugin/cpu.h: Some nice changes and
+	  bugfixes. Read ChangeLog for info.
 
-	* panel-plugin/cpu.cc: Fixed bug where the plugin didn't
-	resize itself upon reading width/height.
+2004-06-07 02:24  phase
 
-2004-06-03 19:01 phase
+	* compile: *** empty log message ***
 
-	* panel-plugin/cpu.cc: Fixed bug where the plugin could 
-	get larger than icon_size when changing orientation.
-	
-2004-06-03 15:40 phase
-	
-	* panel-plugin/cpu.cc: Added support for vertical panel 
-	aswell.
+2004-06-07 01:45  phase
 
-2004-06-02 17:50 phase
-	
-	* panel-plugin/cpu.cc, panel-plugin/os.cc, 
-	panel-plugin/os.h: Added support for FreeBSD, NetBSD 
-	and OpenBSD. (Code from Riccardo's systemload plugin.)
+	* ChangeLog: Updated ChangeLog.
 
-2004-06-02 13:22 phase
-	
-	* panel-plugin/cpu.cc: Reconstructing the Get-CPU-Usage 
-	part for better support of other OS's.
+2004-06-07 01:32  phase
+
+	* configure.ac: *** empty log message ***
+
+2004-06-07 01:28  phase
+
+	* configure.ac: Change version nr., removed C++ stuff and added C
+	  stuff.
+
+2004-06-07 01:20  phase
+
+	* panel-plugin/cpu.h: Removed C++ stuff, replaced with C stuff.
+
+2004-06-07 01:16  phase
+
+	* panel-plugin/cpu.c, panel-plugin/cpu.cc, panel-plugin/os.c,
+	  panel-plugin/os.cc: .c instead of .cc now that the plugin is in
+	  C instead of C++
+
+2004-06-07 01:10  phase
+
+	* panel-plugin/Makefile.am: C instead of C++ (it's just safer, not
+	  that I like it :).
+
+2004-06-07 00:00  phase
+
+	* panel-plugin/os.h: Removing C++ code structure, using plain C
+	  instead.
+
+2004-06-06 23:53  phase
+
+	* panel-plugin/os.cc: Removed g_warning since glib.h ins't
+	  included. (Thanks benny)
+
+2004-06-06 23:47  phase
+
+	* panel-plugin/cpu.cc: UpdateCPU (CPUGraph *base) now returns
+	  true. Added gtk_widget_queue_draw instead of directly drawing
+	  the graph from UpdateCPU (Thanks benny).
+
+2004-06-06 23:37  phase
+
+	* panel-plugin/cpu.h: UpdateCPU (CPUGraph *base) has to return
+	  true for the timeout to keep on going.
+
+2004-06-06 17:59  phase
+
+	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
+	  NEWS, README, TODO, aclocal.m4, config.guess, config.h.in,
+	  config.sub, configure, configure.ac, depcomp, install-sh,
+	  ltmain.sh, m4, m4/debug.m4, m4/depends.m4, m4/i18n.m4, missing,
+	  mkinstalldirs, panel-plugin, panel-plugin/Makefile.am,
+	  panel-plugin/Makefile.in, panel-plugin/cpu.cc,
+	  panel-plugin/cpu.h, panel-plugin/os.cc, panel-plugin/os.h:
+	  Initial revision
+
+2004-06-06 17:59  
+
+	* xfce4-cpugraph-plugin/branches, xfce4-cpugraph-plugin/tags, .:
+	  New repository initialized by cvs2svn.
+
