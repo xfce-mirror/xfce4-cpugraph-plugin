@@ -5,11 +5,14 @@ dnl
 dnl 2004 Alexander Nordfelth <alex.nordfelth@telia.com>
 dnl
 
-AC_INIT([panel-plugin/cpu.c])
+m4_define([cpugraph_version],[0.3.0])
 
-AC_CONFIG_HEADERS([config.h])
+AC_INIT([xfce4-cpugraph-plugin], [cpugraph_version()],
+	[xfce-goodies-dev@lists.berlios.de])
 
-AM_INIT_AUTOMAKE([xfce4-cpugraph-plugin], [0.2.2])
+CPUGRAPH_VERSION=cpugraph_version()
+AM_INIT_AUTOMAKE([xfce4-cpugraph-plugin], [$CPUGRAPH_VERSION])
+AM_CONFIG_HEADER([config.h])
 
 AM_MAINTAINER_MODE
 
@@ -21,18 +24,22 @@ AC_MINIX
 dnl Check for basic programs
 AC_PROG_CC
 AC_PROG_INSTALL
-AC_PROG_LIBTOOL
+AC_PROG_INTLTOOL
 
 dnl Check for standard header files
 AC_HEADER_STDC
 
 dnl configure the panel plugin
-XFCE_PANEL_PLUGIN([XFCE4_PANEL], [4.0.0])
+XDT_CHECK_PACKAGE([LIBXFCE4PANEL], [libxfce4panel-1.0], [4.3.20])
+
+dnl translations
+XDT_I18N([])
 
 dnl Check for debugging support
-BM_DEBUG_SUPPORT
+XDT_FEATURE_DEBUG()
 
 AC_OUTPUT([
 Makefile
 panel-plugin/Makefile
+po/Makefile.in
 ])

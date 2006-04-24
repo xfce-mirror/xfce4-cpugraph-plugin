@@ -1,0 +1,5 @@
+0.3.0
+=====
+- Ported to Xfce 4.4 panel API
+- Use xfce4-dev-tools
+- Use real frame widget

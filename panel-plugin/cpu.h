@@ -5,24 +5,27 @@
 #include <config.h>
 #endif
 
-#include "os.h"
-
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 #include <math.h>
 #include <stdio.h>
+#include <string.h>
 
-#include <libxfce4util/i18n.h>
+#include <libxfce4util/libxfce4util.h>
 #include <libxfcegui4/libxfcegui4.h>
+#include <libxfce4panel/xfce-panel-plugin.h>
 
-#include <panel/plugins.h>
-#include <panel/xfce.h>
+#include "os.h"
+
+
+#define BORDER  8
 
 #define MAX_WIDTH 64
 
 typedef struct
 {
 	GtkWidget *m_Notebook;
+
 	/* Update */
 	GtkWidget *m_UpdateOption;
 	GtkWidget *m_UpdateMenu;
@@ -58,21 +61,15 @@ typedef struct
 
 typedef struct
 {
-   	GtkWidget *m_Parent; // Parent.
-	GtkWidget *m_Alignment;
-	GtkBox	  *m_Box;
+	XfcePanelPlugin *plugin;
+
+	GtkWidget *m_FrameWidget;
 	GtkWidget *m_DrawArea;
 	GtkWidget *m_OptionsDialog;
 	SOptions m_Options;
-	GtkSizeGroup *m_Sg;
    
    	int m_UpdateInterval; // Number of ms between updates.
    	int m_Width; // The width of the plugin.
-	int m_TmpWidth;
-	int m_RealWidth;
-	int m_Height;
-	int m_TmpHeight;
-	int m_RealHeight;
    	int m_Mode; // Eventual mode of the plugin.
 	int m_ColorMode;
 	int m_Frame;
@@ -81,7 +78,6 @@ typedef struct
    	GdkColor m_ForeGround2; // Active color.
 	GdkColor m_ForeGround3;
    	GdkColor m_BackGround; // Background color.
-	GdkColor m_FrameColor;
 	
 	GtkTooltips *m_Tooltip; // Eventual tooltip.
 	
@@ -96,19 +92,18 @@ typedef struct
 	int m_OldTotal;
 }CPUGraph;
 
-gboolean CreateControl (Control *control);
-void AttachCallback (Control *control, const char *signal, GCallback callback, gpointer data);
-void Kill (Control *control);
-void ReadSettings (Control *control, xmlNode *node);
-void WriteSettings (Control *control, xmlNode *node);
-void SetSize (Control *control, int size);
+CPUGraph *CreateControl (XfcePanelPlugin *plugin);
+void Kill (XfcePanelPlugin *plugin, CPUGraph *base);
+void ReadSettings (XfcePanelPlugin *plugin, CPUGraph *base);
+void WriteSettings (XfcePanelPlugin *plugin, CPUGraph *base);
+gboolean SetSize (XfcePanelPlugin *plugin, int size, CPUGraph *base);
 void UserSetSize (CPUGraph *base);
 gboolean UpdateCPU (CPUGraph *base);
 void UpdateTooltip (CPUGraph *base);
 void DrawGraph (CPUGraph *base);
 void DrawAreaExposeEvent (GtkWidget *da, GdkEventExpose *event, gpointer data);
-void CreateOptions (Control *control, GtkContainer *container, GtkWidget *done);
-void SetOrientation (Control *control, int orientation);
+void CreateOptions (XfcePanelPlugin *plugin, CPUGraph *base);
+void SetOrientation (XfcePanelPlugin *plugin, GtkOrientation orientation, CPUGraph *base);
 void SetHistorySize (CPUGraph *base, int size);
 void SetRealGeometry (CPUGraph *base);
 	
