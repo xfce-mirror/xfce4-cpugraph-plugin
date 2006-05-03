@@ -951,9 +951,9 @@ ChangeColor (int color, CPUGraph * base)
 void
 SetHistorySize (CPUGraph * base, int size)
 {
+    int i;
     base->m_History =
         (long *) realloc (base->m_History, size * sizeof (long));
-    int i;
 
     for (i = size - 1; i >= base->m_Values; i--)
         base->m_History[i] = 0;
