@@ -751,6 +751,9 @@ DrawGraph (CPUGraph * base)
                                     TRUE, x * 3, y * 2, 2, 1);
             }
         }
+
+        if (base->m_ColorMode > 0)
+            g_object_unref (gc);
     }
     else if (base->m_Mode == 2)
     {
@@ -787,6 +790,9 @@ DrawGraph (CPUGraph * base)
                            (base->m_ColorMode > 0) ? gc : fg1, 
                            0, y, w, y);
         }
+
+        if (base->m_ColorMode > 0)
+            g_object_unref (gc);
     }
     else if (base->m_Mode == 4)
     {
