@@ -1,12 +1,11 @@
 # Polish translations for xfce4-cpugraf-plugin package.
 # Piotr Maliński <admin@rk.edu.pl>, 2006.
 #
-
 msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin 0.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-09 00:20+0200\n"
+"POT-Creation-Date: 2006-09-10 21:29+0200\n"
 "PO-Revision-Date: 2006-04-08 12:19+0900\n"
 "Last-Translator: Piotr Maliński <admin@rk.edu.pl>\n"
 "Language-Team: Polish <translation-team-pl@lists.sourceforge.net>\n"
@@ -18,8 +17,7 @@ msgstr ""
 msgid "Configure CPU Graph"
 msgstr "Konfiguracja"
 
-#: ../panel-plugin/cpu.c:314
-#: ../panel-plugin/cpugraph.desktop.in.in.h:1
+#: ../panel-plugin/cpu.c:314 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "Statystyki Procesora"
 
@@ -114,4 +112,3 @@ msgstr "Zaawansowane"
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Graficzna reprezentacja obciążenia procesora"
-
