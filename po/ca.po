@@ -1,0 +1,120 @@
+# Catalan translation of xfce4-cpugraph-plugin.
+# Copyright (C) 2006 xfce4-cpugraph-plugin's copyright holder.
+# This file is distributed under the same license as the
+# xfce4-cpugrapg-plugin package.
+# Carles Muñoz Gorriz <carlesmu@internautas.org>, 2006.
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: xfce4-cpugraph-plugin 0.3.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-09-10 21:29+0200\n"
+"PO-Revision-Date: 2006-12-02 11:49+0100\n"
+"Last-Translator: Carles Muñoz Gorriz <carlesmu@internautas.org>\n"
+"Language-Team: Catalan <xfce-i18n@xfce.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../panel-plugin/cpu.c:301
+msgid "Configure CPU Graph"
+msgstr "Configura gràfica de CPU "
+
+#: ../panel-plugin/cpu.c:314 ../panel-plugin/cpugraph.desktop.in.in.h:1
+msgid "CPU Graph"
+msgstr "Gràfica de CPU"
+
+#: ../panel-plugin/cpu.c:332
+msgid "Update Interval: "
+msgstr "Interval d'actualització:"
+
+#: ../panel-plugin/cpu.c:347
+msgid "Fastest (~250ms)"
+msgstr "Molt ràpid (~250ms)"
+
+#: ../panel-plugin/cpu.c:352
+msgid "Fast (~500ms)"
+msgstr "Ràpid (~500ms)"
+
+#: ../panel-plugin/cpu.c:358
+msgid "Normal (~750ms)"
+msgstr "Normal (~750ms)"
+
+#: ../panel-plugin/cpu.c:363
+msgid "Slow (~1s)"
+msgstr "Lent (~1s)"
+
+#: ../panel-plugin/cpu.c:381
+msgid "Width:"
+msgstr "Amplada:"
+
+#: ../panel-plugin/cpu.c:383
+msgid "Height:"
+msgstr "Alçada:"
+
+#: ../panel-plugin/cpu.c:403
+msgid "Show frame"
+msgstr "Mostra el marc"
+
+#: ../panel-plugin/cpu.c:423
+msgid "Color 1:"
+msgstr "Color 1:"
+
+#: ../panel-plugin/cpu.c:449
+msgid "Color 2:"
+msgstr "Color 2:"
+
+#: ../panel-plugin/cpu.c:478
+msgid "Color 3:"
+msgstr "Color 3:"
+
+#: ../panel-plugin/cpu.c:507
+msgid "Background:"
+msgstr "Fons:"
+
+#: ../panel-plugin/cpu.c:533
+msgid "Mode:"
+msgstr "Mode:"
+
+#: ../panel-plugin/cpu.c:546
+msgid "Normal"
+msgstr "Normal"
+
+#: ../panel-plugin/cpu.c:550
+msgid "LED"
+msgstr "LED"
+
+#: ../panel-plugin/cpu.c:554
+msgid "No history"
+msgstr "Sense historial"
+
+#: ../panel-plugin/cpu.c:569
+msgid "Color mode: "
+msgstr "Mode de color"
+
+#: ../panel-plugin/cpu.c:583
+msgid "None"
+msgstr "Cap"
+
+#: ../panel-plugin/cpu.c:588
+msgid "Gradient"
+msgstr "Degradat"
+
+#: ../panel-plugin/cpu.c:593
+msgid "Fire"
+msgstr "Foc"
+
+#: ../panel-plugin/cpu.c:609
+msgid "Apperance"
+msgstr "Aparença"
+
+#: ../panel-plugin/cpu.c:612
+msgid "Advanced"
+msgstr "Avançat"
+
+#: ../panel-plugin/cpugraph.desktop.in.in.h:2
+msgid "Graphical representation of the CPU load"
+msgstr "Representació gràfica de la càrrega de CPU"
