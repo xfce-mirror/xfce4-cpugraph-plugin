@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin 0.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-10 21:29+0200\n"
+"POT-Creation-Date: 2007-01-09 19:40+0100\n"
 "PO-Revision-Date: 2006-04-08 12:19+0900\n"
 "Last-Translator: Piotr Maliński <admin@rk.edu.pl>\n"
 "Language-Team: Polish <translation-team-pl@lists.sourceforge.net>\n"
@@ -102,7 +102,8 @@ msgid "Fire"
 msgstr "Ogień"
 
 #: ../panel-plugin/cpu.c:609
-msgid "Apperance"
+#, fuzzy
+msgid "Appearance"
 msgstr "Wygląd"
 
 #: ../panel-plugin/cpu.c:612

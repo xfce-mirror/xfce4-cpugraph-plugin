@@ -606,7 +606,7 @@ CreateOptions (XfcePanelPlugin *plugin, CPUGraph *base)
     op->m_Notebook = gtk_notebook_new ();
     gtk_container_set_border_width (GTK_CONTAINER (op->m_Notebook), 
                                     BORDER - 2);
-    label = gtk_label_new (_("Apperance"));
+    label = gtk_label_new (_("Appearance"));
     gtk_notebook_append_page (GTK_NOTEBOOK (op->m_Notebook),
                               GTK_WIDGET (vbox2), GTK_WIDGET (label));
     label = gtk_label_new (_("Advanced"));
