@@ -102,7 +102,6 @@ msgid "Fire"
 msgstr "Ogień"
 
 #: ../panel-plugin/cpu.c:609
-#, fuzzy
 msgid "Appearance"
 msgstr "Wygląd"
 
