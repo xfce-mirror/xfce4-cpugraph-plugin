@@ -20,6 +20,10 @@ Color description:
 		 	LED: The color of the inactive leds.
 			No History: The start color of the "graph".
 
+		 cpufreq - Normal: color when CPU frequency is at its
+			minimal value. Intermediate shades are used
+			for intermediate values.
+
 	Color 2: None - Normal: This color isn't used.
 			LED: The color of the active leds.
 			No History: This color isn't used.
@@ -31,6 +35,10 @@ Color description:
 		 Fire - Normal: The end color of the graph.
 		 	LED: The start color of the leds.
 			No History: The end color of the "graph".
+
+		 cpufreq - Normal: color when CPU frequency is at its
+			maximal value. Intermediate shades are used
+			for intermediate values.
 
 	Color 3: None - Normal: This color isn't used.
 			LED: This color isn't used.
@@ -45,7 +53,9 @@ Color description:
 			No History: This color isn't used.
 
 * "Use frame"? If this option is checked it draws a frame around the plugin.
-* The color next to the checkbox is opens a color dialog so you set the frame(s) color.
+* "Non-linear time scale"? When checked, scrolling will work differently.
+  Try and see.
+* The color next to the checkbox opens a color dialog so you set the frame(s) color.
 
 Please report any bugs to <alex.nordfelth@telia.com>
 

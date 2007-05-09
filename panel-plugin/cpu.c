@@ -76,9 +76,10 @@ ReadSettings (XfcePanelPlugin * plugin, CPUGraph * base)
     base->m_BackGround.green = 65535;
     base->m_BackGround.blue = 65535;
 
+    base->m_TimeScale = 0;
     base->m_Frame = 0;
     base->m_ColorMode = 0;
-    base->m_Mode = 1;
+    base->m_Mode = 0;
 
     if ((file = xfce_panel_plugin_lookup_rc_file (plugin)) != NULL)
 
@@ -91,6 +92,10 @@ ReadSettings (XfcePanelPlugin * plugin, CPUGraph * base)
             base->m_UpdateInterval =
                 xfce_rc_read_int_entry (rc, "UpdateInterval",
                                         base->m_UpdateInterval);
+
+            base->m_TimeScale =
+                xfce_rc_read_int_entry (rc, "TimeScale",
+                                        base->m_TimeScale);
 
             base->m_Width =
                 xfce_rc_read_int_entry (rc, "Width", base->m_Width);
@@ -144,7 +149,7 @@ ReadSettings (XfcePanelPlugin * plugin, CPUGraph * base)
     }
     base->m_TimeoutID = g_timeout_add (update, (GtkFunction) UpdateCPU, base);
 
-    gtk_frame_set_shadow_type (GTK_FRAME (base->m_FrameWidget), 
+    gtk_frame_set_shadow_type (GTK_FRAME (base->m_FrameWidget),
             base->m_Frame ? GTK_SHADOW_IN : GTK_SHADOW_NONE);
 }
 
@@ -166,7 +171,7 @@ WriteSettings (XfcePanelPlugin *plugin, CPUGraph *base)
 
     xfce_rc_write_int_entry (rc, "UpdateInterval", base->m_UpdateInterval);
 
-    xfce_rc_write_int_entry (rc, "UpdateInterval", base->m_UpdateInterval);
+    xfce_rc_write_int_entry (rc, "TimeScale", base->m_TimeScale);
 
     xfce_rc_write_int_entry (rc, "Width", base->m_Width);
 
@@ -187,7 +192,7 @@ WriteSettings (XfcePanelPlugin *plugin, CPUGraph *base)
     xfce_rc_write_entry (rc, "Foreground2", value);
 
     g_snprintf (value, 8, "#%02X%02X%02X", base->m_BackGround.red >> 8,
-                                           base->m_BackGround.green >> 8, 
+                                           base->m_BackGround.green >> 8,
                                            base->m_BackGround.blue >> 8);
     xfce_rc_write_entry (rc, "Background", value);
 
@@ -206,16 +211,16 @@ CreateControl (XfcePanelPlugin * plugin)
     CPUGraph *base = g_new0 (CPUGraph, 1);
 
     base->plugin = plugin;
-    
+
     ebox = gtk_event_box_new ();
     gtk_widget_show (ebox);
     gtk_container_add (GTK_CONTAINER (plugin), ebox);
-    
+
     base->m_FrameWidget = frame = gtk_frame_new (NULL);
     gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
     gtk_widget_show (frame);
     gtk_container_add (GTK_CONTAINER (ebox), frame);
-    
+
     base->m_DrawArea = gtk_drawing_area_new ();
     gtk_widget_set_app_paintable (base->m_DrawArea, TRUE);
     gtk_widget_show (base->m_DrawArea);
@@ -246,26 +251,28 @@ UpdateTooltip (CPUGraph * base)
 {
     char tooltip[32];
 
-    sprintf (tooltip, "Usage: %ld%%", base->m_CPUUsage);
-    gtk_tooltips_set_tip (GTK_TOOLTIPS (base->m_Tooltip), 
+    int pos = snprintf (tooltip, 32, "Usage: %d%%", base->m_CPUUsage*100/CPU_SCALE);
+    if( scaling_cur_freq )
+        snprintf (tooltip+pos, 32-pos, " (%d MHz)", scaling_cur_freq/1000);
+    gtk_tooltips_set_tip (GTK_TOOLTIPS (base->m_Tooltip),
                           base->m_FrameWidget->parent, tooltip, NULL);
 }
 
 gboolean
 SetSize (XfcePanelPlugin *plugin, int size, CPUGraph *base)
 {
-    gtk_container_set_border_width (GTK_CONTAINER (base->m_FrameWidget), 
+    gtk_container_set_border_width (GTK_CONTAINER (base->m_FrameWidget),
                                     size > 26 ? 2 : 0);
-    
-    if (xfce_panel_plugin_get_orientation (plugin) == 
+
+    if (xfce_panel_plugin_get_orientation (plugin) ==
             GTK_ORIENTATION_HORIZONTAL)
     {
-        gtk_widget_set_size_request (GTK_WIDGET (plugin), 
+        gtk_widget_set_size_request (GTK_WIDGET (plugin),
                                      base->m_Width, size);
     }
     else
     {
-        gtk_widget_set_size_request (GTK_WIDGET (plugin), 
+        gtk_widget_set_size_request (GTK_WIDGET (plugin),
                                      size, base->m_Width);
     }
 
@@ -278,7 +285,7 @@ UserSetSize (CPUGraph * base)
     SetSize (base->plugin, xfce_panel_plugin_get_size (base->plugin), base);
 }
 
-static void 
+static void
 DialogResponse (GtkWidget *dlg, int response, CPUGraph *base)
 {
     ApplyChanges (base);
@@ -297,31 +304,31 @@ CreateOptions (XfcePanelPlugin *plugin, CPUGraph *base)
     SOptions *op = &base->m_Options;
 
     xfce_panel_plugin_block_menu (plugin);
-    
-    dlg = gtk_dialog_new_with_buttons (_("Configure CPU Graph"), 
+
+    dlg = gtk_dialog_new_with_buttons (_("Configure CPU Graph"),
                 GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (plugin))),
                 GTK_DIALOG_DESTROY_WITH_PARENT |
                 GTK_DIALOG_NO_SEPARATOR,
                 GTK_STOCK_CLOSE, GTK_RESPONSE_OK,
                 NULL);
-    
+
     base->m_OptionsDialog = dlg;
 
     g_signal_connect (dlg, "response", G_CALLBACK (DialogResponse), base);
 
     gtk_container_set_border_width (GTK_CONTAINER (dlg), 2);
- 
+
     header = xfce_create_header (NULL, _("CPU Graph"));
     gtk_widget_set_size_request (GTK_BIN (header)->child, -1, 32);
     gtk_container_set_border_width (GTK_CONTAINER (header), BORDER - 2);
     gtk_widget_show (header);
     gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), header,
                         FALSE, TRUE, 0);
-    
+
     vbox = GTK_BOX (gtk_vbox_new(FALSE, BORDER));
     gtk_container_set_border_width (GTK_CONTAINER (vbox), BORDER );
     gtk_widget_show(GTK_WIDGET (vbox));
-    
+
     sg = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
     /* Update Interval */
@@ -370,13 +377,14 @@ CreateOptions (XfcePanelPlugin *plugin, CPUGraph *base)
 
     g_signal_connect (op->m_UpdateOption, "changed",
                       G_CALLBACK (UpdateChange), base);
+
     /* Width */
 
     hbox = GTK_BOX (gtk_hbox_new (FALSE, BORDER));
     gtk_widget_show (GTK_WIDGET (hbox));
     gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (hbox), FALSE, FALSE, 0);
 
-    if (xfce_panel_plugin_get_orientation (plugin) == 
+    if (xfce_panel_plugin_get_orientation (plugin) ==
             GTK_ORIENTATION_HORIZONTAL)
         label = gtk_label_new (_("Width:"));
     else
@@ -394,6 +402,21 @@ CreateOptions (XfcePanelPlugin *plugin, CPUGraph *base)
                         FALSE, 0);
     g_signal_connect (op->m_Width, "value-changed", G_CALLBACK (SpinChange),
                       &base->m_Width);
+
+    /* TimeScale */
+    hbox = GTK_BOX (gtk_hbox_new (FALSE, BORDER));
+    gtk_widget_show (GTK_WIDGET (hbox));
+    gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (hbox), FALSE, FALSE, 0);
+
+    op->m_TimeScale = gtk_check_button_new_with_mnemonic (_("Non-linear time-scale"));
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (op->m_TimeScale),
+                                  base->m_TimeScale);
+    gtk_widget_show (op->m_TimeScale);
+    gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (op->m_TimeScale), FALSE,
+                        FALSE, 0);
+    g_signal_connect (op->m_TimeScale, "toggled", G_CALLBACK (TimeScaleChange),
+                      base);
+    gtk_size_group_add_widget (sg, op->m_TimeScale);
 
     /* Frame */
     hbox = GTK_BOX (gtk_hbox_new (FALSE, BORDER));
@@ -595,6 +618,11 @@ CreateOptions (XfcePanelPlugin *plugin, CPUGraph *base)
     gtk_menu_shell_append (GTK_MENU_SHELL (op->m_ModeMenu),
                            op->m_ModeMenuItem);
 
+    op->m_ModeMenuItem = gtk_menu_item_new_with_label ("cpufreq");
+    gtk_widget_show (op->m_ModeMenuItem);
+    gtk_menu_shell_append (GTK_MENU_SHELL (op->m_ModeMenu),
+                            op->m_ModeMenuItem);
+
     gtk_option_menu_set_history (GTK_OPTION_MENU (op->m_ModeOption),
                                  base->m_ColorMode);
 
@@ -604,7 +632,7 @@ CreateOptions (XfcePanelPlugin *plugin, CPUGraph *base)
     gtk_widget_show_all (GTK_WIDGET (hbox));
 
     op->m_Notebook = gtk_notebook_new ();
-    gtk_container_set_border_width (GTK_CONTAINER (op->m_Notebook), 
+    gtk_container_set_border_width (GTK_CONTAINER (op->m_Notebook),
                                     BORDER - 2);
     label = gtk_label_new (_("Appearance"));
     gtk_notebook_append_page (GTK_NOTEBOOK (op->m_Notebook),
@@ -614,7 +642,7 @@ CreateOptions (XfcePanelPlugin *plugin, CPUGraph *base)
                               GTK_WIDGET (vbox), GTK_WIDGET (label));
     gtk_widget_show (op->m_Notebook);
 
-    gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox), 
+    gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dlg)->vbox),
                         GTK_WIDGET (op->m_Notebook), TRUE, TRUE, 0);
 
     gtk_widget_show (dlg);
@@ -625,9 +653,30 @@ UpdateCPU (CPUGraph * base)
 {
     base->m_CPUUsage = GetCPUUsage (&base->m_OldUsage, &base->m_OldTotal);
 
-    memmove (base->m_History + 1, base->m_History,
-             (base->m_Values - 1) * sizeof (int));
+    if(base->m_TimeScale)
+    {
+        int i = base->m_Values - 1;
+        int j = i + base->m_Values;
+        while(i > 0)
+        {
+            int a, b;
+
+            a = base->m_History[i], b = base->m_History[i-1];
+            if( a < b ) a++;
+            int factor = (i*2);
+            base->m_History[i--] = ( a*(factor-1) + b )/factor;
+
+            a = base->m_History[j], b = base->m_History[j-1];
+            if( a < b ) a++;
+            base->m_History[j--] = ( a*(factor-1) + b )/factor;
+        }
+    } else {
+        memmove (base->m_History + 1
+                , base->m_History
+                , (base->m_Values*2-1)*sizeof(int));
+    }
     base->m_History[0] = base->m_CPUUsage;
+    base->m_History[base->m_Values] = scaling_cur_freq;
 
     /* Tooltip */
     UpdateTooltip (base);
@@ -641,79 +690,94 @@ UpdateCPU (CPUGraph * base)
 void
 DrawGraph (CPUGraph * base)
 {
-    GdkGC *fg1, *fg2, *bg;
     GtkWidget *da = base->m_DrawArea;
     int w, h;
-    float step;
 
     w = da->allocation.width;
     h = da->allocation.height;
 
-    fg1 = gdk_gc_new (da->window);
-    gdk_gc_set_rgb_fg_color (fg1, &base->m_ForeGround1);
-
-    fg2 = gdk_gc_new (da->window);
-    gdk_gc_set_rgb_fg_color (fg2, &base->m_ForeGround2);
-
-    bg = gdk_gc_new (da->window);
+    /* Dynamically allocated everytime just in case depth changes */
+    GdkGC *fg1 = gdk_gc_new (da->window);
+    GdkGC *fg2 = gdk_gc_new (da->window);
+    GdkGC *bg = gdk_gc_new (da->window);
     gdk_gc_set_rgb_fg_color (bg, &base->m_BackGround);
 
     gdk_draw_rectangle (da->window, bg, TRUE, 0, 0, w, h);
 
-    step =  h / 100.0;
-
     if (base->m_Mode == 0)
     {
         int x, y;
-        GdkGC *gc;
 
-        if (base->m_ColorMode > 0)
-            gc = gdk_gc_new (da->window);
-        
         for (x = w; x >= 0; x--)
         {
-            float usage = base->m_History[w - x] * step;
-            int tmp = 0;
-            int length = usage;
+            long usage = h * base->m_History[w - x] / CPU_SCALE;
 
-            for (y = h; y >= h - usage; y--)
+            if(usage == 0) continue;
+
+            if (base->m_ColorMode == 0)
             {
-                if (base->m_ColorMode > 0)
+                gdk_gc_set_rgb_fg_color (fg1, &base->m_ForeGround1);
+
+                if(base->m_Frame)
+                    gdk_draw_line (da->window, fg1, x+1, h+1-usage, x+1, h);
+                else
+                    gdk_draw_line (da->window, fg1, x, h-usage, x, h-1);
+            }
+            else if (base->m_ColorMode == 3) /* cpu freq. based */
+            {
+                GdkColor color;
+                double t = (double) (base->m_History[base->m_Values+ w - x] - scaling_min_freq)
+                            / (scaling_max_freq - scaling_min_freq);
+
+                color.red = _lerp (t, base->m_ForeGround1.red,
+                           base->m_ForeGround2.red);
+                color.green = _lerp (t, base->m_ForeGround1.green,
+                           base->m_ForeGround2.green);
+                color.blue = _lerp (t, base->m_ForeGround1.blue,
+                           base->m_ForeGround2.blue);
+                gdk_gc_set_rgb_fg_color (fg1, &color);
+
+                if(base->m_Frame)
+                    gdk_draw_line (da->window, fg1
+                        , x+1, h+1-usage, x+1, h);
+                 else
+                    gdk_draw_line (da->window, fg1
+                        , x, h-usage, x, h-1);
+            }
+            else /* 1 or 2 */
+            {
+                int tmp = 0;
+                int length = h - (h - usage);
+                for (y = h; y >= h - usage; y--, tmp++)
                 {
-                    GdkColor color;
-                    double t =
-                        (base->m_ColorMode == 1) ? (tmp / (double) (h)) : 
-                            (tmp / (double) (length));
-                    color.red =
-                        _lerp (t, base->m_ForeGround1.red,
-                               base->m_ForeGround2.red);
-                    color.green =
-                        _lerp (t, base->m_ForeGround1.green,
-                               base->m_ForeGround2.green);
-                    color.blue =
-                        _lerp (t, base->m_ForeGround1.blue,
-                               base->m_ForeGround2.blue);
-                    gdk_gc_set_rgb_fg_color (gc, &color);
-                    tmp++;
+                    if (base->m_ColorMode > 0)
+                    {
+                        GdkColor color;
+                        double t =
+                            (base->m_ColorMode == 1) ? (tmp / (double) (h)) :
+                                (tmp / (double) (length));
+                        color.red =
+                            _lerp (t, base->m_ForeGround1.red,
+                                   base->m_ForeGround2.red);
+                        color.green =
+                            _lerp (t, base->m_ForeGround1.green,
+                                   base->m_ForeGround2.green);
+                        color.blue =
+                            _lerp (t, base->m_ForeGround1.blue,
+                                   base->m_ForeGround2.blue);
+                            gdk_gc_set_rgb_fg_color (fg1, &color);
+                    }
+                    gdk_draw_point (da->window, fg1, x, y);
                 }
-                gdk_draw_point (da->window,
-                                (base->m_ColorMode > 0) ? gc : fg1,
-                                x, y);
             }
         }
-        if (base->m_ColorMode > 0)
-            g_object_unref (gc);
     }
     else if (base->m_Mode == 1)
     {
-        GdkGC *gc;
         int nrx = (w + 1) / 3.0;
         int nry = (h + 1) / 2.0;
-        float tstep = nry / 100.0;
+        float tstep = nry / CPU_SCALE;
         int x, y;
-
-        if (base->m_ColorMode > 0)
-            gc = gdk_gc_new (da->window);
 
         for (x = nrx ; x >= 0; x--)
         {
@@ -721,6 +785,7 @@ DrawGraph (CPUGraph * base)
             int tmp = 0;
             int length = usage;
 
+            gdk_gc_set_rgb_fg_color (fg2, &base->m_ForeGround2);
             for (y = nry; y >= 0; y--)
             {
                 GdkGC *draw = fg2;
@@ -729,8 +794,8 @@ DrawGraph (CPUGraph * base)
                 {
                     GdkColor color;
                     double t =
-                        (base->m_ColorMode == 1) ? 
-                            (tmp / (double) (nry)) : 
+                        (base->m_ColorMode == 1) ?
+                            (tmp / (double) (nry)) :
                                 (tmp / (double) (length));
                     color.red =
                         _lerp (t, base->m_ForeGround2.red,
@@ -741,30 +806,23 @@ DrawGraph (CPUGraph * base)
                     color.blue =
                         _lerp (t, base->m_ForeGround2.blue,
                                base->m_ForeGround3.blue);
-                    gdk_gc_set_rgb_fg_color (gc, &color);
+                    gdk_gc_set_rgb_fg_color (fg1, &color);
                     tmp++;
-                    draw = gc;
+                    draw = fg1;
                 }
 
                 gdk_draw_rectangle (da->window,
-                                    ((nry - usage) > y) ? fg1 : draw,
+                                    draw,
                                     TRUE, x * 3, y * 2, 2, 1);
             }
         }
-
-        if (base->m_ColorMode > 0)
-            g_object_unref (gc);
     }
     else if (base->m_Mode == 2)
     {
-        GdkGC *gc;
         int y;
-        float usage = base->m_History[0] * step;
+        long usage = h * base->m_History[0] / CPU_SCALE;
         int tmp = 0;
         int length = usage;
-
-        if (base->m_ColorMode > 0)
-            gc = gdk_gc_new (da->window);
 
         for (y = h; y >= h - usage; y--)
         {
@@ -772,7 +830,7 @@ DrawGraph (CPUGraph * base)
             {
                 GdkColor color;
                 double t =
-                    (base->m_ColorMode == 1) ? (tmp / (double) (h)) : 
+                    (base->m_ColorMode == 1) ? (tmp / (double) (h)) :
                         (tmp / (double) (length));
                 color.red =
                     _lerp (t, base->m_ForeGround1.red,
@@ -783,24 +841,21 @@ DrawGraph (CPUGraph * base)
                 color.blue =
                     _lerp (t, base->m_ForeGround1.blue,
                            base->m_ForeGround2.blue);
-                gdk_gc_set_rgb_fg_color (gc, &color);
+                gdk_gc_set_rgb_fg_color (fg2, &color);
                 tmp++;
             }
             gdk_draw_line (da->window,
-                           (base->m_ColorMode > 0) ? gc : fg1, 
+                           (base->m_ColorMode > 0) ? fg2 : fg1,
                            0, y, w, y);
         }
-
-        if (base->m_ColorMode > 0)
-            g_object_unref (gc);
     }
     else if (base->m_Mode == 4)
     {
         gdk_draw_rectangle (da->window,
                             fg1,
                             TRUE,
-                            0, (h - (int) (base->m_History[0] * step)),
-                            w, (int) (base->m_History[0] * step));
+                            0, (h - (base->m_History[0]*h/CPU_SCALE)),
+                            w, (base->m_History[0]*h/CPU_SCALE));
     }
 
     g_object_unref (fg2);
@@ -959,10 +1014,16 @@ SetHistorySize (CPUGraph * base, int size)
 {
     int i;
     base->m_History =
-        (long *) realloc (base->m_History, size * sizeof (long));
+        (long *) realloc (base->m_History, 2 * size * sizeof (long));
+
+    base->m_OldUsage = base->m_OldTotal = 0;
+    int usage = GetCPUUsage (&base->m_OldUsage, &base->m_OldTotal);
 
     for (i = size - 1; i >= base->m_Values; i--)
-        base->m_History[i] = 0;
+    {
+        base->m_History[i] = usage;
+        base->m_History[i+size] = scaling_cur_freq;
+    }
     base->m_Values = size;
 
 }
@@ -1013,8 +1074,14 @@ FrameChange (GtkToggleButton * button, CPUGraph * base)
 {
     base->m_Frame = gtk_toggle_button_get_active (button);
 
-    gtk_frame_set_shadow_type (GTK_FRAME (base->m_FrameWidget), 
+    gtk_frame_set_shadow_type (GTK_FRAME (base->m_FrameWidget),
             base->m_Frame ? GTK_SHADOW_IN : GTK_SHADOW_NONE);
+}
+
+void
+TimeScaleChange (GtkToggleButton * button, CPUGraph * base)
+{
+    base->m_TimeScale = gtk_toggle_button_get_active (button);
 }
 
 void
@@ -1052,5 +1119,13 @@ ColorModeChange (GtkOptionMenu * om, CPUGraph * base)
             gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3),
                                       FALSE);
     }
+	else if (base->m_ColorMode == 3)
+	{
+		gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG2), TRUE);
+	        if (base->m_Mode == 1)
+        	        gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), TRUE);
+	        else
+        	        gtk_widget_set_sensitive (GTK_WIDGET (base->m_Options.m_FG3), FALSE);
+}
 }
 

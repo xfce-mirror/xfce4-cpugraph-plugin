@@ -4,32 +4,75 @@
 
 #include "os.h"
 
+int scaling_cur_freq=0;
+int scaling_min_freq=-1;
+int scaling_max_freq=0;
+
 #if defined (__linux__)
-long GetCPUUsage (int *oldusage, int *oldtotal)
+long GetCPUUsage(int *cpu_busy_prev, int *cpu_total_prev)
 {
-	long cpu, nice, system, idle, used, total;
+	long busy, nice, system, idle, total;
+    long iowait=0, irq=0, softirq=0; /* New in Linux 2.6 */
 	long usage;
-	FILE *fp;
-	fp = fopen ("/proc/stat", "r");
-	if (!fp)
+
+	static FILE *sfp = NULL;
+    if(!sfp) {
+        if( !(sfp = fopen("/proc/stat", "r")))
 	{
 		printf ("Could'nt read from /proc/stat");
 		return -1;
 	}
+    }
 
-	fscanf (fp, "%*s %ld %ld %ld %ld", &cpu, &nice, &system, &idle);
-	fclose (fp);
+	if( 7 > fscanf(sfp, "%*s %ld %ld %ld %ld %ld %ld %ld",
+                    &busy, &nice, &system, &idle, &iowait, &irq, &softirq))
+        iowait = irq = softirq = 0;
+    rewind(sfp);
+    fflush(sfp);
 
-	used = cpu+nice+system;
-	total = used+idle;
+	busy += nice+system+irq+softirq;
+	total = busy+idle+iowait;
 
-	if (total - (long)*oldtotal != 0)
-		usage = (100*(double)(used-(long)*oldusage))/(double)(total - (long)*oldtotal);
+	if( total > *cpu_total_prev )
+		usage = CPU_SCALE * (busy - *cpu_busy_prev) / (total - *cpu_total_prev);
 	else
 		usage = 0;
 
-	*oldusage = (int)used;
-	*oldtotal = (int)total;
+	*cpu_busy_prev = busy;
+	*cpu_total_prev = total;
+
+    if( -1 != scaling_max_freq)
+    {
+        FILE *fp;
+        if( scaling_max_freq )
+        {
+            fp = fopen("/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq", "r");
+            if( NULL != fp )
+            {
+                fscanf(fp, "%d", &scaling_cur_freq);
+                fclose(fp);
+            }
+        } else {
+            scaling_max_freq = -1;
+            fp = fopen("/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq", "r");
+            if( NULL != fp )
+            {
+                if (1 == fscanf(fp, "%d", &scaling_min_freq) )
+                {
+                    fclose(fp);
+                    fp = fopen("/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq", "r");
+                    if( NULL != fp)
+                    {
+                        fscanf(fp, "%d", &scaling_max_freq);
+                        if( scaling_max_freq < 1 ) scaling_max_freq = -1;
+                        fclose(fp);
+                    }
+                } else {
+                    fclose(fp);
+                }
+            }
+        }
+    }
 
 	return usage;
 }
@@ -58,7 +101,7 @@ long GetCPUUsage (int *oldusage, int *oldtotal)
 	used = user+nice+sys;
 	total = used+bsdidle;
 	if ((total - (long)*oldtotal) != 0)
-		usage = (100 * (double)(used - (long)*oldusage))/(double)(total - (long)*oldtotal);
+		usage = (CPU_SCALE.0 * (used - (long)*oldusage))/(total - (long)*oldtotal);
 	else
 		usage = 0;
 
@@ -92,7 +135,7 @@ long GetCPUUsage (int *oldusage, int *oldtotal)
 	total = used+bsdidle;
 
 	if (total - (long)*oldtotal != 0)
-		usage = (100 * (double)(used - (long)*oldusage))/(double)(total - (long)*oldtotal);
+		usage = (CPU_SCALE * (double)(used - (long)*oldusage))/(double)(total - (long)*oldtotal);
 	else
 		usage = 0;
 	
@@ -125,7 +168,7 @@ long GetCPUUsage (int *oldusage, int *oldtotal)
         total = used+bsdidle;
 
         if (total - (long)*oldtotal != 0)
-		usage = (100 * (double)(used - (long)*oldusage))/(double)(total - (long)*oldtotal);
+		usage = (CPU_SCALE * (double)(used - (long)*oldusage))/(double)(total - (long)*oldtotal);
 	else
                 usage = 0;
         *oldusage = (int)used;

@@ -34,6 +34,10 @@
 #include <nlist.h>
 #endif
 
+#define CPU_SCALE 100000
 long GetCPUUsage (int *oldusage, int *oldtotal);
+extern int scaling_cur_freq;
+extern int scaling_max_freq;
+extern int scaling_min_freq;
 
 #endif

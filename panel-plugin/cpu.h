@@ -30,11 +30,12 @@ typedef struct
 	GtkWidget *m_UpdateOption;
 	GtkWidget *m_UpdateMenu;
 	GtkWidget *m_UpdateMenuItem;
-	
+
 	GtkWidget *m_Width;
 	GtkWidget *m_Height;
 	GtkWidget *m_GraphFrame;
-	
+	GtkWidget *m_TimeScale;
+
 	GtkWidget *m_FG1;
 	GtkWidget *m_FG2;
 	GtkWidget *m_FG3;
@@ -45,7 +46,7 @@ typedef struct
 	GtkWidget *m_ColorDA3;
 	GtkWidget *m_ColorDA4;
 	GtkWidget *m_ColorDA5;
-	
+
 	GtkWidget *m_FrameApperance;
 	GtkWidget *m_FrameColor;
 	GtkWidget *m_FrameMode;
@@ -53,7 +54,7 @@ typedef struct
 	GtkWidget *m_ModeOption;
 	GtkWidget *m_ModeMenu;
 	GtkWidget *m_ModeMenuItem;
-	
+
 	GtkWidget *m_OptionMenu;
 	GtkWidget *m_Menu;
 	GtkWidget *m_MenuItem;
@@ -67,20 +68,21 @@ typedef struct
 	GtkWidget *m_DrawArea;
 	GtkWidget *m_OptionsDialog;
 	SOptions m_Options;
-   
+
    	int m_UpdateInterval; // Number of ms between updates.
+	int m_TimeScale; // Wether to use non-linear time scale.
    	int m_Width; // The width of the plugin.
    	int m_Mode; // Eventual mode of the plugin.
 	int m_ColorMode;
 	int m_Frame;
-   
+
    	GdkColor m_ForeGround1; // Inactive color.
    	GdkColor m_ForeGround2; // Active color.
 	GdkColor m_ForeGround3;
    	GdkColor m_BackGround; // Background color.
-	
+
 	GtkTooltips *m_Tooltip; // Eventual tooltip.
-	
+
 	guint m_TimeoutID; // Timeout ID for the tooltip;
 	long m_CPUUsage;
 	long *m_History;
@@ -106,7 +108,7 @@ void CreateOptions (XfcePanelPlugin *plugin, CPUGraph *base);
 void SetOrientation (XfcePanelPlugin *plugin, GtkOrientation orientation, CPUGraph *base);
 void SetHistorySize (CPUGraph *base, int size);
 void SetRealGeometry (CPUGraph *base);
-	
+
 
 void ChangeColor1 (GtkButton *button, CPUGraph *base);
 void ChangeColor2 (GtkButton *button, CPUGraph *base);
@@ -119,6 +121,7 @@ void UpdateChange (GtkOptionMenu *om, CPUGraph *base);
 void ModeChange (GtkOptionMenu *om, CPUGraph *base);
 void ApplyChanges (CPUGraph *base);
 void FrameChange (GtkToggleButton *button, CPUGraph *base);
+void TimeScaleChange (GtkToggleButton *button, CPUGraph *base);
 void ColorModeChange (GtkOptionMenu *om, CPUGraph *base);
 
 #endif
