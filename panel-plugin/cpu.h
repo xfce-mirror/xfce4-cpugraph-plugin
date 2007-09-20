@@ -35,6 +35,7 @@ typedef struct
 	GtkWidget *m_Height;
 	GtkWidget *m_GraphFrame;
 	GtkWidget *m_TimeScale;
+	GtkWidget *m_AssociateCommand;
 
 	GtkWidget *m_FG1;
 	GtkWidget *m_FG2;
@@ -75,6 +76,7 @@ typedef struct
    	int m_Mode; // Eventual mode of the plugin.
 	int m_ColorMode;
 	int m_Frame;
+	gchar  * m_AssociateCommand;
 
    	GdkColor m_ForeGround1; // Inactive color.
    	GdkColor m_ForeGround2; // Active color.
@@ -122,6 +124,8 @@ void ModeChange (GtkOptionMenu *om, CPUGraph *base);
 void ApplyChanges (CPUGraph *base);
 void FrameChange (GtkToggleButton *button, CPUGraph *base);
 void TimeScaleChange (GtkToggleButton *button, CPUGraph *base);
+void AssociateCommandChange(GtkEntry *entry, CPUGraph *base);
 void ColorModeChange (GtkOptionMenu *om, CPUGraph *base);
+gboolean LaunchCommand (GtkWidget *w, GdkEventButton *event, CPUGraph *base);
 
 #endif

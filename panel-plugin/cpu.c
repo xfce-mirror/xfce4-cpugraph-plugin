@@ -78,6 +78,7 @@ ReadSettings (XfcePanelPlugin * plugin, CPUGraph * base)
 
     base->m_TimeScale = 0;
     base->m_Frame = 0;
+    base->m_AssociateCommand = "xterm top";
     base->m_ColorMode = 0;
     base->m_Mode = 0;
 
@@ -104,6 +105,10 @@ ReadSettings (XfcePanelPlugin * plugin, CPUGraph * base)
 
             base->m_Frame =
                 xfce_rc_read_int_entry (rc, "Frame", base->m_Frame);
+
+            if (value = xfce_rc_read_entry (rc, "AssociateCommand", base->m_AssociateCommand)) {
+              base->m_AssociateCommand = g_strdup(value);
+            }
 
             base->m_ColorMode =
                 xfce_rc_read_int_entry (rc, "ColorMode", base->m_ColorMode);
@@ -179,6 +184,8 @@ WriteSettings (XfcePanelPlugin *plugin, CPUGraph *base)
 
     xfce_rc_write_int_entry (rc, "Frame", base->m_Frame);
 
+    xfce_rc_write_entry (rc, "AssociateCommand", base->m_AssociateCommand ? base->m_AssociateCommand : "");
+
     xfce_rc_write_int_entry (rc, "ColorMode", base->m_ColorMode);
 
     g_snprintf (value, 8, "#%02X%02X%02X", base->m_ForeGround1.red >> 8,
@@ -221,9 +228,13 @@ CreateControl (XfcePanelPlugin * plugin)
     gtk_widget_show (frame);
     gtk_container_add (GTK_CONTAINER (ebox), frame);
 
+    xfce_panel_plugin_add_action_widget (plugin, ebox);
+    g_signal_connect (ebox, "button-press-event", G_CALLBACK (LaunchCommand), base);
+    
     base->m_DrawArea = gtk_drawing_area_new ();
     gtk_widget_set_app_paintable (base->m_DrawArea, TRUE);
     gtk_widget_show (base->m_DrawArea);
+        
     gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (base->m_DrawArea));
 
     xfce_panel_plugin_add_action_widget (plugin, base->m_DrawArea);
@@ -419,6 +430,7 @@ CreateOptions (XfcePanelPlugin *plugin, CPUGraph *base)
     gtk_size_group_add_widget (sg, op->m_TimeScale);
 
     /* Frame */
+
     hbox = GTK_BOX (gtk_hbox_new (FALSE, BORDER));
     gtk_widget_show (GTK_WIDGET (hbox));
     gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (hbox), FALSE, FALSE, 0);
@@ -436,6 +448,23 @@ CreateOptions (XfcePanelPlugin *plugin, CPUGraph *base)
     vbox2 = GTK_BOX (gtk_vbox_new (FALSE, BORDER));
     gtk_widget_show (GTK_WIDGET (vbox2));
     gtk_container_set_border_width (GTK_CONTAINER (vbox2), 8);
+
+    /* Associate Command */
+
+    hbox = GTK_BOX (gtk_hbox_new (FALSE, BORDER));
+    gtk_widget_show (GTK_WIDGET (hbox));
+   	gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (hbox), FALSE, FALSE, 0);
+    label = gtk_label_new (_("Associated command :"));
+    gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+    gtk_size_group_add_widget (sg, label);
+    gtk_widget_show (label);
+    gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (label), FALSE, FALSE, 0);
+    op->m_AssociateCommand = gtk_entry_new ();
+    gtk_entry_set_max_length (GTK_ENTRY(op->m_AssociateCommand), 32);
+    gtk_entry_set_text (GTK_ENTRY(op->m_AssociateCommand), base->m_AssociateCommand);
+    gtk_widget_show (op->m_AssociateCommand);
+    gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (op->m_AssociateCommand), FALSE, FALSE, 0);
+    g_signal_connect (op->m_AssociateCommand, "changed", G_CALLBACK (AssociateCommandChange), base);
 
     /* Foreground 1 */
 
@@ -1076,6 +1105,27 @@ FrameChange (GtkToggleButton * button, CPUGraph * base)
 
     gtk_frame_set_shadow_type (GTK_FRAME (base->m_FrameWidget),
             base->m_Frame ? GTK_SHADOW_IN : GTK_SHADOW_NONE);
+}
+
+void
+AssociateCommandChange (GtkEntry *entry, CPUGraph * base)
+{
+    base->m_AssociateCommand = g_strdup (gtk_entry_get_text (entry));
+}
+
+gboolean
+LaunchCommand(GtkWidget *w,GdkEventButton *event, CPUGraph *base)
+{
+    if(event->button == 1){
+        GString *cmd;
+        if (strlen(base->m_AssociateCommand) == 0) {
+            return;
+        }
+        cmd = g_string_new (base->m_AssociateCommand);
+        xfce_exec (cmd->str, FALSE, FALSE, NULL);
+        g_string_free (cmd, TRUE);
+    }
+    return FALSE;
 }
 
 void
