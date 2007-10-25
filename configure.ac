@@ -7,7 +7,7 @@ dnl
 
 m4_define([cpugraph_version],[0.3.0])
 
-AC_INIT([xfce4-cpugraph-plugin], [cpugraph_version()],
+AC_INIT([xfce4-cpugraph-plugin], [cpugraph_version],
 	[xfce-goodies-dev@lists.berlios.de])
 
 CPUGRAPH_VERSION=cpugraph_version()
