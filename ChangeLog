@@ -1,12 +1,20 @@
+2007-11-22  ludovic mercier  <lidiriel@coriolys.org>
+
+	* panel-plugin: Split code in several files, cleanup and 
+	refactoring code. Remove timescaling, remove *BSD code, remove 
+	fire color and frequency modes.
+	Add bar graph for each cpu core.
+	Add grid view mode
+	Add associate command (default is xterm top)
+
 2007-05-07 22:30 phase
 
-	* panel-plugin/cpu.c, cpu.h, os.c, os.h:
-	Added 'cpufreq' color mode, which ranges from color #1 to
-	color #2 proportionally to CPU scaling frequency.
-	Added 'Non-linear time scale." as an on/off option.
-	Added scaling detection so new color mode can work, and
-	tweaked Linux CPU usage code a little bit to account for new
-	stats in kernel v2.6, also optimize resources.
+	* panel-plugin/cpu.c, cpu.h, os.c, os.h: Added 'cpufreq' color
+	mode, which ranges from color #1 to color #2 proportionally to CPU
+	scaling frequency.  Added 'Non-linear time scale." as an on/off
+	option.  Added scaling detection so new color mode can work, and
+	tweaked Linux CPU usage code a little bit to account for new stats
+	in kernel v2.6, also optimize resources.
 
 2004-06-12 03:00 phase
 

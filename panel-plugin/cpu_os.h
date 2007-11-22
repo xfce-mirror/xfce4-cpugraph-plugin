@@ -1,4 +1,4 @@
-/*  mode.h
+/*  cpu_os.h
  *  Part of xfce4-cpugraph-plugin
  *
  *  Copyright (c) Alexander Nordfelth <alex.nordfelth@telia.com>
@@ -21,20 +21,26 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __XFCE_MODE_H__
-#define __XFCE_MODE_H__
+#ifndef _CPU_OS_H
+#define _CPU_OS_H
 
-#include "cpu.h"
+#define CPU_SCALE 1;/*00000*/
 
-typedef struct {
-  long x;
-  long y;
-} point;
+extern int scaling_cur_freq;
+extern int scaling_max_freq;
+extern int scaling_min_freq;
 
+typedef struct s_cpuLoadData
+{
+	float         value;  /* cpu utilization % */
+	unsigned long pUsed;  /* Previous value of used cpu time */
+	unsigned long pTotal; /* Previous value of total cpu time */
+} cpuLoadData;
 
-void drawGraphNormal(CPUGraph *base, GdkGC *fg1, GtkWidget *da, int w, int h);
-void drawGraphLED(CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w, int h);
-void drawGraphNoHistory(CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w, int h);
-void drawGraphGrid(CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w, int h);
+int cpuLoadMon_init();
 
-#endif
+void cpuLoadMon_free();
+
+cpuLoadData *cpuLoadMon_read();
+
+#endif /* _CPU_OS_H */

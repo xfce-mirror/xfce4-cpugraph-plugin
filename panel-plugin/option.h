@@ -1,4 +1,4 @@
-/*  mode.h
+/*  option.h
  *  Part of xfce4-cpugraph-plugin
  *
  *  Copyright (c) Alexander Nordfelth <alex.nordfelth@telia.com>
@@ -21,20 +21,12 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __XFCE_MODE_H__
-#define __XFCE_MODE_H__
+#ifndef __XFCE_OPTION_H__
+#define __XFCE_OPTION_H__
 
 #include "cpu.h"
 
-typedef struct {
-  long x;
-  long y;
-} point;
-
-
-void drawGraphNormal(CPUGraph *base, GdkGC *fg1, GtkWidget *da, int w, int h);
-void drawGraphLED(CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w, int h);
-void drawGraphNoHistory(CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w, int h);
-void drawGraphGrid(CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w, int h);
+static void DialogResponse (GtkWidget *dlg, int response, CPUGraph *base);
+void CreateOptions (XfcePanelPlugin *plugin, CPUGraph *base);
 
 #endif

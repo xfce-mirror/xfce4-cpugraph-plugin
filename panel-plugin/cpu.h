@@ -1,3 +1,26 @@
+/*  cpu.h
+ *  Part of xfce4-cpugraph-plugin
+ *
+ *  Copyright (c) Alexander Nordfelth <alex.nordfelth@telia.com>
+ *  Copyright (c) gatopeich <gatoguan-os@yahoo.com>
+ *  Copyright (c) 2007-2008 Angelo Arrifano <miknix@gmail.com>
+ *  Copyright (c) 2007-2008 Lidiriel <lidiriel@coriolys.org>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Library General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+ 
 #ifndef __XFCE_CPU_H__
 #define __XFCE_CPU_H__
 
@@ -14,8 +37,9 @@
 #include <libxfce4util/libxfce4util.h>
 #include <libxfcegui4/libxfcegui4.h>
 #include <libxfce4panel/xfce-panel-plugin.h>
+#include <libxfce4panel/xfce-hvbox.h>
 
-#include "os.h"
+#include "cpu_os.h"
 
 
 #define BORDER  8
@@ -68,32 +92,34 @@ typedef struct
 	GtkWidget *m_FrameWidget;
 	GtkWidget *m_DrawArea;
 	GtkWidget *m_OptionsDialog;
+	GtkWidget *m_Box;
+	GtkWidget **m_pBar;
 	SOptions m_Options;
 
-   	int m_UpdateInterval; // Number of ms between updates.
+	int m_UpdateInterval; // Number of ms between updates.
 	int m_TimeScale; // Wether to use non-linear time scale.
-   	int m_Width; // The width of the plugin.
-   	int m_Mode; // Eventual mode of the plugin.
+	int m_Width; // The width of the plugin.
+	int m_Mode; // Eventual mode of the plugin.
 	int m_ColorMode;
 	int m_Frame;
-	gchar  * m_AssociateCommand;
+	gchar * m_AssociateCommand;
+	guint nrCores; // Number of cores (not including total cpu)
 
-   	GdkColor m_ForeGround1; // Inactive color.
-   	GdkColor m_ForeGround2; // Active color.
+	GdkColor m_ForeGround1; // Inactive color.
+	GdkColor m_ForeGround2; // Active color.
 	GdkColor m_ForeGround3;
-   	GdkColor m_BackGround; // Background color.
+	GdkColor m_BackGround; // Background color.
 
 	GtkTooltips *m_Tooltip; // Eventual tooltip.
 
 	guint m_TimeoutID; // Timeout ID for the tooltip;
 	long m_CPUUsage;
-	long *m_History;
+	float *m_History;
 	int m_Values;
 
 	int m_Orientation;
 
-	int m_OldUsage;
-	int m_OldTotal;
+
 }CPUGraph;
 
 CPUGraph *CreateControl (XfcePanelPlugin *plugin);
@@ -119,6 +145,7 @@ void ChangeColor4 (GtkButton *button, CPUGraph *base);
 void ChangeColor5 (GtkButton *button, CPUGraph *base);
 void ChangeColor (int color, CPUGraph *base);
 void SpinChange (GtkSpinButton *sb, int *value);
+void SetSensitive (CPUGraph *base, GtkWidget *fgA, GtkWidget *fgB, gboolean flag1, gboolean flag2);
 void UpdateChange (GtkOptionMenu *om, CPUGraph *base);
 void ModeChange (GtkOptionMenu *om, CPUGraph *base);
 void ApplyChanges (CPUGraph *base);

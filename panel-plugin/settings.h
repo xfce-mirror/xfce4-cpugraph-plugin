@@ -1,4 +1,4 @@
-/*  mode.h
+/*  settings.h
  *  Part of xfce4-cpugraph-plugin
  *
  *  Copyright (c) Alexander Nordfelth <alex.nordfelth@telia.com>
@@ -21,20 +21,11 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef __XFCE_MODE_H__
-#define __XFCE_MODE_H__
+#ifndef __XFCE_SETTINGS_H__
+#define __XFCE_SETTINGS_H__
 
-#include "cpu.h"
+void ReadSettings (XfcePanelPlugin * plugin, CPUGraph * base);
+void WriteSettings (XfcePanelPlugin *plugin, CPUGraph *base);
 
-typedef struct {
-  long x;
-  long y;
-} point;
-
-
-void drawGraphNormal(CPUGraph *base, GdkGC *fg1, GtkWidget *da, int w, int h);
-void drawGraphLED(CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w, int h);
-void drawGraphNoHistory(CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w, int h);
-void drawGraphGrid(CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w, int h);
 
 #endif

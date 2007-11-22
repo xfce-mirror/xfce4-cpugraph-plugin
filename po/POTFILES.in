@@ -1,4 +1,7 @@
 panel-plugin/cpu.c
-panel-plugin/os.c
+panel-plugin/cpu_os.c
+panel-plugin/mode.c
+panel-plugin/option.c
+panel-plugin/settings.c
 panel-plugin/cpugraph.desktop.in.in
 

@@ -3,3 +3,14 @@
 - Ported to Xfce 4.4 panel API
 - Use xfce4-dev-tools
 - Use real frame widget
+
+0.4.0
+=====
+- Cleanup/Refactoring all code
+- Split in several file
+- Add one cpu bar graph activity for each cpu core
+- Remove fire and frequency color mode (go back in futur)
+- Remove time scalling view mode (go back in futur)
+- Remove *BSD code (go back in next released)
+- Add a new view mode : the grid
+- Add an associate customizable command
