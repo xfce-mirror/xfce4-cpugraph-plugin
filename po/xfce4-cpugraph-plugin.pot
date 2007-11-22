@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../panel-plugin/cpu.c:301
+#: ../panel-plugin/option.c:47
 msgid "Configure CPU Graph"
 msgstr ""
 
@@ -24,91 +24,91 @@ msgstr ""
 msgid "CPU Graph"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:332
+#: ../panel-plugin/option.c:78
 msgid "Update Interval: "
 msgstr ""
 
-#: ../panel-plugin/cpu.c:347
+#: ../panel-plugin/option.c:93
 msgid "Fastest (~250ms)"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:352
+#: ../panel-plugin/option.c:98
 msgid "Fast (~500ms)"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:358
+#: ../panel-plugin/option.c:104
 msgid "Normal (~750ms)"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:363
+#: ../panel-plugin/option.c:109
 msgid "Slow (~1s)"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:381
+#: ../panel-plugin/option.c:128
 msgid "Width:"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:383
+#: ../panel-plugin/option.c:130
 msgid "Height:"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:403
+#: ../panel-plugin/option.c:151
 msgid "Show frame"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:423
+#: ../panel-plugin/option.c:188
 msgid "Color 1:"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:449
+#: ../panel-plugin/option.c:214
 msgid "Color 2:"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:478
+#: ../panel-plugin/option.c:243
 msgid "Color 3:"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:507
+#: ../panel-plugin/option.c:272
 msgid "Background:"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:533
+#: ../panel-plugin/option.c:298
 msgid "Mode:"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:546
+#: ../panel-plugin/option.c:311
 msgid "Normal"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:550
+#: ../panel-plugin/option.c:315
 msgid "LED"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:554
+#: ../panel-plugin/option.c:319
 msgid "No history"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:569
+#: ../panel-plugin/option.c:323
+msgid "Grid"
+msgstr ""
+
+#: ../panel-plugin/option.c:339
 msgid "Color mode: "
 msgstr ""
 
-#: ../panel-plugin/cpu.c:583
+#: ../panel-plugin/option.c:353
 msgid "None"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:588
+#: ../panel-plugin/option.c:358
 msgid "Gradient"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:593
-msgid "Fire"
-msgstr ""
-
-#: ../panel-plugin/cpu.c:609
+#: ../panel-plugin/option.c:374
 msgid "Appearance"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:612
+#: ../panel-plugin/option.c:377
 msgid "Advanced"
 msgstr ""
 
