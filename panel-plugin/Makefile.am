@@ -9,16 +9,12 @@ xfce4_cpugraph_plugin_LDADD =					\
 	@LIBXFCE4PANEL_LIBS@
 
 xfce4_cpugraph_plugin_SOURCES =					\
-	mode.c		\
-	mode.h		\
-	option.c \
-	option.h \
-	settings.c \
-	settings.h \
-	cpu.c		\
-	cpu.h		\
-	cpu_os.c	\
-	cpu_os.h
+	mode.c						\
+	mode.h						\
+	cpu.c							\
+	cpu.h							\
+	os.c							\
+	os.h
 
 # .desktop file
 #

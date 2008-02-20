@@ -363,6 +363,7 @@ void
 UpdateTooltip (CPUGraph * base)
 {
     char tooltip[32];
+    fprintf(stderr, "update tooltip\n");
     int pos = snprintf (tooltip, 32, "Usage: %d%%", base->m_CpuData[0].load*100/CPU_SCALE);
     if( base->m_CpuData[0].scalCurFreq )
       snprintf (tooltip+pos, 32-pos, " (%d MHz)", base->m_CpuData[0].scalCurFreq/1000);
@@ -392,10 +393,11 @@ SetSize (XfcePanelPlugin *plugin, int size, CPUGraph *base)
     {
         gtk_widget_set_size_request (GTK_WIDGET (plugin),
                                      size, base->m_Width);
-        gtk_widget_set_size_request(
-                                    GTK_WIDGET(base->m_pBar[i]),
-                                    size,
-                                    BORDER);
+        for(i=0; i<base->nrCores; i++)
+          gtk_widget_set_size_request(
+                                      GTK_WIDGET(base->m_pBar[i]),
+                                      size,
+                                      BORDER);
     }
 
     return TRUE;
@@ -795,7 +797,7 @@ UpdateCPU (CPUGraph * base)
     gint i;
     base->m_CpuData = cpuData_read();
     for(i=0; i<base->nrCores; i++){
-      fprintf(stderr,"bar load = %f\n",(gdouble)base->m_CpuData[i+1].load);
+      //fprintf(stderr,"bar load = %f\n",(gdouble)base->m_CpuData[i+1].load);
       gtk_progress_bar_set_fraction(
                                     GTK_PROGRESS_BAR(base->m_pBar[i]),
                                     (gdouble)base->m_CpuData[i+1].load/CPU_SCALE);
@@ -823,7 +825,8 @@ UpdateCPU (CPUGraph * base)
                 , base->m_History
                 , (base->m_Values*2-1)*sizeof(int));
     }
-    base->m_History[0] = base->m_CpuData[0].load;
+    fprintf(stderr,"cpu data load %f\n",base->m_CpuData[0].load);
+    base->m_History[0] = (long)base->m_CpuData[0].load;
     base->m_History[base->m_Values] = base->m_CpuData[0].scalCurFreq;
 
     /* Tooltip */
@@ -853,19 +856,15 @@ DrawGraph (CPUGraph * base)
 
     if (base->m_Mode == 0)
     {
-      drawGraphMode0(base, fg1, da, w, h);
+      drawGraphModeNormal(base, fg1, da, w, h);
     }
     else if (base->m_Mode == 1)
     {
-      drawGraphMode1(base, fg1, fg2, da, w, h);
+      drawGraphModeLED(base, fg1, fg2, da, w, h);
     }
     else if (base->m_Mode == 2)
     {
-      drawGraphMode2(base, fg1, fg2, da, w, h);
-    }
-    else if (base->m_Mode == 4)
-    {
-      drawGraphMode4(base, fg1, da, w, h);
+      drawGraphModeNoHistory(base, fg1, fg2, da, w, h);
     }
 
     g_object_unref (fg2);
@@ -1029,7 +1028,7 @@ SetHistorySize (CPUGraph * base, int size)
     base->m_CpuData = cpuData_read();
     base->m_CpuData[0].pUsed = 0;
     base->m_CpuData[0].pTotal = 0;
-    int usage = base->m_CpuData[0].load;
+    long usage = base->m_CpuData[0].load;
     for (i = size - 1; i >= base->m_Values; i--)
     {
         base->m_History[i] = usage;

@@ -3,9 +3,8 @@
 
 #include "cpu.h"
 
-void drawGraphMode0(CPUGraph *base, GdkGC *fg1, GtkWidget *da, int w, int h);
-void drawGraphMode1(CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w, int h);
-void drawGraphMode2(CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w, int h);
-void drawGraphMode4(CPUGraph *base, GdkGC *fg1, GtkWidget *da, int w, int h);
+void drawGraphModeNormal(CPUGraph *base, GdkGC *fg1, GtkWidget *da, int w, int h);
+void drawGraphModeLED(CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w, int h);
+void drawGraphModeNoHistory(CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w, int h);
 
 #endif
