@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-01-09 19:40+0100\n"
-"PO-Revision-Date: 2008-01-04 22:01+0100\n"
+"PO-Revision-Date: 2008-06-27 14:59+0100\n"
 "Last-Translator: Nuno Miguel <nunis@netcabo.pt>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 
 #: ../panel-plugin/cpu.c:301
 msgid "Configure CPU Graph"
-msgstr "Configura gráfico de CPU"
+msgstr "Configura o gráfico do CPU"
 
 #: ../panel-plugin/cpu.c:314
 #: ../panel-plugin/cpugraph.desktop.in.in.h:1
@@ -30,7 +30,7 @@ msgstr "Intervalo de actualização:"
 
 #: ../panel-plugin/cpu.c:347
 msgid "Fastest (~250ms)"
-msgstr "Mais rápido (~250ms)"
+msgstr "Muito rápido (~250ms)"
 
 #: ../panel-plugin/cpu.c:352
 msgid "Fast (~500ms)"
@@ -54,7 +54,7 @@ msgstr "Comprimento:"
 
 #: ../panel-plugin/cpu.c:403
 msgid "Show frame"
-msgstr "Mostrar janela"
+msgstr "Mostrar borda"
 
 #: ../panel-plugin/cpu.c:423
 msgid "Color 1:"
