@@ -1,59 +1,56 @@
-# Catalan translation of xfce4-cpugraph-plugin.
-# Copyright (C) 2006 xfce4-cpugraph-plugin's copyright holder.
-# This file is distributed under the same license as the
-# xfce4-cpugrapg-plugin package.
-# Carles Muñoz Gorriz <carlesmu@internautas.org>, 2006.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: xfce4-cpugraph-plugin 0.3.0\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-07-16 13:02+0200\n"
-"PO-Revision-Date: 2006-12-02 11:49+0100\n"
-"Last-Translator: Carles Muñoz Gorriz <carlesmu@internautas.org>\n"
-"Language-Team: Catalan <xfce-i18n@xfce.org>\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Poedit-SourceCharset: utf-8\n"
 
 #: ../panel-plugin/cpu.c:432
 msgid "Configure CPU Graph"
-msgstr "Configura gràfica de CPU "
+msgstr ""
 
 #: ../panel-plugin/cpu.c:445 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
-msgstr "Gràfica de CPU"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:463
 msgid "Update Interval: "
-msgstr "Interval d'actualització:"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:478
 msgid "Fastest (~250ms)"
-msgstr "Molt ràpid (~250ms)"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:483
 msgid "Fast (~500ms)"
-msgstr "Ràpid (~500ms)"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:489
 msgid "Normal (~750ms)"
-msgstr "Normal (~750ms)"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:494
 msgid "Slow (~1s)"
-msgstr "Lent (~1s)"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:513
 msgid "Width:"
-msgstr "Amplada:"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:515
 msgid "Height:"
-msgstr "Alçada:"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:535
 msgid "Non-linear time-scale"
@@ -61,7 +58,7 @@ msgstr ""
 
 #: ../panel-plugin/cpu.c:551
 msgid "Show frame"
-msgstr "Mostra el marc"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:570
 msgid "Associated command :"
@@ -69,61 +66,60 @@ msgstr ""
 
 #: ../panel-plugin/cpu.c:588
 msgid "Color 1:"
-msgstr "Color 1:"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:614
 msgid "Color 2:"
-msgstr "Color 2:"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:643
 msgid "Color 3:"
-msgstr "Color 3:"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:672
 msgid "Background:"
-msgstr "Fons:"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:698
 msgid "Mode:"
-msgstr "Mode:"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:711
 msgid "Normal"
-msgstr "Normal"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:715
 msgid "LED"
-msgstr "LED"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:719
 msgid "No history"
-msgstr "Sense historial"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:734
 msgid "Color mode: "
-msgstr "Mode de color"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:748
 msgid "None"
-msgstr "Cap"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:753
 msgid "Gradient"
-msgstr "Degradat"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:758
 msgid "Fire"
-msgstr "Foc"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:779
-#, fuzzy
 msgid "Appearance"
-msgstr "Aparença"
+msgstr ""
 
 #: ../panel-plugin/cpu.c:782
 msgid "Advanced"
-msgstr "Avançat"
+msgstr ""
 
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
-msgstr "Representació gràfica de la càrrega de CPU"
+msgstr ""

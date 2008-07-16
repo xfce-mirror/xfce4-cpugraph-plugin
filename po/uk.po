@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-13 16:55+0200\n"
+"POT-Creation-Date: 2008-07-16 13:02+0200\n"
 "PO-Revision-Date: 2007-03-08 01:10+0200\n"
 "Last-Translator: Dmitry Nikitin <luckas_fb@mail.ru>\n"
 "Language-Team: Ukrainian <xfce-i18n@xfce.org>\n"
@@ -18,99 +18,107 @@ msgstr ""
 "Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../panel-plugin/cpu.c:301
+#: ../panel-plugin/cpu.c:432
 msgid "Configure CPU Graph"
 msgstr "Налаштувати статистику процесора"
 
-#: ../panel-plugin/cpu.c:314 ../panel-plugin/cpugraph.desktop.in.in.h:1
+#: ../panel-plugin/cpu.c:445 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "Статистика процесора"
 
-#: ../panel-plugin/cpu.c:332
+#: ../panel-plugin/cpu.c:463
 msgid "Update Interval: "
 msgstr "Інтервал поновлення: "
 
-#: ../panel-plugin/cpu.c:347
+#: ../panel-plugin/cpu.c:478
 msgid "Fastest (~250ms)"
 msgstr "Якнайшвидше (~250мс)"
 
-#: ../panel-plugin/cpu.c:352
+#: ../panel-plugin/cpu.c:483
 msgid "Fast (~500ms)"
 msgstr "Швидко (~500мс)"
 
-#: ../panel-plugin/cpu.c:358
+#: ../panel-plugin/cpu.c:489
 msgid "Normal (~750ms)"
 msgstr "Нормально (~750мс)"
 
-#: ../panel-plugin/cpu.c:363
+#: ../panel-plugin/cpu.c:494
 msgid "Slow (~1s)"
 msgstr "Поволі (~1с)"
 
-#: ../panel-plugin/cpu.c:381
+#: ../panel-plugin/cpu.c:513
 msgid "Width:"
 msgstr "Ширина:"
 
-#: ../panel-plugin/cpu.c:383
+#: ../panel-plugin/cpu.c:515
 msgid "Height:"
 msgstr "Висота:"
 
-#: ../panel-plugin/cpu.c:403
+#: ../panel-plugin/cpu.c:535
+msgid "Non-linear time-scale"
+msgstr ""
+
+#: ../panel-plugin/cpu.c:551
 msgid "Show frame"
 msgstr "Показувати рамку"
 
-#: ../panel-plugin/cpu.c:423
+#: ../panel-plugin/cpu.c:570
+msgid "Associated command :"
+msgstr ""
+
+#: ../panel-plugin/cpu.c:588
 msgid "Color 1:"
 msgstr "Колір 1:"
 
-#: ../panel-plugin/cpu.c:449
+#: ../panel-plugin/cpu.c:614
 msgid "Color 2:"
 msgstr "Колір 2:"
 
-#: ../panel-plugin/cpu.c:478
+#: ../panel-plugin/cpu.c:643
 msgid "Color 3:"
 msgstr "Колір 3:"
 
-#: ../panel-plugin/cpu.c:507
+#: ../panel-plugin/cpu.c:672
 msgid "Background:"
 msgstr "Тло:"
 
-#: ../panel-plugin/cpu.c:533
+#: ../panel-plugin/cpu.c:698
 msgid "Mode:"
 msgstr "Тип:"
 
-#: ../panel-plugin/cpu.c:546
+#: ../panel-plugin/cpu.c:711
 msgid "Normal"
 msgstr "Нормально"
 
-#: ../panel-plugin/cpu.c:550
+#: ../panel-plugin/cpu.c:715
 msgid "LED"
 msgstr "Індикатор LED"
 
-#: ../panel-plugin/cpu.c:554
+#: ../panel-plugin/cpu.c:719
 msgid "No history"
 msgstr "Без історії"
 
-#: ../panel-plugin/cpu.c:569
+#: ../panel-plugin/cpu.c:734
 msgid "Color mode: "
 msgstr "Тип кольору: "
 
-#: ../panel-plugin/cpu.c:583
+#: ../panel-plugin/cpu.c:748
 msgid "None"
 msgstr "Нічого"
 
-#: ../panel-plugin/cpu.c:588
+#: ../panel-plugin/cpu.c:753
 msgid "Gradient"
 msgstr "Переливається"
 
-#: ../panel-plugin/cpu.c:593
+#: ../panel-plugin/cpu.c:758
 msgid "Fire"
 msgstr "Вогняний"
 
-#: ../panel-plugin/cpu.c:609
+#: ../panel-plugin/cpu.c:779
 msgid "Appearance"
 msgstr "Вигляд"
 
-#: ../panel-plugin/cpu.c:612
+#: ../panel-plugin/cpu.c:782
 msgid "Advanced"
 msgstr "Додатково"
 

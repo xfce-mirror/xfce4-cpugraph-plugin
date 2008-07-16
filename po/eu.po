@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-09 19:40+0100\n"
+"POT-Creation-Date: 2008-07-16 13:02+0200\n"
 "PO-Revision-Date: 2007-03-13 11:14+0100\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <Librezale@librezale.org>\n"
@@ -15,99 +15,107 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../panel-plugin/cpu.c:301
+#: ../panel-plugin/cpu.c:432
 msgid "Configure CPU Graph"
 msgstr "CPU Grafikoa konfiguratu"
 
-#: ../panel-plugin/cpu.c:314 ../panel-plugin/cpugraph.desktop.in.in.h:1
+#: ../panel-plugin/cpu.c:445 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "CPU Grafikoa"
 
-#: ../panel-plugin/cpu.c:332
+#: ../panel-plugin/cpu.c:463
 msgid "Update Interval: "
 msgstr "Eguneratze tartea"
 
-#: ../panel-plugin/cpu.c:347
+#: ../panel-plugin/cpu.c:478
 msgid "Fastest (~250ms)"
 msgstr "Azkarrena (~250ms)"
 
-#: ../panel-plugin/cpu.c:352
+#: ../panel-plugin/cpu.c:483
 msgid "Fast (~500ms)"
 msgstr "Azkarra (~500ms)"
 
-#: ../panel-plugin/cpu.c:358
+#: ../panel-plugin/cpu.c:489
 msgid "Normal (~750ms)"
 msgstr "Arrunta (~750ms)"
 
-#: ../panel-plugin/cpu.c:363
+#: ../panel-plugin/cpu.c:494
 msgid "Slow (~1s)"
 msgstr "Geldoa (~1s)"
 
-#: ../panel-plugin/cpu.c:381
+#: ../panel-plugin/cpu.c:513
 msgid "Width:"
 msgstr "Zabalera"
 
-#: ../panel-plugin/cpu.c:383
+#: ../panel-plugin/cpu.c:515
 msgid "Height:"
 msgstr "Altuera"
 
-#: ../panel-plugin/cpu.c:403
+#: ../panel-plugin/cpu.c:535
+msgid "Non-linear time-scale"
+msgstr ""
+
+#: ../panel-plugin/cpu.c:551
 msgid "Show frame"
 msgstr "Markoa ikusi"
 
-#: ../panel-plugin/cpu.c:423
+#: ../panel-plugin/cpu.c:570
+msgid "Associated command :"
+msgstr ""
+
+#: ../panel-plugin/cpu.c:588
 msgid "Color 1:"
 msgstr "1 Kolorea"
 
-#: ../panel-plugin/cpu.c:449
+#: ../panel-plugin/cpu.c:614
 msgid "Color 2:"
 msgstr "2 Kolorea"
 
-#: ../panel-plugin/cpu.c:478
+#: ../panel-plugin/cpu.c:643
 msgid "Color 3:"
 msgstr "3 Kolorea:"
 
-#: ../panel-plugin/cpu.c:507
+#: ../panel-plugin/cpu.c:672
 msgid "Background:"
 msgstr "Atzealdea:"
 
-#: ../panel-plugin/cpu.c:533
+#: ../panel-plugin/cpu.c:698
 msgid "Mode:"
 msgstr "Modua:"
 
-#: ../panel-plugin/cpu.c:546
+#: ../panel-plugin/cpu.c:711
 msgid "Normal"
 msgstr "Arrunta"
 
-#: ../panel-plugin/cpu.c:550
+#: ../panel-plugin/cpu.c:715
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/cpu.c:554
+#: ../panel-plugin/cpu.c:719
 msgid "No history"
 msgstr "Historiarik ez"
 
-#: ../panel-plugin/cpu.c:569
+#: ../panel-plugin/cpu.c:734
 msgid "Color mode: "
 msgstr "Kolore modua: "
 
-#: ../panel-plugin/cpu.c:583
+#: ../panel-plugin/cpu.c:748
 msgid "None"
 msgstr "Batez"
 
-#: ../panel-plugin/cpu.c:588
+#: ../panel-plugin/cpu.c:753
 msgid "Gradient"
 msgstr "Gradiantea"
 
-#: ../panel-plugin/cpu.c:593
+#: ../panel-plugin/cpu.c:758
 msgid "Fire"
 msgstr "Sua"
 
-#: ../panel-plugin/cpu.c:609
+#: ../panel-plugin/cpu.c:779
 msgid "Appearance"
 msgstr "Itxura"
 
-#: ../panel-plugin/cpu.c:612
+#: ../panel-plugin/cpu.c:782
 msgid "Advanced"
 msgstr "Aurreratua"
 

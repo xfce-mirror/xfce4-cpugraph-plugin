@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin 0.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-09 19:40+0100\n"
+"POT-Creation-Date: 2008-07-16 13:02+0200\n"
 "PO-Revision-Date: 2007-01-11 11:54+0100\n"
 "Last-Translator: Maximilian Schleiss <maximilian@xfce.org>\n"
 "Language-Team: French <xfce-i18n@xfce.org>\n"
@@ -15,104 +15,110 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../panel-plugin/cpu.c:301
+#: ../panel-plugin/cpu.c:432
 msgid "Configure CPU Graph"
 msgstr "Configurer Graphique CPU"
 
-#: ../panel-plugin/cpu.c:314
-#: ../panel-plugin/cpugraph.desktop.in.in.h:1
+#: ../panel-plugin/cpu.c:445 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "Graphique CPU"
 
-#: ../panel-plugin/cpu.c:332
+#: ../panel-plugin/cpu.c:463
 msgid "Update Interval: "
 msgstr "Intervalle de mise à jour :"
 
-#: ../panel-plugin/cpu.c:347
+#: ../panel-plugin/cpu.c:478
 msgid "Fastest (~250ms)"
 msgstr "Très rapide (~250ms)"
 
-#: ../panel-plugin/cpu.c:352
+#: ../panel-plugin/cpu.c:483
 msgid "Fast (~500ms)"
 msgstr "Rapide (~500ms)"
 
-#: ../panel-plugin/cpu.c:358
+#: ../panel-plugin/cpu.c:489
 msgid "Normal (~750ms)"
 msgstr "Normal (~750ms)"
 
-#: ../panel-plugin/cpu.c:363
+#: ../panel-plugin/cpu.c:494
 msgid "Slow (~1s)"
 msgstr "Lent (~1s)"
 
-#: ../panel-plugin/cpu.c:381
+#: ../panel-plugin/cpu.c:513
 msgid "Width:"
 msgstr "Largeur :"
 
-#: ../panel-plugin/cpu.c:383
+#: ../panel-plugin/cpu.c:515
 msgid "Height:"
 msgstr "Hauteur :"
 
-#: ../panel-plugin/cpu.c:403
+#: ../panel-plugin/cpu.c:535
+msgid "Non-linear time-scale"
+msgstr ""
+
+#: ../panel-plugin/cpu.c:551
 msgid "Show frame"
 msgstr "Afficher le cadre"
 
-#: ../panel-plugin/cpu.c:423
+#: ../panel-plugin/cpu.c:570
+msgid "Associated command :"
+msgstr ""
+
+#: ../panel-plugin/cpu.c:588
 msgid "Color 1:"
 msgstr "Couleur 1 :"
 
-#: ../panel-plugin/cpu.c:449
+#: ../panel-plugin/cpu.c:614
 msgid "Color 2:"
 msgstr "Couleur 2 :"
 
-#: ../panel-plugin/cpu.c:478
+#: ../panel-plugin/cpu.c:643
 msgid "Color 3:"
 msgstr "Couleur 3 :"
 
-#: ../panel-plugin/cpu.c:507
+#: ../panel-plugin/cpu.c:672
 msgid "Background:"
 msgstr "Arrière-plan :"
 
-#: ../panel-plugin/cpu.c:533
+#: ../panel-plugin/cpu.c:698
 msgid "Mode:"
 msgstr "Mode :"
 
-#: ../panel-plugin/cpu.c:546
+#: ../panel-plugin/cpu.c:711
 msgid "Normal"
 msgstr "Normal"
 
-#: ../panel-plugin/cpu.c:550
+#: ../panel-plugin/cpu.c:715
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/cpu.c:554
+#: ../panel-plugin/cpu.c:719
 msgid "No history"
 msgstr "Pas d'historique"
 
-#: ../panel-plugin/cpu.c:569
+#: ../panel-plugin/cpu.c:734
 msgid "Color mode: "
 msgstr "Mode de couleur :"
 
-#: ../panel-plugin/cpu.c:583
+#: ../panel-plugin/cpu.c:748
 msgid "None"
 msgstr "Aucun"
 
-#: ../panel-plugin/cpu.c:588
+#: ../panel-plugin/cpu.c:753
 msgid "Gradient"
 msgstr "Dégradé"
 
-#: ../panel-plugin/cpu.c:593
+#: ../panel-plugin/cpu.c:758
 msgid "Fire"
 msgstr "Feu"
 
-#: ../panel-plugin/cpu.c:609
+#: ../panel-plugin/cpu.c:779
 msgid "Appearance"
 msgstr "Apparence"
 
-#: ../panel-plugin/cpu.c:612
+#: ../panel-plugin/cpu.c:782
 msgid "Advanced"
 msgstr "Avancé"
 
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Représentation graphique de la charge CPU"
-
