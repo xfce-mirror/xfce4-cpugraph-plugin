@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-07-16 13:02+0200\n"
-"PO-Revision-Date: 2007-01-16 05:30+0100\n"
+"PO-Revision-Date: 2008-09-01 05:08+0100\n"
 "Last-Translator: SZERVÁC Attila <sas@321.hu>\n"
 "Language-Team: Hungarian\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,8 @@ msgstr ""
 msgid "Configure CPU Graph"
 msgstr "CPU mutató beállítása"
 
-#: ../panel-plugin/cpu.c:445 ../panel-plugin/cpugraph.desktop.in.in.h:1
+#: ../panel-plugin/cpu.c:445
+#: ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "CPU mutató"
 
@@ -51,7 +52,7 @@ msgstr "Magasság:"
 
 #: ../panel-plugin/cpu.c:535
 msgid "Non-linear time-scale"
-msgstr ""
+msgstr "Nem-lineáris idő-skála"
 
 #: ../panel-plugin/cpu.c:551
 msgid "Show frame"
@@ -59,7 +60,7 @@ msgstr "Keret mutatása"
 
 #: ../panel-plugin/cpu.c:570
 msgid "Associated command :"
-msgstr ""
+msgstr "Társított parancs :"
 
 #: ../panel-plugin/cpu.c:588
 msgid "Color 1:"
@@ -110,7 +111,6 @@ msgid "Fire"
 msgstr "Tűz"
 
 #: ../panel-plugin/cpu.c:779
-#, fuzzy
 msgid "Appearance"
 msgstr "Megjelenés"
 
@@ -121,3 +121,4 @@ msgstr "Haladó"
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "CPU terhelés grafikus megjelenítése"
+
