@@ -1,22 +1,28 @@
-# translation of xfce4-cpugraph-plugin to Danish
+# Danish (da.po) translation for xfce4-cpugraph-plugin
 # Copyright (C) 2007 THE xfce4-cpugraph-plugin'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the xfce4-cpugraph-plugin package.
 # Jens Hyllegaard <jens.hyllegaard@gmail.com>, 2007.
+# Claus Futtrup <cfuttrup@stofanet.dk>, 2008.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: xfce4-cpugraph-plugin\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Project-Id-Version: xfce4-cpugraph-plugin 0.4.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-07-16 13:02+0200\n"
-"PO-Revision-Date: 2008-05-21 10:16+0100\n"
-"Last-Translator: Jens Hyllegaard <jens.hyllegaard@gmail.com>\n"
+"PO-Revision-Date: 2008-10-05 21:31+0100\n"
+"Last-Translator: Claus Futtrup <cfuttrup@stofanet.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Danish\n"
+"X-Poedit-Country: DENMARK\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 #: ../panel-plugin/cpu.c:432
 msgid "Configure CPU Graph"
-msgstr "Konfigurer CPU-graf"
+msgstr "Konfigurér CPU-graf"
 
 #: ../panel-plugin/cpu.c:445 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
@@ -24,23 +30,23 @@ msgstr "CPU-graf"
 
 #: ../panel-plugin/cpu.c:463
 msgid "Update Interval: "
-msgstr "Opdateringsinterval:"
+msgstr "Opdateringsinterval: "
 
 #: ../panel-plugin/cpu.c:478
 msgid "Fastest (~250ms)"
-msgstr "Hurtigst (~250ms)"
+msgstr "Hurtigst (~250 ms)"
 
 #: ../panel-plugin/cpu.c:483
 msgid "Fast (~500ms)"
-msgstr "Hurtig (~500ms)"
+msgstr "Hurtig (~500 ms)"
 
 #: ../panel-plugin/cpu.c:489
 msgid "Normal (~750ms)"
-msgstr "Normal (~750ms)"
+msgstr "Normal (~750 ms)"
 
 #: ../panel-plugin/cpu.c:494
 msgid "Slow (~1s)"
-msgstr "Langsom (~1s)"
+msgstr "Langsom (~1 s)"
 
 #: ../panel-plugin/cpu.c:513
 msgid "Width:"
@@ -52,7 +58,7 @@ msgstr "Højde:"
 
 #: ../panel-plugin/cpu.c:535
 msgid "Non-linear time-scale"
-msgstr ""
+msgstr "Ikke-lineær tidsskala"
 
 #: ../panel-plugin/cpu.c:551
 msgid "Show frame"
@@ -60,7 +66,7 @@ msgstr "Vis ramme"
 
 #: ../panel-plugin/cpu.c:570
 msgid "Associated command :"
-msgstr ""
+msgstr "Tilknyttet kommando:"
 
 #: ../panel-plugin/cpu.c:588
 msgid "Color 1:"
@@ -96,7 +102,7 @@ msgstr "Ingen historik"
 
 #: ../panel-plugin/cpu.c:734
 msgid "Color mode: "
-msgstr "Farvetilstand:"
+msgstr "Farvetilstand: "
 
 #: ../panel-plugin/cpu.c:748
 msgid "None"
@@ -104,7 +110,7 @@ msgstr "Ingen"
 
 #: ../panel-plugin/cpu.c:753
 msgid "Gradient"
-msgstr "Gradient"
+msgstr "Hældning"
 
 #: ../panel-plugin/cpu.c:758
 msgid "Fire"
