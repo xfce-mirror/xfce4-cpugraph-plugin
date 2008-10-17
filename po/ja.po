@@ -1,0 +1,126 @@
+# Japanese translations for xfce4-cpugraph-plugin package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Nobuhiro Iwamatsu <iwamatsu@nigauri.org>, 2007-2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: xfce4-cpugraph-plugin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-07-16 13:02+0200\n"
+"PO-Revision-Date: 2008-10-13 10:44+0900\n"
+"Last-Translator: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>\n"
+"Language-Team: Japanese <xfce-i18n@xfce.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../panel-plugin/cpu.c:432
+msgid "Configure CPU Graph"
+msgstr "CPU グラフの設定"
+
+#: ../panel-plugin/cpu.c:445
+#: ../panel-plugin/cpugraph.desktop.in.in.h:1
+msgid "CPU Graph"
+msgstr "CPU グラフ"
+
+#: ../panel-plugin/cpu.c:463
+msgid "Update Interval: "
+msgstr "更新間隔: "
+
+#: ../panel-plugin/cpu.c:478
+msgid "Fastest (~250ms)"
+msgstr "最速 (〜250ミリ秒)"
+
+#: ../panel-plugin/cpu.c:483
+msgid "Fast (~500ms)"
+msgstr "速い (〜500ミリ秒)"
+
+#: ../panel-plugin/cpu.c:489
+msgid "Normal (~750ms)"
+msgstr "通常 (〜750ミリ秒)"
+
+#: ../panel-plugin/cpu.c:494
+msgid "Slow (~1s)"
+msgstr "遅い (〜1秒)"
+
+#: ../panel-plugin/cpu.c:513
+msgid "Width:"
+msgstr "幅:"
+
+#: ../panel-plugin/cpu.c:515
+msgid "Height:"
+msgstr "高さ:"
+
+#: ../panel-plugin/cpu.c:535
+msgid "Non-linear time-scale"
+msgstr "非線形の時間スケール"
+
+#: ../panel-plugin/cpu.c:551
+msgid "Show frame"
+msgstr "フレームを表示する"
+
+#: ../panel-plugin/cpu.c:570
+msgid "Associated command :"
+msgstr "関連コマンド :"
+
+#: ../panel-plugin/cpu.c:588
+msgid "Color 1:"
+msgstr "色 1:"
+
+#: ../panel-plugin/cpu.c:614
+msgid "Color 2:"
+msgstr "色 2:"
+
+#: ../panel-plugin/cpu.c:643
+msgid "Color 3:"
+msgstr "色 3:"
+
+#: ../panel-plugin/cpu.c:672
+msgid "Background:"
+msgstr "背景:"
+
+#: ../panel-plugin/cpu.c:698
+msgid "Mode:"
+msgstr "モード:"
+
+#: ../panel-plugin/cpu.c:711
+msgid "Normal"
+msgstr "通常"
+
+#: ../panel-plugin/cpu.c:715
+msgid "LED"
+msgstr "LED"
+
+#: ../panel-plugin/cpu.c:719
+msgid "No history"
+msgstr "履歴なし"
+
+#: ../panel-plugin/cpu.c:734
+msgid "Color mode: "
+msgstr "カラーモード: "
+
+#: ../panel-plugin/cpu.c:748
+msgid "None"
+msgstr "なし"
+
+#: ../panel-plugin/cpu.c:753
+msgid "Gradient"
+msgstr "勾配"
+
+#: ../panel-plugin/cpu.c:758
+msgid "Fire"
+msgstr "炎"
+
+#: ../panel-plugin/cpu.c:779
+msgid "Appearance"
+msgstr "外観設定"
+
+#: ../panel-plugin/cpu.c:782
+msgid "Advanced"
+msgstr "高度な設定"
+
+#: ../panel-plugin/cpugraph.desktop.in.in.h:2
+msgid "Graphical representation of the CPU load"
+msgstr "CPU 負荷のグラフ表示"
+
