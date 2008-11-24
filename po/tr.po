@@ -1,3 +1,8 @@
+# Turkish translation of the xfce4-cpugraph-plugin package.
+# Copyright (C) 2006 Alexander Nordfelth <alex.nordfelth@telia.com>
+# This file is distributed under the same license as the xfce4-cpugraph-plugin package.
+# Samed Beyribey <ras0ir@eventualis.org>, 2008.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: xfce4 cpugraph plugin\n"
