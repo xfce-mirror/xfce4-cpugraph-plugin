@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-07-16 13:02+0200\n"
-"PO-Revision-Date: 2008-12-14 16:17+0100\n"
+"PO-Revision-Date: 2009-02-11 15:01+0100\n"
 "Last-Translator: Leandro Regueiro <leandro DOT regueiro AT gmail DOT com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
@@ -59,7 +59,7 @@ msgstr "Alto:"
 
 #: ../panel-plugin/cpu.c:535
 msgid "Non-linear time-scale"
-msgstr ""
+msgstr "Escala de tempo non lineal"
 
 #: ../panel-plugin/cpu.c:551
 msgid "Show frame"
