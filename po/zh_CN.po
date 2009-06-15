@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: xfce 4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-07-16 13:02+0200\n"
-"PO-Revision-Date: 2008-12-06 04:37+0800\n"
+"PO-Revision-Date: 2009-06-15 00:22+0800\n"
 "Last-Translator: Hunt Xu <huntxu@live.cn>\n"
 "Language-Team: Chinese (simplified)\n"
 "MIME-Version: 1.0\n"
@@ -58,11 +58,11 @@ msgstr ""
 
 #: ../panel-plugin/cpu.c:551
 msgid "Show frame"
-msgstr ""
+msgstr "显示边框"
 
 #: ../panel-plugin/cpu.c:570
 msgid "Associated command :"
-msgstr ""
+msgstr "指定命令:"
 
 #: ../panel-plugin/cpu.c:588
 msgid "Color 1:"
@@ -90,11 +90,11 @@ msgstr "正常"
 
 #: ../panel-plugin/cpu.c:715
 msgid "LED"
-msgstr ""
+msgstr "LED"
 
 #: ../panel-plugin/cpu.c:719
 msgid "No history"
-msgstr ""
+msgstr "历史为空"
 
 #: ../panel-plugin/cpu.c:734
 msgid "Color mode: "
