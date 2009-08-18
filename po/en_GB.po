@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-07-16 13:02+0200\n"
-"PO-Revision-Date: 2007-03-30 20:27+1000\n"
+"PO-Revision-Date: 2009-08-18 19:30+1000\n"
 "Last-Translator: Jeff Bailes <thepizzaking@gmail.com>\n"
 "Language-Team: English/GB\n"
 "MIME-Version: 1.0\n"
@@ -55,7 +55,7 @@ msgstr "Height:"
 
 #: ../panel-plugin/cpu.c:535
 msgid "Non-linear time-scale"
-msgstr ""
+msgstr "Non-linear time-scale"
 
 #: ../panel-plugin/cpu.c:551
 msgid "Show frame"
@@ -63,7 +63,7 @@ msgstr "Show frame"
 
 #: ../panel-plugin/cpu.c:570
 msgid "Associated command :"
-msgstr ""
+msgstr "Associated command :"
 
 #: ../panel-plugin/cpu.c:588
 msgid "Color 1:"
