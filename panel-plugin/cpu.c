@@ -51,6 +51,7 @@ void Kill( XfcePanelPlugin * plugin, CPUGraph * base )
 
 	g_object_unref( base->m_Tooltip );
 
+	g_free( base->m_AssociateCommand );
 	g_free( base );
 }
 
@@ -81,7 +82,7 @@ void ReadSettings( XfcePanelPlugin * plugin, CPUGraph * base )
 
 	base->m_TimeScale = 0;
 	base->m_Frame = 0;
-	base->m_AssociateCommand = "xterm top";
+	base->m_AssociateCommand = NULL;
 	base->m_ColorMode = 0;
 	base->m_Mode = 0;
 
@@ -108,8 +109,12 @@ void ReadSettings( XfcePanelPlugin * plugin, CPUGraph * base )
 			base->m_Frame =
 				xfce_rc_read_int_entry( rc, "Frame", base->m_Frame );
 
-			if( value = xfce_rc_read_entry( rc, "AssociateCommand", base->m_AssociateCommand ) ) {
+			if( value = xfce_rc_read_entry( rc, "AssociateCommand", DEFAULT_COMMAND ) ) {
 				base->m_AssociateCommand = g_strdup(value);
+			}
+			else
+			{
+				base->m_AssociateCommand = g_strdup( DEFAULT_COMMAND );
 			}
 
 			base->m_ColorMode =
@@ -134,6 +139,10 @@ void ReadSettings( XfcePanelPlugin * plugin, CPUGraph * base )
 
 			xfce_rc_close( rc );
 		}
+	}
+	else
+	{
+		base->m_AssociateCommand = g_strdup( DEFAULT_COMMAND );
 	}
 	SetHistorySize( base, base->m_Width );
 	if( base->m_TimeoutID )
@@ -947,6 +956,7 @@ void FrameChange( GtkToggleButton * button, CPUGraph * base )
 
 void AssociateCommandChange( GtkEntry *entry, CPUGraph * base )
 {
+	g_free (base->m_AssociateCommand );
 	base->m_AssociateCommand = g_strdup( gtk_entry_get_text( entry ) );
 }
 

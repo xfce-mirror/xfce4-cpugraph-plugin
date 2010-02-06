@@ -18,6 +18,8 @@
 
 #include "os.h"
 
+#define DEFAULT_COMMAND "xterm top"
+
 #define BORDER  8
 
 #define MAX_WIDTH 64
