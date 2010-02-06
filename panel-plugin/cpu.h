@@ -18,7 +18,7 @@
 
 #include "os.h"
 
-#define DEFAULT_COMMAND "xterm top"
+#define DEFAULT_COMMAND "exo-open --launch TerminalEmulator top"
 
 #define BORDER  8
 
