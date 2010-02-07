@@ -36,19 +36,20 @@
 
 #define CPU_SCALE 100000
 
-typedef struct s_cpuData{
-  float         load; /* cpu utilization */
-  unsigned long pUsed; /* Previous value of used cpu time */
+typedef struct s_cpuData
+{
+	float load; /* cpu utilization */
+	unsigned long pUsed; /* Previous value of used cpu time */
 	unsigned long pTotal; /* Previous value of total cpu time */
-  long scalCurFreq;
-  long scalMinFreq;
-  long scalMaxFreq;
+	long scalCurFreq;
+	long scalMinFreq;
+	long scalMaxFreq;
 } CpuData;
 
 
 int cpuData_init();
 void cpuData_free();
 CpuData *cpuData_read();
-void setFrequencyScaling(int cpuId);
+void setFrequencyScaling( int cpuId );
 
 #endif

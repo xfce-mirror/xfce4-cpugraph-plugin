@@ -18,7 +18,6 @@
 
 #include "os.h"
 
-
 #define BORDER  8
 
 #define MAX_WIDTH 64
@@ -60,7 +59,7 @@ typedef struct
 	GtkWidget *m_OptionMenu;
 	GtkWidget *m_Menu;
 	GtkWidget *m_MenuItem;
-}SOptions;
+} SOptions;
 
 typedef struct
 {
@@ -69,23 +68,23 @@ typedef struct
 	GtkWidget *m_FrameWidget;
 	GtkWidget *m_DrawArea;
 	GtkWidget *m_OptionsDialog;
-  GtkWidget *m_Box;
-  GtkWidget **m_pBar;
+	GtkWidget *m_Box;
+	GtkWidget **m_pBar;
 	SOptions m_Options;
 
-  int m_UpdateInterval; // Number of ms between updates.
+	int m_UpdateInterval; // Number of ms between updates.
 	int m_TimeScale; // Wether to use non-linear time scale.
-  int m_Width; // The width of the plugin.
-  int m_Mode; // Eventual mode of the plugin.
+	int m_Width; // The width of the plugin.
+	int m_Mode; // Eventual mode of the plugin.
 	int m_ColorMode;
 	int m_Frame;
 	gchar  *m_AssociateCommand;
-  guint nrCores; // Number of cores (not including total cpu)
+	guint nrCores; // Number of cores (not including total cpu)
 
-  GdkColor m_ForeGround1; // Inactive color.
-  GdkColor m_ForeGround2; // Active color.
+	GdkColor m_ForeGround1; // Inactive color.
+	GdkColor m_ForeGround2; // Active color.
 	GdkColor m_ForeGround3;
-  GdkColor m_BackGround; // Background color.
+	GdkColor m_BackGround; // Background color.
 
 	GtkTooltips *m_Tooltip; // Eventual tooltip.
 
@@ -93,40 +92,40 @@ typedef struct
 	long *m_History;
 	int m_Values;
 	int m_Orientation;
-  CpuData *m_CpuData;
+	CpuData *m_CpuData;
 
-}CPUGraph;
+} CPUGraph;
 
-CPUGraph *CreateControl (XfcePanelPlugin *plugin);
-void Kill (XfcePanelPlugin *plugin, CPUGraph *base);
-void ReadSettings (XfcePanelPlugin *plugin, CPUGraph *base);
-void WriteSettings (XfcePanelPlugin *plugin, CPUGraph *base);
-gboolean SetSize (XfcePanelPlugin *plugin, int size, CPUGraph *base);
-void UserSetSize (CPUGraph *base);
-gboolean UpdateCPU (CPUGraph *base);
-void UpdateTooltip (CPUGraph *base);
-void DrawGraph (CPUGraph *base);
-void DrawAreaExposeEvent (GtkWidget *da, GdkEventExpose *event, gpointer data);
-void CreateOptions (XfcePanelPlugin *plugin, CPUGraph *base);
-void SetOrientation (XfcePanelPlugin *plugin, GtkOrientation orientation, CPUGraph *base);
-void SetHistorySize (CPUGraph *base, int size);
-void SetRealGeometry (CPUGraph *base);
+CPUGraph *CreateControl( XfcePanelPlugin *plugin );
+void Kill( XfcePanelPlugin *plugin, CPUGraph *base );
+void ReadSettings( XfcePanelPlugin *plugin, CPUGraph *base );
+void WriteSettings( XfcePanelPlugin *plugin, CPUGraph *base );
+gboolean SetSize( XfcePanelPlugin *plugin, int size, CPUGraph *base );
+void UserSetSize( CPUGraph *base );
+gboolean UpdateCPU( CPUGraph *base );
+void UpdateTooltip( CPUGraph *base );
+void DrawGraph( CPUGraph *base );
+void DrawAreaExposeEvent( GtkWidget *da, GdkEventExpose *event, gpointer data );
+void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base );
+void SetOrientation( XfcePanelPlugin *plugin, GtkOrientation orientation, CPUGraph *base );
+void SetHistorySize( CPUGraph *base, int size );
+void SetRealGeometry( CPUGraph *base );
 
 
-void ChangeColor1 (GtkButton *button, CPUGraph *base);
-void ChangeColor2 (GtkButton *button, CPUGraph *base);
-void ChangeColor3 (GtkButton *button, CPUGraph *base);
-void ChangeColor4 (GtkButton *button, CPUGraph *base);
-void ChangeColor5 (GtkButton *button, CPUGraph *base);
-void ChangeColor (int color, CPUGraph *base);
-void SpinChange (GtkSpinButton *sb, int *value);
-void UpdateChange (GtkOptionMenu *om, CPUGraph *base);
-void ModeChange (GtkOptionMenu *om, CPUGraph *base);
-void ApplyChanges (CPUGraph *base);
-void FrameChange (GtkToggleButton *button, CPUGraph *base);
-void TimeScaleChange (GtkToggleButton *button, CPUGraph *base);
-void AssociateCommandChange(GtkEntry *entry, CPUGraph *base);
-void ColorModeChange (GtkOptionMenu *om, CPUGraph *base);
-gboolean LaunchCommand (GtkWidget *w, GdkEventButton *event, CPUGraph *base);
+void ChangeColor1( GtkButton *button, CPUGraph *base );
+void ChangeColor2( GtkButton *button, CPUGraph *base );
+void ChangeColor3( GtkButton *button, CPUGraph *base );
+void ChangeColor4( GtkButton *button, CPUGraph *base );
+void ChangeColor5( GtkButton *button, CPUGraph *base );
+void ChangeColor( int color, CPUGraph *base );
+void SpinChange( GtkSpinButton *sb, int *value );
+void UpdateChange( GtkOptionMenu *om, CPUGraph *base );
+void ModeChange( GtkOptionMenu *om, CPUGraph *base );
+void ApplyChanges( CPUGraph *base );
+void FrameChange( GtkToggleButton *button, CPUGraph *base );
+void TimeScaleChange( GtkToggleButton *button, CPUGraph *base );
+void AssociateCommandChange( GtkEntry *entry, CPUGraph *base );
+void ColorModeChange( GtkOptionMenu *om, CPUGraph *base );
+gboolean LaunchCommand( GtkWidget *w, GdkEventButton *event, CPUGraph *base );
 
 #endif

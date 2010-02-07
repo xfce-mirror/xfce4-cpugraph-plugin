@@ -16,68 +16,81 @@
 CpuData *cpudata = NULL;
 int nrCpus = 0;
 
-void cpuData_free(){
-  free(cpudata);
-  cpudata = NULL;
-  nrCpus = 0;
+void cpuData_free()
+{
+	free( cpudata );
+	cpudata = NULL;
+	nrCpus = 0;
 }
 
 #if defined (__linux__)
-int cpuData_init(){
-  FILE *fstat = NULL;
-  char cpuStr[PROCMAXLNLEN];
-  int i, cpuNr = -1;
-  /* Check if previously initalized */
-	if(cpudata != NULL) return(-2);
+int cpuData_init()
+{
+	FILE *fstat = NULL;
+	char cpuStr[PROCMAXLNLEN];
+	int i, cpuNr = -1;
+	/* Check if previously initalized */
+	if( cpudata != NULL )
+		return -2;
 
 	/* Open proc stat file */
-	if(!(fstat = fopen(PROC_STAT, "r"))) return(-1);
+	if( !(fstat = fopen( PROC_STAT, "r" )) )
+		return -1;
 
 	/* Read each cpu line at time */
-	do{
-    if(!fgets(cpuStr, PROCMAXLNLEN, fstat)) return(cpuNr);
+	do
+	{
+		if( !fgets( cpuStr, PROCMAXLNLEN, fstat ) )
+			return cpuNr;
 		cpuNr++;
 	}
-	while(strncmp(cpuStr, "cpu", 3) == 0);
+	while( strncmp( cpuStr, "cpu", 3 ) == 0 );
 	/* Alloc storage for cpu data stuff */
-	cpudata = (CpuData *) calloc(cpuNr, sizeof(CpuData));
-	if(cpudata == NULL) return(-3);
+	cpudata = (CpuData *) calloc( cpuNr, sizeof( CpuData ) );
+	if( cpudata == NULL )
+		return-3;
 
-  /* init frequency */
-  for(i=cpuNr-1; i>=0; i--){
-    cpudata[i].scalCurFreq = 0;
-    cpudata[i].scalMinFreq = 0;
-    cpudata[i].scalMaxFreq = -1;
-  }
+	/* init frequency */
+	for( i=cpuNr-1; i>=0; i-- )
+	{
+		cpudata[i].scalCurFreq = 0;
+		cpudata[i].scalMinFreq = 0;
+		cpudata[i].scalMaxFreq = -1;
+	}
 
-	fclose(fstat);
-	return(nrCpus=cpuNr);
+	fclose( fstat );
+	return nrCpus = cpuNr;
 }
 
-CpuData *cpuData_read(){
-  FILE *fStat = NULL;
+CpuData *cpuData_read()
+{
+	FILE *fStat = NULL;
 	char cpuStr[PROCMAXLNLEN];
 	unsigned long user, nice, system, idle, used, total;
-  unsigned long iowait=0, irq=0, softirq=0;
+	unsigned long iowait=0, irq=0, softirq=0;
 	int cpuNr = 0;
 
-  /* Check if callable */
-	if((cpudata == NULL) || (nrCpus == 0)) return(NULL);
+	/* Check if callable */
+	if( (cpudata == NULL) || (nrCpus == 0) )
+		return NULL;
 
 	/* Open proc stat file */
-	if(!(fStat = fopen(PROC_STAT, "r"))) return(NULL);
+	if( !(fStat = fopen( PROC_STAT, "r" )) )
+		return NULL;
 
-  /* Read each cpu line at time */
-	do{
-		if(!fgets(cpuStr, PROCMAXLNLEN, fStat)) return(cpudata);
-		if(sscanf(cpuStr, "%*s %ld %ld %ld %ld %ld %ld %ld",
-              &user, &nice, &system, &idle, &iowait, &irq, &softirq) < 7)
-      iowait = irq = softirq = 0;
-    used = user + nice + system + irq + softirq;
-    total = used + idle + iowait;
-		if((total - cpudata[cpuNr].pTotal) != 0){
-			cpudata[cpuNr].load = CPU_SCALE * (float)(used - cpudata[cpuNr].pUsed)
-				/ (float)(total - cpudata[cpuNr].pTotal);
+	/* Read each cpu line at time */
+	do
+	{
+		if( !fgets( cpuStr, PROCMAXLNLEN, fStat ) )
+			return cpudata;
+		if( sscanf( cpuStr, "%*s %ld %ld %ld %ld %ld %ld %ld", &user, &nice, &system, &idle, &iowait, &irq, &softirq ) < 7 )
+			iowait = irq = softirq = 0;
+		used = user + nice + system + irq + softirq;
+		total = used + idle + iowait;
+		if( (total - cpudata[cpuNr].pTotal) != 0 )
+		{
+			cpudata[cpuNr].load = CPU_SCALE * (float)(used - cpudata[cpuNr].pUsed) /
+			                      (float)(total - cpudata[cpuNr].pTotal);
 		}
 		else
 		{
@@ -86,49 +99,54 @@ CpuData *cpuData_read(){
 		cpudata[cpuNr].pUsed = used;
 		cpudata[cpuNr].pTotal = total;
 		cpuNr++;
-  }
-	while((cpuNr < nrCpus) && (strncmp(cpuStr, "cpu", 3) == 0));
+	}
+	while( (cpuNr < nrCpus) && (strncmp( cpuStr, "cpu", 3 ) == 0) );
 
-	fclose(fStat);
+	fclose( fStat );
 
-  return cpudata;
+	return cpudata;
 }
 
 #elif defined (__FreeBSD__)
-void cpuData_init(){
-  int i, cpuNr = -1;
+void cpuData_init()
+{
+	int i, cpuNr = -1;
 
-  /* Check if previously initalized */
-	if(cpudata != NULL) return(-2);
+	/* Check if previously initalized */
+	if( cpudata != NULL )
+		return -2;
 
-  cpuNr = 1;
+	cpuNr = 1;
 
 	/* Alloc storage for cpu data stuff */
-	cpudata = (CpuData *) calloc(cpuNr, sizeof(CpuData));
-	if(cpudata == NULL) return(-3);
+	cpudata = (CpuData *) calloc( cpuNr, sizeof( CpuData ) );
+	if( cpudata == NULL )
+		return -3;
 
-  /* init frequency */
-  for(i=cpuNr-1; i>=0; i--){
-    cpudata[i].scalCurFreq = 0;
-    cpudata[i].scalMinFreq = 0;
-    cpudata[i].scalMaxFreq = -1;
-  }
+	/* init frequency */
+	for( i=cpuNr-1; i>=0; i-- )
+	{
+		cpudata[i].scalCurFreq = 0;
+		cpudata[i].scalMinFreq = 0;
+		cpudata[i].scalMaxFreq = -1;
+	}
 
-	fclose(fstat);
-	return(nrCpus=cpuNr);
+	fclose( fstat );
+	return nrCpus = cpuNr;
 }
 
-CpuData *cpuData_read(){
+CpuData *cpuData_read()
+{
 	unsigned long user, nice, sys, bsdidle, idle;
 	unsigned long used, total;
 	long cp_time[CPUSTATES];
-	size_t len = sizeof (cp_time);
+	size_t len = sizeof( cp_time );
 
 	long usage;
 
-	if (sysctlbyname ("kern.cp_time", &cp_time, &len, NULL, 0) < 0)
+	if( sysctlbyname( "kern.cp_time", &cp_time, &len, NULL, 0 ) < 0 )
 	{
-		printf ("Cannot get kern.cp_time.\n");
+		printf( "Cannot get kern.cp_time.\n" );
 		return -1;
 	}
 
@@ -140,7 +158,7 @@ CpuData *cpuData_read(){
 
 	used = user+nice+sys;
 	total = used+bsdidle;
-	if ((total - cpudata[0].pTotal) != 0)
+	if( (total - cpudata[0].pTotal) != 0 )
 		cpudata[0].pTotal = (CPU_SCALE.0 * (used - cpudata[0].pTotal))/(total - cpudata[0].pTotal);
 	else
 		cpudata[0].pTotal = 0;
@@ -148,44 +166,49 @@ CpuData *cpuData_read(){
 	cpudata[0].pUsed = used;
 	cpudata[0].pTotal = total;
 
-  return cpudata;
+	return cpudata;
 }
 
 #elif defined (__NetBSD__)
-void cpuData_init(){
-  int i, cpuNr = -1;
+void cpuData_init()
+{
+	int i, cpuNr = -1;
 
-  /* Check if previously initalized */
-	if(cpudata != NULL) return(-2);
+	/* Check if previously initalized */
+	if( cpudata != NULL )
+		return -2;
 
-  cpuNr = 1;
+	cpuNr = 1;
 
 	/* Alloc storage for cpu data stuff */
-	cpudata = (CpuData *) calloc(cpuNr, sizeof(CpuData));
-	if(cpudata == NULL) return(-3);
+	cpudata = (CpuData *) calloc( cpuNr, sizeof( CpuData ) );
+	if( cpudata == NULL )
+		return -3;
 
-  /* init frequency */
-  for(i=cpuNr-1; i>=0; i--){
-    cpudata[i].scalCurFreq = 0;
-    cpudata[i].scalMinFreq = 0;
-    cpudata[i].scalMaxFreq = -1;
-  }
+	/* init frequency */
+	for( i=cpuNr-1; i>=0; i-- )
+	{
+		cpudata[i].scalCurFreq = 0;
+		cpudata[i].scalMinFreq = 0;
+		cpudata[i].scalMaxFreq = -1;
+	}
 
-	fclose(fstat);
-	return(nrCpus=cpuNr);
+	fclose( fstat );
+	return nrCpus = cpuNr;
 }
 
 
-CpuData *cpuData_read(){
+CpuData *cpuData_read()
+{
 	long user, nice, sys, bsdidle, idle;
 	long used, total, usage;
 	static int mib[] = {CTL_KERN, KERN_CP_TIME };
 	u_int64_t cp_time[CPUSTATES];
-	size_t len = sizeof (cp_time);
+	size_t len = sizeof( cp_time );
 
-	if (sysctl (mib, 2, &cp_time, &len, NULL, 0) < 0)
+	if( sysctl( mib, 2, &cp_time, &len, NULL, 0 ) < 0 )
 	{
-		printf ("Cannot get kern.cp_time\n");
+		printf( "Cannot get kern.cp_time\n" );
 		return -1;
 	}
 
@@ -198,70 +221,76 @@ CpuData *cpuData_read(){
 	used = user+nice+sys;
 	total = used+bsdidle;
 
-	if (total - cpudata[0].pTotal != 0)
-		usage = (CPU_SCALE * (double)(used - cpudata[0].pTotal))/(double)(total - cpudata[0].pTotal);
+	if( total - cpudata[0].pTotal != 0 )
+		usage = (CPU_SCALE * (double)(used - cpudata[0].pTotal)) / (double)(total - cpudata[0].pTotal);
 	else
 		usage = 0;
 
 	cpudata[0].pUsed = used;
 	cpudata[0].pTotal = total;
 
-  return cpudata;
+	return cpudata;
 }
 
 #elif defined (__OpenBSD_)
-void cpuData_init(){
-  int i, cpuNr = -1;
+void cpuData_init()
+{
+	int i, cpuNr = -1;
 
-  /* Check if previously initalized */
-	if(cpudata != NULL) return(-2);
+	/* Check if previously initalized */
+	if( cpudata != NULL )
+		return -2;
 
-  cpuNr = 1;
+	cpuNr = 1;
 
 	/* Alloc storage for cpu data stuff */
-	cpudata = (CpuData *) calloc(cpuNr, sizeof(CpuData));
-	if(cpudata == NULL) return(-3);
+	cpudata = (CpuData *) calloc( cpuNr, sizeof( CpuData ) );
+	if( cpudata == NULL )
+		return -3;
 
-  /* init frequency */
-  for(i=cpuNr-1; i>=0; i--){
-    cpudata[i].scalCurFreq = 0;
-    cpudata[i].scalMinFreq = 0;
-    cpudata[i].scalMaxFreq = -1;
-  }
+	/* init frequency */
+	for( i=cpuNr-1; i>=0; i-- )
+	{
+		cpudata[i].scalCurFreq = 0;
+		cpudata[i].scalMinFreq = 0;
+		cpudata[i].scalMaxFreq = -1;
+	}
 
-	fclose(fstat);
-	return(nrCpus=cpuNr);
+	fclose( fstat );
+	return nrCpus = cpuNr;
 }
 
 
-CpuData *cpuData_read(){
-  unsigned long user, nice, sys, bsdidle, idle;
-  unsigned long used, total, usage;
-  static int mib[] = {CTL_KERN, KERN_CP_TIME };
-  u_int64_t cp_time[CPUSTATES];
-  size_t len = sizeof (cp_time);
-  if (sysctl (mib, 2, &cp_time, &len, NULL, 0) < 0){
-    printf ("Cannot get kern.cp_time\n");
-    return -1;
-  }
+CpuData *cpuData_read()
+{
+	unsigned long user, nice, sys, bsdidle, idle;
+	unsigned long used, total, usage;
+	static int mib[] = {CTL_KERN, KERN_CP_TIME };
+	u_int64_t cp_time[CPUSTATES];
+	size_t len = sizeof( cp_time );
+	if( sysctl( mib, 2, &cp_time, &len, NULL, 0) < 0 )
+	{
+		printf( "Cannot get kern.cp_time\n" );
+		return -1;
+	}
 
 	user = cp_time[CP_USER];
 	nice = cp_time[CP_NICE];
-  sys = cp_time[CP_SYS];
-  bsdidle = cp_time[CP_INTR];
-  idle = cp_time[CP_IDLE];
+	sys = cp_time[CP_SYS];
+	bsdidle = cp_time[CP_INTR];
+	idle = cp_time[CP_IDLE];
 
-  used = user+nice+sys;
-  total = used+bsdidle;
+	used = user+nice+sys;
+	total = used+bsdidle;
 
-  if (total - cpudata[0].pTotal != 0)
+	if( total - cpudata[0].pTotal != 0 )
 		usage = (CPU_SCALE * (double)(used - cpudata[0].pTotal))/(double)(total - cpudata[0].pTotal);
 	else
-    usage = 0;
-  cpudata[0].pUsed = used;
-  cpudata[0].pTotal = total;
+		usage = 0;
+	cpudata[0].pUsed = used;
+	cpudata[0].pTotal = total;
 
-  return cpudata;
+	return cpudata;
 }
 #else
 #error "You're OS is not supported."
