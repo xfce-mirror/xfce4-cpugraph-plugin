@@ -18,7 +18,7 @@ int nrCpus = 0;
 
 void cpuData_free()
 {
-	free( cpudata );
+	g_free( cpudata );
 	cpudata = NULL;
 	nrCpus = 0;
 }
@@ -46,9 +46,7 @@ int cpuData_init()
 	}
 	while( strncmp( cpuStr, "cpu", 3 ) == 0 );
 	/* Alloc storage for cpu data stuff */
-	cpudata = (CpuData *) calloc( cpuNr, sizeof( CpuData ) );
-	if( cpudata == NULL )
-		return-3;
+	cpudata = (CpuData *) g_malloc0( cpuNr * sizeof( CpuData ) );
 
 	/* init frequency */
 	for( i=cpuNr-1; i>=0; i-- )
@@ -119,9 +117,7 @@ void cpuData_init()
 	cpuNr = 1;
 
 	/* Alloc storage for cpu data stuff */
-	cpudata = (CpuData *) calloc( cpuNr, sizeof( CpuData ) );
-	if( cpudata == NULL )
-		return -3;
+	cpudata = (CpuData *) g_malloc0( cpuNr * sizeof( CpuData ) );
 
 	/* init frequency */
 	for( i=cpuNr-1; i>=0; i-- )
@@ -181,9 +177,7 @@ void cpuData_init()
 	cpuNr = 1;
 
 	/* Alloc storage for cpu data stuff */
-	cpudata = (CpuData *) calloc( cpuNr, sizeof( CpuData ) );
-	if( cpudata == NULL )
-		return -3;
+	cpudata = (CpuData *) g_malloc0( cpuNr * sizeof( CpuData ) );
 
 	/* init frequency */
 	for( i=cpuNr-1; i>=0; i-- )
@@ -244,9 +238,7 @@ void cpuData_init()
 	cpuNr = 1;
 
 	/* Alloc storage for cpu data stuff */
-	cpudata = (CpuData *) calloc( cpuNr, sizeof( CpuData ) );
-	if( cpudata == NULL )
-		return -3;
+	cpudata = (CpuData *) g_malloc0( cpuNr, sizeof( CpuData ) );
 
 	/* init frequency */
 	for( i=cpuNr-1; i>=0; i-- )

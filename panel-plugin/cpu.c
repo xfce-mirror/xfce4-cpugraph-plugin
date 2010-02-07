@@ -40,14 +40,14 @@ void Kill( XfcePanelPlugin * plugin, CPUGraph * base )
 
 	for(i=0; i<base->nrCores-1; i++)
 		gtk_widget_destroy(base->m_pBar[i]);
+	g_free( base->m_pBar );
 
 	gtk_widget_destroy(base->m_Box);
 
 	if( base->m_TimeoutID )
 		g_source_remove( base->m_TimeoutID );
 
-	if( base->m_History )
-		g_free( base->m_History );
+	g_free( base->m_History );
 
 	g_object_unref( base->m_Tooltip );
 
@@ -240,7 +240,7 @@ CPUGraph * CreateControl( XfcePanelPlugin * plugin )
 	if((base->nrCores = cpuData_init() - 1) < 0)
 		fprintf(stderr,"Cannot init cpu data !\n");
 
-	base->m_pBar = (GtkWidget **) malloc(sizeof(GtkWidget *) * base->nrCores);
+	base->m_pBar = (GtkWidget **) g_malloc( sizeof( GtkWidget * ) * base->nrCores );
 
 	for(i=0; i<base->nrCores; i++) {
 		base->m_pBar[i] = GTK_WIDGET(gtk_progress_bar_new());
@@ -898,7 +898,7 @@ void ChangeColor( int color, CPUGraph * base )
 void SetHistorySize( CPUGraph * base, int size )
 {
 	int i;
-	base->m_History = (long *) realloc( base->m_History, 2 * size * sizeof( long ) );
+	base->m_History = (long *) g_realloc( base->m_History, 2 * size * sizeof( long ) );
 
 	base->m_CpuData = cpuData_read();
 	base->m_CpuData[0].pUsed = 0;
@@ -910,7 +910,6 @@ void SetHistorySize( CPUGraph * base, int size )
 		base->m_History[i+size] = base->m_CpuData[0].scalCurFreq;
 	}
 	base->m_Values = size;
-
 }
 
 void ModeChange( GtkOptionMenu * om, CPUGraph * base )
