@@ -102,15 +102,12 @@ void drawGraphModeLED (CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, in
   gdk_gc_set_rgb_fg_color (fg1, &base->m_ForeGround1);
   gdk_gc_set_rgb_fg_color (fg2, &base->m_ForeGround2);
 
-
-  //fprintf(stderr,"nry %i %d\n", nry, CPU_SCALE);
-
   for (x = nrx ; x >= 0; x--)
   {
     int tmp = 0;
     int idx = nrx-x;
     int limit = (int)(nry - nry * base->m_History[idx]/CPU_SCALE);
-    //fprintf(stderr,"lim=%d %d %d %d\n",limit, idx, nry, base->m_History[idx]);
+
     for (y = nry; y >= 0; y--)
     {
       if (base->m_ColorMode > 0)

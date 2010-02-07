@@ -90,7 +90,6 @@ typedef struct
 	GtkTooltips *m_Tooltip; // Eventual tooltip.
 
 	guint m_TimeoutID; // Timeout ID for the tooltip;
-	//long m_CPUUsage;
 	long *m_History;
 	int m_Values;
 	int m_Orientation;

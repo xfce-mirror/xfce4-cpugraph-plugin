@@ -246,7 +246,6 @@ CreateControl (XfcePanelPlugin * plugin)
 
 
     /* Multicore stuff */
-    //fprintf(stderr,"Multicore stuff\n");
     if((base->nrCores = cpuData_init() - 1) < 0)
       fprintf(stderr,"Cannot init cpu data !\n");
 
@@ -285,7 +284,6 @@ CreateControl (XfcePanelPlugin * plugin)
 
     base->m_DrawArea = gtk_drawing_area_new ();
     gtk_widget_set_app_paintable (base->m_DrawArea, TRUE);
-    //gtk_container_add (GTK_CONTAINER (ebox), frame);
     gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (base->m_DrawArea));
     gtk_widget_show (base->m_DrawArea);
 
@@ -363,7 +361,6 @@ void
 UpdateTooltip (CPUGraph * base)
 {
     char tooltip[32];
-    fprintf(stderr, "update tooltip\n");
     int pos = snprintf (tooltip, 32, "Usage: %d%%", base->m_CpuData[0].load*100/CPU_SCALE);
     if( base->m_CpuData[0].scalCurFreq )
       snprintf (tooltip+pos, 32-pos, " (%d MHz)", base->m_CpuData[0].scalCurFreq/1000);
@@ -793,11 +790,9 @@ CreateOptions (XfcePanelPlugin *plugin, CPUGraph *base)
 gboolean
 UpdateCPU (CPUGraph * base)
 {
-    //fprintf(stderr,"update cpu\n");
     gint i;
     base->m_CpuData = cpuData_read();
     for(i=0; i<base->nrCores; i++){
-      //fprintf(stderr,"bar load = %f\n",(gdouble)base->m_CpuData[i+1].load);
       gtk_progress_bar_set_fraction(
                                     GTK_PROGRESS_BAR(base->m_pBar[i]),
                                     (gdouble)base->m_CpuData[i+1].load/CPU_SCALE);
@@ -825,7 +820,6 @@ UpdateCPU (CPUGraph * base)
                 , base->m_History
                 , (base->m_Values*2-1)*sizeof(int));
     }
-    fprintf(stderr,"cpu data load %f\n",base->m_CpuData[0].load);
     base->m_History[0] = (long)base->m_CpuData[0].load;
     base->m_History[base->m_Values] = base->m_CpuData[0].scalCurFreq;
 

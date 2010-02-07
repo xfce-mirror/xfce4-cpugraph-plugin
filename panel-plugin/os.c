@@ -24,7 +24,6 @@ void cpuData_free(){
 
 #if defined (__linux__)
 int cpuData_init(){
-  //fprintf(stderr,"cpuData_init\n");
   FILE *fstat = NULL;
   char cpuStr[PROCMAXLNLEN];
   int i, cpuNr = -1;
@@ -56,7 +55,6 @@ int cpuData_init(){
 }
 
 CpuData *cpuData_read(){
-  //fprintf(stderr,"cpuData_read\n");
   FILE *fStat = NULL;
 	char cpuStr[PROCMAXLNLEN];
 	unsigned long user, nice, system, idle, used, total;
