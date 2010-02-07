@@ -87,7 +87,6 @@ CpuData *cpuData_read(){
 		}
 		cpudata[cpuNr].pUsed = used;
 		cpudata[cpuNr].pTotal = total;
-    setFrequencyScaling(cpuNr);
 		cpuNr++;
   }
 	while((cpuNr < nrCpus) && (strncmp(cpuStr, "cpu", 3) == 0));
@@ -96,49 +95,6 @@ CpuData *cpuData_read(){
 
   return cpudata;
 }
-
-/* read frequency value for the cpu N (cpuId) */
-void setFrequencyScaling(int cpuId){
-  //fprintf(stderr,"set frequency scaling\n");
-  char *fileName;
-  if( -1 != cpudata[cpuId].scalMaxFreq){
-    //fprintf(stderr,"read current frequence\n");
-    FILE *fp;
-    if( cpudata[cpuId].scalMaxFreq ){
-      if(sscanf(fileName, "%s%i%s", SYS_DEVICE, cpuId, SCAL_CUR_FREQ)){
-        fp = fopen(fileName, "r");
-        if( NULL != fp ){
-          fscanf(fp, "%d", &cpudata[cpuId].scalCurFreq);
-          fclose(fp);
-        }
-      }
-    } else {
-      cpudata[cpuId].scalMaxFreq = -1;
-      if(sscanf(fileName, "%s%i%s", SYS_DEVICE, cpuId, SCAL_MIN_FREQ)){
-        FILE *fp;
-        fp = fopen(fileName, "r");
-        if( NULL != fp ){
-          if (1 == fscanf(fp, "%d", &cpudata[cpuId].scalMinFreq) ){
-            fclose(fp);
-            free(fileName);
-            if(sscanf(fileName, "%s%i%s", SYS_DEVICE, cpuId, SCAL_MAX_FREQ)){
-              fp = fopen(fileName, "r");
-              if( NULL != fp){
-                fscanf(fp, "%d", &cpudata[cpuId].scalMaxFreq);
-                if( cpudata[cpuId].scalMaxFreq < 1 ) cpudata[cpuId].scalMaxFreq = -1;
-                fclose(fp);
-              }
-            }
-          } else {
-            fclose(fp);
-          }
-        }
-      }
-    }
-    free(fileName);
-  }
-}
-
 
 #elif defined (__FreeBSD__)
 void cpuData_init(){
