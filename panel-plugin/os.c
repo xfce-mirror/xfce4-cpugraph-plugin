@@ -16,6 +16,8 @@
 CpuData *cpudata = NULL;
 int nrCpus = 0;
 
+static int DetectCPUNumber();
+
 void cpuData_free()
 {
 	g_free( cpudata );
@@ -23,28 +25,18 @@ void cpuData_free()
 	nrCpus = 0;
 }
 
-#if defined (__linux__)
 int cpuData_init()
 {
-	FILE *fstat = NULL;
-	char cpuStr[PROCMAXLNLEN];
 	int i, cpuNr = -1;
+
 	/* Check if previously initalized */
 	if( cpudata != NULL )
 		return -2;
 
-	/* Open proc stat file */
-	if( !(fstat = fopen( PROC_STAT, "r" )) )
+	cpuNr = DetectCPUNumber();
+	if( cpuNr < 1 )
 		return -1;
 
-	/* Read each cpu line at time */
-	do
-	{
-		if( !fgets( cpuStr, PROCMAXLNLEN, fstat ) )
-			return cpuNr;
-		cpuNr++;
-	}
-	while( strncmp( cpuStr, "cpu", 3 ) == 0 );
 	/* Alloc storage for cpu data stuff */
 	cpudata = (CpuData *) g_malloc0( cpuNr * sizeof( CpuData ) );
 
@@ -56,8 +48,28 @@ int cpuData_init()
 		cpudata[i].scalMaxFreq = -1;
 	}
 
-	fclose( fstat );
 	return nrCpus = cpuNr;
+}
+
+#if defined (__linux__)
+static int DetectCPUNumber()
+{
+	int cpuNr= -1;
+	FILE *fstat = NULL;
+	char cpuStr[PROCMAXLNLEN];
+	/* Open proc stat file */
+	if( !(fstat = fopen( PROC_STAT, "r" )) )
+		return -1;
+
+	/* Read each cpu line at time */
+	do
+	{
+		if( !fgets( cpuStr, PROCMAXLNLEN, fstat ) )
+			return cpuNr;
+		cpuNr++;
+	} while( strncmp( cpuStr, "cpu", 3 ) == 0 );
+	fclose( fstat );
+	return cpuNr;
 }
 
 CpuData *cpuData_read()
@@ -106,29 +118,9 @@ CpuData *cpuData_read()
 }
 
 #elif defined (__FreeBSD__)
-void cpuData_init()
+static int DetectCPUNumber()
 {
-	int i, cpuNr = -1;
-
-	/* Check if previously initalized */
-	if( cpudata != NULL )
-		return -2;
-
-	cpuNr = 1;
-
-	/* Alloc storage for cpu data stuff */
-	cpudata = (CpuData *) g_malloc0( cpuNr * sizeof( CpuData ) );
-
-	/* init frequency */
-	for( i=cpuNr-1; i>=0; i-- )
-	{
-		cpudata[i].scalCurFreq = 0;
-		cpudata[i].scalMinFreq = 0;
-		cpudata[i].scalMaxFreq = -1;
-	}
-
-	fclose( fstat );
-	return nrCpus = cpuNr;
+	return 1;
 }
 
 CpuData *cpuData_read()
@@ -166,31 +158,10 @@ CpuData *cpuData_read()
 }
 
 #elif defined (__NetBSD__)
-void cpuData_init()
+static int DetectCPUNumber()
 {
-	int i, cpuNr = -1;
-
-	/* Check if previously initalized */
-	if( cpudata != NULL )
-		return -2;
-
-	cpuNr = 1;
-
-	/* Alloc storage for cpu data stuff */
-	cpudata = (CpuData *) g_malloc0( cpuNr * sizeof( CpuData ) );
-
-	/* init frequency */
-	for( i=cpuNr-1; i>=0; i-- )
-	{
-		cpudata[i].scalCurFreq = 0;
-		cpudata[i].scalMinFreq = 0;
-		cpudata[i].scalMaxFreq = -1;
-	}
-
-	fclose( fstat );
-	return nrCpus = cpuNr;
+	return 1;
 }
-
 
 CpuData *cpuData_read()
 {
@@ -227,31 +198,10 @@ CpuData *cpuData_read()
 }
 
 #elif defined (__OpenBSD_)
-void cpuData_init()
+static int DetectCPUNumber()
 {
-	int i, cpuNr = -1;
-
-	/* Check if previously initalized */
-	if( cpudata != NULL )
-		return -2;
-
-	cpuNr = 1;
-
-	/* Alloc storage for cpu data stuff */
-	cpudata = (CpuData *) g_malloc0( cpuNr, sizeof( CpuData ) );
-
-	/* init frequency */
-	for( i=cpuNr-1; i>=0; i-- )
-	{
-		cpudata[i].scalCurFreq = 0;
-		cpudata[i].scalMinFreq = 0;
-		cpudata[i].scalMaxFreq = -1;
-	}
-
-	fclose( fstat );
-	return nrCpus = cpuNr;
+	return 1;
 }
-
 
 CpuData *cpuData_read()
 {
