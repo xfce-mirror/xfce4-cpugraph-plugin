@@ -23,6 +23,11 @@
 
 #include "mode.h"
 
+guint16 _lerp( double t, guint16 a, guint16 b )
+{
+	return (guint16) (a + t * (b - a));
+}
+
 /*** MODE 0 : Normal ***/
 void drawGraphModeNormal( CPUGraph *base, GdkGC *fg1, GtkWidget *da, int w, int h )
 {

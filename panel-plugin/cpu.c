@@ -1,11 +1,6 @@
 #include "cpu.h"
 #include "mode.h"
 
-guint16 _lerp( double t, guint16 a, guint16 b )
-{
-	return (guint16) (a + t * (b - a));
-}
-
 static void cpugraph_construct( XfcePanelPlugin *plugin )
 {
 	CPUGraph *base;
