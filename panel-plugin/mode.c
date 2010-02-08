@@ -23,9 +23,18 @@
 
 #include "mode.h"
 
-guint16 _lerp( double t, guint16 a, guint16 b )
+static guint16 _lerp( double t, guint16 a, guint16 b )
 {
 	return (guint16) (a + t * (b - a));
+}
+
+static void MixAndApplyColors( double ratio, GdkColor *color1, GdkColor *color2, GdkGC *target )
+{
+	GdkColor color;
+	color.red = _lerp (ratio, color1->red, color2->red);
+	color.green = _lerp (ratio, color1->green, color2->green);
+	color.blue = _lerp (ratio, color1->blue, color2->blue);
+	gdk_gc_set_rgb_fg_color( target, &color );
 }
 
 /*** MODE 0 : Normal ***/
@@ -50,17 +59,10 @@ void drawGraphModeNormal( CPUGraph *base, GdkGC *fg1, GtkWidget *da, int w, int 
 		}
 		else if( base->m_ColorMode == 3 ) /* cpu freq. based */
 		{
-			GdkColor color;
 			double t = (double) (base->m_History[base->m_Values+ w - x] - base->m_CpuData[0].scalMinFreq)
 				/ (base->m_CpuData[0].scalMaxFreq - base->m_CpuData[0].scalMinFreq);
 
-			color.red = _lerp (t, base->m_ForeGround1.red,
-					base->m_ForeGround2.red);
-			color.green = _lerp (t, base->m_ForeGround1.green,
-					base->m_ForeGround2.green);
-			color.blue = _lerp (t, base->m_ForeGround1.blue,
-					base->m_ForeGround2.blue);
-			gdk_gc_set_rgb_fg_color( fg1, &color );
+			MixAndApplyColors( t, &base->m_ForeGround1, &base->m_ForeGround2, fg1);
 
 			if( base->m_Frame )
 				gdk_draw_line( da->window, fg1 , x+1, h+1-usage, x+1, h );
@@ -76,14 +78,10 @@ void drawGraphModeNormal( CPUGraph *base, GdkGC *fg1, GtkWidget *da, int w, int 
 			{
 				if( base->m_ColorMode > 0 )
 				{
-					GdkColor color;
 					double t = (base->m_ColorMode == 1) ?
 					           (tmp / (double) (h)) :
 					           (tmp / (double) (length));
-					color.red = _lerp( t, base->m_ForeGround1.red, base->m_ForeGround2.red );
-					color.green = _lerp( t, base->m_ForeGround1.green, base->m_ForeGround2.green );
-					color.blue = _lerp( t, base->m_ForeGround1.blue, base->m_ForeGround2.blue );
-					gdk_gc_set_rgb_fg_color( fg1, &color );
+					MixAndApplyColors( t, &base->m_ForeGround1, &base->m_ForeGround2, fg1);
 				}
 				gdk_draw_point( da->window, fg1, x, y );
 			}
@@ -112,14 +110,10 @@ void drawGraphModeLED( CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, in
 		{
 			if( base->m_ColorMode > 0 )
 			{
-				GdkColor color;
 				double t = (base->m_ColorMode == 1) ?
 				           (tmp / nry) :
 				           (tmp / limit);
-				color.red = _lerp( t, base->m_ForeGround2.red, base->m_ForeGround3.red );
-				color.green = _lerp( t, base->m_ForeGround2.green, base->m_ForeGround3.green );
-				color.blue = _lerp( t, base->m_ForeGround2.blue, base->m_ForeGround3.blue );
-				gdk_gc_set_rgb_fg_color( fg2, &color );
+				MixAndApplyColors( t, &base->m_ForeGround2, &base->m_ForeGround3, fg2);
 				tmp++;
 			}
 			gdk_draw_rectangle (da->window,
@@ -142,14 +136,10 @@ void drawGraphModeNoHistory( CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *
 	{
 		if( base->m_ColorMode > 0 )
 		{
-			GdkColor color;
 			double t = (base->m_ColorMode == 1) ?
 			           (tmp / (double) (h)) :
 			           (tmp / (double) (length));
-			color.red = _lerp( t, base->m_ForeGround1.red, base->m_ForeGround2.red );
-			color.green = _lerp( t, base->m_ForeGround1.green, base->m_ForeGround2.green );
-			color.blue = _lerp( t, base->m_ForeGround1.blue, base->m_ForeGround2.blue );
-			gdk_gc_set_rgb_fg_color( fg2, &color );
+			MixAndApplyColors( t, &base->m_ForeGround1, &base->m_ForeGround2, fg2);
 			tmp++;
 		}
 		gdk_draw_line (da->window,
