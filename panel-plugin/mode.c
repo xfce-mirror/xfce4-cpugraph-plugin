@@ -37,7 +37,6 @@ static void MixAndApplyColors( double ratio, GdkColor *color1, GdkColor *color2,
 	gdk_gc_set_rgb_fg_color( target, &color );
 }
 
-/*** MODE 0 : Normal ***/
 void drawGraphModeNormal( CPUGraph *base, GdkGC *fg1, GtkWidget *da, int w, int h )
 {
 	int x, y;
@@ -89,8 +88,6 @@ void drawGraphModeNormal( CPUGraph *base, GdkGC *fg1, GtkWidget *da, int w, int 
 	}
 }
 
-
-/*** MODE 1 : LED ***/
 void drawGraphModeLED( CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w, int h )
 {
 	int nrx = (int)((w + 1) / 3.0);
@@ -124,7 +121,6 @@ void drawGraphModeLED( CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, in
 	}
 }
 
-/*** MODE 2 : NoHistory ***/
 void drawGraphModeNoHistory( CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w, int h )
 {
 	int y;
