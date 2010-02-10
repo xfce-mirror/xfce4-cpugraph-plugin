@@ -111,14 +111,11 @@ void DrawAreaExposeEvent( GtkWidget *da, GdkEventExpose *event, gpointer data );
 void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base );
 void SetOrientation( XfcePanelPlugin *plugin, GtkOrientation orientation, CPUGraph *base );
 void SetHistorySize( CPUGraph *base, int size );
-void SetRealGeometry( CPUGraph *base );
-
 
 void ChangeColor1( GtkButton *button, CPUGraph *base );
 void ChangeColor2( GtkButton *button, CPUGraph *base );
 void ChangeColor3( GtkButton *button, CPUGraph *base );
 void ChangeColor4( GtkButton *button, CPUGraph *base );
-void ChangeColor5( GtkButton *button, CPUGraph *base );
 void ChangeColor( int color, CPUGraph *base );
 void SpinChange( GtkSpinButton *sb, int *value );
 void UpdateChange( GtkOptionMenu *om, CPUGraph *base );
