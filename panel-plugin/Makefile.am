@@ -14,7 +14,11 @@ xfce4_cpugraph_plugin_SOURCES =					\
 	cpu.c							\
 	cpu.h							\
 	os.c							\
-	os.h
+	os.h                                                    \
+	properties.c                                            \
+	settings.c                                              \
+	actions.c                                               \
+	actions.h
 
 # .desktop file
 #
