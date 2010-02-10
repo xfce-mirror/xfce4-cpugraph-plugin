@@ -1,9 +1,22 @@
 #include <actions.h>
 
+static void SetupUpdateIntervalOption( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base );
+static void SetupWidthOption( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, XfcePanelPlugin *plugin, CPUGraph *base );
+static void SetupTimeScaleOption( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base );
+static void SetupFrameOption( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base );
+static void SetupAssociateCommandOption( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base );
+static void SetupForeground1Option( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base );
+static void SetupForeground2Option( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base );
+static void SetupForeground3Option( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base );
+static void SetupBackgroundOption( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base );
+static void SetupModesOption( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base );
+static void SetupColormodeOption( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base );
+
+
 void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base )
 {
 	GtkWidget *dlg, *header;
-	GtkBox *vbox, *vbox2, *hbox;
+	GtkBox *vbox, *vbox2;
 	GtkWidget *label;
 	GtkSizeGroup *sg;
 	SOptions *op = &base->m_Options;
@@ -36,7 +49,49 @@ void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base )
 
 	sg = gtk_size_group_new( GTK_SIZE_GROUP_HORIZONTAL );
 
-	/* Update Interval */
+	SetupUpdateIntervalOption( vbox, sg, op, base );
+
+	SetupWidthOption( vbox, sg, op, plugin, base );
+
+	SetupTimeScaleOption( vbox, sg, op, base );
+
+	SetupFrameOption( vbox, sg, op, base );
+
+	SetupAssociateCommandOption( vbox, sg, op, base );
+
+	vbox2 = GTK_BOX( gtk_vbox_new( FALSE, BORDER ) );
+	gtk_widget_show( GTK_WIDGET( vbox2 ) );
+	gtk_container_set_border_width( GTK_CONTAINER( vbox2 ), 8 );
+
+	SetupForeground1Option( vbox2, sg, op, base );
+
+	SetupForeground2Option( vbox2, sg, op, base );
+
+	SetupForeground3Option( vbox2, sg, op, base );
+
+	SetupBackgroundOption( vbox2, sg, op, base );
+
+	SetupModesOption( vbox2, sg, op, base );
+
+	SetupColormodeOption( vbox2, sg, op, base );
+
+	op->m_Notebook = gtk_notebook_new();
+	gtk_container_set_border_width( GTK_CONTAINER( op->m_Notebook ), BORDER - 2 );
+	label = gtk_label_new( _("Appearance") );
+	gtk_notebook_append_page( GTK_NOTEBOOK( op->m_Notebook ), GTK_WIDGET( vbox2 ), GTK_WIDGET( label ) );
+	label = gtk_label_new( _("Advanced") );
+	gtk_notebook_append_page( GTK_NOTEBOOK( op->m_Notebook ), GTK_WIDGET( vbox ), GTK_WIDGET( label ) );
+	gtk_widget_show( op->m_Notebook );
+
+	gtk_box_pack_start( GTK_BOX( GTK_DIALOG( dlg )->vbox), GTK_WIDGET( op->m_Notebook ), TRUE, TRUE, 0 );
+
+	gtk_widget_show( dlg );
+}
+
+static void SetupUpdateIntervalOption( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base )
+{
+	GtkBox *hbox;
+	GtkWidget *label;
 
 	hbox = GTK_BOX( gtk_hbox_new( FALSE, BORDER ) );
 	gtk_widget_show( GTK_WIDGET( hbox ) );
@@ -73,8 +128,12 @@ void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base )
 	gtk_option_menu_set_history( GTK_OPTION_MENU( op->m_UpdateOption ), base->m_UpdateInterval );
 
 	g_signal_connect( op->m_UpdateOption, "changed", G_CALLBACK( UpdateChange ), base );
+}
 
-	/* Width */
+static void SetupWidthOption( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, XfcePanelPlugin *plugin, CPUGraph *base )
+{
+	GtkBox *hbox;
+	GtkWidget *label;
 
 	hbox = GTK_BOX( gtk_hbox_new( FALSE, BORDER ) );
 	gtk_widget_show( GTK_WIDGET( hbox ) );
@@ -94,8 +153,12 @@ void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base )
 	gtk_widget_show( op->m_Width );
 	gtk_box_pack_start( GTK_BOX( hbox ), GTK_WIDGET( op->m_Width ), FALSE, FALSE, 0 );
 	g_signal_connect( op->m_Width, "value-changed", G_CALLBACK( SpinChange ), &base->m_Width );
+}
 
-	/* TimeScale */
+static void SetupTimeScaleOption( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base )
+{
+	GtkBox *hbox;
+
 	hbox = GTK_BOX( gtk_hbox_new( FALSE, BORDER ) );
 	gtk_widget_show( GTK_WIDGET( hbox ) );
 	gtk_box_pack_start( GTK_BOX( vbox ), GTK_WIDGET( hbox ), FALSE, FALSE, 0 );
@@ -106,8 +169,11 @@ void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base )
 	gtk_box_pack_start( GTK_BOX( hbox ), GTK_WIDGET( op->m_TimeScale ), FALSE, FALSE, 0 );
 	g_signal_connect( op->m_TimeScale, "toggled", G_CALLBACK( TimeScaleChange ), base );
 	gtk_size_group_add_widget( sg, op->m_TimeScale );
+}
 
-	/* Frame */
+static void SetupFrameOption( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base )
+{
+	GtkBox *hbox;
 
 	hbox = GTK_BOX( gtk_hbox_new( FALSE, BORDER ) );
 	gtk_widget_show( GTK_WIDGET( hbox ) );
@@ -119,12 +185,12 @@ void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base )
 	gtk_box_pack_start( GTK_BOX( hbox ), GTK_WIDGET( op->m_GraphFrame ), FALSE, FALSE, 0 );
 	g_signal_connect( op->m_GraphFrame, "toggled", G_CALLBACK( FrameChange ), base );
 	gtk_size_group_add_widget( sg, op->m_GraphFrame );
+}
 
-	vbox2 = GTK_BOX( gtk_vbox_new( FALSE, BORDER ) );
-	gtk_widget_show( GTK_WIDGET( vbox2 ) );
-	gtk_container_set_border_width( GTK_CONTAINER( vbox2 ), 8 );
-
-	/* Associate Command */
+static void SetupAssociateCommandOption( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base )
+{
+	GtkBox *hbox;
+	GtkWidget *label;
 
 	hbox = GTK_BOX( gtk_hbox_new( FALSE, BORDER ) );
 	gtk_widget_show( GTK_WIDGET( hbox ) );
@@ -140,12 +206,16 @@ void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base )
 	gtk_widget_show( op->m_AssociateCommand );
 	gtk_box_pack_start( GTK_BOX( hbox ), GTK_WIDGET( op->m_AssociateCommand ), FALSE, FALSE, 0 );
 	g_signal_connect( op->m_AssociateCommand, "changed", G_CALLBACK( AssociateCommandChange ), base );
+}
 
-	/* Foreground 1 */
+static void SetupForeground1Option( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base )
+{
+	GtkBox *hbox;
+	GtkWidget *label;
 
 	hbox = GTK_BOX( gtk_hbox_new( FALSE, BORDER ) );
 	gtk_widget_show( GTK_WIDGET( hbox ) );
-	gtk_box_pack_start( GTK_BOX( vbox2 ), GTK_WIDGET( hbox ), FALSE, FALSE, 0 );
+	gtk_box_pack_start( GTK_BOX( vbox ), GTK_WIDGET( hbox ), FALSE, FALSE, 0 );
 
 	label = gtk_label_new( _("Color 1:") );
 	gtk_misc_set_alignment( GTK_MISC( label ), 0, 0.5 );
@@ -164,12 +234,16 @@ void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base )
 	gtk_box_pack_start( GTK_BOX( hbox ), GTK_WIDGET( op->m_FG1 ), FALSE, FALSE, 0 );
 
 	g_signal_connect( op->m_FG1, "clicked", G_CALLBACK( ChangeColor1 ), base );
+}
 
-	/* Foreground2 */
+static void SetupForeground2Option( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base )
+{
+	GtkBox *hbox;
+	GtkWidget *label;
 
 	hbox = GTK_BOX( gtk_hbox_new( FALSE, BORDER ) );
 	gtk_widget_show( GTK_WIDGET( hbox ) );
-	gtk_box_pack_start( GTK_BOX( vbox2 ), GTK_WIDGET( hbox ), FALSE, FALSE, 0 );
+	gtk_box_pack_start( GTK_BOX( vbox ), GTK_WIDGET( hbox ), FALSE, FALSE, 0 );
 
 	label = gtk_label_new( _("Color 2:") );
 	gtk_misc_set_alignment( GTK_MISC( label ), 0, 0.5 );
@@ -191,12 +265,16 @@ void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base )
 
 	if( base->m_Mode == 1 )
 		gtk_widget_set_sensitive( GTK_WIDGET( base->m_Options.m_FG2 ), TRUE );
+}
 
-	/* Foreground3 */
+static void SetupForeground3Option( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base )
+{
+	GtkBox *hbox;
+	GtkWidget *label;
 
 	hbox = GTK_BOX( gtk_hbox_new( FALSE, BORDER ) );
 	gtk_widget_show( GTK_WIDGET( hbox ) );
-	gtk_box_pack_start( GTK_BOX( vbox2 ), GTK_WIDGET( hbox ), FALSE, FALSE, 0 );
+	gtk_box_pack_start( GTK_BOX( vbox ), GTK_WIDGET( hbox ), FALSE, FALSE, 0 );
 
 	label = gtk_label_new( _("Color 3:") );
 	gtk_misc_set_alignment( GTK_MISC( label ), 0, 0.5 );
@@ -218,12 +296,16 @@ void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base )
 	else
 		gtk_widget_set_sensitive( GTK_WIDGET( base->m_Options.m_FG3 ), TRUE );
 
+}
 
-	/* Background */
+static void SetupBackgroundOption( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base )
+{
+	GtkBox *hbox;
+	GtkWidget *label;
 
 	hbox = GTK_BOX( gtk_hbox_new( FALSE, BORDER ) );
 	gtk_widget_show( GTK_WIDGET( hbox ) );
-	gtk_box_pack_start( GTK_BOX( vbox2 ), GTK_WIDGET( hbox ), FALSE, FALSE, 0 );
+	gtk_box_pack_start( GTK_BOX( vbox ), GTK_WIDGET( hbox ), FALSE, FALSE, 0 );
 
 	label = gtk_label_new( _("Background:") );
 	gtk_misc_set_alignment( GTK_MISC( label ), 0, 0.5 );
@@ -242,12 +324,16 @@ void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base )
 	gtk_box_pack_start( GTK_BOX( hbox ), GTK_WIDGET( op->m_BG ), FALSE, FALSE, 0 );
 
 	g_signal_connect( op->m_BG, "clicked", G_CALLBACK( ChangeColor3 ), base );
+}
 
-	/* Modes */
+static void SetupModesOption( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base )
+{
+	GtkBox *hbox;
+	GtkWidget *label;
 
 	hbox = GTK_BOX( gtk_hbox_new( FALSE, BORDER ) );
 	gtk_widget_show( GTK_WIDGET( hbox ) );
-	gtk_box_pack_start( GTK_BOX( vbox2 ), GTK_WIDGET( hbox ), FALSE, FALSE, 0 );
+	gtk_box_pack_start( GTK_BOX( vbox ), GTK_WIDGET( hbox ), FALSE, FALSE, 0 );
 
 	label = gtk_label_new( _("Mode:") );
 	gtk_misc_set_alignment( GTK_MISC( label ), 0, 0.5 );
@@ -277,12 +363,16 @@ void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base )
 	gtk_option_menu_set_history( GTK_OPTION_MENU( op->m_OptionMenu ), base->m_Mode );
 
 	g_signal_connect( op->m_OptionMenu, "changed", G_CALLBACK( ModeChange ), base );
+}
 
-	/* Color mode */
+static void SetupColormodeOption( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base )
+{
+	GtkBox *hbox;
+	GtkWidget *label;
 
 	hbox = GTK_BOX( gtk_hbox_new( FALSE, BORDER ) );
 	gtk_widget_show( GTK_WIDGET( hbox ) );
-	gtk_box_pack_start( GTK_BOX( vbox2 ), GTK_WIDGET( hbox ), FALSE, FALSE, 0 );
+	gtk_box_pack_start( GTK_BOX( vbox ), GTK_WIDGET( hbox ), FALSE, FALSE, 0 );
 	label = gtk_label_new( _("Color mode: ") );
 	gtk_misc_set_alignment( GTK_MISC( label ), 0, 0.5 );
 	gtk_size_group_add_widget( sg, label );
@@ -317,16 +407,4 @@ void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base )
 	g_signal_connect( op->m_ModeOption, "changed", G_CALLBACK( ColorModeChange ), base );
 
 	gtk_widget_show_all( GTK_WIDGET( hbox ) );
-
-	op->m_Notebook = gtk_notebook_new();
-	gtk_container_set_border_width( GTK_CONTAINER( op->m_Notebook ), BORDER - 2 );
-	label = gtk_label_new( _("Appearance") );
-	gtk_notebook_append_page( GTK_NOTEBOOK( op->m_Notebook ), GTK_WIDGET( vbox2 ), GTK_WIDGET( label ) );
-	label = gtk_label_new( _("Advanced") );
-	gtk_notebook_append_page( GTK_NOTEBOOK( op->m_Notebook ), GTK_WIDGET( vbox ), GTK_WIDGET( label ) );
-	gtk_widget_show( op->m_Notebook );
-
-	gtk_box_pack_start( GTK_BOX( GTK_DIALOG( dlg )->vbox), GTK_WIDGET( op->m_Notebook ), TRUE, TRUE, 0 );
-
-	gtk_widget_show( dlg );
 }
