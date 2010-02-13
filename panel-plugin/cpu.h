@@ -26,19 +26,6 @@
 
 typedef struct
 {
-	GtkWidget *m_Notebook;
-
-	/* Update */
-	GtkWidget *m_UpdateOption;
-	GtkWidget *m_UpdateMenu;
-	GtkWidget *m_UpdateMenuItem;
-
-	GtkWidget *m_Width;
-	GtkWidget *m_Height;
-	GtkWidget *m_GraphFrame;
-	GtkWidget *m_TimeScale;
-	GtkWidget *m_AssociateCommand;
-
 	GtkWidget *m_FG1;
 	GtkWidget *m_FG2;
 	GtkWidget *m_FG3;
@@ -49,18 +36,6 @@ typedef struct
 	GtkWidget *m_ColorDA3;
 	GtkWidget *m_ColorDA4;
 	GtkWidget *m_ColorDA5;
-
-	GtkWidget *m_FrameApperance;
-	GtkWidget *m_FrameColor;
-	GtkWidget *m_FrameMode;
-
-	GtkWidget *m_ModeOption;
-	GtkWidget *m_ModeMenu;
-	GtkWidget *m_ModeMenuItem;
-
-	GtkWidget *m_OptionMenu;
-	GtkWidget *m_Menu;
-	GtkWidget *m_MenuItem;
 } SOptions;
 
 typedef struct
