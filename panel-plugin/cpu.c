@@ -170,10 +170,10 @@ void SetOrientation( XfcePanelPlugin * plugin, GtkOrientation orientation, CPUGr
 
 void UpdateTooltip( CPUGraph * base )
 {
-	char tooltip[32];
-	int pos = snprintf( tooltip, 32, "Usage: %d%%", base->m_CpuData[0].load*100/CPU_SCALE );
+	gchar tooltip[32];
+	int pos = g_snprintf( tooltip, 32, "Usage: %d%%", (int)base->m_CpuData[0].load*100/CPU_SCALE );
 	if( base->m_CpuData[0].scalCurFreq )
-		snprintf( tooltip+pos, 32-pos, " (%d MHz)", base->m_CpuData[0].scalCurFreq/1000 );
+		g_snprintf( tooltip+pos, 32-pos, " (%d MHz)", base->m_CpuData[0].scalCurFreq/1000 );
 	gtk_tooltips_set_tip( GTK_TOOLTIPS( base->m_Tooltip ), base->m_FrameWidget->parent, tooltip, NULL );
 }
 
