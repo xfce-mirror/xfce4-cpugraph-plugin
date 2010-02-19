@@ -44,8 +44,6 @@ void Kill( XfcePanelPlugin * plugin, CPUGraph * base )
 
 	g_free( base->m_History );
 
-	g_object_unref( base->m_Tooltip );
-
 	g_free( base->m_AssociateCommand );
 	g_free( base );
 }
@@ -118,10 +116,6 @@ CPUGraph * CreateControl( XfcePanelPlugin * plugin )
 
 	xfce_panel_plugin_add_action_widget( plugin, base->m_DrawArea );
 
-	base->m_Tooltip = gtk_tooltips_new();
-	g_object_ref( base->m_Tooltip );
-	gtk_object_sink( GTK_OBJECT( base->m_Tooltip ) );
-
 	g_signal_connect_after( base->m_DrawArea, "expose-event", G_CALLBACK( DrawAreaExposeEvent ), base );
 
 	return base;
@@ -174,7 +168,7 @@ void UpdateTooltip( CPUGraph * base )
 	int pos = g_snprintf( tooltip, 32, "Usage: %d%%", (int)base->m_CpuData[0].load*100/CPU_SCALE );
 	if( base->m_CpuData[0].scalCurFreq )
 		g_snprintf( tooltip+pos, 32-pos, " (%d MHz)", base->m_CpuData[0].scalCurFreq/1000 );
-	gtk_tooltips_set_tip( GTK_TOOLTIPS( base->m_Tooltip ), base->m_FrameWidget->parent, tooltip, NULL );
+	gtk_widget_set_tooltip_text( base->m_FrameWidget, tooltip );
 }
 
 gboolean SetSize( XfcePanelPlugin *plugin, int size, CPUGraph *base )

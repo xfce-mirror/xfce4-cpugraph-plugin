@@ -63,8 +63,6 @@ typedef struct
 	GdkColor m_ForeGround3;
 	GdkColor m_BackGround; // Background color.
 
-	GtkTooltips *m_Tooltip; // Eventual tooltip.
-
 	guint m_TimeoutID; // Timeout ID for the tooltip;
 	long *m_History;
 	int m_Values;
