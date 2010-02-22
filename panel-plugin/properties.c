@@ -293,7 +293,8 @@ static void SetupModesOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base )
 {
 	const char *items[] = { _("Normal"),
 	                        _("LED"),
-	                        _("No history")
+	                        _("No history"),
+				_("Grid")
 	                      };
 	size_t nb_items = sizeof( items ) / sizeof( char* );
 

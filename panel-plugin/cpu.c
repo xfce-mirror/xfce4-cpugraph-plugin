@@ -265,6 +265,10 @@ void DrawGraph( CPUGraph * base )
 	{
 		drawGraphModeNoHistory( base, fg1, fg2, da, w, h );
 	}
+	else if( base->m_Mode == 3 )
+	{
+		drawGraphGrid(base, fg1, fg2, da, w, h);
+	}
 
 	g_object_unref( fg2 );
 	g_object_unref( fg1 );

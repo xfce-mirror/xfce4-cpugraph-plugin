@@ -143,3 +143,41 @@ void drawGraphModeNoHistory( CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *
 				0, y, w, y);
 	}
 }
+
+typedef struct
+{
+	long x;
+	long y;
+} point;
+
+void drawGraphGrid( CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w, int h )
+{
+	int nrx = w / 6.0;
+	int nry = h / 4.0;
+	int x, y;
+
+	point last, current;
+	last.x = -1;
+
+	/* draw grid */
+	gdk_gc_set_rgb_fg_color( fg1, &base->m_ForeGround1 );
+	for( x = nrx; x >= 0; x-- )
+	{
+		gdk_draw_line( da->window, fg1, x*6, 0, x*6, h );
+	}
+	for( y = nry; y>=0; y-- )
+	{
+		gdk_draw_line( da->window, fg1, 0, y*4, w, y*4 );
+	}
+
+	/* draw data */
+	gdk_gc_set_rgb_fg_color( fg2, &base->m_ForeGround2 );
+	for( x = w; x >= 0; x-- )
+	{
+		current.x = x;
+		current.y = ((h - 1)*(CPU_SCALE - base->m_History[w - x]))/CPU_SCALE;
+		if( last.x == -1 ) last = current;
+		gdk_draw_line( da->window, fg2, current.x, current.y, last.x, last.y );
+		last = current;
+	}
+}
