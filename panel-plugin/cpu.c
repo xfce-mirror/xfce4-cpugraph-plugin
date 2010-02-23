@@ -54,69 +54,40 @@ CPUGraph * CreateControl( XfcePanelPlugin * plugin )
 	gint i;
 	GtkWidget *frame, *ebox;
 	GtkOrientation orientation;
-	GtkProgressBarOrientation barOrientation;
 	CPUGraph *base = g_new0( CPUGraph, 1 );
+
+	orientation = xfce_panel_plugin_get_orientation(plugin);
+	if((base->nrCores = cpuData_init() - 1) < 0)
+		fprintf(stderr,"Cannot init cpu data !\n");
 
 	base->plugin = plugin;
 
 	ebox = gtk_event_box_new();
-	gtk_widget_show( ebox );
 	gtk_container_add( GTK_CONTAINER( plugin ), ebox );
-
-	orientation = xfce_panel_plugin_get_orientation(plugin);
-	if(orientation == GTK_ORIENTATION_HORIZONTAL)
-		barOrientation = GTK_PROGRESS_BOTTOM_TO_TOP;
-	else
-		barOrientation = GTK_PROGRESS_LEFT_TO_RIGHT;
+	xfce_panel_plugin_add_action_widget( plugin, ebox );
+	g_signal_connect( ebox, "button-press-event", G_CALLBACK( LaunchCommand ), base );
 
 	base->m_Box = xfce_hvbox_new(orientation, FALSE, 0);
-	gtk_widget_show(base->m_Box);
 	gtk_container_add(GTK_CONTAINER(ebox), base->m_Box);
-
-	gtk_container_set_border_width(GTK_CONTAINER(frame), BORDER / 2);
-
-
-	/* Multicore stuff */
-	if((base->nrCores = cpuData_init() - 1) < 0)
-		fprintf(stderr,"Cannot init cpu data !\n");
 
 	base->m_pBar = (GtkWidget **) g_malloc( sizeof( GtkWidget * ) * base->nrCores );
 
 	for(i=0; i<base->nrCores; i++) {
 		base->m_pBar[i] = GTK_WIDGET(gtk_progress_bar_new());
-		gtk_progress_bar_set_orientation(
-				GTK_PROGRESS_BAR(base->m_pBar[i]),
-				barOrientation);
-
-		gtk_box_pack_start(
-				GTK_BOX(base->m_Box),
-				base->m_pBar[i],
-				FALSE,
-				FALSE,
-				0);
-
-		gtk_widget_show(base->m_pBar[i]);
+		gtk_box_pack_start( GTK_BOX(base->m_Box), base->m_pBar[i], FALSE, FALSE, 0);
 	}
 
 	base->m_FrameWidget = frame = gtk_frame_new( NULL );
-	gtk_frame_set_shadow_type( GTK_FRAME( frame ), GTK_SHADOW_IN );
-
-	gtk_box_pack_start( GTK_BOX(base->m_Box), frame, TRUE, TRUE, 2);
-
-	gtk_widget_show( frame );
-
-	xfce_panel_plugin_add_action_widget( plugin, ebox );
-	g_signal_connect( ebox, "button-press-event", G_CALLBACK( LaunchCommand ), base );
+	gtk_box_pack_start( GTK_BOX(base->m_Box), frame, TRUE, TRUE, 0);
 
 	base->m_DrawArea = gtk_drawing_area_new();
-	gtk_widget_set_app_paintable( base->m_DrawArea, TRUE );
 	gtk_container_add( GTK_CONTAINER( frame ), GTK_WIDGET( base->m_DrawArea ) );
-	gtk_widget_show( base->m_DrawArea );
-
-
-	xfce_panel_plugin_add_action_widget( plugin, base->m_DrawArea );
-
 	g_signal_connect_after( base->m_DrawArea, "expose-event", G_CALLBACK( DrawAreaExposeEvent ), base );
+
+	SetOrientation(plugin, orientation, base);
+	UserSetSize( base );
+
+	gtk_widget_show_all(ebox);
 
 	return base;
 }
@@ -125,41 +96,20 @@ void SetOrientation( XfcePanelPlugin * plugin, GtkOrientation orientation, CPUGr
 {
 	GtkProgressBarOrientation barOrientation;
 	gpointer p_pBar[base->nrCores];
-	gpointer p_FrameWidget;
 	gint i; 
-	/* <-- Multicore stuff */
 
-	orientation = xfce_panel_plugin_get_orientation( plugin );
+	xfce_hvbox_set_orientation( XFCE_HVBOX( base->m_Box ), orientation );
+
 	if( orientation == GTK_ORIENTATION_HORIZONTAL )
 		barOrientation = GTK_PROGRESS_BOTTOM_TO_TOP;
 	else
 		barOrientation = GTK_PROGRESS_LEFT_TO_RIGHT;
 
-	/* Unpack progress bars */
-	for( i=0; i<base->nrCores; i++ )
-	{
-		/* reference progress bars to keep them alive */
-		p_pBar[i] = g_object_ref( base->m_pBar[i] );
-		gtk_container_remove( GTK_CONTAINER( base->m_Box ), GTK_WIDGET( base->m_pBar[i] ) );
-	}
-	p_FrameWidget = g_object_ref( base->m_FrameWidget );
-	gtk_container_remove( GTK_CONTAINER( base->m_Box ), GTK_WIDGET( base->m_FrameWidget ) );
-
-
-	xfce_hvbox_set_orientation( XFCE_HVBOX( base->m_Box ), orientation );
-
-	/* Pack progress bars again into hvbox */
 	for( i=0; i<base->nrCores; i++ )
 	{
 		gtk_progress_bar_set_orientation( GTK_PROGRESS_BAR( base->m_pBar[i] ), barOrientation );	
-		gtk_box_pack_start( GTK_BOX( base->m_Box ), base->m_pBar[i], FALSE, FALSE, 1 );
-		/* We dont need anymore this reference */
-		g_object_unref( p_pBar[i] );
 	}
-	gtk_box_pack_start( GTK_BOX( base->m_Box ), base->m_FrameWidget, TRUE, TRUE, 2 );
-	g_object_unref( p_FrameWidget );
-	UserSetSize( base );
-	gtk_widget_queue_draw( base->m_DrawArea );
+
 }
 
 void UpdateTooltip( CPUGraph * base )
