@@ -199,7 +199,6 @@ static void SetupAssociateCommandOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGrap
 	hbox = CreateOptionLine( vbox, sg, _("Associated command :") );
 
 	AssociateCommand = gtk_entry_new();
-	gtk_entry_set_max_length( GTK_ENTRY(AssociateCommand), 32 );
 	gtk_entry_set_text( GTK_ENTRY(AssociateCommand), base->m_AssociateCommand );
 	gtk_widget_show( AssociateCommand );
 	gtk_box_pack_start( GTK_BOX( hbox ), GTK_WIDGET( AssociateCommand ), FALSE, FALSE, 0 );
