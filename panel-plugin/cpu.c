@@ -247,3 +247,94 @@ gboolean LaunchCommand( GtkWidget*w,GdkEventButton *event, CPUGraph *base )
 	}
 	return FALSE;
 }
+
+void set_command( CPUGraph *base, const gchar *command )
+{
+	g_free (base->m_AssociateCommand );
+	base->m_AssociateCommand = g_strdup( command );
+}
+
+void set_frame( CPUGraph *base, gboolean frame )
+{
+	base->m_Frame = frame;
+	gtk_frame_set_shadow_type( GTK_FRAME( base->m_FrameWidget ), base->m_Frame ? GTK_SHADOW_IN : GTK_SHADOW_NONE );
+}
+
+void set_nonlinear_time( CPUGraph *base, gboolean nonlinear )
+{
+	base->m_TimeScale = nonlinear;
+}
+
+void set_update_rate( CPUGraph *base, int rate )
+{
+	int update;
+
+	base->m_UpdateInterval = rate;
+
+	if( base->m_TimeoutID )
+		g_source_remove( base->m_TimeoutID );
+	switch( base->m_UpdateInterval )
+	{
+		case 0:
+			update = 250;
+			break;
+		case 1:
+			update = 500;
+			break;
+		case 2:
+			update = 750;
+			break;
+		default:
+			update = 1000;
+	}
+	base->m_TimeoutID = g_timeout_add( update, (GtkFunction) UpdateCPU, base );
+}
+
+void set_width( CPUGraph *base, int width )
+{
+	base->m_Width = width;
+	int i;
+	base->m_History = (long *) g_realloc( base->m_History, 2 * width * sizeof( long ) );
+
+	base->m_CpuData = cpuData_read();
+	base->m_CpuData[0].pUsed = 0;
+	base->m_CpuData[0].pTotal = 0;
+	long usage = base->m_CpuData[0].load;
+	for( i = width - 1; i >= base->m_Values; i-- )
+	{
+		base->m_History[i] = usage;
+		base->m_History[i+width] = base->m_CpuData[0].scalCurFreq;
+	}
+	base->m_Values = width;
+	UserSetSize( base );
+}
+
+void set_color_mode( CPUGraph *base, int color_mode )
+{
+	base->m_ColorMode = color_mode;
+}
+
+void set_mode( CPUGraph *base, int mode )
+{
+	base->m_Mode = mode;
+}
+
+void set_foreground_color1( CPUGraph *base, GdkColor color )
+{
+	base->m_ForeGround1 = color;
+}
+
+void set_foreground_color2( CPUGraph *base, GdkColor color )
+{
+	base->m_ForeGround2 = color;
+}
+
+void set_foreground_color3( CPUGraph *base, GdkColor color )
+{
+	base->m_ForeGround3 = color;
+}
+
+void set_background_color( CPUGraph *base, GdkColor color )
+{
+	base->m_BackGround = color;
+}

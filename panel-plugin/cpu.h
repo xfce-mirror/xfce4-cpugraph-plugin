@@ -50,11 +50,11 @@ typedef struct
 	SOptions m_Options;
 
 	int m_UpdateInterval; // Number of ms between updates.
-	int m_TimeScale; // Wether to use non-linear time scale.
+	gboolean m_TimeScale; // Wether to use non-linear time scale.
 	int m_Width; // The width of the plugin.
 	int m_Mode; // Eventual mode of the plugin.
 	int m_ColorMode;
-	int m_Frame;
+	gboolean m_Frame;
 	gchar  *m_AssociateCommand;
 	guint nrCores; // Number of cores (not including total cpu)
 
@@ -85,4 +85,16 @@ void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base );
 void SetOrientation( XfcePanelPlugin *plugin, GtkOrientation orientation, CPUGraph *base );
 
 gboolean LaunchCommand( GtkWidget *w, GdkEventButton *event, CPUGraph *base );
+
+void set_command( CPUGraph *base, const gchar *command );
+void set_frame( CPUGraph *base, gboolean frame );
+void set_nonlinear_time( CPUGraph *base, gboolean nonlinear );
+void set_update_rate( CPUGraph *base, int rate );
+void set_width( CPUGraph *base, int width );
+void set_color_mode( CPUGraph *base, int color_mode );
+void set_mode( CPUGraph *base, int mode );
+void set_foreground_color1( CPUGraph *base, GdkColor color );
+void set_foreground_color2( CPUGraph *base, GdkColor color );
+void set_foreground_color3( CPUGraph *base, GdkColor color );
+void set_background_color( CPUGraph *base, GdkColor color );
 #endif

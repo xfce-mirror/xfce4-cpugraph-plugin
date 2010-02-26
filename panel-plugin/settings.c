@@ -1,35 +1,39 @@
-#include <actions.h>
+#include <cpu.h>
 
 void ReadSettings( XfcePanelPlugin * plugin, CPUGraph * base )
 {
 	const char *value;
 	char *file;
 	XfceRc *rc;
-	int update;
 
-	base->m_Width = 70;
+	int rate = 0;
+	gboolean nonlinear = FALSE;
+	int width = 70;
+	int mode = 0;
+	int color_mode = 0;
+	gboolean frame = FALSE;
+	const gchar  *associated_command = DEFAULT_COMMAND;
 
-	base->m_ForeGround1.red = 0;
-	base->m_ForeGround1.green = 65535;
-	base->m_ForeGround1.blue = 0;
+	GdkColor foreground1;
+	GdkColor foreground2;
+	GdkColor foreground3;
+	GdkColor background;
 
-	base->m_ForeGround2.red = 65535;
-	base->m_ForeGround2.green = 0;
-	base->m_ForeGround2.blue = 0;
+	foreground1.red = 0;
+	foreground1.green = 65535;
+	foreground1.blue = 0;
 
-	base->m_ForeGround3.red = 0;
-	base->m_ForeGround3.green = 0;
-	base->m_ForeGround3.blue = 65535;
+	foreground2.red = 65535;
+	foreground2.green = 0;
+	foreground2.blue = 0;
 
-	base->m_BackGround.red = 65535;
-	base->m_BackGround.green = 65535;
-	base->m_BackGround.blue = 65535;
+	foreground3.red = 0;
+	foreground3.green = 0;
+	foreground3.blue = 65535;
 
-	base->m_TimeScale = 0;
-	base->m_Frame = 0;
-	base->m_AssociateCommand = NULL;
-	base->m_ColorMode = 0;
-	base->m_Mode = 0;
+	background.red = 65535;
+	background.green = 65535;
+	background.blue = 65535;
 
 	if( (file = xfce_panel_plugin_lookup_rc_file( plugin )) != NULL )
 	{
@@ -38,76 +42,38 @@ void ReadSettings( XfcePanelPlugin * plugin, CPUGraph * base )
 
 		if( rc )
 		{
-			base->m_UpdateInterval =
-				xfce_rc_read_int_entry (rc, "UpdateInterval",
-						base->m_UpdateInterval);
-
-			base->m_TimeScale =
-				xfce_rc_read_int_entry (rc, "TimeScale",
-						base->m_TimeScale);
-
-			base->m_Width =
-				xfce_rc_read_int_entry( rc, "Width", base->m_Width );
-
-			base->m_Mode = xfce_rc_read_int_entry( rc, "Mode", base->m_Mode );
-
-			base->m_Frame =
-				xfce_rc_read_int_entry( rc, "Frame", base->m_Frame );
-
-			if( value = xfce_rc_read_entry( rc, "AssociateCommand", DEFAULT_COMMAND ) ) {
-				base->m_AssociateCommand = g_strdup(value);
-			}
-			else
-			{
-				base->m_AssociateCommand = g_strdup( DEFAULT_COMMAND );
-			}
-
-			base->m_ColorMode =
-				xfce_rc_read_int_entry( rc, "ColorMode", base->m_ColorMode );
+			rate =  xfce_rc_read_int_entry (rc, "UpdateInterval", rate );
+			nonlinear = xfce_rc_read_int_entry (rc, "TimeScale", nonlinear );
+			width = xfce_rc_read_int_entry( rc, "Width", width );
+			mode = xfce_rc_read_int_entry( rc, "Mode", mode );
+			color_mode = xfce_rc_read_int_entry( rc, "ColorMode", color_mode );
+			frame = xfce_rc_read_int_entry( rc, "Frame", frame );
+			associated_command = xfce_rc_read_entry( rc, "AssociateCommand", associated_command );
 
 			if( (value = xfce_rc_read_entry( rc, "Foreground1", NULL )) )
-			{
-				gdk_color_parse( value, &base->m_ForeGround1 );
-			}
+				gdk_color_parse( value, &foreground1 );
 			if( (value = xfce_rc_read_entry( rc, "Foreground2", NULL )) )
-			{
-				gdk_color_parse( value, &base->m_ForeGround2 );
-			}
-			if( (value = xfce_rc_read_entry( rc, "Background", NULL )) )
-			{
-				gdk_color_parse( value, &base->m_BackGround );
-			}
+				gdk_color_parse( value, &foreground2 );
 			if( (value = xfce_rc_read_entry( rc, "Foreground3", NULL )) )
-			{
-				gdk_color_parse( value, &base->m_ForeGround3 );
-			}
+				gdk_color_parse( value, &foreground3 );
+			if( (value = xfce_rc_read_entry( rc, "Background", NULL )) )
+				gdk_color_parse( value, &background );
 
 			xfce_rc_close( rc );
 		}
 	}
-	else
-	{
-		base->m_AssociateCommand = g_strdup( DEFAULT_COMMAND );
-	}
-	SetHistorySize( base, base->m_Width );
-	if( base->m_TimeoutID )
-		g_source_remove( base->m_TimeoutID );
-	switch( base->m_UpdateInterval )
-	{
-		case 0:
-			update = 250;
-			break;
-		case 1:
-			update = 500;
-			break;
-		case 2:
-			update = 750;
-			break;
-		default:
-			update = 1000;
-	}
-	base->m_TimeoutID = g_timeout_add( update, (GtkFunction) UpdateCPU, base );
-	gtk_frame_set_shadow_type( GTK_FRAME(base->m_FrameWidget ), base->m_Frame ? GTK_SHADOW_IN : GTK_SHADOW_NONE );
+
+	set_update_rate( base, rate );
+	set_nonlinear_time( base, nonlinear );
+	set_width( base, width );
+	set_mode( base,  mode );
+	set_color_mode( base, color_mode );
+	set_frame( base, frame );
+	set_command( base, associated_command );
+	set_foreground_color1( base, foreground1 );
+	set_foreground_color2( base, foreground2 );
+	set_foreground_color3( base, foreground3 );
+	set_background_color( base, background );
 }
 
 void WriteSettings( XfcePanelPlugin *plugin, CPUGraph *base )

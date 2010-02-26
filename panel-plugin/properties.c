@@ -188,7 +188,7 @@ static void SetupWidthOption( GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *p
 	gtk_spin_button_set_value( GTK_SPIN_BUTTON( Size ), base->m_Width );
 	gtk_widget_show( Size );
 	gtk_box_pack_start( GTK_BOX( hbox ), GTK_WIDGET( Size ), FALSE, FALSE, 0 );
-	g_signal_connect( Size, "value-changed", G_CALLBACK( SpinChange ), &base->m_Width );
+	g_signal_connect( Size, "value-changed", G_CALLBACK( WidthChange ), base );
 }
 
 static void SetupAssociateCommandOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base )
