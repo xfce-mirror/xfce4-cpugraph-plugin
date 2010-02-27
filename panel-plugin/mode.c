@@ -57,16 +57,7 @@ void drawGraphModeNormal( CPUGraph *base, GdkGC *fg1, GtkWidget *da, int w, int 
 		{
 			gdk_draw_line( da->window, fg1, x, h-usage, x, h-1 );
 		}
-		else if( base->m_ColorMode == 3 ) /* cpu freq. based */
-		{
-			t = (double) (base->m_History[base->m_Values+ w -1 - x] - base->m_CpuData[0].scalMinFreq)
-				/ (base->m_CpuData[0].scalMaxFreq - base->m_CpuData[0].scalMinFreq);
-
-			MixAndApplyColors( t, &base->colors[1], &base->colors[2], fg1);
-			gdk_draw_line( da->window, fg1 , x, h-usage, x, h-1 );
-
-		}
-		else /* 1 or 2 */
+		else
 		{
 			tmp = 0;
 			for( y = h-1; y >= h - usage; y--, tmp++ )

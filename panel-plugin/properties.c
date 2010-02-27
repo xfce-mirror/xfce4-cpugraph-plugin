@@ -221,7 +221,6 @@ static void SetupColormodeOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base
 	const char *items[] = { _("None"),
 	                        _("Gradient"),
 	                        _("Fire"),
-	                        _("cpufreq")
 	                      };
 	size_t nb_items = sizeof( items ) / sizeof( char* );
 

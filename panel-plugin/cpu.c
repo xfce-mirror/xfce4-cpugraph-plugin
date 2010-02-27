@@ -116,8 +116,6 @@ void UpdateTooltip( CPUGraph * base )
 {
 	gchar tooltip[32];
 	int pos = g_snprintf( tooltip, 32, "Usage: %d%%", (int)base->m_CpuData[0].load*100/CPU_SCALE );
-	if( base->m_CpuData[0].scalCurFreq )
-		g_snprintf( tooltip+pos, 32-pos, " (%d MHz)", base->m_CpuData[0].scalCurFreq/1000 );
 	gtk_widget_set_tooltip_text( base->m_FrameWidget, tooltip );
 }
 
@@ -168,16 +166,11 @@ gboolean UpdateCPU( CPUGraph * base )
 			if( a < b ) a++;
 			int factor = (i*2);
 			base->m_History[i--] = (a * (factor-1) + b) / factor;
-
-			a = base->m_History[j], b = base->m_History[j-1];
-			if( a < b ) a++;
-			base->m_History[j--] = (a * (factor-1) + b) / factor;
 		}
 	} else {
-		memmove( base->m_History + 1 , base->m_History , (base->m_Values * 2 - 1) * sizeof( int ) );
+		memmove( base->m_History + 1 , base->m_History , (base->m_Values - 1) * sizeof( int ) );
 	}
 	base->m_History[0] = (long)base->m_CpuData[0].load;
-	base->m_History[base->m_Values] = base->m_CpuData[0].scalCurFreq;
 
 	/* Tooltip */
 	UpdateTooltip( base );
@@ -293,18 +286,9 @@ void set_update_rate( CPUGraph *base, int rate )
 void set_width( CPUGraph *base, int width )
 {
 	base->m_Width = width;
-	int i;
-	base->m_History = (long *) g_realloc( base->m_History, 2 * width * sizeof( long ) );
-
-	base->m_CpuData = cpuData_read();
-	base->m_CpuData[0].pUsed = 0;
-	base->m_CpuData[0].pTotal = 0;
-	long usage = base->m_CpuData[0].load;
-	for( i = width - 1; i >= base->m_Values; i-- )
-	{
-		base->m_History[i] = usage;
-		base->m_History[i+width] = base->m_CpuData[0].scalCurFreq;
-	}
+	base->m_History = (long *) g_realloc( base->m_History, width * sizeof( long ) );
+	if( width > base->m_Values )
+		memset( base->m_History + base->m_Values, 0, (width - base->m_Values) * sizeof( long ) );
 	base->m_Values = width;
 	UserSetSize( base );
 }

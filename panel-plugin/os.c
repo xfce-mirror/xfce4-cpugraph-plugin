@@ -40,14 +40,6 @@ int cpuData_init()
 	/* Alloc storage for cpu data stuff */
 	cpudata = (CpuData *) g_malloc0( cpuNr * sizeof( CpuData ) );
 
-	/* init frequency */
-	for( i=cpuNr-1; i>=0; i-- )
-	{
-		cpudata[i].scalCurFreq = 0;
-		cpudata[i].scalMinFreq = 0;
-		cpudata[i].scalMaxFreq = -1;
-	}
-
 	return nrCpus = cpuNr;
 }
 
