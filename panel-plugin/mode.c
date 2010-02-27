@@ -40,48 +40,41 @@ static void MixAndApplyColors( double ratio, GdkColor *color1, GdkColor *color2,
 void drawGraphModeNormal( CPUGraph *base, GdkGC *fg1, GtkWidget *da, int w, int h )
 {
 	int x, y;
+	long usage;
+	double t;
+	int tmp;
 
-	for( x = w; x >= 0; x-- )
+	if( base->m_ColorMode == 0 )
+		gdk_gc_set_rgb_fg_color( fg1, &base->colors[1] );
+
+	for( x = 0; x < w; x++ )
 	{
-		long usage = h * base->m_History[w - x] / CPU_SCALE;
+		usage = h * base->m_History[w - 1- x] / CPU_SCALE;
 
 		if( usage == 0 ) continue;
 
 		if( base->m_ColorMode == 0 )
 		{
-			gdk_gc_set_rgb_fg_color( fg1, &base->colors[1] );
-
-			if( base->m_Frame )
-				gdk_draw_line( da->window, fg1, x+1, h+1-usage, x+1, h );
-			else
-				gdk_draw_line( da->window, fg1, x, h-usage, x, h-1 );
+			gdk_draw_line( da->window, fg1, x, h-usage, x, h-1 );
 		}
 		else if( base->m_ColorMode == 3 ) /* cpu freq. based */
 		{
-			double t = (double) (base->m_History[base->m_Values+ w - x] - base->m_CpuData[0].scalMinFreq)
+			t = (double) (base->m_History[base->m_Values+ w -1 - x] - base->m_CpuData[0].scalMinFreq)
 				/ (base->m_CpuData[0].scalMaxFreq - base->m_CpuData[0].scalMinFreq);
 
 			MixAndApplyColors( t, &base->colors[1], &base->colors[2], fg1);
-
-			if( base->m_Frame )
-				gdk_draw_line( da->window, fg1 , x+1, h+1-usage, x+1, h );
-			else
-				gdk_draw_line( da->window, fg1 , x, h-usage, x, h-1 );
+			gdk_draw_line( da->window, fg1 , x, h-usage, x, h-1 );
 
 		}
 		else /* 1 or 2 */
 		{
-			int tmp = 0;
-			int length = h - (h - usage);
-			for( y = h; y >= h - usage; y--, tmp++ )
+			tmp = 0;
+			for( y = h-1; y >= h - usage; y--, tmp++ )
 			{
-				if( base->m_ColorMode > 0 )
-				{
-					double t = (base->m_ColorMode == 1) ?
-					           (tmp / (double) (h)) :
-					           (tmp / (double) (length));
-					MixAndApplyColors( t, &base->colors[1], &base->colors[2], fg1);
-				}
+				t = (base->m_ColorMode == 1) ?
+					(tmp / (double) (h)) :
+					(tmp / (double) (usage));
+				MixAndApplyColors( t, &base->colors[1], &base->colors[2], fg1);
 				gdk_draw_point( da->window, fg1, x, y );
 			}
 		}
