@@ -30,12 +30,6 @@ typedef struct
 	GtkWidget *m_FG2;
 	GtkWidget *m_FG3;
 	GtkWidget *m_BG;
-	GtkWidget *m_FC;
-	GtkWidget *m_ColorDA;
-	GtkWidget *m_ColorDA2;
-	GtkWidget *m_ColorDA3;
-	GtkWidget *m_ColorDA4;
-	GtkWidget *m_ColorDA5;
 } SOptions;
 
 typedef struct

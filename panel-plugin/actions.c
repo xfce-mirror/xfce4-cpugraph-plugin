@@ -5,51 +5,32 @@ void AssociateCommandChange( GtkEntry *entry, CPUGraph * base )
 	set_command( base, gtk_entry_get_text( entry ) );
 }
 
-GdkColor ChangeColor( CPUGraph *base, GdkColor color, GtkWidget *button )
+void ChangeColor1( GtkColorButton * button, CPUGraph * base )
 {
-	GtkWidget *dialog;
-	GtkColorSelection *colorsel;
-	gint response;
-
-	dialog = gtk_color_selection_dialog_new( "Select color" );
-	gtk_window_set_transient_for( GTK_WINDOW( dialog ), GTK_WINDOW( base->m_OptionsDialog ) );
-
-	colorsel = GTK_COLOR_SELECTION( GTK_COLOR_SELECTION_DIALOG( dialog )->colorsel );
-
-	gtk_color_selection_set_previous_color( colorsel, &color );
-	gtk_color_selection_set_current_color( colorsel, &color );
-
-	gtk_color_selection_set_has_palette( colorsel, TRUE );
-
-	response = gtk_dialog_run( GTK_DIALOG( dialog ) );
-	if( response == GTK_RESPONSE_OK )
-	{
-		gtk_color_selection_get_current_color( colorsel, &color );
-		gtk_widget_modify_bg( button, GTK_STATE_NORMAL, &color );
-	}
-
-	gtk_widget_destroy( dialog );
-	return color;
+	GdkColor color;
+	gtk_color_button_get_color( button, &color );
+	set_foreground_color1( base, color );
 }
 
-void ChangeColor1( GtkButton * button, CPUGraph * base )
+void ChangeColor2( GtkColorButton * button, CPUGraph * base )
 {
-	set_foreground_color1( base, ChangeColor( base, base->m_ForeGround1, base->m_Options.m_ColorDA ) );
+	GdkColor color;
+	gtk_color_button_get_color( button, &color );
+	set_foreground_color2( base, color );
 }
 
-void ChangeColor2( GtkButton * button, CPUGraph * base )
+void ChangeColor3( GtkColorButton * button, CPUGraph * base )
 {
-	set_foreground_color2( base, ChangeColor( base, base->m_ForeGround2, base->m_Options.m_ColorDA2 ) );
+	GdkColor color;
+	gtk_color_button_get_color( button, &color );
+	set_background_color( base, color );
 }
 
-void ChangeColor3( GtkButton * button, CPUGraph * base )
+void ChangeColor4( GtkColorButton * button, CPUGraph * base )
 {
-	set_background_color( base, ChangeColor( base, base->m_BackGround, base->m_Options.m_ColorDA3 ) );
-}
-
-void ChangeColor4( GtkButton * button, CPUGraph * base )
-{
-	set_foreground_color3( base, ChangeColor( base, base->m_ForeGround3, base->m_Options.m_ColorDA5 ) );
+	GdkColor color;
+	gtk_color_button_get_color( button, &color );
+	set_foreground_color3( base, color );
 }
 
 void ColorModeChange( GtkOptionMenu * om, CPUGraph * base )

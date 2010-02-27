@@ -211,17 +211,11 @@ static void SetupForeground1Option( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op
 
 	hbox = CreateOptionLine( vbox, sg, _("Color 1:") );
 
-	op->m_FG1 = gtk_button_new();
-	op->m_ColorDA = gtk_drawing_area_new();
-
-	gtk_widget_modify_bg( op->m_ColorDA, GTK_STATE_NORMAL, &base->m_ForeGround1 );
-	gtk_widget_set_size_request( op->m_ColorDA, 12, 12 );
-	gtk_container_add( GTK_CONTAINER( op->m_FG1 ), op->m_ColorDA );
+	op->m_FG1 = gtk_color_button_new_with_color(&base->m_ForeGround1);
 	gtk_widget_show( GTK_WIDGET( op->m_FG1 ) );
-	gtk_widget_show( GTK_WIDGET( op->m_ColorDA ) );
 	gtk_box_pack_start( GTK_BOX( hbox ), GTK_WIDGET( op->m_FG1 ), FALSE, FALSE, 0 );
 
-	g_signal_connect( op->m_FG1, "clicked", G_CALLBACK( ChangeColor1 ), base );
+	g_signal_connect( op->m_FG1, "color-set", G_CALLBACK( ChangeColor1 ), base );
 }
 
 static void SetupForeground2Option( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base )
@@ -230,17 +224,11 @@ static void SetupForeground2Option( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op
 
 	hbox = CreateOptionLine( vbox, sg, _("Color 2:") );
 
-	op->m_FG2 = gtk_button_new();
-	op->m_ColorDA2 = gtk_drawing_area_new();
-
-	gtk_widget_modify_bg( op->m_ColorDA2, GTK_STATE_NORMAL, &base->m_ForeGround2 );
-	gtk_widget_set_size_request( op->m_ColorDA2, 12, 12 );
-	gtk_container_add( GTK_CONTAINER( op->m_FG2 ), op->m_ColorDA2 );
+	op->m_FG2 = gtk_color_button_new_with_color(&base->m_ForeGround2);
 	gtk_widget_show( GTK_WIDGET( op->m_FG2 ) );
-	gtk_widget_show( GTK_WIDGET( op->m_ColorDA2 ) );
 	gtk_box_pack_start( GTK_BOX( hbox ), GTK_WIDGET( op->m_FG2 ), FALSE, FALSE, 0 );
 
-	g_signal_connect( op->m_FG2, "clicked", G_CALLBACK( ChangeColor2 ), base );
+	g_signal_connect( op->m_FG2, "color-set", G_CALLBACK( ChangeColor2 ), base );
 
 	if( base->m_Mode == 1 )
 		gtk_widget_set_sensitive( GTK_WIDGET( base->m_Options.m_FG2 ), TRUE );
@@ -252,15 +240,11 @@ static void SetupForeground3Option( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op
 
 	hbox = CreateOptionLine( vbox, sg, _("Color 3:") );
 
-	op->m_FG3 = gtk_button_new();
-	op->m_ColorDA5 = gtk_drawing_area_new();
-	gtk_widget_modify_bg( op->m_ColorDA5, GTK_STATE_NORMAL, &base->m_ForeGround3 );
-	gtk_widget_set_size_request( op->m_ColorDA5, 12, 12 );
-	gtk_container_add( GTK_CONTAINER( op->m_FG3 ), op->m_ColorDA5 );
+	op->m_FG3 = gtk_color_button_new_with_color(&base->m_ForeGround3);
 	gtk_widget_show( GTK_WIDGET( op->m_FG3 ) );
-	gtk_widget_show( GTK_WIDGET( op->m_ColorDA5 ) );
 	gtk_box_pack_start( GTK_BOX( hbox ), GTK_WIDGET( op->m_FG3 ), FALSE, FALSE, 0 );
-	g_signal_connect( op->m_FG3, "clicked", G_CALLBACK( ChangeColor4 ), base );
+
+	g_signal_connect( op->m_FG3, "color-set", G_CALLBACK( ChangeColor4 ), base );
 
 	if( base->m_Mode == 0 || base->m_Mode == 2 || base->m_ColorMode == 0 )
 		gtk_widget_set_sensitive( GTK_WIDGET( base->m_Options.m_FG3 ), FALSE );
@@ -274,18 +258,11 @@ static void SetupBackgroundOption( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op,
 	GtkBox *hbox;
 
 	hbox = CreateOptionLine( vbox, sg, _("Background:") );
-
-	op->m_BG = gtk_button_new();
-	op->m_ColorDA3 = gtk_drawing_area_new();
-
-	gtk_widget_modify_bg( op->m_ColorDA3, GTK_STATE_NORMAL, &base->m_BackGround );
-	gtk_widget_set_size_request( op->m_ColorDA3, 12, 12 );
-	gtk_container_add( GTK_CONTAINER( op->m_BG ), op->m_ColorDA3 );
+	op->m_BG = gtk_color_button_new_with_color(&base->m_BackGround);
 	gtk_widget_show( GTK_WIDGET( op->m_BG ) );
-	gtk_widget_show( GTK_WIDGET( op->m_ColorDA3 ) );
 	gtk_box_pack_start( GTK_BOX( hbox ), GTK_WIDGET( op->m_BG ), FALSE, FALSE, 0 );
 
-	g_signal_connect( op->m_BG, "clicked", G_CALLBACK( ChangeColor3 ), base );
+	g_signal_connect( op->m_BG, "color-set", G_CALLBACK( ChangeColor3 ), base );
 }
 
 static void SetupModesOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base )
