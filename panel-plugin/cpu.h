@@ -37,7 +37,7 @@ typedef struct
 
 	int m_UpdateInterval; // Number of ms between updates.
 	gboolean m_TimeScale; // Wether to use non-linear time scale.
-	int m_Width; // The width of the plugin.
+	int size;
 	int m_Mode; // Eventual mode of the plugin.
 	int m_ColorMode;
 	gboolean m_Frame;
@@ -59,7 +59,6 @@ void Kill( XfcePanelPlugin *plugin, CPUGraph *base );
 void ReadSettings( XfcePanelPlugin *plugin, CPUGraph *base );
 void WriteSettings( XfcePanelPlugin *plugin, CPUGraph *base );
 gboolean SetSize( XfcePanelPlugin *plugin, int size, CPUGraph *base );
-void UserSetSize( CPUGraph *base );
 gboolean UpdateCPU( CPUGraph *base );
 void UpdateTooltip( CPUGraph *base );
 void DrawGraph( CPUGraph *base );
@@ -73,7 +72,7 @@ void set_command( CPUGraph *base, const gchar *command );
 void set_frame( CPUGraph *base, gboolean frame );
 void set_nonlinear_time( CPUGraph *base, gboolean nonlinear );
 void set_update_rate( CPUGraph *base, int rate );
-void set_width( CPUGraph *base, int width );
+void set_size( CPUGraph *base, int width );
 void set_color_mode( CPUGraph *base, int color_mode );
 void set_mode( CPUGraph *base, int mode );
 void set_color( CPUGraph *base, int number, GdkColor color );

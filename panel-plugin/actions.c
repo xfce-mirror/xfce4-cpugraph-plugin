@@ -69,9 +69,9 @@ void FrameChange( GtkToggleButton * button, CPUGraph * base )
 	set_frame( base, gtk_toggle_button_get_active( button ) );
 }
 
-void WidthChange( GtkSpinButton * sb, CPUGraph *base)
+void SizeChange( GtkSpinButton * sb, CPUGraph *base)
 {
-	set_width( base, gtk_spin_button_get_value_as_int( sb ) );
+	set_size( base, gtk_spin_button_get_value_as_int( sb ) );
 }
 
 void TimeScaleChange( GtkToggleButton * button, CPUGraph * base )

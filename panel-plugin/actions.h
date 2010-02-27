@@ -11,6 +11,6 @@ void DialogResponse( GtkWidget *dlg, int response, CPUGraph *base );
 void ApplyChanges( CPUGraph *base );
 void FrameChange( GtkToggleButton *button, CPUGraph *base );
 void ModeChange( GtkOptionMenu *om, CPUGraph *base );
-void WidthChange( GtkSpinButton *sb, CPUGraph *base );
+void SizeChange( GtkSpinButton *sb, CPUGraph *base );
 void TimeScaleChange( GtkToggleButton *button, CPUGraph *base );
 void UpdateChange( GtkOptionMenu *om, CPUGraph *base );

@@ -8,7 +8,7 @@ void ReadSettings( XfcePanelPlugin * plugin, CPUGraph * base )
 
 	int rate = 0;
 	gboolean nonlinear = FALSE;
-	int width = 70;
+	int size = 70;
 	int mode = 0;
 	int color_mode = 0;
 	gboolean frame = FALSE;
@@ -44,7 +44,7 @@ void ReadSettings( XfcePanelPlugin * plugin, CPUGraph * base )
 		{
 			rate =  xfce_rc_read_int_entry (rc, "UpdateInterval", rate );
 			nonlinear = xfce_rc_read_int_entry (rc, "TimeScale", nonlinear );
-			width = xfce_rc_read_int_entry( rc, "Width", width );
+			size = xfce_rc_read_int_entry( rc, "size", size );
 			mode = xfce_rc_read_int_entry( rc, "Mode", mode );
 			color_mode = xfce_rc_read_int_entry( rc, "ColorMode", color_mode );
 			frame = xfce_rc_read_int_entry( rc, "Frame", frame );
@@ -65,8 +65,8 @@ void ReadSettings( XfcePanelPlugin * plugin, CPUGraph * base )
 
 	set_update_rate( base, rate );
 	set_nonlinear_time( base, nonlinear );
-	set_width( base, width );
-	set_mode( base,  mode );
+	set_size( base, size );
+	set_mode( base, mode );
 	set_color_mode( base, color_mode );
 	set_frame( base, frame );
 	set_command( base, associated_command );
@@ -95,7 +95,7 @@ void WriteSettings( XfcePanelPlugin *plugin, CPUGraph *base )
 
 	xfce_rc_write_int_entry( rc, "TimeScale", base->m_TimeScale );
 
-	xfce_rc_write_int_entry( rc, "Width", base->m_Width );
+	xfce_rc_write_int_entry( rc, "Size", base->size );
 
 	xfce_rc_write_int_entry( rc, "Mode", base->m_Mode );
 

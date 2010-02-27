@@ -85,7 +85,6 @@ CPUGraph * CreateControl( XfcePanelPlugin * plugin )
 	g_signal_connect_after( base->m_DrawArea, "expose-event", G_CALLBACK( DrawAreaExposeEvent ), base );
 
 	SetOrientation(plugin, orientation, base);
-	UserSetSize( base );
 
 	gtk_widget_show_all(ebox);
 
@@ -122,27 +121,38 @@ void UpdateTooltip( CPUGraph * base )
 gboolean SetSize( XfcePanelPlugin *plugin, int size, CPUGraph *base )
 {
 	gint i;
-	gtk_container_set_border_width( GTK_CONTAINER( base->m_FrameWidget ), size > 26 ? 2 : 0 );
+	gint frame_h, frame_v, bar_h, bar_v, history;
+
+	gtk_container_set_border_width( GTK_CONTAINER( base->m_FrameWidget ), MIN( size ,base->size ) > 26 ? 2 : 0 );
 
 	if( xfce_panel_plugin_get_orientation( plugin ) == GTK_ORIENTATION_HORIZONTAL )
 	{
-		gtk_widget_set_size_request( GTK_WIDGET( plugin ), base->m_Width, size );
-		for( i=0; i<base->nrCores; i++ )
-			gtk_widget_set_size_request( GTK_WIDGET(base->m_pBar[i]), BORDER, size );
+		frame_h = base->size;
+		frame_v = size;
+		bar_h = BORDER;
+		bar_v = size;
+	       	history = base->size;
 	}
 	else
 	{
-		gtk_widget_set_size_request( GTK_WIDGET( plugin ), size, base->m_Width );
-		for( i=0; i<base->nrCores; i++ )
-			gtk_widget_set_size_request( GTK_WIDGET( base->m_pBar[i] ), size, BORDER );
+		frame_h = size;
+		frame_v = base->size;
+		bar_h = size;
+		bar_v = BORDER;
+	       	history = size;
 	}
 
-	return TRUE;
-}
+	gtk_widget_set_size_request( GTK_WIDGET( base->m_FrameWidget ), frame_h, frame_v );
 
-void UserSetSize( CPUGraph * base )
-{
-	SetSize( base->plugin, xfce_panel_plugin_get_size( base->plugin ), base );
+	for( i=0; i<base->nrCores; i++ )
+		gtk_widget_set_size_request( GTK_WIDGET(base->m_pBar[i]), bar_h, bar_v );
+
+	base->m_History = (long *) g_realloc( base->m_History, history * sizeof( long ) );
+	if( history > base->m_Values )
+		memset( base->m_History + base->m_Values, 0, (history - base->m_Values) * sizeof( long ) );
+	base->m_Values = history;
+
+	return TRUE;
 }
 
 gboolean UpdateCPU( CPUGraph * base )
@@ -283,14 +293,10 @@ void set_update_rate( CPUGraph *base, int rate )
 	base->m_TimeoutID = g_timeout_add( update, (GtkFunction) UpdateCPU, base );
 }
 
-void set_width( CPUGraph *base, int width )
+void set_size( CPUGraph *base, int size )
 {
-	base->m_Width = width;
-	base->m_History = (long *) g_realloc( base->m_History, width * sizeof( long ) );
-	if( width > base->m_Values )
-		memset( base->m_History + base->m_Values, 0, (width - base->m_Values) * sizeof( long ) );
-	base->m_Values = width;
-	UserSetSize( base );
+	base->size = size;
+	SetSize( base->plugin, xfce_panel_plugin_get_size( base->plugin ), base );
 }
 
 void set_color_mode( CPUGraph *base, int color_mode )
