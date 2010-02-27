@@ -8,10 +8,7 @@ static void CreateDropDown( GtkBox *tab, GtkSizeGroup *sg, const char * name, co
 static void SetupUpdateIntervalOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
 static void SetupWidthOption( GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, CPUGraph *base );
 static void SetupAssociateCommandOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
-static void SetupForeground1Option( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base );
-static void SetupForeground2Option( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base );
-static void SetupForeground3Option( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base );
-static void SetupBackgroundOption( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base );
+static void SetupColorOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base, int number, const gchar *name, GCallback cb );
 static void SetupModesOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
 static void SetupColormodeOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
 
@@ -22,7 +19,6 @@ void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base )
 	GtkBox *vbox, *vbox2;
 	GtkWidget *label;
 	GtkSizeGroup *sg;
-	SOptions *op = &base->m_Options;
 	GtkWidget *Notebook;
 
 	xfce_panel_plugin_block_menu( plugin );
@@ -47,32 +43,22 @@ void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base )
 	gtk_widget_show( header );
 	gtk_box_pack_start( GTK_BOX( GTK_DIALOG( dlg )->vbox ), header, FALSE, TRUE, 0 );
 
-	vbox = CreateTab();
-
 	sg = gtk_size_group_new( GTK_SIZE_GROUP_HORIZONTAL );
 
+	vbox = CreateTab();
 	SetupUpdateIntervalOption( vbox, sg, base );
-
 	SetupWidthOption( vbox, sg, plugin, base );
-
 	CreateCheckBox( vbox, sg, _("Non-linear time-scale"), base->m_TimeScale, TimeScaleChange, base );
-
 	CreateCheckBox( vbox, sg, _("Show frame"), base->m_Frame, FrameChange, base );
-
 	SetupAssociateCommandOption( vbox, sg, base );
 
 	vbox2 = CreateTab();
-
-	SetupForeground1Option( vbox2, sg, op, base );
-
-	SetupForeground2Option( vbox2, sg, op, base );
-
-	SetupForeground3Option( vbox2, sg, op, base );
-
-	SetupBackgroundOption( vbox2, sg, op, base );
-
+	SetupColorOption( vbox2, sg, base, 1, _("Color 1:"), G_CALLBACK( ChangeColor1 ) );
+	SetupColorOption( vbox2, sg, base, 2, _("Color 2:"), G_CALLBACK( ChangeColor2 ) );
+	SetupColorOption( vbox2, sg, base, 3, _("Color 3:"), G_CALLBACK( ChangeColor3 ) );
+	SetupColorOption( vbox2, sg, base, 0, _("Background:"), G_CALLBACK( ChangeColor0 ) );
+	select_active_colors( base );
 	SetupModesOption( vbox2, sg, base );
-
 	SetupColormodeOption( vbox2, sg, base );
 
 	Notebook = gtk_notebook_new();
@@ -205,64 +191,17 @@ static void SetupAssociateCommandOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGrap
 	g_signal_connect( AssociateCommand, "changed", G_CALLBACK( AssociateCommandChange ), base );
 }
 
-static void SetupForeground1Option( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base )
+static void SetupColorOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base, int number, const gchar * name, GCallback cb )
 {
 	GtkBox *hbox;
 
-	hbox = CreateOptionLine( vbox, sg, _("Color 1:") );
+	hbox = CreateOptionLine( vbox, sg, name );
 
-	op->m_FG1 = gtk_color_button_new_with_color(&base->m_ForeGround1);
-	gtk_widget_show( GTK_WIDGET( op->m_FG1 ) );
-	gtk_box_pack_start( GTK_BOX( hbox ), GTK_WIDGET( op->m_FG1 ), FALSE, FALSE, 0 );
+	base->color_buttons[number] = gtk_color_button_new_with_color( &base->colors[number] );
+	gtk_widget_show( GTK_WIDGET( base->color_buttons[number] ) );
+	gtk_box_pack_start( GTK_BOX( hbox ), GTK_WIDGET( base->color_buttons[number] ), FALSE, FALSE, 0 );
 
-	g_signal_connect( op->m_FG1, "color-set", G_CALLBACK( ChangeColor1 ), base );
-}
-
-static void SetupForeground2Option( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base )
-{
-	GtkBox *hbox;
-
-	hbox = CreateOptionLine( vbox, sg, _("Color 2:") );
-
-	op->m_FG2 = gtk_color_button_new_with_color(&base->m_ForeGround2);
-	gtk_widget_show( GTK_WIDGET( op->m_FG2 ) );
-	gtk_box_pack_start( GTK_BOX( hbox ), GTK_WIDGET( op->m_FG2 ), FALSE, FALSE, 0 );
-
-	g_signal_connect( op->m_FG2, "color-set", G_CALLBACK( ChangeColor2 ), base );
-
-	if( base->m_Mode == 1 )
-		gtk_widget_set_sensitive( GTK_WIDGET( base->m_Options.m_FG2 ), TRUE );
-}
-
-static void SetupForeground3Option( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base )
-{
-	GtkBox *hbox;
-
-	hbox = CreateOptionLine( vbox, sg, _("Color 3:") );
-
-	op->m_FG3 = gtk_color_button_new_with_color(&base->m_ForeGround3);
-	gtk_widget_show( GTK_WIDGET( op->m_FG3 ) );
-	gtk_box_pack_start( GTK_BOX( hbox ), GTK_WIDGET( op->m_FG3 ), FALSE, FALSE, 0 );
-
-	g_signal_connect( op->m_FG3, "color-set", G_CALLBACK( ChangeColor4 ), base );
-
-	if( base->m_Mode == 0 || base->m_Mode == 2 || base->m_ColorMode == 0 )
-		gtk_widget_set_sensitive( GTK_WIDGET( base->m_Options.m_FG3 ), FALSE );
-	else
-		gtk_widget_set_sensitive( GTK_WIDGET( base->m_Options.m_FG3 ), TRUE );
-
-}
-
-static void SetupBackgroundOption( GtkBox *vbox, GtkSizeGroup *sg, SOptions *op, CPUGraph *base )
-{
-	GtkBox *hbox;
-
-	hbox = CreateOptionLine( vbox, sg, _("Background:") );
-	op->m_BG = gtk_color_button_new_with_color(&base->m_BackGround);
-	gtk_widget_show( GTK_WIDGET( op->m_BG ) );
-	gtk_box_pack_start( GTK_BOX( hbox ), GTK_WIDGET( op->m_BG ), FALSE, FALSE, 0 );
-
-	g_signal_connect( op->m_BG, "color-set", G_CALLBACK( ChangeColor3 ), base );
+	g_signal_connect( base->color_buttons[number], "color-set", cb, base );
 }
 
 static void SetupModesOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base )

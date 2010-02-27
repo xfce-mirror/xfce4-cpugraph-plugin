@@ -70,10 +70,10 @@ void ReadSettings( XfcePanelPlugin * plugin, CPUGraph * base )
 	set_color_mode( base, color_mode );
 	set_frame( base, frame );
 	set_command( base, associated_command );
-	set_foreground_color1( base, foreground1 );
-	set_foreground_color2( base, foreground2 );
-	set_foreground_color3( base, foreground3 );
-	set_background_color( base, background );
+	set_color( base, 1, foreground1 );
+	set_color( base, 2, foreground2 );
+	set_color( base, 3, foreground3 );
+	set_color( base, 0, background );
 }
 
 void WriteSettings( XfcePanelPlugin *plugin, CPUGraph *base )
@@ -105,16 +105,16 @@ void WriteSettings( XfcePanelPlugin *plugin, CPUGraph *base )
 
 	xfce_rc_write_int_entry( rc, "ColorMode", base->m_ColorMode );
 
-	g_snprintf( value, 8, "#%02X%02X%02X", base->m_ForeGround1.red >> 8, base->m_ForeGround1.green >> 8, base->m_ForeGround1.blue >> 8 );
+	g_snprintf( value, 8, "#%02X%02X%02X", base->colors[1].red >> 8, base->colors[1].green >> 8, base->colors[1].blue >> 8 );
 	xfce_rc_write_entry( rc, "Foreground1", value );
 
-	g_snprintf( value, 8, "#%02X%02X%02X", base->m_ForeGround2.red >> 8, base->m_ForeGround2.green >> 8, base->m_ForeGround2.blue >> 8 );
+	g_snprintf( value, 8, "#%02X%02X%02X", base->colors[2].red >> 8, base->colors[2].green >> 8, base->colors[2].blue >> 8 );
 	xfce_rc_write_entry( rc, "Foreground2", value );
 
-	g_snprintf( value, 8, "#%02X%02X%02X", base->m_BackGround.red >> 8, base->m_BackGround.green >> 8, base->m_BackGround.blue >> 8 );
+	g_snprintf( value, 8, "#%02X%02X%02X", base->colors[0].red >> 8, base->colors[0].green >> 8, base->colors[0].blue >> 8 );
 	xfce_rc_write_entry( rc, "Background", value );
 
-	g_snprintf( value, 8, "#%02X%02X%02X", base->m_ForeGround3.red >> 8, base->m_ForeGround3.green >> 8, base->m_ForeGround3.blue >> 8 );
+	g_snprintf( value, 8, "#%02X%02X%02X", base->colors[3].red >> 8, base->colors[3].green >> 8, base->colors[3].blue >> 8 );
 	xfce_rc_write_entry( rc, "Foreground3", value );
 
 	xfce_rc_close( rc );

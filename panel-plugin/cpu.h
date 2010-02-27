@@ -26,14 +26,6 @@
 
 typedef struct
 {
-	GtkWidget *m_FG1;
-	GtkWidget *m_FG2;
-	GtkWidget *m_FG3;
-	GtkWidget *m_BG;
-} SOptions;
-
-typedef struct
-{
 	XfcePanelPlugin *plugin;
 
 	GtkWidget *m_FrameWidget;
@@ -41,7 +33,7 @@ typedef struct
 	GtkWidget *m_OptionsDialog;
 	GtkWidget *m_Box;
 	GtkWidget **m_pBar;
-	SOptions m_Options;
+	GtkWidget *color_buttons[4];
 
 	int m_UpdateInterval; // Number of ms between updates.
 	gboolean m_TimeScale; // Wether to use non-linear time scale.
@@ -52,10 +44,7 @@ typedef struct
 	gchar  *m_AssociateCommand;
 	guint nrCores; // Number of cores (not including total cpu)
 
-	GdkColor m_ForeGround1; // Inactive color.
-	GdkColor m_ForeGround2; // Active color.
-	GdkColor m_ForeGround3;
-	GdkColor m_BackGround; // Background color.
+	GdkColor colors[4];
 
 	guint m_TimeoutID; // Timeout ID for the tooltip;
 	long *m_History;
@@ -87,8 +76,5 @@ void set_update_rate( CPUGraph *base, int rate );
 void set_width( CPUGraph *base, int width );
 void set_color_mode( CPUGraph *base, int color_mode );
 void set_mode( CPUGraph *base, int mode );
-void set_foreground_color1( CPUGraph *base, GdkColor color );
-void set_foreground_color2( CPUGraph *base, GdkColor color );
-void set_foreground_color3( CPUGraph *base, GdkColor color );
-void set_background_color( CPUGraph *base, GdkColor color );
+void set_color( CPUGraph *base, int number, GdkColor color );
 #endif

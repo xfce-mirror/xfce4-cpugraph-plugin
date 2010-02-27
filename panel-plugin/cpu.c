@@ -199,7 +199,7 @@ void DrawGraph( CPUGraph * base )
 	GdkGC *fg1 = gdk_gc_new( da->window );
 	GdkGC *fg2 = gdk_gc_new( da->window );
 	GdkGC *bg = gdk_gc_new( da->window );
-	gdk_gc_set_rgb_fg_color( bg, &base->m_BackGround );
+	gdk_gc_set_rgb_fg_color( bg, &base->colors[0] );
 
 	gdk_draw_rectangle( da->window, bg, TRUE, 0, 0, w, h );
 
@@ -319,22 +319,7 @@ void set_mode( CPUGraph *base, int mode )
 	base->m_Mode = mode;
 }
 
-void set_foreground_color1( CPUGraph *base, GdkColor color )
+void set_color( CPUGraph *base, int number, GdkColor color )
 {
-	base->m_ForeGround1 = color;
-}
-
-void set_foreground_color2( CPUGraph *base, GdkColor color )
-{
-	base->m_ForeGround2 = color;
-}
-
-void set_foreground_color3( CPUGraph *base, GdkColor color )
-{
-	base->m_ForeGround3 = color;
-}
-
-void set_background_color( CPUGraph *base, GdkColor color )
-{
-	base->m_BackGround = color;
+	base->colors[number] = color;
 }
