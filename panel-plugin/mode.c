@@ -126,21 +126,24 @@ void drawGraphModeNoHistory( CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *
 	int y;
 	long usage = h * base->m_History[0] / CPU_SCALE;
 	int tmp = 0;
-	int length = usage;
+	double t;
 
-	for( y = h; y >= h - usage; y-- )
+	if( base->m_ColorMode == 0 )
 	{
-		if( base->m_ColorMode > 0 )
+		gdk_gc_set_rgb_fg_color( fg1, &base->colors[1] );
+		gdk_draw_rectangle( da->window, fg1, TRUE, 0, h-usage, w, usage );
+	}
+	else
+	{
+		for( y = h-1; y > h - 1 - usage; y-- )
 		{
-			double t = (base->m_ColorMode == 1) ?
-			           (tmp / (double) (h)) :
-			           (tmp / (double) (length));
-			MixAndApplyColors( t, &base->colors[1], &base->colors[2], fg2);
+			t = (base->m_ColorMode == 1) ?
+				(tmp / (double) (h)) :
+				(tmp / (double) (usage));
+			MixAndApplyColors( t, &base->colors[1], &base->colors[2], fg1 );
 			tmp++;
+			gdk_draw_line( da->window, fg1, 0, y, w-1, y );
 		}
-		gdk_draw_line (da->window,
-				(base->m_ColorMode > 0) ? fg2 : fg1,
-				0, y, w, y);
 	}
 }
 
