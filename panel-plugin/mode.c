@@ -139,32 +139,29 @@ typedef struct
 
 void drawGraphGrid( CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w, int h )
 {
-	int nrx = w / 6.0;
-	int nry = h / 4.0;
 	int x, y;
-
+	long usage;
 	point last, current;
-	last.x = -1;
+	last.x = 0;
+	last.y = h;
 
-	/* draw grid */
 	gdk_gc_set_rgb_fg_color( fg1, &base->colors[1] );
-	for( x = nrx; x >= 0; x-- )
+	for( x = 0; x * 6 < w; x++ )
 	{
-		gdk_draw_line( da->window, fg1, x*6, 0, x*6, h );
+		gdk_draw_line( da->window, fg1, x*6, 0, x*6, h-1 );
 	}
-	for( y = nry; y>=0; y-- )
+	for( y = 0; y * 4 < h; y++ )
 	{
-		gdk_draw_line( da->window, fg1, 0, y*4, w, y*4 );
+		gdk_draw_line( da->window, fg1, 0, y*4, w-1, y*4 );
 	}
 
-	/* draw data */
-	gdk_gc_set_rgb_fg_color( fg2, &base->colors[2] );
-	for( x = w; x >= 0; x-- )
+	gdk_gc_set_rgb_fg_color( fg1, &base->colors[2] );
+	for( x = 0; x < w; x++ )
 	{
+		usage = h * base->m_History[w - 1- x] / CPU_SCALE;
 		current.x = x;
-		current.y = ((h - 1)*(CPU_SCALE - base->m_History[w - x]))/CPU_SCALE;
-		if( last.x == -1 ) last = current;
-		gdk_draw_line( da->window, fg2, current.x, current.y, last.x, last.y );
+		current.y = h - usage;
+		gdk_draw_line( da->window, fg1, current.x, current.y, last.x, last.y );
 		last = current;
 	}
 }
