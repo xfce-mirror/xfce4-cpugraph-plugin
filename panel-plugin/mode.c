@@ -37,12 +37,13 @@ static void MixAndApplyColors( double ratio, GdkColor *color1, GdkColor *color2,
 	gdk_gc_set_rgb_fg_color( target, &color );
 }
 
-void drawGraphModeNormal( CPUGraph *base, GdkGC *fg1, GtkWidget *da, int w, int h )
+void drawGraphModeNormal( CPUGraph *base, GtkWidget *da, int w, int h )
 {
 	int x, y;
 	long usage;
 	double t;
 	int tmp;
+	GdkGC *fg1 = gdk_gc_new( da->window );
 
 	if( base->m_ColorMode == 0 )
 		gdk_gc_set_rgb_fg_color( fg1, &base->colors[1] );
@@ -70,13 +71,16 @@ void drawGraphModeNormal( CPUGraph *base, GdkGC *fg1, GtkWidget *da, int w, int 
 			}
 		}
 	}
+	g_object_unref( fg1 );
 }
 
-void drawGraphModeLED( CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w, int h )
+void drawGraphModeLED( CPUGraph *base, GtkWidget *da, int w, int h )
 {
 	int nrx = (int)((w + 1) / 3.0);
 	int nry = (int)((h + 1) / 2.0);
 	int x, y;
+	GdkGC *fg1 = gdk_gc_new( da->window );
+	GdkGC *fg2 = gdk_gc_new( da->window );
 
 	gdk_gc_set_rgb_fg_color( fg1, &base->colors[1] );
 	gdk_gc_set_rgb_fg_color( fg2, &base->colors[2] );
@@ -103,14 +107,17 @@ void drawGraphModeLED( CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, in
 
 		}
 	}
+	g_object_unref( fg1 );
+	g_object_unref( fg2 );
 }
 
-void drawGraphModeNoHistory( CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w, int h )
+void drawGraphModeNoHistory( CPUGraph *base, GtkWidget *da, int w, int h )
 {
 	int y;
 	long usage = h * base->m_History[0] / CPU_SCALE;
 	int tmp = 0;
 	double t;
+	GdkGC *fg1 = gdk_gc_new( da->window );
 
 	if( base->m_ColorMode == 0 )
 	{
@@ -129,6 +136,7 @@ void drawGraphModeNoHistory( CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *
 			gdk_draw_line( da->window, fg1, 0, y, w-1, y );
 		}
 	}
+	g_object_unref( fg1 );
 }
 
 typedef struct
@@ -137,13 +145,14 @@ typedef struct
 	long y;
 } point;
 
-void drawGraphGrid( CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w, int h )
+void drawGraphGrid( CPUGraph *base, GtkWidget *da, int w, int h )
 {
 	int x, y;
 	long usage;
 	point last, current;
 	last.x = 0;
 	last.y = h;
+	GdkGC *fg1 = gdk_gc_new( da->window );
 
 	gdk_gc_set_rgb_fg_color( fg1, &base->colors[1] );
 	for( x = 0; x * 6 < w; x++ )
@@ -164,4 +173,5 @@ void drawGraphGrid( CPUGraph *base, GdkGC *fg1, GdkGC *fg2, GtkWidget *da, int w
 		gdk_draw_line( da->window, fg1, current.x, current.y, last.x, last.y );
 		last = current;
 	}
+	g_object_unref( fg1 );
 }

@@ -198,34 +198,22 @@ void DrawGraph( CPUGraph * base )
 	w = da->allocation.width;
 	h = da->allocation.height;
 
-	/* Dynamically allocated everytime just in case depth changes */
-	GdkGC *fg1 = gdk_gc_new( da->window );
-	GdkGC *fg2 = gdk_gc_new( da->window );
-	GdkGC *bg = gdk_gc_new( da->window );
-	gdk_gc_set_rgb_fg_color( bg, &base->colors[0] );
-
-	gdk_draw_rectangle( da->window, bg, TRUE, 0, 0, w, h );
-
 	if( base->m_Mode == 0 )
 	{
-		drawGraphModeNormal( base, fg1, da, w, h );
+		drawGraphModeNormal( base, da, w, h );
 	}
 	else if( base->m_Mode == 1 )
 	{
-		drawGraphModeLED( base, fg1, fg2, da, w, h );
+		drawGraphModeLED( base, da, w, h );
 	}
 	else if( base->m_Mode == 2 )
 	{
-		drawGraphModeNoHistory( base, fg1, fg2, da, w, h );
+		drawGraphModeNoHistory( base, da, w, h );
 	}
 	else if( base->m_Mode == 3 )
 	{
-		drawGraphGrid(base, fg1, fg2, da, w, h);
+		drawGraphGrid(base, da, w, h);
 	}
-
-	g_object_unref( fg2 );
-	g_object_unref( fg1 );
-	g_object_unref( bg );
 }
 
 void DrawAreaExposeEvent( GtkWidget * da, GdkEventExpose * event, gpointer data )
@@ -312,4 +300,9 @@ void set_mode( CPUGraph *base, int mode )
 void set_color( CPUGraph *base, int number, GdkColor color )
 {
 	base->colors[number] = color;
+	if( number == 0 )
+	{
+		gtk_widget_modify_bg( base->m_DrawArea, GTK_STATE_INSENSITIVE, &base->colors[0] );
+		gtk_widget_modify_bg( base->m_DrawArea, GTK_STATE_NORMAL, &base->colors[0] );
+	}
 }
