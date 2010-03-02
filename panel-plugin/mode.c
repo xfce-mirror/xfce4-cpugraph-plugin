@@ -76,35 +76,29 @@ void drawGraphModeNormal( CPUGraph *base, GtkWidget *da, int w, int h )
 
 void drawGraphModeLED( CPUGraph *base, GtkWidget *da, int w, int h )
 {
-	int nrx = (int)((w + 1) / 3.0);
-	int nry = (int)((h + 1) / 2.0);
+	int nrx = (w + 1) / 3;
+	int nry = (h + 1) / 2;
 	int x, y;
+
 	GdkGC *fg1 = gdk_gc_new( da->window );
 	GdkGC *fg2 = gdk_gc_new( da->window );
-
 	gdk_gc_set_rgb_fg_color( fg1, &base->colors[1] );
 	gdk_gc_set_rgb_fg_color( fg2, &base->colors[2] );
 
-	for( x = nrx ; x >= 0; x-- )
+	for( x = 0; x * 3 < w; x++ )
 	{
-		int tmp = 0;
 		int idx = nrx-x;
-		int limit = (int)(nry - nry * base->m_History[idx]/CPU_SCALE);
-
-		for( y = nry; y >= 0; y-- )
+		int limit = nry - nry * base->m_History[idx]/CPU_SCALE;
+		for( y = 0; y * 2 < h; y++ )
 		{
-			if( base->m_ColorMode > 0 )
+			if( base->m_ColorMode != 0 && y < limit )
 			{
 				double t = (base->m_ColorMode == 1) ?
-				           (tmp / nry) :
-				           (tmp / limit);
-				MixAndApplyColors( t, &base->colors[2], &base->colors[3], fg2);
-				tmp++;
+				           (y / (double)nry) :
+				           (y / (double)limit);
+				MixAndApplyColors( t, &base->colors[3], &base->colors[2], fg2);
 			}
-			gdk_draw_rectangle (da->window,
-					(y >= limit) ? fg1 : fg2,
-					TRUE, x * 3, y * 2, 2, 1);
-
+			gdk_draw_rectangle (da->window, y >= limit ? fg1 : fg2, TRUE, x * 3, y * 2, 2, 1);
 		}
 	}
 	g_object_unref( fg1 );
