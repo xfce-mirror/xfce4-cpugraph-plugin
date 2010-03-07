@@ -230,7 +230,7 @@ gboolean LaunchCommand( GtkWidget*w,GdkEventButton *event, CPUGraph *base )
 		GString *cmd;
 		if( strlen(base->m_AssociateCommand) == 0 )
 		{
-			return;
+			return FALSE;
 		}
 		cmd = g_string_new( base->m_AssociateCommand );
 		xfce_exec( cmd->str, FALSE, FALSE, NULL );
