@@ -189,7 +189,7 @@ CpuData *cpuData_read()
 	return cpudata;
 }
 
-#elif defined (__OpenBSD_)
+#elif defined (__OpenBSD__)
 static int DetectCPUNumber()
 {
 	return 1;
@@ -199,7 +199,7 @@ CpuData *cpuData_read()
 {
 	unsigned long user, nice, sys, bsdidle, idle;
 	unsigned long used, total, usage;
-	static int mib[] = {CTL_KERN, KERN_CP_TIME };
+	static int mib[] = {CTL_KERN, KERN_CPTIME };
 	u_int64_t cp_time[CPUSTATES];
 	size_t len = sizeof( cp_time );
 	if( sysctl( mib, 2, &cp_time, &len, NULL, 0) < 0 )
@@ -227,5 +227,5 @@ CpuData *cpuData_read()
 	return cpudata;
 }
 #else
-#error "You're OS is not supported."
+#error "Your OS is not supported."
 #endif
