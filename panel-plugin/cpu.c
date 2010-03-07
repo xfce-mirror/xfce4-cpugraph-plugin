@@ -178,7 +178,7 @@ gboolean UpdateCPU( CPUGraph * base )
 			base->m_History[i--] = (a * (factor-1) + b) / factor;
 		}
 	} else {
-		memmove( base->m_History + 1 , base->m_History , (base->m_Values - 1) * sizeof( int ) );
+		memmove( base->m_History + 1 , base->m_History , (base->m_Values - 1) * sizeof( long ) );
 	}
 	base->m_History[0] = (long)base->m_CpuData[0].load;
 
