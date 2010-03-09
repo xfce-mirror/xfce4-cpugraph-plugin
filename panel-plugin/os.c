@@ -2,30 +2,61 @@
 #include <config.h>
 #endif
 
-#include "cpu.h"
+#include "os.h"
+
+#include <stdio.h>
+#include <string.h>
+#include <glib.h>
 
 #if defined (__linux__)
 #define PROC_STAT "/proc/stat"
-#define SYS_DEVICE "/sys/devices/system/cpu/cpu"
-#define SCAL_CUR_FREQ "/cpufreq/scaling_cur_freq"
-#define SCAL_MIN_FREQ "/cpufreq/scaling_min_freq"
-#define SCAL_MAX_FREQ "/cpufreq/scaling_max_freq"
 #define PROCMAXLNLEN 256 /* should make it */
+#endif
+
+#if defined (__FreeBSD__)
+#include <osreldate.h>
+#include <sys/types.h>
+#if __FreeBSD_version < 500101
+#include <sys/dkstat.h>
+#else
+#include <sys/resource.h>
+#endif
+#include <sys/sysctl.h>
+#include <devstat.h>
+#include <fcntl.h>
+#include <nlist.h>
+#endif
+
+#if defined (__NetBSD__)
+#include <sys/param.h>
+#include <sys/sched.h>
+#include <sys/sysctl.h>
+#include <fcntl.h>
+#include <nlist.h>
+#endif
+
+#if defined (__OpenBSD__)
+#include <sys/param.h>
+#include <sys/sched.h>
+#include <sys/sysctl.h>
+#include <sys/dkstat.h>
+#include <fcntl.h>
+#include <nlist.h>
 #endif
 
 CpuData *cpudata = NULL;
 int nrCpus = 0;
 
-static int DetectCPUNumber();
+static int detect_cpu_number();
 
-void cpuData_free()
+void free_cpu_data()
 {
 	g_free( cpudata );
 	cpudata = NULL;
 	nrCpus = 0;
 }
 
-int cpuData_init()
+int init_cpu_data()
 {
 	int i, cpuNr = -1;
 
@@ -33,7 +64,7 @@ int cpuData_init()
 	if( cpudata != NULL )
 		return -2;
 
-	cpuNr = DetectCPUNumber();
+	cpuNr = detect_cpu_number();
 	if( cpuNr < 1 )
 		return -1;
 
@@ -44,7 +75,7 @@ int cpuData_init()
 }
 
 #if defined (__linux__)
-static int DetectCPUNumber()
+static int detect_cpu_number()
 {
 	int cpuNr= -1;
 	FILE *fstat = NULL;
@@ -64,7 +95,7 @@ static int DetectCPUNumber()
 	return cpuNr;
 }
 
-CpuData *cpuData_read()
+CpuData *read_cpu_data()
 {
 	FILE *fStat = NULL;
 	char cpuStr[PROCMAXLNLEN];
@@ -110,12 +141,12 @@ CpuData *cpuData_read()
 }
 
 #elif defined (__FreeBSD__)
-static int DetectCPUNumber()
+static int detect_cpu_number()
 {
 	return 1;
 }
 
-CpuData *cpuData_read()
+CpuData *read_cpu_data()
 {
 	unsigned long user, nice, sys, bsdidle, idle;
 	unsigned long used, total;
@@ -150,12 +181,12 @@ CpuData *cpuData_read()
 }
 
 #elif defined (__NetBSD__)
-static int DetectCPUNumber()
+static int detect_cpu_number()
 {
 	return 1;
 }
 
-CpuData *cpuData_read()
+CpuData *read_cpu_data()
 {
 	long user, nice, sys, bsdidle, idle;
 	long used, total, usage;
@@ -190,12 +221,12 @@ CpuData *cpuData_read()
 }
 
 #elif defined (__OpenBSD__)
-static int DetectCPUNumber()
+static int detect_cpu_number()
 {
 	return 1;
 }
 
-CpuData *cpuData_read()
+CpuData *read_cpu_data()
 {
 	unsigned long user, nice, sys, bsdidle, idle;
 	unsigned long used, total, usage;

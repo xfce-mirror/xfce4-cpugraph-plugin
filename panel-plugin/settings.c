@@ -1,6 +1,8 @@
-#include <cpu.h>
+#include "settings.h"
 
-void ReadSettings( XfcePanelPlugin * plugin, CPUGraph * base )
+#define DEFAULT_COMMAND "exo-open --launch TerminalEmulator top"
+
+void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 {
 	const char *value;
 	char *file;
@@ -76,7 +78,7 @@ void ReadSettings( XfcePanelPlugin * plugin, CPUGraph * base )
 	set_color( base, 0, background );
 }
 
-void WriteSettings( XfcePanelPlugin *plugin, CPUGraph *base )
+void write_settings( XfcePanelPlugin *plugin, CPUGraph *base )
 {
 	char value[10];
 	XfceRc *rc;
@@ -91,19 +93,19 @@ void WriteSettings( XfcePanelPlugin *plugin, CPUGraph *base )
 	if( !rc )
 		return;
 
-	xfce_rc_write_int_entry( rc, "UpdateInterval", base->m_UpdateInterval );
+	xfce_rc_write_int_entry( rc, "UpdateInterval", base->update_interval );
 
-	xfce_rc_write_int_entry( rc, "TimeScale", base->m_TimeScale );
+	xfce_rc_write_int_entry( rc, "TimeScale", base->non_linear );
 
 	xfce_rc_write_int_entry( rc, "Size", base->size );
 
-	xfce_rc_write_int_entry( rc, "Mode", base->m_Mode );
+	xfce_rc_write_int_entry( rc, "Mode", base->mode );
 
-	xfce_rc_write_int_entry( rc, "Frame", base->m_Frame );
+	xfce_rc_write_int_entry( rc, "Frame", base->frame );
 
-	xfce_rc_write_entry( rc, "AssociateCommand", base->m_AssociateCommand ? base->m_AssociateCommand : "" );
+	xfce_rc_write_entry( rc, "AssociateCommand", base->command ? base->command : "" );
 
-	xfce_rc_write_int_entry( rc, "ColorMode", base->m_ColorMode );
+	xfce_rc_write_int_entry( rc, "ColorMode", base->color_mode );
 
 	g_snprintf( value, 8, "#%02X%02X%02X", base->colors[1].red >> 8, base->colors[1].green >> 8, base->colors[1].blue >> 8 );
 	xfce_rc_write_entry( rc, "Foreground1", value );

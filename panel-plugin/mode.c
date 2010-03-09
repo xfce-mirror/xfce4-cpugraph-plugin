@@ -28,7 +28,7 @@ static guint16 _lerp( double t, guint16 a, guint16 b )
 	return (guint16) (a + t * (b - a));
 }
 
-static void MixAndApplyColors( double ratio, GdkColor *color1, GdkColor *color2, GdkGC *target )
+static void mix_colors( double ratio, GdkColor *color1, GdkColor *color2, GdkGC *target )
 {
 	GdkColor color;
 	color.red = _lerp (ratio, color1->red, color2->red);
@@ -37,7 +37,7 @@ static void MixAndApplyColors( double ratio, GdkColor *color1, GdkColor *color2,
 	gdk_gc_set_rgb_fg_color( target, &color );
 }
 
-void drawGraphModeNormal( CPUGraph *base, GtkWidget *da, int w, int h )
+void draw_graph_normal( CPUGraph *base, GtkWidget *da, int w, int h )
 {
 	int x, y;
 	long usage;
@@ -45,16 +45,16 @@ void drawGraphModeNormal( CPUGraph *base, GtkWidget *da, int w, int h )
 	int tmp;
 	GdkGC *fg1 = gdk_gc_new( da->window );
 
-	if( base->m_ColorMode == 0 )
+	if( base->color_mode == 0 )
 		gdk_gc_set_rgb_fg_color( fg1, &base->colors[1] );
 
 	for( x = 0; x < w; x++ )
 	{
-		usage = h * base->m_History[w - 1- x] / CPU_SCALE;
+		usage = h * base->history[w - 1- x] / CPU_SCALE;
 
 		if( usage == 0 ) continue;
 
-		if( base->m_ColorMode == 0 )
+		if( base->color_mode == 0 )
 		{
 			gdk_draw_line( da->window, fg1, x, h-usage, x, h-1 );
 		}
@@ -63,10 +63,10 @@ void drawGraphModeNormal( CPUGraph *base, GtkWidget *da, int w, int h )
 			tmp = 0;
 			for( y = h-1; y >= h - usage; y--, tmp++ )
 			{
-				t = (base->m_ColorMode == 1) ?
+				t = (base->color_mode == 1) ?
 					(tmp / (double) (h)) :
 					(tmp / (double) (usage));
-				MixAndApplyColors( t, &base->colors[1], &base->colors[2], fg1);
+				mix_colors( t, &base->colors[1], &base->colors[2], fg1);
 				gdk_draw_point( da->window, fg1, x, y );
 			}
 		}
@@ -74,7 +74,7 @@ void drawGraphModeNormal( CPUGraph *base, GtkWidget *da, int w, int h )
 	g_object_unref( fg1 );
 }
 
-void drawGraphModeLED( CPUGraph *base, GtkWidget *da, int w, int h )
+void draw_graph_LED( CPUGraph *base, GtkWidget *da, int w, int h )
 {
 	int nrx = (w + 1) / 3;
 	int nry = (h + 1) / 2;
@@ -88,15 +88,15 @@ void drawGraphModeLED( CPUGraph *base, GtkWidget *da, int w, int h )
 	for( x = 0; x * 3 < w; x++ )
 	{
 		int idx = nrx-x;
-		int limit = nry - nry * base->m_History[idx]/CPU_SCALE;
+		int limit = nry - nry * base->history[idx]/CPU_SCALE;
 		for( y = 0; y * 2 < h; y++ )
 		{
-			if( base->m_ColorMode != 0 && y < limit )
+			if( base->color_mode != 0 && y < limit )
 			{
-				double t = (base->m_ColorMode == 1) ?
+				double t = (base->color_mode == 1) ?
 				           (y / (double)nry) :
 				           (y / (double)limit);
-				MixAndApplyColors( t, &base->colors[3], &base->colors[2], fg2);
+				mix_colors( t, &base->colors[3], &base->colors[2], fg2);
 			}
 			gdk_draw_rectangle (da->window, y >= limit ? fg1 : fg2, TRUE, x * 3, y * 2, 2, 1);
 		}
@@ -105,15 +105,15 @@ void drawGraphModeLED( CPUGraph *base, GtkWidget *da, int w, int h )
 	g_object_unref( fg2 );
 }
 
-void drawGraphModeNoHistory( CPUGraph *base, GtkWidget *da, int w, int h )
+void draw_graph_no_history( CPUGraph *base, GtkWidget *da, int w, int h )
 {
 	int y;
-	long usage = h * base->m_History[0] / CPU_SCALE;
+	long usage = h * base->history[0] / CPU_SCALE;
 	int tmp = 0;
 	double t;
 	GdkGC *fg1 = gdk_gc_new( da->window );
 
-	if( base->m_ColorMode == 0 )
+	if( base->color_mode == 0 )
 	{
 		gdk_gc_set_rgb_fg_color( fg1, &base->colors[1] );
 		gdk_draw_rectangle( da->window, fg1, TRUE, 0, h-usage, w, usage );
@@ -122,10 +122,10 @@ void drawGraphModeNoHistory( CPUGraph *base, GtkWidget *da, int w, int h )
 	{
 		for( y = h-1; y > h - 1 - usage; y-- )
 		{
-			t = (base->m_ColorMode == 1) ?
+			t = (base->color_mode == 1) ?
 				(tmp / (double) (h)) :
 				(tmp / (double) (usage));
-			MixAndApplyColors( t, &base->colors[1], &base->colors[2], fg1 );
+			mix_colors( t, &base->colors[1], &base->colors[2], fg1 );
 			tmp++;
 			gdk_draw_line( da->window, fg1, 0, y, w-1, y );
 		}
@@ -139,7 +139,7 @@ typedef struct
 	long y;
 } point;
 
-void drawGraphGrid( CPUGraph *base, GtkWidget *da, int w, int h )
+void draw_graph_grid( CPUGraph *base, GtkWidget *da, int w, int h )
 {
 	int x, y;
 	long usage;
@@ -161,7 +161,7 @@ void drawGraphGrid( CPUGraph *base, GtkWidget *da, int w, int h )
 	gdk_gc_set_rgb_fg_color( fg1, &base->colors[2] );
 	for( x = 0; x < w; x++ )
 	{
-		usage = h * base->m_History[w - 1- x] / CPU_SCALE;
+		usage = h * base->history[w - 1- x] / CPU_SCALE;
 		current.x = x;
 		current.y = h - usage;
 		gdk_draw_line( da->window, fg1, current.x, current.y, last.x, last.y );

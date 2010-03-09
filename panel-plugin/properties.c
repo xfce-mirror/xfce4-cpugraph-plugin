@@ -1,19 +1,34 @@
-#include <actions.h>
+#include "cpu.h"
+#include "properties.h"
+#include "settings.h"
 
-static GtkBox *CreateTab();
-static GtkBox *CreateOptionLine( GtkBox *tab, GtkSizeGroup *sg, const char *name );
-static void CreateCheckBox( GtkBox *tab, GtkSizeGroup *sg, const char *name, int init, void (callback)( GtkToggleButton *, CPUGraph *), void *cb_data );
-static void CreateDropDown( GtkBox *tab, GtkSizeGroup *sg, const char * name, const char **items, size_t nb_items, int init, void (callback)( GtkOptionMenu *, CPUGraph * ), void * cb_data);
+static GtkBox *create_tab();
+static GtkBox *create_option_line( GtkBox *tab, GtkSizeGroup *sg, const char *name );
+static void create_check_box( GtkBox *tab, GtkSizeGroup *sg, const char *name, int init, void (callback)( GtkToggleButton *, CPUGraph *), void *cb_data );
+static void create_drop_down( GtkBox *tab, GtkSizeGroup *sg, const char * name, const char **items, size_t nb_items, int init, void (callback)( GtkOptionMenu *, CPUGraph * ), void * cb_data);
 
-static void SetupUpdateIntervalOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
-static void SetupWidthOption( GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, CPUGraph *base );
-static void SetupAssociateCommandOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
-static void SetupColorOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base, int number, const gchar *name, GCallback cb );
-static void SetupModesOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
-static void SetupColormodeOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
+static void setup_update_interval_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
+static void setup_size_option( GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, CPUGraph *base );
+static void setup_command_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
+static void setup_color_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base, int number, const gchar *name, GCallback cb );
+static void setup_mode_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
+static void setup_color_mode_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
 
+static void change_command( GtkEntry *entry, CPUGraph *base );
+static void change_color_0( GtkColorButton *button, CPUGraph *base );
+static void change_color_1( GtkColorButton * button, CPUGraph * base );
+static void change_color_2( GtkColorButton *button, CPUGraph *base );
+static void change_color_3( GtkColorButton *button, CPUGraph *base );
+static void select_active_colors( CPUGraph * base );
+static void change_mode( GtkOptionMenu *om, CPUGraph *base );
+static void change_color_mode( GtkOptionMenu *om, CPUGraph *base );
+static void response_cb( GtkWidget *dlg, int response, CPUGraph *base );
+static void change_frame( GtkToggleButton *button, CPUGraph *base );
+static void change_size( GtkSpinButton *sb, CPUGraph *base );
+static void change_time_scale( GtkToggleButton *button, CPUGraph *base );
+static void change_update( GtkOptionMenu *om, CPUGraph *base );
 
-void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base )
+void create_options( XfcePanelPlugin *plugin, CPUGraph *base )
 {
 	GtkWidget *dlg, *header;
 	GtkBox *vbox, *vbox2;
@@ -33,7 +48,7 @@ void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base )
 
 	base->m_OptionsDialog = dlg;
 
-	g_signal_connect( dlg, "response", G_CALLBACK( DialogResponse ), base );
+	g_signal_connect( dlg, "response", G_CALLBACK( response_cb ), base );
 
 	gtk_container_set_border_width( GTK_CONTAINER( dlg ), 2 );
 
@@ -45,21 +60,21 @@ void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base )
 
 	sg = gtk_size_group_new( GTK_SIZE_GROUP_HORIZONTAL );
 
-	vbox = CreateTab();
-	SetupUpdateIntervalOption( vbox, sg, base );
-	SetupWidthOption( vbox, sg, plugin, base );
-	CreateCheckBox( vbox, sg, _("Non-linear time-scale"), base->m_TimeScale, TimeScaleChange, base );
-	CreateCheckBox( vbox, sg, _("Show frame"), base->m_Frame, FrameChange, base );
-	SetupAssociateCommandOption( vbox, sg, base );
+	vbox = create_tab();
+	setup_update_interval_option( vbox, sg, base );
+	setup_size_option( vbox, sg, plugin, base );
+	create_check_box( vbox, sg, _("Non-linear time-scale"), base->non_linear, change_time_scale, base );
+	create_check_box( vbox, sg, _("Show frame"), base->frame, change_frame, base );
+	setup_command_option( vbox, sg, base );
 
-	vbox2 = CreateTab();
-	SetupColorOption( vbox2, sg, base, 1, _("Color 1:"), G_CALLBACK( ChangeColor1 ) );
-	SetupColorOption( vbox2, sg, base, 2, _("Color 2:"), G_CALLBACK( ChangeColor2 ) );
-	SetupColorOption( vbox2, sg, base, 3, _("Color 3:"), G_CALLBACK( ChangeColor3 ) );
-	SetupColorOption( vbox2, sg, base, 0, _("Background:"), G_CALLBACK( ChangeColor0 ) );
+	vbox2 = create_tab();
+	setup_color_option( vbox2, sg, base, 1, _("Color 1:"), G_CALLBACK( change_color_1 ) );
+	setup_color_option( vbox2, sg, base, 2, _("Color 2:"), G_CALLBACK( change_color_2 ) );
+	setup_color_option( vbox2, sg, base, 3, _("Color 3:"), G_CALLBACK( change_color_3 ) );
+	setup_color_option( vbox2, sg, base, 0, _("Background:"), G_CALLBACK( change_color_0 ) );
 	select_active_colors( base );
-	SetupModesOption( vbox2, sg, base );
-	SetupColormodeOption( vbox2, sg, base );
+	setup_mode_option( vbox2, sg, base );
+	setup_color_mode_option( vbox2, sg, base );
 
 	Notebook = gtk_notebook_new();
 	gtk_container_set_border_width( GTK_CONTAINER( Notebook ), BORDER - 2 );
@@ -74,7 +89,7 @@ void CreateOptions( XfcePanelPlugin *plugin, CPUGraph *base )
 	gtk_widget_show( dlg );
 }
 
-static GtkBox *CreateTab()
+static GtkBox *create_tab()
 {
 	GtkBox *tab;
 	tab = GTK_BOX( gtk_vbox_new( FALSE, BORDER ) );
@@ -83,7 +98,7 @@ static GtkBox *CreateTab()
 	return tab;
 }
 
-static GtkBox *CreateOptionLine( GtkBox *tab, GtkSizeGroup *sg, const char *name )
+static GtkBox *create_option_line( GtkBox *tab, GtkSizeGroup *sg, const char *name )
 {
 	GtkBox *line;
 	GtkWidget *label;
@@ -104,12 +119,12 @@ static GtkBox *CreateOptionLine( GtkBox *tab, GtkSizeGroup *sg, const char *name
 	return line;
 }
 
-static void CreateCheckBox( GtkBox *tab, GtkSizeGroup *sg, const char *name, int init, void (callback)( GtkToggleButton *, CPUGraph *), void *cb_data )
+static void create_check_box( GtkBox *tab, GtkSizeGroup *sg, const char *name, int init, void (callback)( GtkToggleButton *, CPUGraph *), void *cb_data )
 {
 	GtkBox *hbox;
 	GtkWidget * checkBox;
 
-	hbox = CreateOptionLine( tab, sg, NULL );
+	hbox = create_option_line( tab, sg, NULL );
 
 	checkBox = gtk_check_button_new_with_mnemonic( name );
 	gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON( checkBox ), init );
@@ -119,7 +134,7 @@ static void CreateCheckBox( GtkBox *tab, GtkSizeGroup *sg, const char *name, int
 	gtk_size_group_add_widget( sg, checkBox );
 }
 
-static void CreateDropDown( GtkBox *tab, GtkSizeGroup *sg, const char * name, const char ** items, size_t nb_items, int init, void (callback)( GtkOptionMenu *, CPUGraph * ), void * cb_data)
+static void create_drop_down( GtkBox *tab, GtkSizeGroup *sg, const char * name, const char ** items, size_t nb_items, int init, void (callback)( GtkOptionMenu *, CPUGraph * ), void * cb_data)
 {
 	GtkBox *hbox;
 	GtkWidget *Option;
@@ -127,7 +142,7 @@ static void CreateDropDown( GtkBox *tab, GtkSizeGroup *sg, const char * name, co
 	GtkWidget *MenuItem;
 	int i;
 
-	hbox = CreateOptionLine( tab, sg, name );
+	hbox = create_option_line( tab, sg, name );
 
 	Option = gtk_option_menu_new();
 	gtk_widget_show( Option );
@@ -148,7 +163,7 @@ static void CreateDropDown( GtkBox *tab, GtkSizeGroup *sg, const char * name, co
 	g_signal_connect( Option, "changed", G_CALLBACK( callback ), cb_data );
 }
 
-static void SetupUpdateIntervalOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base )
+static void setup_update_interval_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base )
 {
 	const char *items[] = { _("Fastest (~250ms)"),
 	                        _("Fast (~500ms)"),
@@ -157,45 +172,45 @@ static void SetupUpdateIntervalOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph 
 	                      };
 	size_t nb_items = sizeof( items ) / sizeof( char* );
 
-	CreateDropDown( vbox, sg, _("Update Interval: "), items, nb_items, base->m_UpdateInterval, UpdateChange, base);
+	create_drop_down( vbox, sg, _("Update Interval: "), items, nb_items, base->update_interval, change_update, base);
 }
 
-static void SetupWidthOption( GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, CPUGraph *base )
+static void setup_size_option( GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, CPUGraph *base )
 {
 	GtkBox *hbox;
 	GtkWidget *Size;
 
 	if( xfce_panel_plugin_get_orientation( plugin ) == GTK_ORIENTATION_HORIZONTAL )
-		hbox = CreateOptionLine( vbox, sg, _("Width:") );
+		hbox = create_option_line( vbox, sg, _("Width:") );
 	else
-		hbox = CreateOptionLine( vbox, sg, _("Height:") );
+		hbox = create_option_line( vbox, sg, _("Height:") );
 
 	Size = gtk_spin_button_new_with_range( 10, 128, 1 );
 	gtk_spin_button_set_value( GTK_SPIN_BUTTON( Size ), base->size );
 	gtk_widget_show( Size );
 	gtk_box_pack_start( GTK_BOX( hbox ), GTK_WIDGET( Size ), FALSE, FALSE, 0 );
-	g_signal_connect( Size, "value-changed", G_CALLBACK( SizeChange ), base );
+	g_signal_connect( Size, "value-changed", G_CALLBACK( change_size ), base );
 }
 
-static void SetupAssociateCommandOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base )
+static void setup_command_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base )
 {
 	GtkBox *hbox;
 	GtkWidget *AssociateCommand;
 
-	hbox = CreateOptionLine( vbox, sg, _("Associated command :") );
+	hbox = create_option_line( vbox, sg, _("Associated command :") );
 
 	AssociateCommand = gtk_entry_new();
-	gtk_entry_set_text( GTK_ENTRY(AssociateCommand), base->m_AssociateCommand );
+	gtk_entry_set_text( GTK_ENTRY(AssociateCommand), base->command );
 	gtk_widget_show( AssociateCommand );
 	gtk_box_pack_start( GTK_BOX( hbox ), GTK_WIDGET( AssociateCommand ), FALSE, FALSE, 0 );
-	g_signal_connect( AssociateCommand, "changed", G_CALLBACK( AssociateCommandChange ), base );
+	g_signal_connect( AssociateCommand, "changed", G_CALLBACK( change_command ), base );
 }
 
-static void SetupColorOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base, int number, const gchar * name, GCallback cb )
+static void setup_color_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base, int number, const gchar * name, GCallback cb )
 {
 	GtkBox *hbox;
 
-	hbox = CreateOptionLine( vbox, sg, name );
+	hbox = create_option_line( vbox, sg, name );
 
 	base->color_buttons[number] = gtk_color_button_new_with_color( &base->colors[number] );
 	gtk_widget_show( GTK_WIDGET( base->color_buttons[number] ) );
@@ -204,7 +219,7 @@ static void SetupColorOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base, in
 	g_signal_connect( base->color_buttons[number], "color-set", cb, base );
 }
 
-static void SetupModesOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base )
+static void setup_mode_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base )
 {
 	const char *items[] = { _("Normal"),
 	                        _("LED"),
@@ -213,10 +228,10 @@ static void SetupModesOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base )
 	                      };
 	size_t nb_items = sizeof( items ) / sizeof( char* );
 
-	CreateDropDown( vbox, sg, _("Mode:"), items, nb_items, base->m_Mode, ModeChange, base);
+	create_drop_down( vbox, sg, _("Mode:"), items, nb_items, base->mode, change_mode, base);
 }
 
-static void SetupColormodeOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base )
+static void setup_color_mode_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base )
 {
 	const char *items[] = { _("None"),
 	                        _("Gradient"),
@@ -224,5 +239,89 @@ static void SetupColormodeOption( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base
 	                      };
 	size_t nb_items = sizeof( items ) / sizeof( char* );
 
-	CreateDropDown( vbox, sg, _("Color mode: "), items, nb_items, base->m_ColorMode, ColorModeChange, base);
+	create_drop_down( vbox, sg, _("Color mode: "), items, nb_items, base->color_mode, change_color_mode, base);
+}
+
+static void change_command( GtkEntry *entry, CPUGraph * base )
+{
+	set_command( base, gtk_entry_get_text( entry ) );
+}
+
+static void change_color( GtkColorButton * button, CPUGraph * base, int number)
+{
+	GdkColor color;
+	gtk_color_button_get_color( button, &color );
+	set_color( base, number, color );
+}
+
+static void change_color_1( GtkColorButton * button, CPUGraph * base )
+{
+	change_color( button, base, 1);
+}
+
+static void change_color_2( GtkColorButton * button, CPUGraph * base )
+{
+	change_color( button, base, 2);
+}
+
+static void change_color_3( GtkColorButton * button, CPUGraph * base )
+{
+	change_color( button, base, 3);
+}
+
+static void change_color_0( GtkColorButton * button, CPUGraph * base )
+{
+	change_color( button, base, 0);
+}
+
+static void select_active_colors( CPUGraph * base )
+{
+	if( base->color_mode != 0 || base->mode == 1 || base->mode == 3 )
+		gtk_widget_set_sensitive( GTK_WIDGET( base->color_buttons[2] ), TRUE );
+	else
+		gtk_widget_set_sensitive( GTK_WIDGET( base->color_buttons[2] ), FALSE );
+
+	if( base->color_mode != 0 && base->mode == 1 )
+		gtk_widget_set_sensitive( GTK_WIDGET( base->color_buttons[3] ), TRUE );
+	else
+		gtk_widget_set_sensitive( GTK_WIDGET( base->color_buttons[3] ), FALSE );
+}
+
+static void change_mode( GtkOptionMenu * om, CPUGraph * base )
+{
+	set_mode( base, gtk_option_menu_get_history( om ) );
+	select_active_colors( base );
+}
+
+static void change_color_mode( GtkOptionMenu * om, CPUGraph * base )
+{
+	set_color_mode( base, gtk_option_menu_get_history( om ) );
+	select_active_colors( base );
+}
+
+static void response_cb( GtkWidget *dlg, int response, CPUGraph *base )
+{
+	gtk_widget_destroy( dlg );
+	xfce_panel_plugin_unblock_menu( base->plugin );
+	write_settings( base->plugin, base );
+}
+
+static void change_frame( GtkToggleButton * button, CPUGraph * base )
+{
+	set_frame( base, gtk_toggle_button_get_active( button ) );
+}
+
+static void change_size( GtkSpinButton * sb, CPUGraph *base)
+{
+	set_size( base, gtk_spin_button_get_value_as_int( sb ) );
+}
+
+static void change_time_scale( GtkToggleButton * button, CPUGraph * base )
+{
+	set_nonlinear_time( base, gtk_toggle_button_get_active( button ) );
+}
+
+static void change_update( GtkOptionMenu * om, CPUGraph * base )
+{
+	set_update_rate( base, gtk_option_menu_get_history( om ) );
 }

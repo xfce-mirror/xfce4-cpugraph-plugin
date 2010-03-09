@@ -1,42 +1,9 @@
-#ifndef __OS_H__
-#define __OS_H__
-
-#include <stdio.h>
-
-#if defined (__FreeBSD__)
-#include <osreldate.h>
-#include <sys/types.h>
-#if __FreeBSD_version < 500101
-#include <sys/dkstat.h>
-#else
-#include <sys/resource.h>
-#endif
-#include <sys/sysctl.h>
-#include <devstat.h>
-#include <fcntl.h>
-#include <nlist.h>
-#endif
-
-#if defined (__NetBSD__)
-#include <sys/param.h>
-#include <sys/sched.h>
-#include <sys/sysctl.h>
-#include <fcntl.h>
-#include <nlist.h>
-#endif
-
-#if defined (__OpenBSD__)
-#include <sys/param.h>
-#include <sys/sched.h>
-#include <sys/sysctl.h>
-#include <sys/dkstat.h>
-#include <fcntl.h>
-#include <nlist.h>
-#endif
+#ifndef _XFCE_OS_H_
+#define _XFCE_OS_H_
 
 #define CPU_SCALE 100000
 
-typedef struct s_cpuData
+typedef struct
 {
 	float load; /* cpu utilization */
 	unsigned long pUsed; /* Previous value of used cpu time */
@@ -44,8 +11,8 @@ typedef struct s_cpuData
 } CpuData;
 
 
-int cpuData_init();
-void cpuData_free();
-CpuData *cpuData_read();
+int init_cpu_data();
+void free_cpu_data();
+CpuData *read_cpu_data();
 
-#endif
+#endif /* !_XFCE_OS_H */

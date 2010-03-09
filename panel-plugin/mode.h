@@ -1,11 +1,11 @@
-#ifndef __XFCE_MODE_H__
-#define __XFCE_MODE_H__
+#ifndef _XFCE_MODE_H_
+#define _XFCE_MODE_H_
 
 #include "cpu.h"
 
-void drawGraphModeNormal( CPUGraph *base, GtkWidget *da, int w, int h );
-void drawGraphModeLED( CPUGraph *base, GtkWidget *da, int w, int h );
-void drawGraphModeNoHistory( CPUGraph *base, GtkWidget *da, int w, int h );
-void drawGraphGrid( CPUGraph *base, GtkWidget *da, int w, int h );
+void draw_graph_normal( CPUGraph *base, GtkWidget *da, int w, int h );
+void draw_graph_LED( CPUGraph *base, GtkWidget *da, int w, int h );
+void draw_graph_no_history( CPUGraph *base, GtkWidget *da, int w, int h );
+void draw_graph_grid( CPUGraph *base, GtkWidget *da, int w, int h );
 
-#endif
+#endif /* !_XFCE_MODE_H_ */
