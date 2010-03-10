@@ -5,6 +5,7 @@
 
 static void cpugraph_construct( XfcePanelPlugin *plugin );
 static CPUGraph *create_gui( XfcePanelPlugin *plugin );
+static guint init_cpu_data( CpuData **data );
 static void shutdown( XfcePanelPlugin *plugin, CPUGraph *base );
 static gboolean size_cb( XfcePanelPlugin *plugin, int size, CPUGraph *base );
 static void orientation_cb( XfcePanelPlugin *plugin, GtkOrientation orientation, CPUGraph *base );
@@ -41,7 +42,7 @@ static CPUGraph * create_gui( XfcePanelPlugin * plugin )
 	CPUGraph *base = g_new0( CPUGraph, 1 );
 
 	orientation = xfce_panel_plugin_get_orientation(plugin);
-	if((base->nr_cores = init_cpu_data() - 1) < 0)
+	if( (base->nr_cores = init_cpu_data( &base->cpu_data )) == 0)
 		fprintf(stderr,"Cannot init cpu data !\n");
 
 	base->plugin = plugin;
@@ -75,10 +76,23 @@ static CPUGraph * create_gui( XfcePanelPlugin * plugin )
 	return base;
 }
 
+guint init_cpu_data( CpuData **data )
+{
+	guint cpuNr;
+
+	cpuNr = detect_cpu_number();
+	if( cpuNr == 0 )
+		return 0;
+
+	*data = (CpuData *) g_malloc0( cpuNr * sizeof( CpuData ) );
+
+	return cpuNr;
+}
+
 static void shutdown( XfcePanelPlugin * plugin, CPUGraph * base )
 {
 	gint i;
-	free_cpu_data();
+	g_free( base->cpu_data );
 	base->cpu_data = NULL;
 
 	for(i=0; i<base->nr_cores-1; i++)
@@ -125,9 +139,9 @@ static gboolean size_cb( XfcePanelPlugin *plugin, int size, CPUGraph *base )
 	for( i=0; i<base->nr_cores; i++ )
 		gtk_widget_set_size_request( GTK_WIDGET(base->m_pBar[i]), bar_h, bar_v );
 
-	base->history = (long *) g_realloc( base->history, history * sizeof( long ) );
+	base->history = (int *) g_realloc( base->history, history * sizeof( int ) );
 	if( history > base->history_size )
-		memset( base->history + base->history_size, 0, (history - base->history_size) * sizeof( long ) );
+		memset( base->history + base->history_size, 0, (history - base->history_size) * sizeof( int ) );
 	base->history_size = history;
 
 	return TRUE;
@@ -156,7 +170,8 @@ static void orientation_cb( XfcePanelPlugin * plugin, GtkOrientation orientation
 static gboolean update_cb( CPUGraph * base )
 {
 	gint i;
-	base->cpu_data = read_cpu_data();
+	if( !read_cpu_data( base->cpu_data, base->nr_cores ) )
+		return TRUE;
 	for( i=0; i<base->nr_cores; i++ )
 	{
 		gtk_progress_bar_set_fraction( GTK_PROGRESS_BAR(base->m_pBar[i]), (gdouble)base->cpu_data[i+1].load / CPU_SCALE );
@@ -176,9 +191,9 @@ static gboolean update_cb( CPUGraph * base )
 			base->history[i--] = (a * (factor-1) + b) / factor;
 		}
 	} else {
-		memmove( base->history + 1 , base->history , (base->history_size - 1) * sizeof( long ) );
+		memmove( base->history + 1 , base->history , (base->history_size - 1) * sizeof( int ) );
 	}
-	base->history[0] = (long)base->cpu_data[0].load;
+	base->history[0] = base->cpu_data[0].load;
 
 	/* Tooltip */
 	update_tooltip( base );

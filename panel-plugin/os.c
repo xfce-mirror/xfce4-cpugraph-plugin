@@ -44,121 +44,89 @@
 #include <nlist.h>
 #endif
 
-CpuData *cpudata = NULL;
-int nrCpus = 0;
-
-static int detect_cpu_number();
-
-void free_cpu_data()
-{
-	g_free( cpudata );
-	cpudata = NULL;
-	nrCpus = 0;
-}
-
-int init_cpu_data()
-{
-	int i, cpuNr = -1;
-
-	/* Check if previously initalized */
-	if( cpudata != NULL )
-		return -2;
-
-	cpuNr = detect_cpu_number();
-	if( cpuNr < 1 )
-		return -1;
-
-	/* Alloc storage for cpu data stuff */
-	cpudata = (CpuData *) g_malloc0( cpuNr * sizeof( CpuData ) );
-
-	return nrCpus = cpuNr;
-}
-
 #if defined (__linux__)
-static int detect_cpu_number()
+unsigned int detect_cpu_number()
 {
-	int cpuNr= -1;
+	int nb_lines= 0;
 	FILE *fstat = NULL;
 	char cpuStr[PROCMAXLNLEN];
-	/* Open proc stat file */
-	if( !(fstat = fopen( PROC_STAT, "r" )) )
-		return -1;
 
-	/* Read each cpu line at time */
-	do
+	if( !(fstat = fopen( PROC_STAT, "r" )) )
+		return 0;
+
+	while( fgets( cpuStr, PROCMAXLNLEN, fstat ) )
 	{
-		if( !fgets( cpuStr, PROCMAXLNLEN, fstat ) )
-			return cpuNr;
-		cpuNr++;
-	} while( strncmp( cpuStr, "cpu", 3 ) == 0 );
+		if( strncmp( cpuStr, "cpu", 3 ) == 0 )
+			nb_lines++;
+		else
+			break;
+	}
+
 	fclose( fstat );
-	return cpuNr;
+
+	return nb_lines > 1 ? nb_lines - 1 : 0;
 }
 
-CpuData *read_cpu_data()
+int read_cpu_data( CpuData *data, unsigned int nb_cpu)
 {
-	FILE *fStat = NULL;
+	FILE *fStat;
 	char cpuStr[PROCMAXLNLEN];
-	unsigned long user, nice, system, idle, used, total;
-	unsigned long iowait=0, irq=0, softirq=0;
-	int cpuNr = 0;
+	unsigned int user, nice, system, idle, used, total, iowait, irq, softirq;
+	unsigned int line;
 
-	/* Check if callable */
-	if( (cpudata == NULL) || (nrCpus == 0) )
-		return NULL;
-
-	/* Open proc stat file */
 	if( !(fStat = fopen( PROC_STAT, "r" )) )
-		return NULL;
+		return FALSE;
 
-	/* Read each cpu line at time */
-	do
+	for( line = 0; line < nb_cpu + 1; line++ )
 	{
-		if( !fgets( cpuStr, PROCMAXLNLEN, fStat ) )
-			return cpudata;
+		if( !fgets( cpuStr, PROCMAXLNLEN, fStat ) ||
+		    strncmp( cpuStr, "cpu", 3 ) != 0
+		  )
+		{
+			fclose( fStat );
+			return FALSE;
+		}
 		if( sscanf( cpuStr, "%*s %ld %ld %ld %ld %ld %ld %ld", &user, &nice, &system, &idle, &iowait, &irq, &softirq ) < 7 )
 			iowait = irq = softirq = 0;
 		used = user + nice + system + irq + softirq;
 		total = used + idle + iowait;
-		if( (total - cpudata[cpuNr].pTotal) != 0 )
+		if( (total - data[line].pTotal) != 0 )
 		{
-			cpudata[cpuNr].load = CPU_SCALE * (float)(used - cpudata[cpuNr].pUsed) /
-			                      (float)(total - cpudata[cpuNr].pTotal);
+			data[line].load = CPU_SCALE * (used - data[line].pUsed) /
+			                      (total - data[line].pTotal);
 		}
 		else
 		{
-			cpudata[cpuNr].load = 0;
+			data[line].load = 0;
 		}
-		cpudata[cpuNr].pUsed = used;
-		cpudata[cpuNr].pTotal = total;
-		cpuNr++;
+		data[line].pUsed = used;
+		data[line].pTotal = total;
 	}
-	while( (cpuNr < nrCpus) && (strncmp( cpuStr, "cpu", 3 ) == 0) );
 
 	fclose( fStat );
 
-	return cpudata;
+	return TRUE;
 }
 
 #elif defined (__FreeBSD__)
-static int detect_cpu_number()
+unsigned int detect_cpu_number()
 {
 	return 1;
 }
 
-CpuData *read_cpu_data()
+int read_cpu_data( CpuData *data, unsigned int nb_cpu)
 {
-	unsigned long user, nice, sys, bsdidle, idle;
-	unsigned long used, total;
-	long cp_time[CPUSTATES];
+	unsigned int user, nice, sys, bsdidle, idle;
+	unsigned int used, total;
+	int cp_time[CPUSTATES];
 	size_t len = sizeof( cp_time );
 
-	long usage;
+	int usage;
 
 	if( sysctlbyname( "kern.cp_time", &cp_time, &len, NULL, 0 ) < 0 )
 	{
 		printf( "Cannot get kern.cp_time.\n" );
-		return -1;
+		return FALSE1;
 	}
 
 	user = cp_time[CP_USER];
@@ -169,27 +137,27 @@ CpuData *read_cpu_data()
 
 	used = user+nice+sys;
 	total = used+bsdidle;
-	if( (total - cpudata[0].pTotal) != 0 )
-		cpudata[0].pTotal = (CPU_SCALE.0 * (used - cpudata[0].pTotal))/(total - cpudata[0].pTotal);
+	if( (total - data[0].pTotal) != 0 )
+		data[0].load = (CPU_SCALE.0 * (used - data[0].pTotal))/(total - data[0].pTotal);
 	else
-		cpudata[0].pTotal = 0;
+		data[0].load = 0;
 
-	cpudata[0].pUsed = used;
-	cpudata[0].pTotal = total;
+	data[0].pUsed = used;
+	data[0].pTotal = total;
 
-	return cpudata;
+	return TRUE;
 }
 
 #elif defined (__NetBSD__)
-static int detect_cpu_number()
+unsigned int detect_cpu_number()
 {
 	return 1;
 }
 
-CpuData *read_cpu_data()
+int read_cpu_data( CpuData *data, unsigned int nb_cpu)
 {
-	long user, nice, sys, bsdidle, idle;
-	long used, total, usage;
+	int user, nice, sys, bsdidle, idle;
+	int used, total;
 	static int mib[] = {CTL_KERN, KERN_CP_TIME };
 	u_int64_t cp_time[CPUSTATES];
 	size_t len = sizeof( cp_time );
@@ -197,7 +165,7 @@ CpuData *read_cpu_data()
 	if( sysctl( mib, 2, &cp_time, &len, NULL, 0 ) < 0 )
 	{
 		printf( "Cannot get kern.cp_time\n" );
-		return -1;
+		return FALSE;
 	}
 
 	user = cp_time[CP_USER];
@@ -209,34 +177,34 @@ CpuData *read_cpu_data()
 	used = user+nice+sys;
 	total = used+bsdidle;
 
-	if( total - cpudata[0].pTotal != 0 )
-		usage = (CPU_SCALE * (double)(used - cpudata[0].pTotal)) / (double)(total - cpudata[0].pTotal);
+	if( total - data[0].pTotal != 0 )
+		data[0].load = (CPU_SCALE * (double)(used - data[0].pTotal)) / (double)(total - data[0].pTotal);
 	else
-		usage = 0;
+		data[0].load = 0;
 
-	cpudata[0].pUsed = used;
-	cpudata[0].pTotal = total;
+	data[0].pUsed = used;
+	data[0].pTotal = total;
 
-	return cpudata;
+	return TRUE;
 }
 
 #elif defined (__OpenBSD__)
-static int detect_cpu_number()
+unsigned int detect_cpu_number()
 {
 	return 1;
 }
 
-CpuData *read_cpu_data()
+int read_cpu_data( CpuData *data, unsigned int nb_cpu)
 {
-	unsigned long user, nice, sys, bsdidle, idle;
-	unsigned long used, total, usage;
+	unsigned int user, nice, sys, bsdidle, idle;
+	unsigned int used, total;
 	static int mib[] = {CTL_KERN, KERN_CPTIME };
 	u_int64_t cp_time[CPUSTATES];
 	size_t len = sizeof( cp_time );
 	if( sysctl( mib, 2, &cp_time, &len, NULL, 0) < 0 )
 	{
 		printf( "Cannot get kern.cp_time\n" );
-		return -1;
+		return FALSE;
 	}
 
 	user = cp_time[CP_USER];
@@ -248,14 +216,14 @@ CpuData *read_cpu_data()
 	used = user+nice+sys;
 	total = used+bsdidle;
 
-	if( total - cpudata[0].pTotal != 0 )
-		usage = (CPU_SCALE * (double)(used - cpudata[0].pTotal))/(double)(total - cpudata[0].pTotal);
+	if( total - data[0].pTotal != 0 )
+		data[0].load = (CPU_SCALE (used - data[0].pTotal))/(total - data[0].pTotal);
 	else
-		usage = 0;
-	cpudata[0].pUsed = used;
-	cpudata[0].pTotal = total;
+		data[0].load = 0;
+	data[0].pUsed = used;
+	data[0].pTotal = total;
 
-	return cpudata;
+	return TRUE;
 }
 #else
 #error "Your OS is not supported."

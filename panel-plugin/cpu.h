@@ -16,8 +16,6 @@
 #include <libxfce4panel/xfce-panel-plugin.h>
 #include <libxfce4panel/xfce-hvbox.h>
 
-
-
 #include "os.h"
 
 #define BORDER  8
@@ -46,7 +44,7 @@ typedef struct
 	/* Runtime data */
 	guint nr_cores;
 	guint timeout_id;
-	long *history;
+	int *history;
 	gssize history_size;
 	int orientation;
 	CpuData *cpu_data;

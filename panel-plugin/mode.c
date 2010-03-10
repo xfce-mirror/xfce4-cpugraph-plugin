@@ -40,7 +40,7 @@ static void mix_colors( double ratio, GdkColor *color1, GdkColor *color2, GdkGC 
 void draw_graph_normal( CPUGraph *base, GtkWidget *da, int w, int h )
 {
 	int x, y;
-	long usage;
+	int usage;
 	double t;
 	int tmp;
 	GdkGC *fg1 = gdk_gc_new( da->window );
@@ -108,7 +108,7 @@ void draw_graph_LED( CPUGraph *base, GtkWidget *da, int w, int h )
 void draw_graph_no_history( CPUGraph *base, GtkWidget *da, int w, int h )
 {
 	int y;
-	long usage = h * base->history[0] / CPU_SCALE;
+	int usage = h * base->history[0] / CPU_SCALE;
 	int tmp = 0;
 	double t;
 	GdkGC *fg1 = gdk_gc_new( da->window );
@@ -135,14 +135,14 @@ void draw_graph_no_history( CPUGraph *base, GtkWidget *da, int w, int h )
 
 typedef struct
 {
-	long x;
-	long y;
+	int x;
+	int y;
 } point;
 
 void draw_graph_grid( CPUGraph *base, GtkWidget *da, int w, int h )
 {
 	int x, y;
-	long usage;
+	int usage;
 	point last, current;
 	last.x = 0;
 	last.y = h;
