@@ -172,9 +172,18 @@ static gboolean update_cb( CPUGraph * base )
 	gint i;
 	if( !read_cpu_data( base->cpu_data, base->nr_cores ) )
 		return TRUE;
-	for( i=0; i<base->nr_cores; i++ )
+	if( base->nr_cores == 1 )
 	{
-		gtk_progress_bar_set_fraction( GTK_PROGRESS_BAR(base->m_pBar[i]), (gdouble)base->cpu_data[i+1].load / CPU_SCALE );
+		gtk_progress_bar_set_fraction( GTK_PROGRESS_BAR(base->m_pBar[0]),
+		                               (gdouble)base->cpu_data[0].load / CPU_SCALE
+		                             );
+	}
+	else
+	{
+		for( i=0; i<base->nr_cores; i++ )
+			gtk_progress_bar_set_fraction( GTK_PROGRESS_BAR(base->m_pBar[i]),
+			                               (gdouble)base->cpu_data[i+1].load / CPU_SCALE
+			                             );
 	}
 
 	if( base->non_linear )
