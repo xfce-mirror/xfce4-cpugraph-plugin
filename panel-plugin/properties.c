@@ -24,6 +24,7 @@ static void change_mode( GtkOptionMenu *om, CPUGraph *base );
 static void change_color_mode( GtkOptionMenu *om, CPUGraph *base );
 static void response_cb( GtkWidget *dlg, int response, CPUGraph *base );
 static void change_frame( GtkToggleButton *button, CPUGraph *base );
+static void change_border( GtkToggleButton *button, CPUGraph *base );
 static void change_size( GtkSpinButton *sb, CPUGraph *base );
 static void change_time_scale( GtkToggleButton *button, CPUGraph *base );
 static void change_update( GtkOptionMenu *om, CPUGraph *base );
@@ -65,6 +66,7 @@ void create_options( XfcePanelPlugin *plugin, CPUGraph *base )
 	setup_size_option( vbox, sg, plugin, base );
 	create_check_box( vbox, sg, _("Non-linear time-scale"), base->non_linear, change_time_scale, base );
 	create_check_box( vbox, sg, _("Show frame"), base->frame, change_frame, base );
+	create_check_box( vbox, sg, _("Border"), base->border, change_border, base );
 	setup_command_option( vbox, sg, base );
 
 	vbox2 = create_tab();
@@ -309,6 +311,11 @@ static void response_cb( GtkWidget *dlg, int response, CPUGraph *base )
 static void change_frame( GtkToggleButton * button, CPUGraph * base )
 {
 	set_frame( base, gtk_toggle_button_get_active( button ) );
+}
+
+static void change_border( GtkToggleButton * button, CPUGraph * base )
+{
+	set_border( base, gtk_toggle_button_get_active( button ) );
 }
 
 static void change_size( GtkSpinButton * sb, CPUGraph *base)

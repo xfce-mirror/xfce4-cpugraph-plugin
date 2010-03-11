@@ -115,8 +115,6 @@ static gboolean size_cb( XfcePanelPlugin *plugin, int size, CPUGraph *base )
 	gint i;
 	gint frame_h, frame_v, bar_h, bar_v, history;
 
-	gtk_container_set_border_width( GTK_CONTAINER( base->m_FrameWidget ), MIN( size ,base->size ) > 26 ? 2 : 0 );
-
 	if( xfce_panel_plugin_get_orientation( plugin ) == GTK_ORIENTATION_HORIZONTAL )
 	{
 		frame_h = base->size;
@@ -271,6 +269,12 @@ void set_command( CPUGraph *base, const gchar *command )
 {
 	g_free( base->command );
 	base->command = g_strdup( command );
+}
+
+void set_border( CPUGraph *base, gboolean border )
+{
+	base->border = border;
+	gtk_container_set_border_width( GTK_CONTAINER( base->m_Box ), border ? BORDER / 2 : 0 );
 }
 
 void set_frame( CPUGraph *base, gboolean frame )

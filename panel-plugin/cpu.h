@@ -38,6 +38,7 @@ typedef struct
 	int mode;
 	int color_mode;
 	gboolean frame;
+	gboolean border;
 	gchar  *command;
 	GdkColor colors[4];
 
@@ -52,6 +53,7 @@ typedef struct
 } CPUGraph;
 
 void set_command( CPUGraph *base, const gchar *command );
+void set_border( CPUGraph *base, gboolean border);
 void set_frame( CPUGraph *base, gboolean frame );
 void set_nonlinear_time( CPUGraph *base, gboolean nonlinear );
 void set_update_rate( CPUGraph *base, int rate );

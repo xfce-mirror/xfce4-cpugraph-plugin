@@ -14,6 +14,7 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	int mode = 0;
 	int color_mode = 0;
 	gboolean frame = FALSE;
+	gboolean border = TRUE;
 	const gchar  *associated_command = DEFAULT_COMMAND;
 
 	GdkColor foreground1;
@@ -51,6 +52,7 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 			color_mode = xfce_rc_read_int_entry( rc, "ColorMode", color_mode );
 			frame = xfce_rc_read_int_entry( rc, "Frame", frame );
 			associated_command = xfce_rc_read_entry( rc, "AssociateCommand", associated_command );
+			border = xfce_rc_read_int_entry( rc, "Border", border );
 
 			if( (value = xfce_rc_read_entry( rc, "Foreground1", NULL )) )
 				gdk_color_parse( value, &foreground1 );
@@ -72,6 +74,7 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	set_color_mode( base, color_mode );
 	set_frame( base, frame );
 	set_command( base, associated_command );
+	set_border( base, border);
 	set_color( base, 1, foreground1 );
 	set_color( base, 2, foreground2 );
 	set_color( base, 3, foreground3 );
@@ -102,6 +105,8 @@ void write_settings( XfcePanelPlugin *plugin, CPUGraph *base )
 	xfce_rc_write_int_entry( rc, "Mode", base->mode );
 
 	xfce_rc_write_int_entry( rc, "Frame", base->frame );
+
+	xfce_rc_write_int_entry( rc, "Border", base->border );
 
 	xfce_rc_write_entry( rc, "AssociateCommand", base->command ? base->command : "" );
 
