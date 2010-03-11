@@ -5,10 +5,14 @@
 
 static void cpugraph_construct( XfcePanelPlugin *plugin );
 static CPUGraph *create_gui( XfcePanelPlugin *plugin );
+static void create_bars( CPUGraph *base );
 static guint init_cpu_data( CpuData **data );
 static void shutdown( XfcePanelPlugin *plugin, CPUGraph *base );
+static void delete_bars( CPUGraph *base );
 static gboolean size_cb( XfcePanelPlugin *plugin, int size, CPUGraph *base );
+static void set_bars_size( CPUGraph *base, gint size, GtkOrientation orientation );
 static void orientation_cb( XfcePanelPlugin *plugin, GtkOrientation orientation, CPUGraph *base );
+static void set_bars_orientation( CPUGraph *base, GtkOrientation orientation);
 static gboolean update_cb( CPUGraph *base );
 static void update_tooltip( CPUGraph *base );
 static void draw_area_cb( GtkWidget *da, GdkEventExpose *event, gpointer data );
@@ -55,25 +59,33 @@ static CPUGraph * create_gui( XfcePanelPlugin * plugin )
 	base->m_Box = xfce_hvbox_new(orientation, FALSE, 0);
 	gtk_container_add(GTK_CONTAINER(ebox), base->m_Box);
 
-	base->m_pBar = (GtkWidget **) g_malloc( sizeof( GtkWidget * ) * base->nr_cores );
-
-	for(i=0; i<base->nr_cores; i++) {
-		base->m_pBar[i] = GTK_WIDGET(gtk_progress_bar_new());
-		gtk_box_pack_start( GTK_BOX(base->m_Box), base->m_pBar[i], FALSE, FALSE, 0);
-	}
-
 	base->m_FrameWidget = frame = gtk_frame_new( NULL );
-	gtk_box_pack_start( GTK_BOX(base->m_Box), frame, TRUE, TRUE, 0);
+	gtk_box_pack_end( GTK_BOX(base->m_Box), frame, TRUE, TRUE, 0);
 
 	base->m_DrawArea = gtk_drawing_area_new();
 	gtk_container_add( GTK_CONTAINER( frame ), GTK_WIDGET( base->m_DrawArea ) );
 	g_signal_connect_after( base->m_DrawArea, "expose-event", G_CALLBACK( draw_area_cb ), base );
+
+	base->bars = FALSE;
+	base->m_pBar = NULL;
 
 	orientation_cb(plugin, orientation, base);
 
 	gtk_widget_show_all(ebox);
 
 	return base;
+}
+
+static void create_bars( CPUGraph *base )
+{
+	gint i;
+	base->m_pBar = (GtkWidget **) g_malloc( sizeof( GtkWidget * ) * base->nr_cores );
+
+	for(i=0; i<base->nr_cores; i++) {
+		base->m_pBar[i] = GTK_WIDGET(gtk_progress_bar_new());
+		gtk_box_pack_end( GTK_BOX(base->m_Box), base->m_pBar[i], FALSE, FALSE, 0);
+		gtk_widget_show( base->m_pBar[i] );
+	}
 }
 
 guint init_cpu_data( CpuData **data )
@@ -91,13 +103,10 @@ guint init_cpu_data( CpuData **data )
 
 static void shutdown( XfcePanelPlugin * plugin, CPUGraph * base )
 {
-	gint i;
 	g_free( base->cpu_data );
 	base->cpu_data = NULL;
 
-	for(i=0; i<base->nr_cores-1; i++)
-		gtk_widget_destroy(base->m_pBar[i]);
-	g_free( base->m_pBar );
+	delete_bars( base );
 
 	gtk_widget_destroy(base->m_Box);
 
@@ -110,59 +119,91 @@ static void shutdown( XfcePanelPlugin * plugin, CPUGraph * base )
 	g_free( base );
 }
 
-static gboolean size_cb( XfcePanelPlugin *plugin, int size, CPUGraph *base )
+static void delete_bars( CPUGraph *base )
 {
 	gint i;
-	gint frame_h, frame_v, bar_h, bar_v, history;
+	if( base->m_pBar )
+	{
+		for( i=0; i < base->nr_cores; i++ )
+		{
+			gtk_widget_hide( base->m_pBar[i] );
+			gtk_widget_destroy( base->m_pBar[i] );
+		}
+		g_free( base->m_pBar );
+		base->m_pBar = NULL;
+	}
+}
 
-	if( xfce_panel_plugin_get_orientation( plugin ) == GTK_ORIENTATION_HORIZONTAL )
+static gboolean size_cb( XfcePanelPlugin *plugin, int size, CPUGraph *base )
+{
+	gint frame_h, frame_v, history;
+	GtkOrientation orientation;
+	
+	orientation = xfce_panel_plugin_get_orientation( plugin );
+
+	if( orientation == GTK_ORIENTATION_HORIZONTAL )
 	{
 		frame_h = base->size;
 		frame_v = size;
-		bar_h = BORDER;
-		bar_v = size;
 	       	history = base->size;
 	}
 	else
 	{
 		frame_h = size;
 		frame_v = base->size;
-		bar_h = size;
-		bar_v = BORDER;
 	       	history = size;
 	}
 
 	gtk_widget_set_size_request( GTK_WIDGET( base->m_FrameWidget ), frame_h, frame_v );
-
-	for( i=0; i<base->nr_cores; i++ )
-		gtk_widget_set_size_request( GTK_WIDGET(base->m_pBar[i]), bar_h, bar_v );
 
 	base->history = (int *) g_realloc( base->history, history * sizeof( int ) );
 	if( history > base->history_size )
 		memset( base->history + base->history_size, 0, (history - base->history_size) * sizeof( int ) );
 	base->history_size = history;
 
+	if( base->bars )
+		set_bars_size( base, size, orientation );
+
 	return TRUE;
+}
+
+static void set_bars_size( CPUGraph *base, gint size, GtkOrientation orientation )
+{
+	gint i;
+	gint h, v;
+	if( orientation == GTK_ORIENTATION_HORIZONTAL )
+	{
+		h = BORDER;
+		v = size;
+	}
+	else
+	{
+		h = size;
+		v = BORDER;
+	}
+	for( i=0; i < base->nr_cores; i++ )
+		gtk_widget_set_size_request( GTK_WIDGET(base->m_pBar[i]), h, v );
 }
 
 static void orientation_cb( XfcePanelPlugin * plugin, GtkOrientation orientation, CPUGraph *base )
 {
-	GtkProgressBarOrientation barOrientation;
-	gpointer p_pBar[base->nr_cores];
-	gint i; 
-
 	xfce_hvbox_set_orientation( XFCE_HVBOX( base->m_Box ), orientation );
+	if( base->bars )
+		set_bars_orientation( base, orientation );
 
+}
+
+static void set_bars_orientation( CPUGraph *base, GtkOrientation orientation)
+{
+	GtkProgressBarOrientation barOrientation;
+	gint i; 
 	if( orientation == GTK_ORIENTATION_HORIZONTAL )
 		barOrientation = GTK_PROGRESS_BOTTOM_TO_TOP;
 	else
 		barOrientation = GTK_PROGRESS_LEFT_TO_RIGHT;
 
 	for( i=0; i<base->nr_cores; i++ )
-	{
 		gtk_progress_bar_set_orientation( GTK_PROGRESS_BAR( base->m_pBar[i] ), barOrientation );	
-	}
-
 }
 
 static gboolean update_cb( CPUGraph * base )
@@ -170,18 +211,21 @@ static gboolean update_cb( CPUGraph * base )
 	gint i;
 	if( !read_cpu_data( base->cpu_data, base->nr_cores ) )
 		return TRUE;
-	if( base->nr_cores == 1 )
+	if( base->bars )
 	{
-		gtk_progress_bar_set_fraction( GTK_PROGRESS_BAR(base->m_pBar[0]),
-		                               (gdouble)base->cpu_data[0].load / CPU_SCALE
-		                             );
-	}
-	else
-	{
-		for( i=0; i<base->nr_cores; i++ )
-			gtk_progress_bar_set_fraction( GTK_PROGRESS_BAR(base->m_pBar[i]),
-			                               (gdouble)base->cpu_data[i+1].load / CPU_SCALE
-			                             );
+		if( base->nr_cores == 1 )
+		{
+			gtk_progress_bar_set_fraction( GTK_PROGRESS_BAR(base->m_pBar[0]),
+					(gdouble)base->cpu_data[0].load / CPU_SCALE
+					);
+		}
+		else
+		{
+			for( i=0; i<base->nr_cores; i++ )
+				gtk_progress_bar_set_fraction( GTK_PROGRESS_BAR(base->m_pBar[i]),
+						(gdouble)base->cpu_data[i+1].load / CPU_SCALE
+						);
+		}
 	}
 
 	if( base->non_linear )
@@ -269,6 +313,24 @@ void set_command( CPUGraph *base, const gchar *command )
 {
 	g_free( base->command );
 	base->command = g_strdup( command );
+}
+
+void set_bars( CPUGraph * base, gboolean bars)
+{
+	GtkOrientation orientation;
+	if( base->bars != bars )
+	{
+		base->bars = bars;
+		if(bars)
+		{
+			orientation = xfce_panel_plugin_get_orientation( base->plugin );
+			create_bars( base );
+			set_bars_orientation( base, orientation );
+			set_bars_size( base, xfce_panel_plugin_get_size( base->plugin ), orientation );
+		}
+		else
+			delete_bars( base );
+	}
 }
 
 void set_border( CPUGraph *base, gboolean border )
