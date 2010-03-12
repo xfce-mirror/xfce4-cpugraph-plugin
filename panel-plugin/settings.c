@@ -11,7 +11,7 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	int size = 70;
 	int mode = 0;
 	int color_mode = 0;
-	gboolean frame = FALSE;
+	gboolean frame = TRUE;
 	gboolean border = TRUE;
 	gboolean bars = TRUE;
 	const gchar  *associated_command = "xfce4-taskmanager";
