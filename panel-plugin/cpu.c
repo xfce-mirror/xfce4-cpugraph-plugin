@@ -283,9 +283,19 @@ static gboolean command_cb( GtkWidget *w,GdkEventButton *event, CPUGraph *base )
 {
 	if( event->button == 1 && base->command )
 	{
-		xfce_exec( base->command, FALSE, FALSE, NULL );
+		xfce_exec( base->command, base->in_terminal, base->startup_notification, NULL );
 	}
 	return FALSE;
+}
+
+void set_startup_notification( CPUGraph *base, gboolean startup_notification )
+{
+	base->startup_notification = startup_notification;
+}
+
+void set_in_terminal( CPUGraph *base, gboolean in_terminal )
+{
+	base->in_terminal = in_terminal;
 }
 
 void set_command( CPUGraph *base, const gchar *command )

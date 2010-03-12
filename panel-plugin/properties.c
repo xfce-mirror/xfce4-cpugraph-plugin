@@ -14,6 +14,8 @@ static void setup_color_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base, 
 static void setup_mode_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
 static void setup_color_mode_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
 
+static void change_in_terminal( GtkToggleButton *button, CPUGraph *base );
+static void change_startup_notification( GtkToggleButton *button, CPUGraph *base );
 static void change_command( GtkEntry *entry, CPUGraph *base );
 static void change_color_0( GtkColorButton *button, CPUGraph *base );
 static void change_color_1( GtkColorButton * button, CPUGraph * base );
@@ -70,6 +72,8 @@ void create_options( XfcePanelPlugin *plugin, CPUGraph *base )
 	create_check_box( vbox, sg, _("Border"), base->border, change_border, base );
 	create_check_box( vbox, sg, _("Show Bar(s)"), base->bars, change_bars, base );
 	setup_command_option( vbox, sg, base );
+	create_check_box( vbox, sg, _("Run in terminal"), base->in_terminal, change_in_terminal, base );
+	create_check_box( vbox, sg, _("Use startup notification"), base->bars, change_startup_notification, base );
 
 	vbox2 = create_tab();
 	setup_color_option( vbox2, sg, base, 1, _("Color 1:"), G_CALLBACK( change_color_1 ) );
@@ -244,6 +248,16 @@ static void setup_color_mode_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *b
 	size_t nb_items = sizeof( items ) / sizeof( char* );
 
 	create_drop_down( vbox, sg, _("Color mode: "), items, nb_items, base->color_mode, change_color_mode, base);
+}
+
+static void change_in_terminal( GtkToggleButton *button, CPUGraph *base )
+{
+	set_in_terminal( base, gtk_toggle_button_get_active( button ) );
+}
+
+static void change_startup_notification( GtkToggleButton *button, CPUGraph *base )
+{
+	set_startup_notification( base, gtk_toggle_button_get_active( button ) );
 }
 
 static void change_command( GtkEntry *entry, CPUGraph * base )

@@ -1,7 +1,5 @@
 #include "settings.h"
 
-#define DEFAULT_COMMAND "exo-open --launch TerminalEmulator top"
-
 void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 {
 	const char *value;
@@ -16,7 +14,9 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	gboolean frame = FALSE;
 	gboolean border = TRUE;
 	gboolean bars = TRUE;
-	const gchar  *associated_command = DEFAULT_COMMAND;
+	const gchar  *associated_command = "xfce4-taskmanager";
+	gboolean in_terminal = FALSE;
+	gboolean startup_notification = TRUE;
 
 	GdkColor foreground1;
 	GdkColor foreground2;
@@ -53,6 +53,8 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 			color_mode = xfce_rc_read_int_entry( rc, "ColorMode", color_mode );
 			frame = xfce_rc_read_int_entry( rc, "Frame", frame );
 			associated_command = xfce_rc_read_entry( rc, "AssociateCommand", associated_command );
+			in_terminal = xfce_rc_read_int_entry( rc, "InTerminal", in_terminal );
+			startup_notification = xfce_rc_read_int_entry( rc, "StartupNotification", startup_notification );
 			border = xfce_rc_read_int_entry( rc, "Border", border );
 			bars = xfce_rc_read_int_entry( rc, "Bars", bars );
 
@@ -76,6 +78,8 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	set_color_mode( base, color_mode );
 	set_frame( base, frame );
 	set_command( base, associated_command );
+	set_in_terminal( base, in_terminal);
+	set_startup_notification( base, startup_notification );
 	set_border( base, border);
 	set_bars( base, bars);
 	set_color( base, 1, foreground1 );
@@ -100,32 +104,23 @@ void write_settings( XfcePanelPlugin *plugin, CPUGraph *base )
 		return;
 
 	xfce_rc_write_int_entry( rc, "UpdateInterval", base->update_interval );
-
 	xfce_rc_write_int_entry( rc, "TimeScale", base->non_linear );
-
 	xfce_rc_write_int_entry( rc, "Size", base->size );
-
 	xfce_rc_write_int_entry( rc, "Mode", base->mode );
-
 	xfce_rc_write_int_entry( rc, "Frame", base->frame );
-
 	xfce_rc_write_int_entry( rc, "Border", base->border );
-
 	xfce_rc_write_entry( rc, "AssociateCommand", base->command ? base->command : "" );
-
+	xfce_rc_write_int_entry( rc, "InTerminal", base->in_terminal );
+	xfce_rc_write_int_entry( rc, "StartupNotification", base->startup_notification );
 	xfce_rc_write_int_entry( rc, "ColorMode", base->color_mode );
 
 	g_snprintf( value, 8, "#%02X%02X%02X", base->colors[1].red >> 8, base->colors[1].green >> 8, base->colors[1].blue >> 8 );
 	xfce_rc_write_entry( rc, "Foreground1", value );
-
 	g_snprintf( value, 8, "#%02X%02X%02X", base->colors[2].red >> 8, base->colors[2].green >> 8, base->colors[2].blue >> 8 );
 	xfce_rc_write_entry( rc, "Foreground2", value );
-
 	g_snprintf( value, 8, "#%02X%02X%02X", base->colors[0].red >> 8, base->colors[0].green >> 8, base->colors[0].blue >> 8 );
 	xfce_rc_write_entry( rc, "Background", value );
-
 	g_snprintf( value, 8, "#%02X%02X%02X", base->colors[3].red >> 8, base->colors[3].green >> 8, base->colors[3].blue >> 8 );
 	xfce_rc_write_entry( rc, "Foreground3", value );
-
 	xfce_rc_close( rc );
 }

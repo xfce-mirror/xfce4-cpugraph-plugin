@@ -41,6 +41,8 @@ typedef struct
 	gboolean border;
 	gboolean bars;
 	gchar  *command;
+	gboolean in_terminal;
+	gboolean startup_notification;
 	GdkColor colors[4];
 
 	/* Runtime data */
@@ -53,6 +55,8 @@ typedef struct
 
 } CPUGraph;
 
+void set_startup_notification( CPUGraph *base, gboolean startup_notification );
+void set_in_terminal( CPUGraph *base, gboolean in_terminal );
 void set_command( CPUGraph *base, const gchar *command );
 void set_bars( CPUGraph * base, gboolean bars);
 void set_border( CPUGraph *base, gboolean border);
