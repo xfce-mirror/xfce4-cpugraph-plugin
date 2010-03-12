@@ -40,7 +40,6 @@ static void cpugraph_construct( XfcePanelPlugin *plugin )
 
 static CPUGraph * create_gui( XfcePanelPlugin * plugin )
 {
-	gint i;
 	GtkWidget *frame, *ebox;
 	GtkOrientation orientation;
 	CPUGraph *base = g_new0( CPUGraph, 1 );
@@ -70,7 +69,6 @@ static CPUGraph * create_gui( XfcePanelPlugin * plugin )
 	base->m_pBar = NULL;
 
 	orientation_cb(plugin, orientation, base);
-
 	gtk_widget_show_all(ebox);
 
 	return base;
@@ -104,17 +102,11 @@ guint init_cpu_data( CpuData **data )
 static void shutdown( XfcePanelPlugin * plugin, CPUGraph * base )
 {
 	g_free( base->cpu_data );
-	base->cpu_data = NULL;
-
 	delete_bars( base );
-
 	gtk_widget_destroy(base->m_Box);
-
 	if( base->timeout_id )
 		g_source_remove( base->timeout_id );
-
 	g_free( base->history );
-
 	g_free( base->command );
 	g_free( base );
 }
@@ -208,7 +200,7 @@ static void set_bars_orientation( CPUGraph *base, GtkOrientation orientation)
 
 static gboolean update_cb( CPUGraph * base )
 {
-	gint i;
+	gint i, j, a, b, factor;
 	if( !read_cpu_data( base->cpu_data, base->nr_cores ) )
 		return TRUE;
 	if( base->bars )
@@ -230,15 +222,13 @@ static gboolean update_cb( CPUGraph * base )
 
 	if( base->non_linear )
 	{
-		int i = base->history_size - 1;
-		int j = i + base->history_size;
+		i = base->history_size - 1;
+		j = i + base->history_size;
 		while( i > 0 )
 		{
-			int a, b;
-
 			a = base->history[i], b = base->history[i-1];
 			if( a < b ) a++;
-			int factor = (i*2);
+			factor = (i*2);
 			base->history[i--] = (a * (factor-1) + b) / factor;
 		}
 	} else {
@@ -246,11 +236,9 @@ static gboolean update_cb( CPUGraph * base )
 	}
 	base->history[0] = base->cpu_data[0].load;
 
-	/* Tooltip */
 	update_tooltip( base );
-
-	/* Draw the graph. */
 	gtk_widget_queue_draw( base->m_DrawArea );
+
 	return TRUE;
 }
 
@@ -263,9 +251,7 @@ static void update_tooltip( CPUGraph * base )
 
 static void draw_area_cb( GtkWidget * da, GdkEventExpose * event, gpointer data )
 {
-	CPUGraph *base = (CPUGraph *) data;
-
-	draw_graph( base );
+	draw_graph( (CPUGraph *) data );
 }
 
 static void draw_graph( CPUGraph * base )
@@ -295,16 +281,9 @@ static void draw_graph( CPUGraph * base )
 
 static gboolean command_cb( GtkWidget *w,GdkEventButton *event, CPUGraph *base )
 {
-	if( event->button == 1 )
+	if( event->button == 1 && base->command )
 	{
-		GString *cmd;
-		if( strlen(base->command) == 0 )
-		{
-			return FALSE;
-		}
-		cmd = g_string_new( base->command );
-		xfce_exec( cmd->str, FALSE, FALSE, NULL );
-		g_string_free( cmd, TRUE );
+		xfce_exec( base->command, FALSE, FALSE, NULL );
 	}
 	return FALSE;
 }
