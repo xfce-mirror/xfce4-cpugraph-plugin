@@ -107,8 +107,9 @@ void write_settings( XfcePanelPlugin *plugin, CPUGraph *base )
 	xfce_rc_write_int_entry( rc, "TimeScale", base->non_linear );
 	xfce_rc_write_int_entry( rc, "Size", base->size );
 	xfce_rc_write_int_entry( rc, "Mode", base->mode );
-	xfce_rc_write_int_entry( rc, "Frame", base->frame );
-	xfce_rc_write_int_entry( rc, "Border", base->border );
+	xfce_rc_write_int_entry( rc, "Frame", base->has_frame );
+	xfce_rc_write_int_entry( rc, "Border", base->has_border );
+	xfce_rc_write_int_entry( rc, "Bars", base->has_bars );
 	xfce_rc_write_entry( rc, "AssociateCommand", base->command ? base->command : "" );
 	xfce_rc_write_int_entry( rc, "InTerminal", base->in_terminal );
 	xfce_rc_write_int_entry( rc, "StartupNotification", base->startup_notification );

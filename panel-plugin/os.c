@@ -90,17 +90,17 @@ int read_cpu_data( CpuData *data, unsigned int nb_cpu)
 			iowait = irq = softirq = 0;
 		used = user + nice + system + irq + softirq;
 		total = used + idle + iowait;
-		if( (total - data[line].pTotal) != 0 )
+		if( (total - data[line].previous_total) != 0 )
 		{
-			data[line].load = CPU_SCALE * (used - data[line].pUsed) /
-			                      (total - data[line].pTotal);
+			data[line].load = CPU_SCALE * (used - data[line].previous_used) /
+			                      (total - data[line].previous_total);
 		}
 		else
 		{
 			data[line].load = 0;
 		}
-		data[line].pUsed = used;
-		data[line].pTotal = total;
+		data[line].previous_used = used;
+		data[line].previous_total = total;
 	}
 
 	fclose( fStat );
@@ -137,13 +137,13 @@ int read_cpu_data( CpuData *data, unsigned int nb_cpu)
 
 	used = user+nice+sys;
 	total = used+bsdidle;
-	if( (total - data[0].pTotal) != 0 )
-		data[0].load = (CPU_SCALE.0 * (used - data[0].pTotal))/(total - data[0].pTotal);
+	if( (total - data[0].previous_total) != 0 )
+		data[0].load = (CPU_SCALE.0 * (used - data[0].previous_total))/(total - data[0].previous_total);
 	else
 		data[0].load = 0;
 
-	data[0].pUsed = used;
-	data[0].pTotal = total;
+	data[0].previous_used = used;
+	data[0].previous_total = total;
 
 	return TRUE;
 }
@@ -177,13 +177,13 @@ int read_cpu_data( CpuData *data, unsigned int nb_cpu)
 	used = user+nice+sys;
 	total = used+bsdidle;
 
-	if( total - data[0].pTotal != 0 )
-		data[0].load = (CPU_SCALE * (double)(used - data[0].pTotal)) / (double)(total - data[0].pTotal);
+	if( total - data[0].previous_total != 0 )
+		data[0].load = (CPU_SCALE * (double)(used - data[0].previous_total)) / (double)(total - data[0].previous_total);
 	else
 		data[0].load = 0;
 
-	data[0].pUsed = used;
-	data[0].pTotal = total;
+	data[0].previous_used = used;
+	data[0].previous_total = total;
 
 	return TRUE;
 }
@@ -216,12 +216,12 @@ int read_cpu_data( CpuData *data, unsigned int nb_cpu)
 	used = user+nice+sys;
 	total = used+bsdidle;
 
-	if( total - data[0].pTotal != 0 )
-		data[0].load = (CPU_SCALE (used - data[0].pTotal))/(total - data[0].pTotal);
+	if( total - data[0].previous_total != 0 )
+		data[0].load = (CPU_SCALE (used - data[0].previous_total))/(total - data[0].previous_total);
 	else
 		data[0].load = 0;
-	data[0].pUsed = used;
-	data[0].pTotal = total;
+	data[0].previous_used = used;
+	data[0].previous_total = total;
 
 	return TRUE;
 }

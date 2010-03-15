@@ -50,8 +50,6 @@ void create_options( XfcePanelPlugin *plugin, CPUGraph *base )
 	                                   NULL
 					 );
 
-	base->m_OptionsDialog = dlg;
-
 	g_signal_connect( dlg, "response", G_CALLBACK( response_cb ), base );
 
 	gtk_container_set_border_width( GTK_CONTAINER( dlg ), 2 );
@@ -68,12 +66,12 @@ void create_options( XfcePanelPlugin *plugin, CPUGraph *base )
 	setup_update_interval_option( vbox, sg, base );
 	setup_size_option( vbox, sg, plugin, base );
 	create_check_box( vbox, sg, _("Non-linear time-scale"), base->non_linear, change_time_scale, base );
-	create_check_box( vbox, sg, _("Show frame"), base->frame, change_frame, base );
-	create_check_box( vbox, sg, _("Border"), base->border, change_border, base );
-	create_check_box( vbox, sg, _("Show Bar(s)"), base->bars, change_bars, base );
+	create_check_box( vbox, sg, _("Show frame"), base->has_frame, change_frame, base );
+	create_check_box( vbox, sg, _("Border"), base->has_border, change_border, base );
+	create_check_box( vbox, sg, _("Show Bar(s)"), base->has_bars, change_bars, base );
 	setup_command_option( vbox, sg, base );
 	create_check_box( vbox, sg, _("Run in terminal"), base->in_terminal, change_in_terminal, base );
-	create_check_box( vbox, sg, _("Use startup notification"), base->bars, change_startup_notification, base );
+	create_check_box( vbox, sg, _("Use startup notification"), base->startup_notification, change_startup_notification, base );
 
 	vbox2 = create_tab();
 	setup_color_option( vbox2, sg, base, 1, _("Color 1:"), G_CALLBACK( change_color_1 ) );

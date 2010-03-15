@@ -5,9 +5,9 @@
 
 typedef struct
 {
-	unsigned int load; /* cpu utilization */
-	unsigned int pUsed; /* Previous value of used cpu time */
-	unsigned int pTotal; /* Previous value of total cpu time */
+	unsigned int load;
+	unsigned int previous_used;
+	unsigned int previous_total;
 } CpuData;
 
 unsigned int detect_cpu_number();

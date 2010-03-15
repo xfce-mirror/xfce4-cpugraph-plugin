@@ -24,11 +24,10 @@ typedef struct
 {
 	/* GUI components */
 	XfcePanelPlugin *plugin;
-	GtkWidget *m_FrameWidget;
-	GtkWidget *m_DrawArea;
-	GtkWidget *m_OptionsDialog;
-	GtkWidget *m_Box;
-	GtkWidget **m_pBar;
+	GtkWidget *frame_widget;
+	GtkWidget *draw_area;
+	GtkWidget *box;
+	GtkWidget **bars;
 	GtkWidget *color_buttons[4];
 
 	/* Settings */
@@ -37,9 +36,9 @@ typedef struct
 	int size;
 	int mode;
 	int color_mode;
-	gboolean frame;
-	gboolean border;
-	gboolean bars;
+	gboolean has_frame;
+	gboolean has_border;
+	gboolean has_bars;
 	gchar  *command;
 	gboolean in_terminal;
 	gboolean startup_notification;
@@ -52,7 +51,6 @@ typedef struct
 	gssize history_size;
 	int orientation;
 	CpuData *cpu_data;
-
 } CPUGraph;
 
 void set_startup_notification( CPUGraph *base, gboolean startup_notification );
