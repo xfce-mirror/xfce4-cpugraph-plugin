@@ -6,11 +6,11 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	char *file;
 	XfceRc *rc;
 
-	int rate = 0;
+	guint rate = 0;
 	gboolean nonlinear = FALSE;
-	int size = 70;
-	int mode = 0;
-	int color_mode = 0;
+	guint size = 70;
+	guint mode = 0;
+	guint color_mode = 0;
 	gboolean frame = TRUE;
 	gboolean border = TRUE;
 	gboolean bars = TRUE;

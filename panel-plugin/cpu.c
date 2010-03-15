@@ -9,7 +9,7 @@ static void create_bars( CPUGraph *base );
 static guint init_cpu_data( CpuData **data );
 static void shutdown( XfcePanelPlugin *plugin, CPUGraph *base );
 static void delete_bars( CPUGraph *base );
-static gboolean size_cb( XfcePanelPlugin *plugin, int size, CPUGraph *base );
+static gboolean size_cb( XfcePanelPlugin *plugin, guint size, CPUGraph *base );
 static void set_bars_size( CPUGraph *base, gint size, GtkOrientation orientation );
 static void orientation_cb( XfcePanelPlugin *plugin, GtkOrientation orientation, CPUGraph *base );
 static void set_bars_orientation( CPUGraph *base, GtkOrientation orientation);
@@ -126,7 +126,7 @@ static void delete_bars( CPUGraph *base )
 	}
 }
 
-static gboolean size_cb( XfcePanelPlugin *plugin, int size, CPUGraph *base )
+static gboolean size_cb( XfcePanelPlugin *plugin, guint size, CPUGraph *base )
 {
 	gint frame_h, frame_v, history;
 	GtkOrientation orientation;
@@ -148,9 +148,9 @@ static gboolean size_cb( XfcePanelPlugin *plugin, int size, CPUGraph *base )
 
 	gtk_widget_set_size_request( GTK_WIDGET( base->frame_widget ), frame_h, frame_v );
 
-	base->history = (int *) g_realloc( base->history, history * sizeof( int ) );
+	base->history = (guint *) g_realloc( base->history, history * sizeof( guint ) );
 	if( history > base->history_size )
-		memset( base->history + base->history_size, 0, (history - base->history_size) * sizeof( int ) );
+		memset( base->history + base->history_size, 0, (history - base->history_size) * sizeof( guint ) );
 	base->history_size = history;
 
 	if( base->has_bars )
@@ -232,7 +232,7 @@ static gboolean update_cb( CPUGraph * base )
 			base->history[i--] = (a * (factor-1) + b) / factor;
 		}
 	} else {
-		memmove( base->history + 1 , base->history , (base->history_size - 1) * sizeof( int ) );
+		memmove( base->history + 1 , base->history , (base->history_size - 1) * sizeof( guint ) );
 	}
 	base->history[0] = base->cpu_data[0].load;
 
@@ -245,7 +245,7 @@ static gboolean update_cb( CPUGraph * base )
 static void update_tooltip( CPUGraph * base )
 {
 	gchar tooltip[32];
-	int pos = g_snprintf( tooltip, 32, "Usage: %d%%", (int)base->cpu_data[0].load*100/CPU_SCALE );
+	g_snprintf( tooltip, 32, "Usage: %u%%", (guint)base->cpu_data[0].load*100/CPU_SCALE );
 	gtk_widget_set_tooltip_text( base->frame_widget, tooltip );
 }
 
@@ -257,7 +257,7 @@ static void draw_area_cb( GtkWidget * da, GdkEventExpose * event, gpointer data 
 static void draw_graph( CPUGraph * base )
 {
 	GtkWidget *da = base->draw_area;
-	int w, h;
+	gint w, h;
 
 	w = da->allocation.width;
 	h = da->allocation.height;
@@ -339,9 +339,9 @@ void set_nonlinear_time( CPUGraph *base, gboolean nonlinear )
 	base->non_linear = nonlinear;
 }
 
-void set_update_rate( CPUGraph *base, int rate )
+void set_update_rate( CPUGraph *base, guint rate )
 {
-	int update;
+	guint update;
 
 	base->update_interval = rate;
 
@@ -364,23 +364,23 @@ void set_update_rate( CPUGraph *base, int rate )
 	base->timeout_id = g_timeout_add( update, (GtkFunction) update_cb, base );
 }
 
-void set_size( CPUGraph *base, int size )
+void set_size( CPUGraph *base, guint size )
 {
 	base->size = size;
 	size_cb( base->plugin, xfce_panel_plugin_get_size( base->plugin ), base );
 }
 
-void set_color_mode( CPUGraph *base, int color_mode )
+void set_color_mode( CPUGraph *base, guint color_mode )
 {
 	base->color_mode = color_mode;
 }
 
-void set_mode( CPUGraph *base, int mode )
+void set_mode( CPUGraph *base, guint mode )
 {
 	base->mode = mode;
 }
 
-void set_color( CPUGraph *base, int number, GdkColor color )
+void set_color( CPUGraph *base, guint number, GdkColor color )
 {
 	base->colors[number] = color;
 	if( number == 0 )

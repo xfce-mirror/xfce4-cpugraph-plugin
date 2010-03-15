@@ -3,14 +3,14 @@
 #include "settings.h"
 
 static GtkBox *create_tab();
-static GtkBox *create_option_line( GtkBox *tab, GtkSizeGroup *sg, const char *name );
-static void create_check_box( GtkBox *tab, GtkSizeGroup *sg, const char *name, int init, void (callback)( GtkToggleButton *, CPUGraph *), void *cb_data );
-static void create_drop_down( GtkBox *tab, GtkSizeGroup *sg, const char * name, const char **items, size_t nb_items, int init, void (callback)( GtkOptionMenu *, CPUGraph * ), void * cb_data);
+static GtkBox *create_option_line( GtkBox *tab, GtkSizeGroup *sg, const gchar *name );
+static void create_check_box( GtkBox *tab, GtkSizeGroup *sg, const gchar *name, gboolean init, void (callback)( GtkToggleButton *, CPUGraph *), void *cb_data );
+static void create_drop_down( GtkBox *tab, GtkSizeGroup *sg, const gchar * name, const gchar **items, gsize nb_items, guint init, void (callback)( GtkOptionMenu *, CPUGraph * ), void * cb_data);
 
 static void setup_update_interval_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
 static void setup_size_option( GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, CPUGraph *base );
 static void setup_command_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
-static void setup_color_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base, int number, const gchar *name, GCallback cb );
+static void setup_color_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base, guint number, const gchar *name, GCallback cb );
 static void setup_mode_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
 static void setup_color_mode_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
 
@@ -24,7 +24,7 @@ static void change_color_3( GtkColorButton *button, CPUGraph *base );
 static void select_active_colors( CPUGraph * base );
 static void change_mode( GtkOptionMenu *om, CPUGraph *base );
 static void change_color_mode( GtkOptionMenu *om, CPUGraph *base );
-static void response_cb( GtkWidget *dlg, int response, CPUGraph *base );
+static void response_cb( GtkWidget *dlg, gint response, CPUGraph *base );
 static void change_frame( GtkToggleButton *button, CPUGraph *base );
 static void change_border( GtkToggleButton *button, CPUGraph *base );
 static void change_bars( GtkToggleButton * button, CPUGraph * base );
@@ -104,7 +104,7 @@ static GtkBox *create_tab()
 	return tab;
 }
 
-static GtkBox *create_option_line( GtkBox *tab, GtkSizeGroup *sg, const char *name )
+static GtkBox *create_option_line( GtkBox *tab, GtkSizeGroup *sg, const gchar *name )
 {
 	GtkBox *line;
 	GtkWidget *label;
@@ -125,7 +125,7 @@ static GtkBox *create_option_line( GtkBox *tab, GtkSizeGroup *sg, const char *na
 	return line;
 }
 
-static void create_check_box( GtkBox *tab, GtkSizeGroup *sg, const char *name, int init, void (callback)( GtkToggleButton *, CPUGraph *), void *cb_data )
+static void create_check_box( GtkBox *tab, GtkSizeGroup *sg, const gchar *name, gboolean init, void (callback)( GtkToggleButton *, CPUGraph *), void *cb_data )
 {
 	GtkBox *hbox;
 	GtkWidget * checkBox;
@@ -140,13 +140,13 @@ static void create_check_box( GtkBox *tab, GtkSizeGroup *sg, const char *name, i
 	gtk_size_group_add_widget( sg, checkBox );
 }
 
-static void create_drop_down( GtkBox *tab, GtkSizeGroup *sg, const char * name, const char ** items, size_t nb_items, int init, void (callback)( GtkOptionMenu *, CPUGraph * ), void * cb_data)
+static void create_drop_down( GtkBox *tab, GtkSizeGroup *sg, const gchar * name, const gchar ** items, gsize nb_items, guint init, void (callback)( GtkOptionMenu *, CPUGraph * ), void * cb_data)
 {
 	GtkBox *hbox;
 	GtkWidget *Option;
 	GtkWidget *Menu;
 	GtkWidget *MenuItem;
-	int i;
+	gint i;
 
 	hbox = create_option_line( tab, sg, name );
 
@@ -171,12 +171,12 @@ static void create_drop_down( GtkBox *tab, GtkSizeGroup *sg, const char * name, 
 
 static void setup_update_interval_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base )
 {
-	const char *items[] = { _("Fastest (~250ms)"),
+	const gchar *items[] = { _("Fastest (~250ms)"),
 	                        _("Fast (~500ms)"),
 	                        _("Normal (~750ms)"),
 	                        _("Slow (~1s)")
 	                      };
-	size_t nb_items = sizeof( items ) / sizeof( char* );
+	gsize nb_items = sizeof( items ) / sizeof( gchar* );
 
 	create_drop_down( vbox, sg, _("Update Interval: "), items, nb_items, base->update_interval, change_update, base);
 }
@@ -212,7 +212,7 @@ static void setup_command_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base
 	g_signal_connect( AssociateCommand, "changed", G_CALLBACK( change_command ), base );
 }
 
-static void setup_color_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base, int number, const gchar * name, GCallback cb )
+static void setup_color_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base, guint number, const gchar * name, GCallback cb )
 {
 	GtkBox *hbox;
 
@@ -227,23 +227,23 @@ static void setup_color_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base, 
 
 static void setup_mode_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base )
 {
-	const char *items[] = { _("Normal"),
+	const gchar *items[] = { _("Normal"),
 	                        _("LED"),
 	                        _("No history"),
 				_("Grid")
 	                      };
-	size_t nb_items = sizeof( items ) / sizeof( char* );
+	gsize nb_items = sizeof( items ) / sizeof( gchar* );
 
 	create_drop_down( vbox, sg, _("Mode:"), items, nb_items, base->mode, change_mode, base);
 }
 
 static void setup_color_mode_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base )
 {
-	const char *items[] = { _("None"),
+	const gchar *items[] = { _("None"),
 	                        _("Gradient"),
 	                        _("Fire"),
 	                      };
-	size_t nb_items = sizeof( items ) / sizeof( char* );
+	gsize nb_items = sizeof( items ) / sizeof( gchar* );
 
 	create_drop_down( vbox, sg, _("Color mode: "), items, nb_items, base->color_mode, change_color_mode, base);
 }
@@ -263,7 +263,7 @@ static void change_command( GtkEntry *entry, CPUGraph * base )
 	set_command( base, gtk_entry_get_text( entry ) );
 }
 
-static void change_color( GtkColorButton * button, CPUGraph * base, int number)
+static void change_color( GtkColorButton * button, CPUGraph * base, guint number)
 {
 	GdkColor color;
 	gtk_color_button_get_color( button, &color );
@@ -315,7 +315,7 @@ static void change_color_mode( GtkOptionMenu * om, CPUGraph * base )
 	select_active_colors( base );
 }
 
-static void response_cb( GtkWidget *dlg, int response, CPUGraph *base )
+static void response_cb( GtkWidget *dlg, gint response, CPUGraph *base )
 {
 	gtk_widget_destroy( dlg );
 	xfce_panel_plugin_unblock_menu( base->plugin );

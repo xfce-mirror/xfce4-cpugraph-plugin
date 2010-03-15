@@ -3,14 +3,16 @@
 
 #define CPU_SCALE 256
 
+#include <glib.h>
+
 typedef struct
 {
-	unsigned int load;
-	unsigned int previous_used;
-	unsigned int previous_total;
+	guint load;
+	guint previous_used;
+	guint previous_total;
 } CpuData;
 
-unsigned int detect_cpu_number();
-int read_cpu_data( CpuData *data, unsigned int nb_cpu );
+guint detect_cpu_number();
+gboolean read_cpu_data( CpuData *data, guint nb_cpu );
 
 #endif /* !_XFCE_OS_H */

@@ -31,11 +31,11 @@ typedef struct
 	GtkWidget *color_buttons[4];
 
 	/* Settings */
-	int update_interval; /* Number of ms between updates. */
+	guint update_interval; /* Number of ms between updates. */
 	gboolean non_linear;
-	int size;
-	int mode;
-	int color_mode;
+	guint size;
+	guint mode;
+	guint color_mode;
 	gboolean has_frame;
 	gboolean has_border;
 	gboolean has_bars;
@@ -47,9 +47,8 @@ typedef struct
 	/* Runtime data */
 	guint nr_cores;
 	guint timeout_id;
-	int *history;
+	guint *history;
 	gssize history_size;
-	int orientation;
 	CpuData *cpu_data;
 } CPUGraph;
 
@@ -60,9 +59,9 @@ void set_bars( CPUGraph * base, gboolean bars);
 void set_border( CPUGraph *base, gboolean border);
 void set_frame( CPUGraph *base, gboolean frame );
 void set_nonlinear_time( CPUGraph *base, gboolean nonlinear );
-void set_update_rate( CPUGraph *base, int rate );
-void set_size( CPUGraph *base, int width );
-void set_color_mode( CPUGraph *base, int color_mode );
-void set_mode( CPUGraph *base, int mode );
-void set_color( CPUGraph *base, int number, GdkColor color );
+void set_update_rate( CPUGraph *base, guint rate );
+void set_size( CPUGraph *base, guint width );
+void set_color_mode( CPUGraph *base, guint color_mode );
+void set_mode( CPUGraph *base, guint mode );
+void set_color( CPUGraph *base, guint number, GdkColor color );
 #endif /* !_XFCE_CPU_H_ */

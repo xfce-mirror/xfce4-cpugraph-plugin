@@ -6,7 +6,6 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <glib.h>
 
 #if defined (__linux__)
 #define PROC_STAT "/proc/stat"
@@ -45,11 +44,11 @@
 #endif
 
 #if defined (__linux__)
-unsigned int detect_cpu_number()
+guint detect_cpu_number()
 {
-	int nb_lines= 0;
+	guint nb_lines= 0;
 	FILE *fstat = NULL;
-	char cpuStr[PROCMAXLNLEN];
+	gchar cpuStr[PROCMAXLNLEN];
 
 	if( !(fstat = fopen( PROC_STAT, "r" )) )
 		return 0;
@@ -67,12 +66,12 @@ unsigned int detect_cpu_number()
 	return nb_lines > 1 ? nb_lines - 1 : 0;
 }
 
-int read_cpu_data( CpuData *data, unsigned int nb_cpu)
+gboolean read_cpu_data( CpuData *data, guint nb_cpu)
 {
 	FILE *fStat;
-	char cpuStr[PROCMAXLNLEN];
-	unsigned int user, nice, system, idle, used, total, iowait, irq, softirq;
-	unsigned int line;
+	gchar cpuStr[PROCMAXLNLEN];
+	guint user, nice, system, idle, used, total, iowait, irq, softirq;
+	guint line;
 
 	if( !(fStat = fopen( PROC_STAT, "r" )) )
 		return FALSE;
@@ -109,23 +108,22 @@ int read_cpu_data( CpuData *data, unsigned int nb_cpu)
 }
 
 #elif defined (__FreeBSD__)
-unsigned int detect_cpu_number()
+guint detect_cpu_number()
 {
 	return 1;
 }
 
-int read_cpu_data( CpuData *data, unsigned int nb_cpu)
+gboolean read_cpu_data( CpuData *data, guint nb_cpu)
 {
-	unsigned int user, nice, sys, bsdidle, idle;
-	unsigned int used, total;
-	int cp_time[CPUSTATES];
-	size_t len = sizeof( cp_time );
+	guint user, nice, sys, bsdidle, idle;
+	guint used, total;
+	gint cp_time[CPUSTATES];
+	gsize len = sizeof( cp_time );
 
-	int usage;
+	guint usage;
 
 	if( sysctlbyname( "kern.cp_time", &cp_time, &len, NULL, 0 ) < 0 )
 	{
-		printf( "Cannot get kern.cp_time.\n" );
 		return FALSE1;
 	}
 
@@ -138,7 +136,7 @@ int read_cpu_data( CpuData *data, unsigned int nb_cpu)
 	used = user+nice+sys;
 	total = used+bsdidle;
 	if( (total - data[0].previous_total) != 0 )
-		data[0].load = (CPU_SCALE.0 * (used - data[0].previous_total))/(total - data[0].previous_total);
+		data[0].load = (CPU_SCALE * (used - data[0].previous_total))/(total - data[0].previous_total);
 	else
 		data[0].load = 0;
 
@@ -149,22 +147,21 @@ int read_cpu_data( CpuData *data, unsigned int nb_cpu)
 }
 
 #elif defined (__NetBSD__)
-unsigned int detect_cpu_number()
+guint detect_cpu_number()
 {
 	return 1;
 }
 
-int read_cpu_data( CpuData *data, unsigned int nb_cpu)
+gboolean read_cpu_data( CpuData *data, guint nb_cpu)
 {
-	int user, nice, sys, bsdidle, idle;
-	int used, total;
-	static int mib[] = {CTL_KERN, KERN_CP_TIME };
-	u_int64_t cp_time[CPUSTATES];
-	size_t len = sizeof( cp_time );
+	guint user, nice, sys, bsdidle, idle;
+	guint used, total;
+	static gint mib[] = {CTL_KERN, KERN_CP_TIME };
+	guint64 cp_time[CPUSTATES];
+	gsize len = sizeof( cp_time );
 
 	if( sysctl( mib, 2, &cp_time, &len, NULL, 0 ) < 0 )
 	{
-		printf( "Cannot get kern.cp_time\n" );
 		return FALSE;
 	}
 
@@ -178,7 +175,7 @@ int read_cpu_data( CpuData *data, unsigned int nb_cpu)
 	total = used+bsdidle;
 
 	if( total - data[0].previous_total != 0 )
-		data[0].load = (CPU_SCALE * (double)(used - data[0].previous_total)) / (double)(total - data[0].previous_total);
+		data[0].load = (CPU_SCALE * (used - data[0].previous_total)) / (total - data[0].previous_total);
 	else
 		data[0].load = 0;
 
@@ -189,21 +186,20 @@ int read_cpu_data( CpuData *data, unsigned int nb_cpu)
 }
 
 #elif defined (__OpenBSD__)
-unsigned int detect_cpu_number()
+guint detect_cpu_number()
 {
 	return 1;
 }
 
-int read_cpu_data( CpuData *data, unsigned int nb_cpu)
+gboolean read_cpu_data( CpuData *data, guint nb_cpu)
 {
-	unsigned int user, nice, sys, bsdidle, idle;
-	unsigned int used, total;
-	static int mib[] = {CTL_KERN, KERN_CPTIME };
-	u_int64_t cp_time[CPUSTATES];
-	size_t len = sizeof( cp_time );
+	guint user, nice, sys, bsdidle, idle;
+	guint used, total;
+	static gint mib[] = {CTL_KERN, KERN_CPTIME };
+	guint64 cp_time[CPUSTATES];
+	gsize len = sizeof( cp_time );
 	if( sysctl( mib, 2, &cp_time, &len, NULL, 0) < 0 )
 	{
-		printf( "Cannot get kern.cp_time\n" );
 		return FALSE;
 	}
 
@@ -217,7 +213,7 @@ int read_cpu_data( CpuData *data, unsigned int nb_cpu)
 	total = used+bsdidle;
 
 	if( total - data[0].previous_total != 0 )
-		data[0].load = (CPU_SCALE (used - data[0].previous_total))/(total - data[0].previous_total);
+		data[0].load = (CPU_SCALE * (used - data[0].previous_total))/(total - data[0].previous_total);
 	else
 		data[0].load = 0;
 	data[0].previous_used = used;
