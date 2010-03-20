@@ -48,7 +48,7 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 		{
 			rate =  xfce_rc_read_int_entry (rc, "UpdateInterval", rate );
 			nonlinear = xfce_rc_read_int_entry (rc, "TimeScale", nonlinear );
-			size = xfce_rc_read_int_entry( rc, "size", size );
+			size = xfce_rc_read_int_entry( rc, "Size", size );
 			mode = xfce_rc_read_int_entry( rc, "Mode", mode );
 			color_mode = xfce_rc_read_int_entry( rc, "ColorMode", color_mode );
 			frame = xfce_rc_read_int_entry( rc, "Frame", frame );
