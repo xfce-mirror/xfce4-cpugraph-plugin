@@ -15,6 +15,7 @@ static void orientation_cb( XfcePanelPlugin *plugin, GtkOrientation orientation,
 static void set_bars_orientation( CPUGraph *base, GtkOrientation orientation);
 static gboolean update_cb( CPUGraph *base );
 static void update_tooltip( CPUGraph *base );
+static gboolean tooltip_cb( GtkWidget *widget, gint x, gint y, gboolean keyboard, GtkTooltip * tooltip, CPUGraph *base);
 static void draw_area_cb( GtkWidget *da, GdkEventExpose *event, gpointer data );
 static void draw_graph( CPUGraph *base );
 static gboolean command_cb( GtkWidget *w, GdkEventButton *event, CPUGraph *base );
@@ -57,6 +58,8 @@ static CPUGraph * create_gui( XfcePanelPlugin * plugin )
 
 	base->box = xfce_hvbox_new(orientation, FALSE, 0);
 	gtk_container_add(GTK_CONTAINER(ebox), base->box);
+	gtk_widget_set_has_tooltip( base->box, TRUE);
+	g_signal_connect( base->box, "query-tooltip", G_CALLBACK( tooltip_cb ), base );
 
 	base->frame_widget = frame = gtk_frame_new( NULL );
 	gtk_box_pack_end( GTK_BOX(base->box), frame, TRUE, TRUE, 0);
@@ -70,6 +73,9 @@ static CPUGraph * create_gui( XfcePanelPlugin * plugin )
 
 	orientation_cb(plugin, orientation, base);
 	gtk_widget_show_all(ebox);
+
+	base->tooltip_text = gtk_label_new( NULL );
+	g_object_ref( base->tooltip_text );
 
 	return base;
 }
@@ -104,6 +110,7 @@ static void shutdown( XfcePanelPlugin * plugin, CPUGraph * base )
 	g_free( base->cpu_data );
 	delete_bars( base );
 	gtk_widget_destroy(base->box);
+	gtk_widget_destroy(base->tooltip_text);
 	if( base->timeout_id )
 		g_source_remove( base->timeout_id );
 	g_free( base->history );
@@ -245,8 +252,14 @@ static gboolean update_cb( CPUGraph * base )
 static void update_tooltip( CPUGraph * base )
 {
 	gchar tooltip[32];
-	g_snprintf( tooltip, 32, "Usage: %u%%", (guint)base->cpu_data[0].load*100/CPU_SCALE );
-	gtk_widget_set_tooltip_text( base->frame_widget, tooltip );
+	g_snprintf( tooltip, 32, _("Usage: %u%%"), (guint)base->cpu_data[0].load*100/CPU_SCALE );
+	gtk_label_set_text( GTK_LABEL(base->tooltip_text), tooltip );
+}
+
+static gboolean tooltip_cb( GtkWidget *widget, gint x, gint y, gboolean keyboard, GtkTooltip * tooltip, CPUGraph *base)
+{
+	gtk_tooltip_set_custom( tooltip, base->tooltip_text );
+	return TRUE;
 }
 
 static void draw_area_cb( GtkWidget * da, GdkEventExpose * event, gpointer data )

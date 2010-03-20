@@ -29,6 +29,7 @@ typedef struct
 	GtkWidget *box;
 	GtkWidget **bars;
 	GtkWidget *color_buttons[4];
+	GtkWidget *tooltip_text;
 
 	/* Settings */
 	guint update_interval; /* Number of ms between updates. */
