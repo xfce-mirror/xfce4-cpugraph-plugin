@@ -68,7 +68,7 @@ void create_options( XfcePanelPlugin *plugin, CPUGraph *base )
 	create_check_box( vbox, sg, _("Non-linear time-scale"), base->non_linear, change_time_scale, base );
 	create_check_box( vbox, sg, _("Show frame"), base->has_frame, change_frame, base );
 	create_check_box( vbox, sg, _("Border"), base->has_border, change_border, base );
-	create_check_box( vbox, sg, _("Show Bar(s)"), base->has_bars, change_bars, base );
+	create_check_box( vbox, sg, ngettext( "Show bar", "Show bars", base->nr_cores ), base->has_bars, change_bars, base );
 	setup_command_option( vbox, sg, base );
 	create_check_box( vbox, sg, _("Run in terminal"), base->in_terminal, change_in_terminal, base );
 	create_check_box( vbox, sg, _("Use startup notification"), base->startup_notification, change_startup_notification, base );
