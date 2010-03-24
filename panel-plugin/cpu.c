@@ -3,6 +3,8 @@
 #include "mode.h"
 #include "properties.h"
 
+#include <libxfce4panel/xfce-hvbox.h>
+
 static void cpugraph_construct( XfcePanelPlugin *plugin );
 static CPUGraph *create_gui( XfcePanelPlugin *plugin );
 static void create_bars( CPUGraph *base );

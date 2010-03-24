@@ -5,16 +5,8 @@
 #include "config.h"
 #endif
 
-#include <gtk/gtk.h>
-#include <gdk/gdk.h>
-#include <math.h>
-#include <stdio.h>
-#include <string.h>
-
-#include <libxfce4util/libxfce4util.h>
 #include <libxfcegui4/libxfcegui4.h>
 #include <libxfce4panel/xfce-panel-plugin.h>
-#include <libxfce4panel/xfce-hvbox.h>
 
 #include "os.h"
 
