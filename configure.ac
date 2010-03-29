@@ -28,6 +28,7 @@ AC_HEADER_STDC
 
 dnl configure the panel plugin
 XDT_CHECK_PACKAGE([LIBXFCE4PANEL], [libxfce4panel-1.0], [4.3.20])
+XDT_CHECK_PACKAGE([GTK], [gtk+-2.0], [2.12.0])
 
 dnl translations
 XDT_I18N([@LINGUAS@])
