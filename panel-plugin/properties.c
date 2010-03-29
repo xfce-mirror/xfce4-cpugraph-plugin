@@ -137,7 +137,6 @@ static void create_check_box( GtkBox *tab, GtkSizeGroup *sg, const gchar *name, 
 	gtk_widget_show( checkBox );
 	gtk_box_pack_start( GTK_BOX( hbox ), GTK_WIDGET( checkBox ), FALSE, FALSE, 0 );
 	g_signal_connect( checkBox, "toggled", G_CALLBACK( callback ), cb_data );
-	gtk_size_group_add_widget( sg, checkBox );
 }
 
 static void create_drop_down( GtkBox *tab, GtkSizeGroup *sg, const gchar * name, const gchar ** items, gsize nb_items, guint init, void (callback)( GtkComboBox *, CPUGraph * ), void * cb_data)
