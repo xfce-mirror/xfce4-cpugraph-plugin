@@ -5,7 +5,7 @@
 static GtkBox *create_tab();
 static GtkBox *create_option_line( GtkBox *tab, GtkSizeGroup *sg, const gchar *name );
 static void create_check_box( GtkBox *tab, GtkSizeGroup *sg, const gchar *name, gboolean init, void (callback)( GtkToggleButton *, CPUGraph *), void *cb_data );
-static void create_drop_down( GtkBox *tab, GtkSizeGroup *sg, const gchar * name, const gchar **items, gsize nb_items, guint init, void (callback)( GtkOptionMenu *, CPUGraph * ), void * cb_data);
+static void create_drop_down( GtkBox *tab, GtkSizeGroup *sg, const gchar * name, const gchar **items, gsize nb_items, guint init, void (callback)( GtkComboBox *, CPUGraph * ), void * cb_data);
 
 static void setup_update_interval_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
 static void setup_size_option( GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, CPUGraph *base );
@@ -22,15 +22,15 @@ static void change_color_1( GtkColorButton * button, CPUGraph * base );
 static void change_color_2( GtkColorButton *button, CPUGraph *base );
 static void change_color_3( GtkColorButton *button, CPUGraph *base );
 static void select_active_colors( CPUGraph * base );
-static void change_mode( GtkOptionMenu *om, CPUGraph *base );
-static void change_color_mode( GtkOptionMenu *om, CPUGraph *base );
+static void change_mode( GtkComboBox *om, CPUGraph *base );
+static void change_color_mode( GtkComboBox *om, CPUGraph *base );
 static void response_cb( GtkWidget *dlg, gint response, CPUGraph *base );
 static void change_frame( GtkToggleButton *button, CPUGraph *base );
 static void change_border( GtkToggleButton *button, CPUGraph *base );
 static void change_bars( GtkToggleButton * button, CPUGraph * base );
 static void change_size( GtkSpinButton *sb, CPUGraph *base );
 static void change_time_scale( GtkToggleButton *button, CPUGraph *base );
-static void change_update( GtkOptionMenu *om, CPUGraph *base );
+static void change_update( GtkComboBox *om, CPUGraph *base );
 
 void create_options( XfcePanelPlugin *plugin, CPUGraph *base )
 {
@@ -140,33 +140,25 @@ static void create_check_box( GtkBox *tab, GtkSizeGroup *sg, const gchar *name, 
 	gtk_size_group_add_widget( sg, checkBox );
 }
 
-static void create_drop_down( GtkBox *tab, GtkSizeGroup *sg, const gchar * name, const gchar ** items, gsize nb_items, guint init, void (callback)( GtkOptionMenu *, CPUGraph * ), void * cb_data)
+static void create_drop_down( GtkBox *tab, GtkSizeGroup *sg, const gchar * name, const gchar ** items, gsize nb_items, guint init, void (callback)( GtkComboBox *, CPUGraph * ), void * cb_data)
 {
 	GtkBox *hbox;
-	GtkWidget *Option;
-	GtkWidget *Menu;
-	GtkWidget *MenuItem;
+	GtkWidget *combo;
 	gint i;
 
 	hbox = create_option_line( tab, sg, name );
 
-	Option = gtk_option_menu_new();
-	gtk_widget_show( Option );
-	gtk_box_pack_start( GTK_BOX( hbox ), Option, FALSE, FALSE, 0 );
-
-	Menu = gtk_menu_new();
-	gtk_option_menu_set_menu( GTK_OPTION_MENU( Option ), Menu );
-
+	combo = gtk_combo_box_new_text();
 	for( i = 0; i < nb_items; i++ )
 	{
-		MenuItem = gtk_menu_item_new_with_label( items[i] );
-		gtk_widget_show( MenuItem );
-		gtk_menu_shell_append( GTK_MENU_SHELL( Menu ), MenuItem );
+		gtk_combo_box_append_text( GTK_COMBO_BOX( combo ), items[i] );
 	}
+	gtk_combo_box_set_active( GTK_COMBO_BOX( combo), init );
+	gtk_box_pack_start( GTK_BOX( hbox ), combo, FALSE, FALSE, 0 );
+	gtk_widget_show( combo );
 
-	gtk_option_menu_set_history( GTK_OPTION_MENU( Option ), init );
 
-	g_signal_connect( Option, "changed", G_CALLBACK( callback ), cb_data );
+	g_signal_connect( combo, "changed", G_CALLBACK( callback ), cb_data );
 }
 
 static void setup_update_interval_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base )
@@ -303,15 +295,15 @@ static void select_active_colors( CPUGraph * base )
 		gtk_widget_set_sensitive( GTK_WIDGET( base->color_buttons[3] ), FALSE );
 }
 
-static void change_mode( GtkOptionMenu * om, CPUGraph * base )
+static void change_mode( GtkComboBox * combo, CPUGraph * base )
 {
-	set_mode( base, gtk_option_menu_get_history( om ) );
+	set_mode( base, gtk_combo_box_get_active( combo ) );
 	select_active_colors( base );
 }
 
-static void change_color_mode( GtkOptionMenu * om, CPUGraph * base )
+static void change_color_mode( GtkComboBox * combo, CPUGraph * base )
 {
-	set_color_mode( base, gtk_option_menu_get_history( om ) );
+	set_color_mode( base, gtk_combo_box_get_active( combo ) );
 	select_active_colors( base );
 }
 
@@ -347,7 +339,7 @@ static void change_time_scale( GtkToggleButton * button, CPUGraph * base )
 	set_nonlinear_time( base, gtk_toggle_button_get_active( button ) );
 }
 
-static void change_update( GtkOptionMenu * om, CPUGraph * base )
+static void change_update( GtkComboBox * combo, CPUGraph * base )
 {
-	set_update_rate( base, gtk_option_menu_get_history( om ) );
+	set_update_rate( base, gtk_combo_box_get_active( combo ) );
 }
