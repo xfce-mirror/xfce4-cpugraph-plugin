@@ -42,7 +42,7 @@ void create_options( XfcePanelPlugin *plugin, CPUGraph *base )
 
 	xfce_panel_plugin_block_menu( plugin );
 
-	dlg = gtk_dialog_new_with_buttons( _("Configure CPU Graph"),
+	dlg = gtk_dialog_new_with_buttons( _("CPU Graph Properties"),
 	                                   GTK_WINDOW( gtk_widget_get_toplevel( GTK_WIDGET( plugin ) ) ),
 	                                   GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_NO_SEPARATOR,
 	                                   GTK_STOCK_CLOSE,
@@ -65,10 +65,10 @@ void create_options( XfcePanelPlugin *plugin, CPUGraph *base )
 	vbox = create_tab();
 	setup_update_interval_option( vbox, sg, base );
 	setup_size_option( vbox, sg, plugin, base );
-	create_check_box( vbox, sg, _("Non-linear time-scale"), base->non_linear, change_time_scale, base );
+	create_check_box( vbox, sg, _("Use non-linear time-scale"), base->non_linear, change_time_scale, base );
 	create_check_box( vbox, sg, _("Show frame"), base->has_frame, change_frame, base );
-	create_check_box( vbox, sg, _("Border"), base->has_border, change_border, base );
-	create_check_box( vbox, sg, ngettext( "Show bar", "Show bars", base->nr_cores ), base->has_bars, change_bars, base );
+	create_check_box( vbox, sg, _("Show border"), base->has_border, change_border, base );
+	create_check_box( vbox, sg, ngettext( "Show current usage bar", "Show current usage bars", base->nr_cores ), base->has_bars, change_bars, base );
 	setup_command_option( vbox, sg, base );
 	create_check_box( vbox, sg, _("Run in terminal"), base->in_terminal, change_in_terminal, base );
 	create_check_box( vbox, sg, _("Use startup notification"), base->startup_notification, change_startup_notification, base );
@@ -169,7 +169,7 @@ static void setup_update_interval_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGra
 	                      };
 	gsize nb_items = sizeof( items ) / sizeof( gchar* );
 
-	create_drop_down( vbox, sg, _("Update Interval: "), items, nb_items, base->update_interval, change_update, base);
+	create_drop_down( vbox, sg, _("Update Interval:"), items, nb_items, base->update_interval, change_update, base);
 }
 
 static void setup_size_option( GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, CPUGraph *base )
@@ -230,7 +230,7 @@ static void setup_mode_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base )
 
 static void setup_color_mode_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base )
 {
-	const gchar *items[] = { _("None"),
+	const gchar *items[] = { _("Solid"),
 	                        _("Gradient"),
 	                        _("Fire"),
 	                      };
