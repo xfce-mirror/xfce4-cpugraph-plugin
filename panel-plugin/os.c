@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#if defined (__linux__)
+#if defined (__linux__) || defined (__FreeBSD_kernel__)
 #define PROC_STAT "/proc/stat"
 #define PROCMAXLNLEN 256 /* should make it */
 #endif
@@ -43,7 +43,7 @@
 #include <nlist.h>
 #endif
 
-#if defined (__linux__)
+#if defined (__linux__) || defined (__FreeBSD_kernel__)
 guint detect_cpu_number()
 {
 	guint nb_lines= 0;
