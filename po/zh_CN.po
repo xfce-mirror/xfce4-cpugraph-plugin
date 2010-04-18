@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce 4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-16 13:02+0200\n"
+"POT-Creation-Date: 2010-04-18 14:14+0900\n"
 "PO-Revision-Date: 2009-07-08 22:35+0800\n"
 "Last-Translator: Hunt Xu <huntxu@live.cn>\n"
 "Language-Team: Chinese (simplified)\n"
@@ -15,112 +15,147 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../panel-plugin/cpu.c:432
-msgid "Configure CPU Graph"
-msgstr "配置 CPU 图像"
+#: ../panel-plugin/cpu.c:257
+#, c-format
+msgid "Usage: %u%%"
+msgstr ""
 
-#: ../panel-plugin/cpu.c:445
-#: ../panel-plugin/cpugraph.desktop.in.in.h:1
+#: ../panel-plugin/properties.c:45
+#, fuzzy
+msgid "CPU Graph Properties"
+msgstr "CPU 图像"
+
+#: ../panel-plugin/properties.c:57 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "CPU 图像"
 
-#: ../panel-plugin/cpu.c:463
-msgid "Update Interval: "
-msgstr "更新时间间隔："
-
-#: ../panel-plugin/cpu.c:478
-msgid "Fastest (~250ms)"
-msgstr "最快（约250毫秒）"
-
-#: ../panel-plugin/cpu.c:483
-msgid "Fast (~500ms)"
-msgstr "快（约500毫秒）"
-
-#: ../panel-plugin/cpu.c:489
-msgid "Normal (~750ms)"
-msgstr "正常（约750毫秒）"
-
-#: ../panel-plugin/cpu.c:494
-msgid "Slow (~1s)"
-msgstr "慢（约1秒）"
-
-#: ../panel-plugin/cpu.c:513
-msgid "Width:"
-msgstr "宽度："
-
-#: ../panel-plugin/cpu.c:515
-msgid "Height:"
-msgstr "高度："
-
-#: ../panel-plugin/cpu.c:535
-msgid "Non-linear time-scale"
+#: ../panel-plugin/properties.c:68
+#, fuzzy
+msgid "Use non-linear time-scale"
 msgstr "非线性时间缩放"
 
-#: ../panel-plugin/cpu.c:551
+#: ../panel-plugin/properties.c:69
 msgid "Show frame"
 msgstr "显示边框"
 
-#: ../panel-plugin/cpu.c:570
-msgid "Associated command :"
-msgstr "指定命令:"
+#: ../panel-plugin/properties.c:70
+#, fuzzy
+msgid "Show border"
+msgstr "显示边框"
 
-#: ../panel-plugin/cpu.c:588
+#: ../panel-plugin/properties.c:71
+msgid "Show current usage bar"
+msgid_plural "Show current usage bars"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../panel-plugin/properties.c:73
+msgid "Run in terminal"
+msgstr ""
+
+#: ../panel-plugin/properties.c:74
+msgid "Use startup notification"
+msgstr ""
+
+#: ../panel-plugin/properties.c:77
 msgid "Color 1:"
 msgstr "颜色1:"
 
-#: ../panel-plugin/cpu.c:614
+#: ../panel-plugin/properties.c:78
 msgid "Color 2:"
 msgstr "颜色2:"
 
-#: ../panel-plugin/cpu.c:643
+#: ../panel-plugin/properties.c:79
 msgid "Color 3:"
 msgstr "颜色3:"
 
-#: ../panel-plugin/cpu.c:672
+#: ../panel-plugin/properties.c:80
 msgid "Background:"
 msgstr "背景："
 
-#: ../panel-plugin/cpu.c:698
-msgid "Mode:"
-msgstr "模式："
-
-#: ../panel-plugin/cpu.c:711
-msgid "Normal"
-msgstr "正常"
-
-#: ../panel-plugin/cpu.c:715
-msgid "LED"
-msgstr "LED"
-
-#: ../panel-plugin/cpu.c:719
-msgid "No history"
-msgstr "历史为空"
-
-#: ../panel-plugin/cpu.c:734
-msgid "Color mode: "
-msgstr "颜色模式："
-
-#: ../panel-plugin/cpu.c:748
-msgid "None"
-msgstr "无"
-
-#: ../panel-plugin/cpu.c:753
-msgid "Gradient"
-msgstr "渐变"
-
-#: ../panel-plugin/cpu.c:758
-msgid "Fire"
-msgstr "火焰"
-
-#: ../panel-plugin/cpu.c:779
+#: ../panel-plugin/properties.c:87
 msgid "Appearance"
 msgstr "外观"
 
-#: ../panel-plugin/cpu.c:782
+#: ../panel-plugin/properties.c:89
 msgid "Advanced"
 msgstr "高级"
+
+#: ../panel-plugin/properties.c:165
+msgid "Fastest (~250ms)"
+msgstr "最快（约250毫秒）"
+
+#: ../panel-plugin/properties.c:166
+msgid "Fast (~500ms)"
+msgstr "快（约500毫秒）"
+
+#: ../panel-plugin/properties.c:167
+msgid "Normal (~750ms)"
+msgstr "正常（约750毫秒）"
+
+#: ../panel-plugin/properties.c:168
+msgid "Slow (~1s)"
+msgstr "慢（约1秒）"
+
+#: ../panel-plugin/properties.c:172
+#, fuzzy
+msgid "Update Interval:"
+msgstr "更新时间间隔："
+
+#: ../panel-plugin/properties.c:181
+msgid "Width:"
+msgstr "宽度："
+
+#: ../panel-plugin/properties.c:183
+msgid "Height:"
+msgstr "高度："
+
+#: ../panel-plugin/properties.c:197
+msgid "Associated command :"
+msgstr "指定命令:"
+
+#: ../panel-plugin/properties.c:221
+msgid "Normal"
+msgstr "正常"
+
+#: ../panel-plugin/properties.c:222
+msgid "LED"
+msgstr "LED"
+
+#: ../panel-plugin/properties.c:223
+msgid "No history"
+msgstr "历史为空"
+
+#: ../panel-plugin/properties.c:224
+msgid "Grid"
+msgstr ""
+
+#: ../panel-plugin/properties.c:228
+msgid "Mode:"
+msgstr "模式："
+
+#: ../panel-plugin/properties.c:233
+msgid "Solid"
+msgstr ""
+
+#: ../panel-plugin/properties.c:234
+msgid "Gradient"
+msgstr "渐变"
+
+#: ../panel-plugin/properties.c:235
+msgid "Fire"
+msgstr "火焰"
+
+#: ../panel-plugin/properties.c:239
+msgid "Color mode: "
+msgstr "颜色模式："
 
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "CPU 负载的图形化显示"
 
+#~ msgid "Configure CPU Graph"
+#~ msgstr "配置 CPU 图像"
+
+#~ msgid "None"
+#~ msgstr "无"

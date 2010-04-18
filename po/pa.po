@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-16 13:02+0200\n"
+"POT-Creation-Date: 2010-04-18 14:14+0900\n"
 "PO-Revision-Date: 2009-10-19 08:09+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
@@ -16,111 +16,147 @@ msgstr ""
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../panel-plugin/cpu.c:432
-msgid "Configure CPU Graph"
-msgstr "CPU ਗਰਾਫ਼ ਸੰਰਚਨਾ"
+#: ../panel-plugin/cpu.c:257
+#, c-format
+msgid "Usage: %u%%"
+msgstr ""
 
-#: ../panel-plugin/cpu.c:445 ../panel-plugin/cpugraph.desktop.in.in.h:1
+#: ../panel-plugin/properties.c:45
+#, fuzzy
+msgid "CPU Graph Properties"
+msgstr "CPU ਗਰਾਫ਼"
+
+#: ../panel-plugin/properties.c:57 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "CPU ਗਰਾਫ਼"
 
-#: ../panel-plugin/cpu.c:463
-msgid "Update Interval: "
-msgstr "ਅੱਪਡੇਟ ਇੰਟਰਵਲ:"
-
-#: ../panel-plugin/cpu.c:478
-msgid "Fastest (~250ms)"
-msgstr "ਸਭ ਤੋਂ ਤੇਜ਼ (~250ms)"
-
-#: ../panel-plugin/cpu.c:483
-msgid "Fast (~500ms)"
-msgstr "ਤੇਜ਼ (~500ms)"
-
-#: ../panel-plugin/cpu.c:489
-msgid "Normal (~750ms)"
-msgstr "ਸਧਾਰਨ (~750ms)"
-
-#: ../panel-plugin/cpu.c:494
-msgid "Slow (~1s)"
-msgstr "ਹੌਲੀ (~1s)"
-
-#: ../panel-plugin/cpu.c:513
-msgid "Width:"
-msgstr "ਚੌੜਾਈ:"
-
-#: ../panel-plugin/cpu.c:515
-msgid "Height:"
-msgstr "ਉਚਾਈ"
-
-#: ../panel-plugin/cpu.c:535
-msgid "Non-linear time-scale"
+#: ../panel-plugin/properties.c:68
+#, fuzzy
+msgid "Use non-linear time-scale"
 msgstr "ਗ਼ੈਰ-ਰੇਖਿਕ ਸਮਾਂ-ਸਕੇਲ"
 
-#: ../panel-plugin/cpu.c:551
+#: ../panel-plugin/properties.c:69
 msgid "Show frame"
 msgstr "ਫਰੇਮ ਵੇਖੋ"
 
-#: ../panel-plugin/cpu.c:570
-msgid "Associated command :"
-msgstr "ਸਬੰਧਿਤ ਕਮਾਂਡ:"
+#: ../panel-plugin/properties.c:70
+#, fuzzy
+msgid "Show border"
+msgstr "ਫਰੇਮ ਵੇਖੋ"
 
-#: ../panel-plugin/cpu.c:588
+#: ../panel-plugin/properties.c:71
+msgid "Show current usage bar"
+msgid_plural "Show current usage bars"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../panel-plugin/properties.c:73
+msgid "Run in terminal"
+msgstr ""
+
+#: ../panel-plugin/properties.c:74
+msgid "Use startup notification"
+msgstr ""
+
+#: ../panel-plugin/properties.c:77
 msgid "Color 1:"
 msgstr "ਰੰਗ 1:"
 
-#: ../panel-plugin/cpu.c:614
+#: ../panel-plugin/properties.c:78
 msgid "Color 2:"
 msgstr "ਰੰਗ 2:"
 
-#: ../panel-plugin/cpu.c:643
+#: ../panel-plugin/properties.c:79
 msgid "Color 3:"
 msgstr "ਰੰਗ 3:"
 
-#: ../panel-plugin/cpu.c:672
+#: ../panel-plugin/properties.c:80
 msgid "Background:"
 msgstr "ਬੈਕਗਰਾਊਂਡ:"
 
-#: ../panel-plugin/cpu.c:698
-msgid "Mode:"
-msgstr "ਮੋਡ:"
-
-#: ../panel-plugin/cpu.c:711
-msgid "Normal"
-msgstr "ਸਧਾਰਨ"
-
-#: ../panel-plugin/cpu.c:715
-msgid "LED"
-msgstr "LED"
-
-#: ../panel-plugin/cpu.c:719
-msgid "No history"
-msgstr "ਅਤੀਤ ਨਹੀਂ"
-
-#: ../panel-plugin/cpu.c:734
-msgid "Color mode: "
-msgstr "ਰੰਗ ਮੋਡ: "
-
-#: ../panel-plugin/cpu.c:748
-msgid "None"
-msgstr "ਕੋਈ ਨਹੀਂ"
-
-#: ../panel-plugin/cpu.c:753
-msgid "Gradient"
-msgstr "ਗਰੇਡੀਐਂਟ"
-
-#: ../panel-plugin/cpu.c:758
-msgid "Fire"
-msgstr "ਫਾਇਰ"
-
-#: ../panel-plugin/cpu.c:779
+#: ../panel-plugin/properties.c:87
 msgid "Appearance"
 msgstr "ਦਿੱਖ"
 
-#: ../panel-plugin/cpu.c:782
+#: ../panel-plugin/properties.c:89
 msgid "Advanced"
 msgstr "ਮਾਹਰ"
+
+#: ../panel-plugin/properties.c:165
+msgid "Fastest (~250ms)"
+msgstr "ਸਭ ਤੋਂ ਤੇਜ਼ (~250ms)"
+
+#: ../panel-plugin/properties.c:166
+msgid "Fast (~500ms)"
+msgstr "ਤੇਜ਼ (~500ms)"
+
+#: ../panel-plugin/properties.c:167
+msgid "Normal (~750ms)"
+msgstr "ਸਧਾਰਨ (~750ms)"
+
+#: ../panel-plugin/properties.c:168
+msgid "Slow (~1s)"
+msgstr "ਹੌਲੀ (~1s)"
+
+#: ../panel-plugin/properties.c:172
+#, fuzzy
+msgid "Update Interval:"
+msgstr "ਅੱਪਡੇਟ ਇੰਟਰਵਲ:"
+
+#: ../panel-plugin/properties.c:181
+msgid "Width:"
+msgstr "ਚੌੜਾਈ:"
+
+#: ../panel-plugin/properties.c:183
+msgid "Height:"
+msgstr "ਉਚਾਈ"
+
+#: ../panel-plugin/properties.c:197
+msgid "Associated command :"
+msgstr "ਸਬੰਧਿਤ ਕਮਾਂਡ:"
+
+#: ../panel-plugin/properties.c:221
+msgid "Normal"
+msgstr "ਸਧਾਰਨ"
+
+#: ../panel-plugin/properties.c:222
+msgid "LED"
+msgstr "LED"
+
+#: ../panel-plugin/properties.c:223
+msgid "No history"
+msgstr "ਅਤੀਤ ਨਹੀਂ"
+
+#: ../panel-plugin/properties.c:224
+msgid "Grid"
+msgstr ""
+
+#: ../panel-plugin/properties.c:228
+msgid "Mode:"
+msgstr "ਮੋਡ:"
+
+#: ../panel-plugin/properties.c:233
+msgid "Solid"
+msgstr ""
+
+#: ../panel-plugin/properties.c:234
+msgid "Gradient"
+msgstr "ਗਰੇਡੀਐਂਟ"
+
+#: ../panel-plugin/properties.c:235
+msgid "Fire"
+msgstr "ਫਾਇਰ"
+
+#: ../panel-plugin/properties.c:239
+msgid "Color mode: "
+msgstr "ਰੰਗ ਮੋਡ: "
 
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "CPU ਲੋਡ ਲਈ ਗਰਾਫਿਕਲ ਦਿੱਖ"
 
+#~ msgid "Configure CPU Graph"
+#~ msgstr "CPU ਗਰਾਫ਼ ਸੰਰਚਨਾ"
+
+#~ msgid "None"
+#~ msgstr "ਕੋਈ ਨਹੀਂ"

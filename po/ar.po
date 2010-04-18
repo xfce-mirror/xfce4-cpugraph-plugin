@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-16 13:02+0200\n"
+"POT-Creation-Date: 2010-04-18 14:14+0900\n"
 "PO-Revision-Date: 2008-07-16 15:07+0200\n"
 "Last-Translator: Mohamed Magdy <mohamedmk@gmail.com>\n"
 "Language-Team: Arabeyes <doc@arabeyes.org>\n"
@@ -11,108 +11,135 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Arabic\n"
 
-#: ../panel-plugin/cpu.c:432
-msgid "Configure CPU Graph"
+#: ../panel-plugin/cpu.c:257
+#, c-format
+msgid "Usage: %u%%"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:445 ../panel-plugin/cpugraph.desktop.in.in.h:1
+#: ../panel-plugin/properties.c:45
+msgid "CPU Graph Properties"
+msgstr ""
+
+#: ../panel-plugin/properties.c:57 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:463
-msgid "Update Interval: "
+#: ../panel-plugin/properties.c:68
+msgid "Use non-linear time-scale"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:478
-msgid "Fastest (~250ms)"
-msgstr ""
-
-#: ../panel-plugin/cpu.c:483
-msgid "Fast (~500ms)"
-msgstr ""
-
-#: ../panel-plugin/cpu.c:489
-msgid "Normal (~750ms)"
-msgstr ""
-
-#: ../panel-plugin/cpu.c:494
-msgid "Slow (~1s)"
-msgstr ""
-
-#: ../panel-plugin/cpu.c:513
-msgid "Width:"
-msgstr ""
-
-#: ../panel-plugin/cpu.c:515
-msgid "Height:"
-msgstr ""
-
-#: ../panel-plugin/cpu.c:535
-msgid "Non-linear time-scale"
-msgstr ""
-
-#: ../panel-plugin/cpu.c:551
+#: ../panel-plugin/properties.c:69
 msgid "Show frame"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:570
-msgid "Associated command :"
+#: ../panel-plugin/properties.c:70
+msgid "Show border"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:588
+#: ../panel-plugin/properties.c:71
+msgid "Show current usage bar"
+msgid_plural "Show current usage bars"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../panel-plugin/properties.c:73
+msgid "Run in terminal"
+msgstr ""
+
+#: ../panel-plugin/properties.c:74
+msgid "Use startup notification"
+msgstr ""
+
+#: ../panel-plugin/properties.c:77
 msgid "Color 1:"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:614
+#: ../panel-plugin/properties.c:78
 msgid "Color 2:"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:643
+#: ../panel-plugin/properties.c:79
 msgid "Color 3:"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:672
+#: ../panel-plugin/properties.c:80
 msgid "Background:"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:698
-msgid "Mode:"
-msgstr ""
-
-#: ../panel-plugin/cpu.c:711
-msgid "Normal"
-msgstr ""
-
-#: ../panel-plugin/cpu.c:715
-msgid "LED"
-msgstr ""
-
-#: ../panel-plugin/cpu.c:719
-msgid "No history"
-msgstr ""
-
-#: ../panel-plugin/cpu.c:734
-msgid "Color mode: "
-msgstr ""
-
-#: ../panel-plugin/cpu.c:748
-msgid "None"
-msgstr ""
-
-#: ../panel-plugin/cpu.c:753
-msgid "Gradient"
-msgstr ""
-
-#: ../panel-plugin/cpu.c:758
-msgid "Fire"
-msgstr ""
-
-#: ../panel-plugin/cpu.c:779
+#: ../panel-plugin/properties.c:87
 msgid "Appearance"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:782
+#: ../panel-plugin/properties.c:89
 msgid "Advanced"
+msgstr ""
+
+#: ../panel-plugin/properties.c:165
+msgid "Fastest (~250ms)"
+msgstr ""
+
+#: ../panel-plugin/properties.c:166
+msgid "Fast (~500ms)"
+msgstr ""
+
+#: ../panel-plugin/properties.c:167
+msgid "Normal (~750ms)"
+msgstr ""
+
+#: ../panel-plugin/properties.c:168
+msgid "Slow (~1s)"
+msgstr ""
+
+#: ../panel-plugin/properties.c:172
+msgid "Update Interval:"
+msgstr ""
+
+#: ../panel-plugin/properties.c:181
+msgid "Width:"
+msgstr ""
+
+#: ../panel-plugin/properties.c:183
+msgid "Height:"
+msgstr ""
+
+#: ../panel-plugin/properties.c:197
+msgid "Associated command :"
+msgstr ""
+
+#: ../panel-plugin/properties.c:221
+msgid "Normal"
+msgstr ""
+
+#: ../panel-plugin/properties.c:222
+msgid "LED"
+msgstr ""
+
+#: ../panel-plugin/properties.c:223
+msgid "No history"
+msgstr ""
+
+#: ../panel-plugin/properties.c:224
+msgid "Grid"
+msgstr ""
+
+#: ../panel-plugin/properties.c:228
+msgid "Mode:"
+msgstr ""
+
+#: ../panel-plugin/properties.c:233
+msgid "Solid"
+msgstr ""
+
+#: ../panel-plugin/properties.c:234
+msgid "Gradient"
+msgstr ""
+
+#: ../panel-plugin/properties.c:235
+msgid "Fire"
+msgstr ""
+
+#: ../panel-plugin/properties.c:239
+msgid "Color mode: "
 msgstr ""
 
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
