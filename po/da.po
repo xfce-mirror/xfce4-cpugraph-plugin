@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the xfce4-cpugraph-plugin package.
 # Jens Hyllegaard <jens.hyllegaard@gmail.com>, 2007.
 # Claus Futtrup <cfuttrup@stofanet.dk>, 2008.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin 0.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-18 14:14+0900\n"
+"POT-Creation-Date: 2010-04-18 10:02+0000\n"
 "PO-Revision-Date: 2008-10-05 21:31+0100\n"
 "Last-Translator: Claus Futtrup <cfuttrup@stofanet.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -17,50 +17,50 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: Danish\n"
-"X-Poedit-Country: DENMARK\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: DENMARK\n"
 
 #: ../panel-plugin/cpu.c:257
 #, c-format
 msgid "Usage: %u%%"
 msgstr ""
+" \t\r\n"
+"\r\n"
+"Bruger: %u%%"
 
 #: ../panel-plugin/properties.c:45
-#, fuzzy
 msgid "CPU Graph Properties"
-msgstr "CPU-graf"
+msgstr "Indstillinger til CPU-graf"
 
 #: ../panel-plugin/properties.c:57 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "CPU-graf"
 
 #: ../panel-plugin/properties.c:68
-#, fuzzy
 msgid "Use non-linear time-scale"
-msgstr "Ikke-lineær tidsskala"
+msgstr "Brug ikke-lineær tidsskala"
 
 #: ../panel-plugin/properties.c:69
 msgid "Show frame"
 msgstr "Vis ramme"
 
 #: ../panel-plugin/properties.c:70
-#, fuzzy
 msgid "Show border"
 msgstr "Vis ramme"
 
 #: ../panel-plugin/properties.c:71
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Vis aktuelle forbrugsstatus"
+msgstr[1] "Vis aktuelle forbrugsstatusser"
 
 #: ../panel-plugin/properties.c:73
 msgid "Run in terminal"
-msgstr ""
+msgstr "Kør i terminal"
 
 #: ../panel-plugin/properties.c:74
 msgid "Use startup notification"
-msgstr ""
+msgstr "Brug opstartspåmindelser"
 
 #: ../panel-plugin/properties.c:77
 msgid "Color 1:"
@@ -103,9 +103,8 @@ msgid "Slow (~1s)"
 msgstr "Langsom (~1 s)"
 
 #: ../panel-plugin/properties.c:172
-#, fuzzy
 msgid "Update Interval:"
-msgstr "Opdateringsinterval: "
+msgstr "Opdateringsinterval:"
 
 #: ../panel-plugin/properties.c:181
 msgid "Width:"
@@ -133,7 +132,7 @@ msgstr "Ingen historik"
 
 #: ../panel-plugin/properties.c:224
 msgid "Grid"
-msgstr ""
+msgstr "Gitter"
 
 #: ../panel-plugin/properties.c:228
 msgid "Mode:"
@@ -141,7 +140,7 @@ msgstr "Tilstand:"
 
 #: ../panel-plugin/properties.c:233
 msgid "Solid"
-msgstr ""
+msgstr "Ensfarvet"
 
 #: ../panel-plugin/properties.c:234
 msgid "Gradient"
