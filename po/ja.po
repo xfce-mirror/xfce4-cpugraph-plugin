@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-18 15:23+0900\n"
-"PO-Revision-Date: 2010-04-18 15:23+0900\n"
-"Last-Translator: Masato Hashimoto <cabezon.hashimoto@gmail.com>\n"
+"PO-Revision-Date: 2010-04-18 16:18+0900\n"
+"Last-Translator: Florian Rivoal <frivoal@gmail.com>\n"
 "Language-Team: Japanese <xfce-i18n@xfce.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=0;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../panel-plugin/cpu.c:257
 #, c-format
@@ -45,7 +45,6 @@ msgstr "枠を表示する"
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "使用率バーを表示する"
-msgstr[1] "使用率バーを表示する"
 
 #: ../panel-plugin/properties.c:73
 msgid "Run in terminal"
@@ -81,19 +80,19 @@ msgstr "高度な設定"
 
 #: ../panel-plugin/properties.c:165
 msgid "Fastest (~250ms)"
-msgstr "最速 (〜250ミリ秒)"
+msgstr "最速 (約250ミリ秒)"
 
 #: ../panel-plugin/properties.c:166
 msgid "Fast (~500ms)"
-msgstr "速い (〜500ミリ秒)"
+msgstr "速い (約500ミリ秒)"
 
 #: ../panel-plugin/properties.c:167
 msgid "Normal (~750ms)"
-msgstr "通常 (〜750ミリ秒)"
+msgstr "通常 (約750ミリ秒)"
 
 #: ../panel-plugin/properties.c:168
 msgid "Slow (~1s)"
-msgstr "遅い (〜1秒)"
+msgstr "遅い (約1秒)"
 
 #: ../panel-plugin/properties.c:172
 msgid "Update Interval:"
@@ -150,9 +149,3 @@ msgstr "カラーモード: "
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "CPU 負荷のグラフを表示します"
-
-#~ msgid "Configure CPU Graph"
-#~ msgstr "CPU グラフの設定"
-
-#~ msgid "None"
-#~ msgstr "なし"
