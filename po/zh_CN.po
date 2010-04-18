@@ -1,61 +1,58 @@
 # Chinese translations for xfce package.
 # Copyright (C) 2008 THE xfce'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the xfce package.
-# Hunt Xu <huntxu@live.cn>, 2008, 2009.
+# Hunt Xu <huntxu@live.cn>, 2008, 2009, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: xfce 4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-18 14:14+0900\n"
-"PO-Revision-Date: 2009-07-08 22:35+0800\n"
+"POT-Creation-Date: 2010-04-18 08:05+0000\n"
+"PO-Revision-Date: 2010-04-18 16:47+0800\n"
 "Last-Translator: Hunt Xu <huntxu@live.cn>\n"
 "Language-Team: Chinese (simplified)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../panel-plugin/cpu.c:257
 #, c-format
 msgid "Usage: %u%%"
-msgstr ""
+msgstr "使用率: %u%%"
 
 #: ../panel-plugin/properties.c:45
-#, fuzzy
 msgid "CPU Graph Properties"
-msgstr "CPU 图像"
+msgstr "CPU 图像属性"
 
 #: ../panel-plugin/properties.c:57 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "CPU 图像"
 
 #: ../panel-plugin/properties.c:68
-#, fuzzy
 msgid "Use non-linear time-scale"
-msgstr "非线性时间缩放"
+msgstr "使用非线性时间缩放"
 
 #: ../panel-plugin/properties.c:69
 msgid "Show frame"
-msgstr "显示边框"
+msgstr "显示框架"
 
 #: ../panel-plugin/properties.c:70
-#, fuzzy
 msgid "Show border"
 msgstr "显示边框"
 
 #: ../panel-plugin/properties.c:71
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "显示当前使用率栏"
 
 #: ../panel-plugin/properties.c:73
 msgid "Run in terminal"
-msgstr ""
+msgstr "在终端中运行"
 
 #: ../panel-plugin/properties.c:74
 msgid "Use startup notification"
-msgstr ""
+msgstr "使用启动通知"
 
 #: ../panel-plugin/properties.c:77
 msgid "Color 1:"
@@ -71,7 +68,7 @@ msgstr "颜色3:"
 
 #: ../panel-plugin/properties.c:80
 msgid "Background:"
-msgstr "背景："
+msgstr "背景:"
 
 #: ../panel-plugin/properties.c:87
 msgid "Appearance"
@@ -98,17 +95,16 @@ msgid "Slow (~1s)"
 msgstr "慢（约1秒）"
 
 #: ../panel-plugin/properties.c:172
-#, fuzzy
 msgid "Update Interval:"
-msgstr "更新时间间隔："
+msgstr "更新时间间隔:"
 
 #: ../panel-plugin/properties.c:181
 msgid "Width:"
-msgstr "宽度："
+msgstr "宽度:"
 
 #: ../panel-plugin/properties.c:183
 msgid "Height:"
-msgstr "高度："
+msgstr "高度:"
 
 #: ../panel-plugin/properties.c:197
 msgid "Associated command :"
@@ -128,15 +124,15 @@ msgstr "历史为空"
 
 #: ../panel-plugin/properties.c:224
 msgid "Grid"
-msgstr ""
+msgstr "网格"
 
 #: ../panel-plugin/properties.c:228
 msgid "Mode:"
-msgstr "模式："
+msgstr "模式:"
 
 #: ../panel-plugin/properties.c:233
 msgid "Solid"
-msgstr ""
+msgstr "固定"
 
 #: ../panel-plugin/properties.c:234
 msgid "Gradient"
@@ -148,7 +144,7 @@ msgstr "火焰"
 
 #: ../panel-plugin/properties.c:239
 msgid "Color mode: "
-msgstr "颜色模式："
+msgstr "颜色模式: "
 
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
