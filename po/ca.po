@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the
 # xfce4-cpugrapg-plugin package.
 # Carles Muñoz Gorriz <carlesmu@internautas.org>, 2006, 2008.
-#
-#
+# 
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin 0.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-18 14:14+0900\n"
+"POT-Creation-Date: 2010-04-18 16:02+0000\n"
 "PO-Revision-Date: 2008-11-16 14:18+0100\n"
 "Last-Translator: Carles Muñoz Gorriz <carlesmu@internautas.org>\n"
 "Language-Team: Catalan <xfce-i18n@xfce.org>\n"
@@ -22,44 +22,41 @@ msgstr ""
 #: ../panel-plugin/cpu.c:257
 #, c-format
 msgid "Usage: %u%%"
-msgstr ""
+msgstr "Utilització: %u%%"
 
 #: ../panel-plugin/properties.c:45
-#, fuzzy
 msgid "CPU Graph Properties"
-msgstr "Gràfica de CPU"
+msgstr "Propietats de les gràfiques de CPU"
 
 #: ../panel-plugin/properties.c:57 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "Gràfica de CPU"
 
 #: ../panel-plugin/properties.c:68
-#, fuzzy
 msgid "Use non-linear time-scale"
-msgstr "Escala de temps no linear"
+msgstr "Escala de temps no lineal"
 
 #: ../panel-plugin/properties.c:69
 msgid "Show frame"
 msgstr "Mostra el marc"
 
 #: ../panel-plugin/properties.c:70
-#, fuzzy
 msgid "Show border"
-msgstr "Mostra el marc"
+msgstr "Mostrar el marc"
 
 #: ../panel-plugin/properties.c:71
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Mostrar la barra d'ús actual"
+msgstr[1] "Mostrar les barres d'ús actuals"
 
 #: ../panel-plugin/properties.c:73
 msgid "Run in terminal"
-msgstr ""
+msgstr "Executar en un terminal"
 
 #: ../panel-plugin/properties.c:74
 msgid "Use startup notification"
-msgstr ""
+msgstr "Usar notificació d'inicialització"
 
 #: ../panel-plugin/properties.c:77
 msgid "Color 1:"
@@ -102,7 +99,6 @@ msgid "Slow (~1s)"
 msgstr "Lent (~1s)"
 
 #: ../panel-plugin/properties.c:172
-#, fuzzy
 msgid "Update Interval:"
 msgstr "Interval d'actualització:"
 
@@ -132,7 +128,7 @@ msgstr "Sense historial"
 
 #: ../panel-plugin/properties.c:224
 msgid "Grid"
-msgstr ""
+msgstr "Graella"
 
 #: ../panel-plugin/properties.c:228
 msgid "Mode:"
@@ -140,7 +136,7 @@ msgstr "Mode:"
 
 #: ../panel-plugin/properties.c:233
 msgid "Solid"
-msgstr ""
+msgstr "Sòlid"
 
 #: ../panel-plugin/properties.c:234
 msgid "Gradient"
