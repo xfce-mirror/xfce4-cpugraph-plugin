@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin 0.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-18 16:02+0000\n"
+"POT-Creation-Date: 2010-04-19 04:02+0000\n"
 "PO-Revision-Date: 2008-11-16 14:18+0100\n"
 "Last-Translator: Carles Muñoz Gorriz <carlesmu@internautas.org>\n"
 "Language-Team: Catalan <xfce-i18n@xfce.org>\n"
@@ -38,11 +38,11 @@ msgstr "Escala de temps no lineal"
 
 #: ../panel-plugin/properties.c:69
 msgid "Show frame"
-msgstr "Mostra el marc"
+msgstr "Mostrar el marc"
 
 #: ../panel-plugin/properties.c:70
 msgid "Show border"
-msgstr "Mostrar el marc"
+msgstr "Mostrar marges"
 
 #: ../panel-plugin/properties.c:71
 msgid "Show current usage bar"
