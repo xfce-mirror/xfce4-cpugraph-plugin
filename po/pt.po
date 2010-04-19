@@ -7,55 +7,56 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-18 14:14+0900\n"
-"PO-Revision-Date: 2008-09-08 15:23+0100\n"
-"Last-Translator: Nuno Miguel <nunis@netcabo.pt>\n"
+"POT-Creation-Date: 2010-04-19 10:02+0000\n"
+"PO-Revision-Date: 2010-04-19 14:15-0000\n"
+"Last-Translator: Sérgio Marques <smarquespt@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Poedit-Language: Portuguese\n"
+"X-Poedit-Country: Portugal\n"
 
 #: ../panel-plugin/cpu.c:257
 #, c-format
 msgid "Usage: %u%%"
-msgstr ""
+msgstr "Utilização: %u%%"
 
 #: ../panel-plugin/properties.c:45
-#, fuzzy
 msgid "CPU Graph Properties"
-msgstr "Gráfico de CPU"
+msgstr "Propriedades de CPU Graph"
 
-#: ../panel-plugin/properties.c:57 ../panel-plugin/cpugraph.desktop.in.in.h:1
+#: ../panel-plugin/properties.c:57
+#: ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "Gráfico de CPU"
 
 #: ../panel-plugin/properties.c:68
-#, fuzzy
 msgid "Use non-linear time-scale"
-msgstr "Escala de tempo não linear"
+msgstr "Utilizar escala de tempo não linear"
 
 #: ../panel-plugin/properties.c:69
 msgid "Show frame"
-msgstr "Mostrar borda"
+msgstr "Mostrar frame"
 
 #: ../panel-plugin/properties.c:70
-#, fuzzy
 msgid "Show border"
-msgstr "Mostrar borda"
+msgstr "Mostrar limite"
 
 #: ../panel-plugin/properties.c:71
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Mostrar barra de utilização"
+msgstr[1] "Mostrar barras de utilização"
 
 #: ../panel-plugin/properties.c:73
 msgid "Run in terminal"
-msgstr ""
+msgstr "Executar no terminal"
 
 #: ../panel-plugin/properties.c:74
 msgid "Use startup notification"
-msgstr ""
+msgstr "Utilizar notificação de arranque"
 
 #: ../panel-plugin/properties.c:77
 msgid "Color 1:"
@@ -83,7 +84,7 @@ msgstr "Avançado"
 
 #: ../panel-plugin/properties.c:165
 msgid "Fastest (~250ms)"
-msgstr "Muito rápido (~250ms)"
+msgstr "Mais rápido (~250ms)"
 
 #: ../panel-plugin/properties.c:166
 msgid "Fast (~500ms)"
@@ -98,9 +99,8 @@ msgid "Slow (~1s)"
 msgstr "Lento (~1s)"
 
 #: ../panel-plugin/properties.c:172
-#, fuzzy
 msgid "Update Interval:"
-msgstr "Intervalo de actualização:"
+msgstr "Intervalo de Actualização:"
 
 #: ../panel-plugin/properties.c:181
 msgid "Width:"
@@ -108,7 +108,7 @@ msgstr "Largura:"
 
 #: ../panel-plugin/properties.c:183
 msgid "Height:"
-msgstr "Comprimento:"
+msgstr "Altura:"
 
 #: ../panel-plugin/properties.c:197
 msgid "Associated command :"
@@ -128,7 +128,7 @@ msgstr "Sem histórico"
 
 #: ../panel-plugin/properties.c:224
 msgid "Grid"
-msgstr ""
+msgstr "Grelha"
 
 #: ../panel-plugin/properties.c:228
 msgid "Mode:"
@@ -136,7 +136,7 @@ msgstr "Modo:"
 
 #: ../panel-plugin/properties.c:233
 msgid "Solid"
-msgstr ""
+msgstr "Sólido"
 
 #: ../panel-plugin/properties.c:234
 msgid "Gradient"
@@ -154,8 +154,3 @@ msgstr "Modo de cor:"
 msgid "Graphical representation of the CPU load"
 msgstr "Representação gráfica da carga do CPU"
 
-#~ msgid "Configure CPU Graph"
-#~ msgstr "Configura o gráfico do CPU"
-
-#~ msgid "None"
-#~ msgstr "Nenhum"
