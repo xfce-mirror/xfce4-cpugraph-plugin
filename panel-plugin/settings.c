@@ -14,9 +14,9 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	gboolean frame = TRUE;
 	gboolean border = TRUE;
 	gboolean bars = TRUE;
-	const gchar  *associated_command = "xfce4-taskmanager";
-	gboolean in_terminal = FALSE;
-	gboolean startup_notification = TRUE;
+	const gchar  *associated_command = "top";
+	gboolean in_terminal = TRUE;
+	gboolean startup_notification = FALSE;
 
 	GdkColor foreground1;
 	GdkColor foreground2;
