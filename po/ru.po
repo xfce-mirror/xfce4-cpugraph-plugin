@@ -1,8 +1,9 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-18 14:14+0900\n"
+"POT-Creation-Date: 2010-04-22 22:02+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Andriy Kovtun <kovtunos@yandex.ru>\n"
 "Language-Team: Andriy Kovtun <kovtunos@yandex.ru>\n"
@@ -14,19 +15,17 @@ msgstr ""
 #: ../panel-plugin/cpu.c:257
 #, c-format
 msgid "Usage: %u%%"
-msgstr ""
+msgstr "Использовано: %u%%"
 
 #: ../panel-plugin/properties.c:45
-#, fuzzy
 msgid "CPU Graph Properties"
-msgstr "График процессора"
+msgstr "Параметры модуля CPU Graph"
 
 #: ../panel-plugin/properties.c:57 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "График процессора"
 
 #: ../panel-plugin/properties.c:68
-#, fuzzy
 msgid "Use non-linear time-scale"
 msgstr "Нелинейная временная шкала"
 
@@ -35,7 +34,6 @@ msgid "Show frame"
 msgstr "Показывать рамку"
 
 #: ../panel-plugin/properties.c:70
-#, fuzzy
 msgid "Show border"
 msgstr "Показывать рамку"
 
@@ -47,11 +45,11 @@ msgstr[1] ""
 
 #: ../panel-plugin/properties.c:73
 msgid "Run in terminal"
-msgstr ""
+msgstr "Запустить в терминале"
 
 #: ../panel-plugin/properties.c:74
 msgid "Use startup notification"
-msgstr ""
+msgstr "Использовать уведомление при запуске"
 
 #: ../panel-plugin/properties.c:77
 msgid "Color 1:"
@@ -94,7 +92,6 @@ msgid "Slow (~1s)"
 msgstr "Медленный (~1s)"
 
 #: ../panel-plugin/properties.c:172
-#, fuzzy
 msgid "Update Interval:"
 msgstr "Интервал обновления:"
 
@@ -123,8 +120,9 @@ msgid "No history"
 msgstr "Без истории"
 
 #: ../panel-plugin/properties.c:224
+#, fuzzy
 msgid "Grid"
-msgstr ""
+msgstr "Grid\r\n"
 
 #: ../panel-plugin/properties.c:228
 msgid "Mode:"
