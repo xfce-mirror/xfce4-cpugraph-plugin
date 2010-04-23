@@ -120,9 +120,8 @@ msgid "No history"
 msgstr "Без истории"
 
 #: ../panel-plugin/properties.c:224
-#, fuzzy
 msgid "Grid"
-msgstr "Grid\r\n"
+msgstr "Сетка"
 
 #: ../panel-plugin/properties.c:228
 msgid "Mode:"
@@ -130,7 +129,7 @@ msgstr "Режим:"
 
 #: ../panel-plugin/properties.c:233
 msgid "Solid"
-msgstr ""
+msgstr "Цельный"
 
 #: ../panel-plugin/properties.c:234
 msgid "Gradient"
