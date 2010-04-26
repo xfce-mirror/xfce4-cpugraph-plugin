@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-18 14:14+0900\n"
-"PO-Revision-Date: 2010-04-26 20:42+0100\n"
+"POT-Creation-Date: 2010-04-24 04:02+0000\n"
+"PO-Revision-Date: 2010-04-26 20:49+0100\n"
 "Last-Translator: Cristian Marchi <cri.penta@gmail.com>\n"
 "Language-Team: Italian <xfce-it-translators@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -98,7 +98,7 @@ msgstr "Lento (~1s)"
 
 #: ../panel-plugin/properties.c:172
 msgid "Update Interval:"
-msgstr "Intervallo di aggiornamento: "
+msgstr "Intervallo di aggiornamento:"
 
 #: ../panel-plugin/properties.c:181
 msgid "Width:"
@@ -110,7 +110,7 @@ msgstr "Altezza:"
 
 #: ../panel-plugin/properties.c:197
 msgid "Associated command :"
-msgstr "Comando associato: "
+msgstr "Comando associato:"
 
 #: ../panel-plugin/properties.c:221
 msgid "Normal"
@@ -146,14 +146,9 @@ msgstr "Fuoco"
 
 #: ../panel-plugin/properties.c:239
 msgid "Color mode: "
-msgstr "Modalità colore: "
+msgstr "Modalità colore:"
 
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Rappresentazione grafica del carico della CPU"
-
-#~ msgid "Configure CPU Graph"
-#~ msgstr "Configurazione del grafico della CPU"
-#~ msgid "None"
-#~ msgstr "Nessuna"
 
