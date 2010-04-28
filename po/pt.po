@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Nuno Miguel <nunis@netcabo.pt>, 2007.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-19 10:02+0000\n"
+"POT-Creation-Date: 2010-04-28 10:02+0000\n"
 "PO-Revision-Date: 2010-04-19 14:15-0000\n"
 "Last-Translator: Sérgio Marques <smarquespt@gmail.com>\n"
 "Language-Team: \n"
@@ -27,8 +27,7 @@ msgstr "Utilização: %u%%"
 msgid "CPU Graph Properties"
 msgstr "Propriedades de CPU Graph"
 
-#: ../panel-plugin/properties.c:57
-#: ../panel-plugin/cpugraph.desktop.in.in.h:1
+#: ../panel-plugin/properties.c:57 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "Gráfico de CPU"
 
@@ -38,11 +37,11 @@ msgstr "Utilizar escala de tempo não linear"
 
 #: ../panel-plugin/properties.c:69
 msgid "Show frame"
-msgstr "Mostrar frame"
+msgstr "Mostrar vinheta"
 
 #: ../panel-plugin/properties.c:70
 msgid "Show border"
-msgstr "Mostrar limite"
+msgstr "Mostrar borda"
 
 #: ../panel-plugin/properties.c:71
 msgid "Show current usage bar"
@@ -153,4 +152,3 @@ msgstr "Modo de cor:"
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Representação gráfica da carga do CPU"
-
