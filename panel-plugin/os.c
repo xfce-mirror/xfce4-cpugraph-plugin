@@ -30,8 +30,6 @@
 #include <sys/param.h>
 #include <sys/sched.h>
 #include <sys/sysctl.h>
-#include <fcntl.h>
-#include <nlist.h>
 #endif
 
 #if defined (__OpenBSD__)
@@ -146,39 +144,42 @@ gboolean read_cpu_data( CpuData *data, guint nb_cpu)
 #elif defined (__NetBSD__)
 guint detect_cpu_number()
 {
-	return 1;
+	static gint mib[] = {CTL_HW, HW_NCPU};
+	gint ncpu;
+	gsize len = sizeof( gint );
+	if( sysctl( mib, 2, &ncpu, &len, NULL, 0 ) < 0 )
+		return 0;
+	else
+		return ncpu;
 }
 
 gboolean read_cpu_data( CpuData *data, guint nb_cpu)
 {
-	guint user, nice, sys, bsdidle, idle;
-	guint used, total;
-	static gint mib[] = {CTL_KERN, KERN_CP_TIME };
-	guint64 cp_time[CPUSTATES];
-	gsize len = sizeof( cp_time );
-
+	guint64 used, total;
+	guint64 cp_time[CPUSTATES * nb_cpu];
+	guint64 *cp_time1;
+	gint i;
+	gsize len = nb_cpu * CPUSTATES * sizeof( guint64 );
+	gint mib[] = {CTL_KERN, KERN_CP_TIME};
 	if( sysctl( mib, 2, &cp_time, &len, NULL, 0 ) < 0 )
-	{
 		return FALSE;
+
+	data[0].load = 0;
+	for( i = 1 ; i <= nb_cpu ; i++ )
+	{
+		cp_time1 = cp_time + CPUSTATE * (i - 1)
+		used = cp_time1[CP_USER] + cp_time1[CP_NICE] + cp_time1[CP_SYS] + cp_time1[CP_INTR];
+		total = used + cp_time1[CP_IDLE];
+
+		if( total - data[i].previous_total != 0 )
+			data[i].load = (CPU_SCALE * (used - data[i].previous_used))/(total - data[i].previous_total);
+		else
+			data[i].load = 0;
+		data[i].previous_used = used;
+		data[i].previous_total = total;
+		data[0].load += data[i].load;
 	}
-
-	user = cp_time[CP_USER];
-	nice = cp_time[CP_NICE];
-	sys = cp_time[CP_SYS];
-	bsdidle = cp_time[CP_IDLE];
-	idle = cp_time[CP_IDLE];
-
-	used = user+nice+sys;
-	total = used+bsdidle;
-
-	if( total - data[0].previous_total != 0 )
-		data[0].load = (CPU_SCALE * (used - data[0].previous_total)) / (total - data[0].previous_total);
-	else
-		data[0].load = 0;
-
-	data[0].previous_used = used;
-	data[0].previous_total = total;
-
+	data[0].load /= nb_cpu;
 	return TRUE;
 }
 
