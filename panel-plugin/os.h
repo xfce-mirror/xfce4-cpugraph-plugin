@@ -8,8 +8,8 @@
 typedef struct
 {
 	guint load;
-	guint previous_used;
-	guint previous_total;
+	guint64 previous_used;
+	guint64 previous_total;
 } CpuData;
 
 guint detect_cpu_number();
