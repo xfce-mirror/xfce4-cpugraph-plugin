@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Piarres Beobide <pi@beobide.net>
-#
+# 
 # Piarres Beobide <pi@beobide.net>, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-18 14:14+0900\n"
+"POT-Creation-Date: 2010-05-06 04:02+0000\n"
 "PO-Revision-Date: 2008-11-09 15:38+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <debian-l10n-basque@lists.debian.org>\n"
@@ -22,44 +22,41 @@ msgstr ""
 #: ../panel-plugin/cpu.c:257
 #, c-format
 msgid "Usage: %u%%"
-msgstr ""
+msgstr "Erabilera: %u%%"
 
 #: ../panel-plugin/properties.c:45
-#, fuzzy
 msgid "CPU Graph Properties"
-msgstr "CPU Grafikoa"
+msgstr "CPU grafiko propietateak"
 
 #: ../panel-plugin/properties.c:57 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "CPU Grafikoa"
 
 #: ../panel-plugin/properties.c:68
-#, fuzzy
 msgid "Use non-linear time-scale"
-msgstr "Denbora-eskala ez-linearra"
+msgstr "Erabili ez-linearra"
 
 #: ../panel-plugin/properties.c:69
 msgid "Show frame"
 msgstr "Markoa ikusi"
 
 #: ../panel-plugin/properties.c:70
-#, fuzzy
 msgid "Show border"
-msgstr "Markoa ikusi"
+msgstr "Ikusi ertza"
 
 #: ../panel-plugin/properties.c:71
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ikusi uneko erabilera barra"
+msgstr[1] "Ikusi uneko erabilera barrak"
 
 #: ../panel-plugin/properties.c:73
 msgid "Run in terminal"
-msgstr ""
+msgstr "Exekutatu terminalean"
 
 #: ../panel-plugin/properties.c:74
 msgid "Use startup notification"
-msgstr ""
+msgstr "Erabili abioan"
 
 #: ../panel-plugin/properties.c:77
 msgid "Color 1:"
@@ -102,7 +99,6 @@ msgid "Slow (~1s)"
 msgstr "Geldoa (~1s)"
 
 #: ../panel-plugin/properties.c:172
-#, fuzzy
 msgid "Update Interval:"
 msgstr "Eguneratze tartea: "
 
@@ -132,7 +128,7 @@ msgstr "Historiarik ez"
 
 #: ../panel-plugin/properties.c:224
 msgid "Grid"
-msgstr ""
+msgstr "Sareta"
 
 #: ../panel-plugin/properties.c:228
 msgid "Mode:"
@@ -140,7 +136,7 @@ msgstr "Modua:"
 
 #: ../panel-plugin/properties.c:233
 msgid "Solid"
-msgstr ""
+msgstr "Solidoa"
 
 #: ../panel-plugin/properties.c:234
 msgid "Gradient"
