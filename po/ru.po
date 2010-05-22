@@ -39,11 +39,8 @@ msgid "Show border"
 msgstr "Показывать рамку"
 
 #: ../panel-plugin/properties.c:71
-#, fuzzy
 msgid "Show current usage bar"
-msgid_plural "Show current usage bars"
-msgstr[0] "Показать панель загруженности"
-msgstr[1] "Показать панель загруженности"
+msgstr "Показать панель загруженности"
 
 #: ../panel-plugin/properties.c:73
 msgid "Run in terminal"
