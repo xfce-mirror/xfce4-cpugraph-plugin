@@ -65,7 +65,7 @@ gboolean read_cpu_data( CpuData *data, guint nb_cpu)
 {
 	FILE *fStat;
 	gchar cpuStr[PROCMAXLNLEN];
-	guint user, nice, system, idle, used, total, iowait, irq, softirq;
+	gulong user, nice, system, idle, used, total, iowait, irq, softirq;
 	guint line;
 
 	if( !(fStat = fopen( PROC_STAT, "r" )) )
@@ -80,7 +80,7 @@ gboolean read_cpu_data( CpuData *data, guint nb_cpu)
 			fclose( fStat );
 			return FALSE;
 		}
-		if( sscanf( cpuStr, "%*s %ld %ld %ld %ld %ld %ld %ld", &user, &nice, &system, &idle, &iowait, &irq, &softirq ) < 7 )
+		if( sscanf( cpuStr, "%*s %lu %lu %lu %lu %lu %lu %lu", &user, &nice, &system, &idle, &iowait, &irq, &softirq ) < 7 )
 			iowait = irq = softirq = 0;
 		used = user + nice + system + irq + softirq;
 		total = used + idle + iowait;
