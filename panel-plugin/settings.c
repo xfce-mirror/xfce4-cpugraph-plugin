@@ -1,5 +1,23 @@
 #include "settings.h"
 
+static void default_command( const gchar ** command, gboolean * in_terminal, gboolean * startup_notification )
+{
+	gchar * s = g_find_program_in_path( "xfce4-taskmanager");
+	if( s != NULL )
+	{
+		g_free( s );
+		*command = "xfce4-taskmanager";
+		*in_terminal = FALSE;
+		*startup_notification = TRUE;
+	}
+	else
+	{
+		*command = "top";
+		*in_terminal = TRUE;
+		*startup_notification = FALSE;
+	}
+}
+
 void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 {
 	const char *value;
@@ -14,9 +32,9 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	gboolean frame = TRUE;
 	gboolean border = TRUE;
 	gboolean bars = TRUE;
-	const gchar  *associated_command = "top";
-	gboolean in_terminal = TRUE;
-	gboolean startup_notification = FALSE;
+	const gchar  *associated_command;
+	gboolean in_terminal;
+	gboolean startup_notification;
 
 	GdkColor foreground1;
 	GdkColor foreground2;
@@ -38,6 +56,8 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	background.red = 65535;
 	background.green = 65535;
 	background.blue = 65535;
+
+	default_command( &associated_command, &in_terminal, &startup_notification );
 
 	if( (file = xfce_panel_plugin_lookup_rc_file( plugin )) != NULL )
 	{
