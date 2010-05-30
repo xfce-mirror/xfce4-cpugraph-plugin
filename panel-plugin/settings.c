@@ -72,7 +72,7 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 			mode = xfce_rc_read_int_entry( rc, "Mode", mode );
 			color_mode = xfce_rc_read_int_entry( rc, "ColorMode", color_mode );
 			frame = xfce_rc_read_int_entry( rc, "Frame", frame );
-			associated_command = xfce_rc_read_entry( rc, "AssociateCommand", associated_command );
+			associated_command = xfce_rc_read_entry( rc, "Command", associated_command );
 			in_terminal = xfce_rc_read_int_entry( rc, "InTerminal", in_terminal );
 			startup_notification = xfce_rc_read_int_entry( rc, "StartupNotification", startup_notification );
 			border = xfce_rc_read_int_entry( rc, "Border", border );
@@ -130,7 +130,7 @@ void write_settings( XfcePanelPlugin *plugin, CPUGraph *base )
 	xfce_rc_write_int_entry( rc, "Frame", base->has_frame );
 	xfce_rc_write_int_entry( rc, "Border", base->has_border );
 	xfce_rc_write_int_entry( rc, "Bars", base->has_bars );
-	xfce_rc_write_entry( rc, "AssociateCommand", base->command ? base->command : "" );
+	xfce_rc_write_entry( rc, "Command", base->command ? base->command : "" );
 	xfce_rc_write_int_entry( rc, "InTerminal", base->in_terminal );
 	xfce_rc_write_int_entry( rc, "StartupNotification", base->startup_notification );
 	xfce_rc_write_int_entry( rc, "ColorMode", base->color_mode );
