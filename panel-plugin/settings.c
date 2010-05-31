@@ -26,20 +26,20 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 
 	guint rate = 0;
 	gboolean nonlinear = FALSE;
-	guint size = 70;
 	guint mode = 0;
 	guint color_mode = 0;
 	gboolean frame = TRUE;
 	gboolean border = TRUE;
 	gboolean bars = TRUE;
-	const gchar  *associated_command;
-	gboolean in_terminal;
-	gboolean startup_notification;
 
 	GdkColor foreground1;
 	GdkColor foreground2;
 	GdkColor foreground3;
 	GdkColor background;
+	guint size;
+	const gchar  *associated_command;
+	gboolean in_terminal;
+	gboolean startup_notification;
 
 	foreground1.red = 0;
 	foreground1.green = 65535;
@@ -57,6 +57,7 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	background.green = 65535;
 	background.blue = 65535;
 
+	size = xfce_panel_plugin_get_size( plugin );
 	default_command( &associated_command, &in_terminal, &startup_notification );
 
 	if( (file = xfce_panel_plugin_lookup_rc_file( plugin )) != NULL )
