@@ -3,9 +3,11 @@ plugin_PROGRAMS = xfce4-cpugraph-plugin
 
 xfce4_cpugraph_plugin_CFLAGS =					\
 	-DPACKAGE_LOCALE_DIR=\"$(localedir)\"			\
+	@LIBXFCEGUI4_CFLAGS@					\
 	@LIBXFCE4PANEL_CFLAGS@
 
 xfce4_cpugraph_plugin_LDADD =					\
+	@LIBXFCEGUI4_LIBS@					\
 	@LIBXFCE4PANEL_LIBS@
 
 xfce4_cpugraph_plugin_SOURCES =                                 \
