@@ -2,6 +2,11 @@
 #include "properties.h"
 #include "settings.h"
 
+#ifndef _
+# include <libintl.h>
+# define _(String) gettext (String)
+#endif
+
 static GtkBox *create_tab();
 static GtkBox *create_option_line( GtkBox *tab, GtkSizeGroup *sg, const gchar *name );
 static void create_check_box( GtkBox *tab, GtkSizeGroup *sg, const gchar *name, gboolean init, void (callback)( GtkToggleButton *, CPUGraph *), void *cb_data );

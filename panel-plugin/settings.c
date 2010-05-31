@@ -1,4 +1,5 @@
 #include "settings.h"
+#include <libxfcegui4/libxfcegui4.h>
 
 static void default_command( const gchar ** command, gboolean * in_terminal, gboolean * startup_notification )
 {

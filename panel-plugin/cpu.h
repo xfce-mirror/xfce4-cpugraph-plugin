@@ -5,7 +5,6 @@
 #include "config.h"
 #endif
 
-#include <libxfcegui4/libxfcegui4.h>
 #include <libxfce4panel/xfce-panel-plugin.h>
 
 #include "os.h"

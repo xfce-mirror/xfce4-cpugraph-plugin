@@ -3,7 +3,12 @@
 #include "mode.h"
 #include "properties.h"
 
+#include <libxfcegui4/libxfcegui4.h>
 #include <libxfce4panel/xfce-hvbox.h>
+#ifndef _
+# include <libintl.h>
+# define _(String) gettext (String)
+#endif
 
 static void cpugraph_construct( XfcePanelPlugin *plugin );
 static CPUGraph *create_gui( XfcePanelPlugin *plugin );
