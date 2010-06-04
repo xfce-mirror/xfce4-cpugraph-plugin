@@ -32,6 +32,7 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	gboolean frame = TRUE;
 	gboolean border = TRUE;
 	gboolean bars = TRUE;
+	guint tracked_core = 0;
 
 	GdkColor foreground1;
 	GdkColor foreground2;
@@ -79,6 +80,7 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 			startup_notification = xfce_rc_read_int_entry( rc, "StartupNotification", startup_notification );
 			border = xfce_rc_read_int_entry( rc, "Border", border );
 			bars = xfce_rc_read_int_entry( rc, "Bars", bars );
+			tracked_core = xfce_rc_read_int_entry( rc, "TrackedCore", tracked_core );
 
 			if( (value = xfce_rc_read_entry( rc, "Foreground1", NULL )) )
 				gdk_color_parse( value, &foreground1 );
@@ -103,6 +105,7 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	set_in_terminal( base, in_terminal);
 	set_startup_notification( base, startup_notification );
 	set_border( base, border);
+	set_tracked_core( base, tracked_core );
 	set_bars( base, bars);
 	set_color( base, 1, foreground1 );
 	set_color( base, 2, foreground2 );
@@ -132,6 +135,7 @@ void write_settings( XfcePanelPlugin *plugin, CPUGraph *base )
 	xfce_rc_write_int_entry( rc, "Frame", base->has_frame );
 	xfce_rc_write_int_entry( rc, "Border", base->has_border );
 	xfce_rc_write_int_entry( rc, "Bars", base->has_bars );
+	xfce_rc_write_int_entry( rc, "TrackedCore", base->tracked_core );
 	xfce_rc_write_entry( rc, "Command", base->command ? base->command : "" );
 	xfce_rc_write_int_entry( rc, "InTerminal", base->in_terminal );
 	xfce_rc_write_int_entry( rc, "StartupNotification", base->startup_notification );

@@ -61,7 +61,7 @@ guint detect_cpu_number()
 	return nb_lines > 1 ? nb_lines - 1 : 0;
 }
 
-gboolean read_cpu_data( CpuData *data, guint nb_cpu)
+gboolean read_cpu_data( CpuData *data, guint nb_cpu )
 {
 	FILE *fStat;
 	gchar cpuStr[PROCMAXLNLEN];

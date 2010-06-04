@@ -87,14 +87,21 @@ static CPUGraph * create_gui( XfcePanelPlugin * plugin )
 	return base;
 }
 
+static guint nb_bars( CPUGraph * base )
+{
+	return base->tracked_core == 0 ? base->nr_cores : 1;
+}
 static void create_bars( CPUGraph *base )
 {
-	gint i;
-	base->bars = (GtkWidget **) g_malloc( sizeof( GtkWidget * ) * base->nr_cores );
+	guint i;
+	guint n;
+	n = nb_bars( base );
+	base->bars = (GtkWidget **) g_malloc( sizeof( GtkWidget * ) * n );
 
-	for(i=0; i<base->nr_cores; i++) {
+	for( i=0; i< n; i++ )
+	{
 		base->bars[i] = GTK_WIDGET(gtk_progress_bar_new());
-		gtk_box_pack_end( GTK_BOX(base->box), base->bars[i], FALSE, FALSE, 0);
+		gtk_box_pack_end( GTK_BOX(base->box), base->bars[i], FALSE, FALSE, 0 );
 		gtk_widget_show( base->bars[i] );
 	}
 }
@@ -127,10 +134,12 @@ static void shutdown( XfcePanelPlugin * plugin, CPUGraph * base )
 
 static void delete_bars( CPUGraph *base )
 {
-	gint i;
+	guint i;
+	guint n;
 	if( base->bars )
 	{
-		for( i=0; i < base->nr_cores; i++ )
+		n = nb_bars( base );
+		for( i=0; i < n; i++ )
 		{
 			gtk_widget_hide( base->bars[i] );
 			gtk_widget_destroy( base->bars[i] );
@@ -175,7 +184,8 @@ static gboolean size_cb( XfcePanelPlugin *plugin, guint size, CPUGraph *base )
 
 static void set_bars_size( CPUGraph *base, gint size, GtkOrientation orientation )
 {
-	gint i;
+	guint i;
+	guint n;
 	gint h, v;
 	if( orientation == GTK_ORIENTATION_HORIZONTAL )
 	{
@@ -187,7 +197,8 @@ static void set_bars_size( CPUGraph *base, gint size, GtkOrientation orientation
 		h = size;
 		v = BORDER;
 	}
-	for( i=0; i < base->nr_cores; i++ )
+	n = nb_bars( base );
+	for( i=0; i < n ; i++ )
 		gtk_widget_set_size_request( GTK_WIDGET(base->bars[i]), h, v );
 }
 
@@ -202,13 +213,15 @@ static void orientation_cb( XfcePanelPlugin * plugin, GtkOrientation orientation
 static void set_bars_orientation( CPUGraph *base, GtkOrientation orientation)
 {
 	GtkProgressBarOrientation barOrientation;
-	gint i; 
+	guint i; 
+	guint n; 
 	if( orientation == GTK_ORIENTATION_HORIZONTAL )
 		barOrientation = GTK_PROGRESS_BOTTOM_TO_TOP;
 	else
 		barOrientation = GTK_PROGRESS_LEFT_TO_RIGHT;
 
-	for( i=0; i<base->nr_cores; i++ )
+	n = nb_bars( base );
+	for( i=0; i < n; i++ )
 		gtk_progress_bar_set_orientation( GTK_PROGRESS_BAR( base->bars[i] ), barOrientation );	
 }
 
@@ -217,9 +230,15 @@ static gboolean update_cb( CPUGraph * base )
 	gint i, j, a, b, factor;
 	if( !read_cpu_data( base->cpu_data, base->nr_cores ) )
 		return TRUE;
+
+	if( base->tracked_core > base->nr_cores )
+		base->cpu_data[0].load = 0;
+	else if( base->tracked_core != 0 )
+		base->cpu_data[0].load = base->cpu_data[base->tracked_core].load;
+
 	if( base->has_bars )
 	{
-		if( base->nr_cores == 1 )
+		if( base->tracked_core != 0 || base->nr_cores == 1 )
 		{
 			gtk_progress_bar_set_fraction( GTK_PROGRESS_BAR(base->bars[0]),
 					(gdouble)base->cpu_data[0].load / CPU_SCALE
@@ -408,4 +427,14 @@ void set_color( CPUGraph *base, guint number, GdkColor color )
 		gtk_widget_modify_bg( base->draw_area, GTK_STATE_INSENSITIVE, &base->colors[0] );
 		gtk_widget_modify_bg( base->draw_area, GTK_STATE_NORMAL, &base->colors[0] );
 	}
+}
+
+void set_tracked_core( CPUGraph *base, guint core )
+{
+	gboolean has_bars = base->has_bars;
+	if( has_bars)
+		set_bars( base, FALSE );
+	base->tracked_core = core;
+	if( has_bars)
+		set_bars( base, TRUE );
 }

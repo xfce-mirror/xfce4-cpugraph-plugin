@@ -35,6 +35,7 @@ typedef struct
 	gboolean in_terminal;
 	gboolean startup_notification;
 	GdkColor colors[4];
+	guint tracked_core;
 
 	/* Runtime data */
 	guint nr_cores;
@@ -56,4 +57,5 @@ void set_size( CPUGraph *base, guint width );
 void set_color_mode( CPUGraph *base, guint color_mode );
 void set_mode( CPUGraph *base, guint mode );
 void set_color( CPUGraph *base, guint number, GdkColor color );
+void set_tracked_core( CPUGraph *base, guint core );
 #endif /* !_XFCE_CPU_H_ */

@@ -13,6 +13,7 @@ static void create_check_box( GtkBox *tab, GtkSizeGroup *sg, const gchar *name, 
 static void create_drop_down( GtkBox *tab, GtkSizeGroup *sg, const gchar * name, const gchar **items, gsize nb_items, guint init, void (callback)( GtkComboBox *, CPUGraph * ), void * cb_data);
 
 static void setup_update_interval_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
+static void setup_tracked_core_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
 static void setup_size_option( GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, CPUGraph *base );
 static void setup_command_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base );
 static void setup_color_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base, guint number, const gchar *name, GCallback cb );
@@ -36,6 +37,7 @@ static void change_bars( GtkToggleButton * button, CPUGraph * base );
 static void change_size( GtkSpinButton *sb, CPUGraph *base );
 static void change_time_scale( GtkToggleButton *button, CPUGraph *base );
 static void change_update( GtkComboBox *om, CPUGraph *base );
+static void change_core( GtkComboBox * combo, CPUGraph * base );
 
 void create_options( XfcePanelPlugin *plugin, CPUGraph *base )
 {
@@ -69,6 +71,7 @@ void create_options( XfcePanelPlugin *plugin, CPUGraph *base )
 
 	vbox = create_tab();
 	setup_update_interval_option( vbox, sg, base );
+	setup_tracked_core_option( vbox, sg, base );
 	setup_size_option( vbox, sg, plugin, base );
 	create_check_box( vbox, sg, _("Use non-linear time-scale"), base->non_linear, change_time_scale, base );
 	create_check_box( vbox, sg, _("Show frame"), base->has_frame, change_frame, base );
@@ -175,6 +178,22 @@ static void setup_update_interval_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGra
 	gsize nb_items = sizeof( items ) / sizeof( gchar* );
 
 	create_drop_down( vbox, sg, _("Update Interval:"), items, nb_items, base->update_interval, change_update, base);
+}
+
+static void setup_tracked_core_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base )
+{
+	gsize nb_items = base->nr_cores + 1;
+	gchar *items[ nb_items ];
+	guint i;
+	items[0] = _("All");
+	for( i = 1; i < nb_items; i++ )
+	{
+		items[i] = g_malloc( g_snprintf( NULL, 0, "%u", i ) );
+		g_sprintf( items[i], "%u", i );
+	}
+	create_drop_down( vbox, sg, _("Tracked Core:"), (const gchar **)items, nb_items, base->tracked_core, change_core, base);
+	for( i = 1; i < nb_items; i++ )
+		g_free( items[i] );
 }
 
 static void setup_size_option( GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, CPUGraph *base )
@@ -346,4 +365,9 @@ static void change_time_scale( GtkToggleButton * button, CPUGraph * base )
 static void change_update( GtkComboBox * combo, CPUGraph * base )
 {
 	set_update_rate( base, gtk_combo_box_get_active( combo ) );
+}
+
+static void change_core( GtkComboBox * combo, CPUGraph * base )
+{
+	set_tracked_core( base, gtk_combo_box_get_active( combo ) );
 }
