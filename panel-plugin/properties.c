@@ -2,6 +2,9 @@
 #include "properties.h"
 #include "settings.h"
 
+#include <glib/gprintf.h>
+#include <libxfcegui4/libxfcegui4.h>
+
 #ifndef _
 # include <libintl.h>
 # define _(String) gettext (String)
