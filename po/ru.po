@@ -3,142 +3,154 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-22 16:02+0000\n"
+"POT-Creation-Date: 2010-06-21 22:02+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Dmitrij Smirnov <arch@cnc-parts.info>\n"
+"Last-Translator: Urmas <davian818@gmail.com>\n"
 "Language-Team: Andriy Kovtun <kovtunos@yandex.ru>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Russian\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11?0:n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ?1:2;\n"
 
-#: ../panel-plugin/cpu.c:257
+#: ../panel-plugin/cpu.c:281
 #, c-format
 msgid "Usage: %u%%"
 msgstr "Использовано: %u%%"
 
-#: ../panel-plugin/properties.c:45
+#: ../panel-plugin/properties.c:55
 msgid "CPU Graph Properties"
 msgstr "Параметры модуля CPU Graph"
 
-#: ../panel-plugin/properties.c:57
+#: ../panel-plugin/properties.c:67
 #: ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "График процессора"
 
-#: ../panel-plugin/properties.c:68
+#: ../panel-plugin/properties.c:79
 msgid "Use non-linear time-scale"
 msgstr "Нелинейная временная шкала"
 
-#: ../panel-plugin/properties.c:69
+#: ../panel-plugin/properties.c:80
 msgid "Show frame"
 msgstr "Показывать рамку"
 
-#: ../panel-plugin/properties.c:70
+#: ../panel-plugin/properties.c:81
 msgid "Show border"
 msgstr "Показывать рамку"
 
-#: ../panel-plugin/properties.c:71
+#: ../panel-plugin/properties.c:82
 msgid "Show current usage bar"
-msgstr "Показать панель загруженности"
+msgid_plural "Show current usage bars"
+msgstr[0] "Показать панель загруженности"
+msgstr[1] "Показать панели загруженности"
+msgstr[2] "Показать панели загруженности"
 
-#: ../panel-plugin/properties.c:73
+#: ../panel-plugin/properties.c:84
 msgid "Run in terminal"
 msgstr "Запустить в терминале"
 
-#: ../panel-plugin/properties.c:74
+#: ../panel-plugin/properties.c:85
 msgid "Use startup notification"
 msgstr "Использовать уведомление при запуске"
 
-#: ../panel-plugin/properties.c:77
+#: ../panel-plugin/properties.c:88
 msgid "Color 1:"
 msgstr "Цвет 1:"
 
-#: ../panel-plugin/properties.c:78
+#: ../panel-plugin/properties.c:89
 msgid "Color 2:"
 msgstr "Цвет 2:"
 
-#: ../panel-plugin/properties.c:79
+#: ../panel-plugin/properties.c:90
 msgid "Color 3:"
 msgstr "Цвет 3:"
 
-#: ../panel-plugin/properties.c:80
+#: ../panel-plugin/properties.c:91
 msgid "Background:"
 msgstr "Фон:"
 
-#: ../panel-plugin/properties.c:87
+#: ../panel-plugin/properties.c:98
 msgid "Appearance"
 msgstr "Внешний вид"
 
-#: ../panel-plugin/properties.c:89
+#: ../panel-plugin/properties.c:100
 msgid "Advanced"
 msgstr "Расширенные настройки"
 
-#: ../panel-plugin/properties.c:165
+#: ../panel-plugin/properties.c:176
 msgid "Fastest (~250ms)"
-msgstr "Наибыстрый (~250ms)"
+msgstr "Очень быстрый (~250ms)"
 
-#: ../panel-plugin/properties.c:166
+#: ../panel-plugin/properties.c:177
 msgid "Fast (~500ms)"
 msgstr "Быстрый (~500ms)"
 
-#: ../panel-plugin/properties.c:167
+#: ../panel-plugin/properties.c:178
 msgid "Normal (~750ms)"
 msgstr "Нормальный (~750ms)"
 
-#: ../panel-plugin/properties.c:168
+#: ../panel-plugin/properties.c:179
 msgid "Slow (~1s)"
 msgstr "Медленный (~1s)"
 
-#: ../panel-plugin/properties.c:172
+#: ../panel-plugin/properties.c:183
 msgid "Update Interval:"
 msgstr "Интервал обновления:"
 
-#: ../panel-plugin/properties.c:181
+#: ../panel-plugin/properties.c:191
+msgid "All"
+msgstr "Все"
+
+#: ../panel-plugin/properties.c:197
+msgid "Tracked Core:"
+msgstr "Ядро:"
+
+#: ../panel-plugin/properties.c:208
 msgid "Width:"
 msgstr "Ширина:"
 
-#: ../panel-plugin/properties.c:183
+#: ../panel-plugin/properties.c:210
 msgid "Height:"
 msgstr "Высота:"
 
-#: ../panel-plugin/properties.c:197
+#: ../panel-plugin/properties.c:224
 msgid "Associated command :"
-msgstr "Ассоциативная команда:"
+msgstr "Связанная команда:"
 
-#: ../panel-plugin/properties.c:221
+#: ../panel-plugin/properties.c:248
 msgid "Normal"
 msgstr "Нормальный"
 
-#: ../panel-plugin/properties.c:222
+#: ../panel-plugin/properties.c:249
 msgid "LED"
 msgstr "Индикатор"
 
-#: ../panel-plugin/properties.c:223
+#: ../panel-plugin/properties.c:250
 msgid "No history"
 msgstr "Без истории"
 
-#: ../panel-plugin/properties.c:224
+#: ../panel-plugin/properties.c:251
 msgid "Grid"
 msgstr "Сетка"
 
-#: ../panel-plugin/properties.c:228
+#: ../panel-plugin/properties.c:255
 msgid "Mode:"
 msgstr "Режим:"
 
-#: ../panel-plugin/properties.c:233
+#: ../panel-plugin/properties.c:260
 msgid "Solid"
-msgstr "Цельный"
+msgstr "Сплошной"
 
-#: ../panel-plugin/properties.c:234
+#: ../panel-plugin/properties.c:261
 msgid "Gradient"
 msgstr "Градиент"
 
-#: ../panel-plugin/properties.c:235
+#: ../panel-plugin/properties.c:262
 msgid "Fire"
 msgstr "Пламя"
 
-#: ../panel-plugin/properties.c:239
+#: ../panel-plugin/properties.c:266
 msgid "Color mode: "
 msgstr "Цветовой режим:"
 
@@ -148,6 +160,6 @@ msgstr "Графическое представление загруженнос
 
 #~ msgid "Configure CPU Graph"
 #~ msgstr "Настройки графика процессора"
-
 #~ msgid "None"
 #~ msgstr "Нет"
+
