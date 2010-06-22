@@ -119,7 +119,7 @@ gboolean read_cpu_data( CpuData *data, guint nb_cpu)
 
 	if( sysctlbyname( "kern.cp_time", &cp_time, &len, NULL, 0 ) < 0 )
 	{
-		return FALSE1;
+		return FALSE;
 	}
 
 	user = cp_time[CP_USER];
