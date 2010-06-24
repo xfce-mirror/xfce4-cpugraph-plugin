@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-21 16:02+0000\n"
+"POT-Creation-Date: 2010-06-24 16:02+0000\n"
 "PO-Revision-Date: 2010-04-18 10:40+0200\n"
 "Last-Translator: Fabian Nowak <timystery@arcor.de>\n"
 "Language-Team: German\n"
@@ -102,11 +102,11 @@ msgstr "Auffrischungsintervall: "
 
 #: ../panel-plugin/properties.c:191
 msgid "All"
-msgstr "alle"
+msgstr "Alle"
 
 #: ../panel-plugin/properties.c:197
 msgid "Tracked Core:"
-msgstr "überwachter Prozessorkern:"
+msgstr "Überwachter Prozessorkern:"
 
 #: ../panel-plugin/properties.c:208
 msgid "Width:"
