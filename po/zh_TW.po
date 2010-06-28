@@ -2,8 +2,8 @@
 # Copyright (C) 2010 THE xfce4-cpugraph-plugin'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the xfce4-cpugraph-plugin package.
 # Cheng-Chia Tseng <pswo10680@gmail.com>, 2010.
-#
-#
+# 
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin master\n"
@@ -26,18 +26,17 @@ msgstr "使用率：%u%%"
 msgid "CPU Graph Properties"
 msgstr "CPU 圖表屬性"
 
-#: ../panel-plugin/properties.c:67
-#: ../panel-plugin/cpugraph.desktop.in.in.h:1
+#: ../panel-plugin/properties.c:67 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "CPU 圖表"
 
 #: ../panel-plugin/properties.c:79
 msgid "Use non-linear time-scale"
-msgstr "使用非線性時間測量"
+msgstr "使用非線性時間縮放"
 
 #: ../panel-plugin/properties.c:80
 msgid "Show frame"
-msgstr ""
+msgstr "顯示框"
 
 #: ../panel-plugin/properties.c:81
 msgid "Show border"
@@ -163,6 +162,6 @@ msgstr "圖形化呈現 CPU 負載狀況"
 
 #~ msgid "Configure CPU Graph"
 #~ msgstr "Configure CPU Graph"
+
 #~ msgid "None"
 #~ msgstr "None"
-
