@@ -1,0 +1,168 @@
+# Traditional Chinese translation of xfce4-cpugraph-plugin.
+# Copyright (C) 2010 THE xfce4-cpugraph-plugin'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the xfce4-cpugraph-plugin package.
+# Cheng-Chia Tseng <pswo10680@gmail.com>, 2010.
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: xfce4-cpugraph-plugin master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-06-28 04:02+0000\n"
+"PO-Revision-Date: 2010-06-28 13:31+0800\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+#: ../panel-plugin/cpu.c:281
+#, c-format
+msgid "Usage: %u%%"
+msgstr "使用率：%u%%"
+
+#: ../panel-plugin/properties.c:55
+msgid "CPU Graph Properties"
+msgstr "CPU 圖表屬性"
+
+#: ../panel-plugin/properties.c:67
+#: ../panel-plugin/cpugraph.desktop.in.in.h:1
+msgid "CPU Graph"
+msgstr "CPU 圖表"
+
+#: ../panel-plugin/properties.c:79
+msgid "Use non-linear time-scale"
+msgstr "使用非線性時間測量"
+
+#: ../panel-plugin/properties.c:80
+msgid "Show frame"
+msgstr ""
+
+#: ../panel-plugin/properties.c:81
+msgid "Show border"
+msgstr "顯示邊緣"
+
+#: ../panel-plugin/properties.c:82
+msgid "Show current usage bar"
+msgid_plural "Show current usage bars"
+msgstr[0] "顯示目前使用率列"
+msgstr[1] "顯示目前使用率列"
+
+#: ../panel-plugin/properties.c:84
+msgid "Run in terminal"
+msgstr "在終端機內執行"
+
+#: ../panel-plugin/properties.c:85
+msgid "Use startup notification"
+msgstr "使用啟動通知"
+
+#: ../panel-plugin/properties.c:88
+msgid "Color 1:"
+msgstr "色彩 1："
+
+#: ../panel-plugin/properties.c:89
+msgid "Color 2:"
+msgstr "色彩 2："
+
+#: ../panel-plugin/properties.c:90
+msgid "Color 3:"
+msgstr "色彩 3："
+
+#: ../panel-plugin/properties.c:91
+msgid "Background:"
+msgstr "背景："
+
+#: ../panel-plugin/properties.c:98
+msgid "Appearance"
+msgstr "外觀"
+
+#: ../panel-plugin/properties.c:100
+msgid "Advanced"
+msgstr "進階"
+
+#: ../panel-plugin/properties.c:176
+msgid "Fastest (~250ms)"
+msgstr "最快 (~250ms)"
+
+#: ../panel-plugin/properties.c:177
+msgid "Fast (~500ms)"
+msgstr "快 (~500ms)"
+
+#: ../panel-plugin/properties.c:178
+msgid "Normal (~750ms)"
+msgstr "一般 (~750ms)"
+
+#: ../panel-plugin/properties.c:179
+msgid "Slow (~1s)"
+msgstr "慢 (~1s)"
+
+#: ../panel-plugin/properties.c:183
+msgid "Update Interval:"
+msgstr "更新間隔："
+
+#: ../panel-plugin/properties.c:191
+msgid "All"
+msgstr "全部"
+
+#: ../panel-plugin/properties.c:197
+msgid "Tracked Core:"
+msgstr "追蹤核心："
+
+#: ../panel-plugin/properties.c:208
+msgid "Width:"
+msgstr "寬："
+
+#: ../panel-plugin/properties.c:210
+msgid "Height:"
+msgstr "高："
+
+#: ../panel-plugin/properties.c:224
+msgid "Associated command :"
+msgstr "相關指令："
+
+#: ../panel-plugin/properties.c:248
+msgid "Normal"
+msgstr "一般"
+
+#: ../panel-plugin/properties.c:249
+msgid "LED"
+msgstr "LED"
+
+#: ../panel-plugin/properties.c:250
+msgid "No history"
+msgstr "無歷史"
+
+#: ../panel-plugin/properties.c:251
+msgid "Grid"
+msgstr "網格"
+
+#: ../panel-plugin/properties.c:255
+msgid "Mode:"
+msgstr "模式："
+
+#: ../panel-plugin/properties.c:260
+msgid "Solid"
+msgstr ""
+
+#: ../panel-plugin/properties.c:261
+msgid "Gradient"
+msgstr ""
+
+#: ../panel-plugin/properties.c:262
+msgid "Fire"
+msgstr "火"
+
+#: ../panel-plugin/properties.c:266
+msgid "Color mode: "
+msgstr "色彩模式："
+
+#: ../panel-plugin/cpugraph.desktop.in.in.h:2
+msgid "Graphical representation of the CPU load"
+msgstr "圖形化呈現 CPU 負載狀況"
+
+#~ msgid "Configure CPU Graph"
+#~ msgstr "Configure CPU Graph"
+#~ msgid "None"
+#~ msgstr "None"
+
