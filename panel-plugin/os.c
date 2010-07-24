@@ -110,28 +110,17 @@ guint detect_cpu_number()
 
 gboolean read_cpu_data( CpuData *data, guint nb_cpu)
 {
-	guint user, nice, sys, bsdidle, idle;
-	guint used, total;
-	gint cp_time[CPUSTATES];
+	glong used, total;
+	glong cp_time[CPUSTATES];
 	gsize len = sizeof( cp_time );
 
-	guint usage;
-
 	if( sysctlbyname( "kern.cp_time", &cp_time, &len, NULL, 0 ) < 0 )
-	{
 		return FALSE;
-	}
 
-	user = cp_time[CP_USER];
-	nice = cp_time[CP_NICE];
-	sys = cp_time[CP_SYS];
-	bsdidle = cp_time[CP_IDLE];
-	idle = cp_time[CP_IDLE];
-
-	used = user+nice+sys;
-	total = used+bsdidle;
+	used = cp_time[CP_USER] + cp_time[CP_NICE] + cp_time[CP_SYS] + cp_time[CP_INTR];
+	total = used + cp_time[CP_IDLE];
 	if( (total - data[0].previous_total) != 0 )
-		data[0].load = (CPU_SCALE * (used - data[0].previous_total))/(total - data[0].previous_total);
+		data[0].load = (CPU_SCALE * (used - data[0].previous_used))/(total - data[0].previous_total);
 	else
 		data[0].load = 0;
 
