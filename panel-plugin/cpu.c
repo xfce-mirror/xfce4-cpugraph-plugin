@@ -114,7 +114,7 @@ guint init_cpu_data( CpuData **data )
 	if( cpuNr == 0 )
 		return 0;
 
-	*data = (CpuData *) g_malloc0( cpuNr * sizeof( CpuData ) );
+	*data = (CpuData *) g_malloc0( (cpuNr+1) * sizeof( CpuData ) );
 
 	return cpuNr;
 }
