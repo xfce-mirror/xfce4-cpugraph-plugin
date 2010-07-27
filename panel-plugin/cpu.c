@@ -227,7 +227,7 @@ static void set_bars_orientation( CPUGraph *base, GtkOrientation orientation)
 
 static gboolean update_cb( CPUGraph * base )
 {
-	gint i, j, a, b, factor;
+	gint i, a, b, factor;
 	if( !read_cpu_data( base->cpu_data, base->nr_cores ) )
 		return TRUE;
 
@@ -256,7 +256,6 @@ static gboolean update_cb( CPUGraph * base )
 	if( base->non_linear )
 	{
 		i = base->history_size - 1;
-		j = i + base->history_size;
 		while( i > 0 )
 		{
 			a = base->history[i], b = base->history[i-1];
