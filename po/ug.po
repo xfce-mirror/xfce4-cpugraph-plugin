@@ -19,40 +19,40 @@ msgstr ""
 #: ../panel-plugin/cpu.c:257
 #, c-format
 msgid "Usage: %u%%"
-msgstr ""
+msgstr "ئىشلىتىلىۋاتقىنى: %u%%"
 
 #: ../panel-plugin/properties.c:45
 msgid "CPU Graph Properties"
-msgstr ""
+msgstr "CPU گرافىك خاسلىقى"
 
 #: ../panel-plugin/properties.c:57 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
-msgstr ""
+msgstr "CPU گرافىكى"
 
 #: ../panel-plugin/properties.c:68
 msgid "Use non-linear time-scale"
-msgstr ""
+msgstr "非線形の時間スケールにする"
 
 #: ../panel-plugin/properties.c:69
 msgid "Show frame"
-msgstr ""
+msgstr "フレームを表示する"
 
 #: ../panel-plugin/properties.c:70
 msgid "Show border"
-msgstr ""
+msgstr "گىرۋەكنى كۆرسەت"
 
 #: ../panel-plugin/properties.c:71
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
-msgstr[0] ""
+msgstr[0] "ئىشلىتىلىشىنى كۆرسىتىدىغان بالداقنى كۆرسەت"
 
 #: ../panel-plugin/properties.c:73
 msgid "Run in terminal"
-msgstr ""
+msgstr "تېرمىنالدا ئىجرا قىلىدۇ"
 
 #: ../panel-plugin/properties.c:74
 msgid "Use startup notification"
-msgstr ""
+msgstr "قوزغالغاندا ئۇقتۇرۇش قىلىدۇ"
 
 #: ../panel-plugin/properties.c:77
 msgid "Color 1:"
@@ -64,7 +64,7 @@ msgstr "رەڭ 2:"
 
 #: ../panel-plugin/properties.c:79
 msgid "Color 3:"
-msgstr ""
+msgstr "رەڭ 3:"
 
 #: ../panel-plugin/properties.c:80
 msgid "Background:"
@@ -80,23 +80,23 @@ msgstr "ئالىي"
 
 #: ../panel-plugin/properties.c:165
 msgid "Fastest (~250ms)"
-msgstr ""
+msgstr "بەك تەز (~250 مىللىسېكۇنت)"
 
 #: ../panel-plugin/properties.c:166
 msgid "Fast (~500ms)"
-msgstr ""
+msgstr "تەز (~500مىللىسېكۇنت)"
 
 #: ../panel-plugin/properties.c:167
 msgid "Normal (~750ms)"
-msgstr ""
+msgstr "normal (~750مىللىسېكۇنت)"
 
 #: ../panel-plugin/properties.c:168
 msgid "Slow (~1s)"
-msgstr ""
+msgstr "遅い (~1مىللىسېكۇنت)"
 
 #: ../panel-plugin/properties.c:172
 msgid "Update Interval:"
-msgstr ""
+msgstr "يېڭىلاش ۋاقتى:"
 
 #: ../panel-plugin/properties.c:181
 msgid "Width:"
@@ -108,7 +108,7 @@ msgstr "ئېگىزلىك:"
 
 #: ../panel-plugin/properties.c:197
 msgid "Associated command :"
-msgstr ""
+msgstr "مۇناسىۋەتلىك بۇيرۇق :"
 
 #: ../panel-plugin/properties.c:221
 msgid "Normal"
@@ -116,11 +116,11 @@ msgstr "نورمال"
 
 #: ../panel-plugin/properties.c:222
 msgid "LED"
-msgstr ""
+msgstr "LED"
 
 #: ../panel-plugin/properties.c:223
 msgid "No history"
-msgstr ""
+msgstr "ئىز يوق"
 
 #: ../panel-plugin/properties.c:224
 msgid "Grid"
@@ -140,12 +140,12 @@ msgstr "سۈزۈك گۈل نۇسخىسى"
 
 #: ../panel-plugin/properties.c:235
 msgid "Fire"
-msgstr ""
+msgstr "炎"
 
 #: ../panel-plugin/properties.c:239
 msgid "Color mode: "
-msgstr ""
+msgstr "رەڭگى: "
 
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
-msgstr ""
+msgstr "CPU يۈكىنى گرافىك شەكلىدە قىلىپ كۆرسىتىدۇ"
