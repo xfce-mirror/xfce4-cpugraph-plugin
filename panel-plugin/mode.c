@@ -5,6 +5,7 @@
  *  Copyright (c) gatopeich <gatoguan-os@yahoo.com>
  *  Copyright (c) 2007-2008 Angelo Arrifano <miknix@gmail.com>
  *  Copyright (c) 2007-2008 Lidiriel <lidiriel@coriolys.org>
+ *  Copyright (c) 2010 Florian Rivoal <frivoal@gmail.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,9 +17,9 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU Library General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  You should have received a copy of the GNU General Public License along
+ *  with this program; if not, write to the Free Software Foundation, Inc.,
+ *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
 #include "mode.h"
