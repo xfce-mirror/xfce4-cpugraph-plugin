@@ -1,8 +1,14 @@
-0.3.0
+1.0.0
 =====
-- Ported to Xfce 4.4 panel API
-- Use xfce4-dev-tools
-- Use real frame widget
+- Clean up, bug fixing and optimization
+- Added (back) support for FreeBSD, OpenBSD, NetBSD, and GNU/kFreeBSD
+- Support both 32 and 64 bits on all platforms, with multi core support on linux, OpenBSD and NetBSD
+- Available in 35 languages, 15 of which with a complete translation
+- Bring back the fire color mode
+- Bring back the time scaling mode
+- Possibility to track only one CPU when you have several
+- More settings, with better defaults
+- Make the cpu bar graphs optional
 
 0.4.0
 =====
@@ -14,3 +20,9 @@
 - Remove *BSD code (go back in next released)
 - Add a new view mode : the grid
 - Add an associate customizable command
+
+0.3.0
+=====
+- Ported to Xfce 4.4 panel API
+- Use xfce4-dev-tools
+- Use real frame widget
