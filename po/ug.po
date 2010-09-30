@@ -7,142 +7,151 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-18 15:23+0900\n"
+"POT-Creation-Date: 2010-09-30 18:54+0900\n"
 "PO-Revision-Date: 2010-04-18 16:18+0900\n"
 "Last-Translator: Gheyret T.Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../panel-plugin/cpu.c:257
+#: ../panel-plugin/cpu.c:303
 #, c-format
 msgid "Usage: %u%%"
 msgstr "ئىشلىتىلىۋاتقىنى: %u%%"
 
-#: ../panel-plugin/properties.c:45
+#: ../panel-plugin/properties.c:78
 msgid "CPU Graph Properties"
 msgstr "CPU گرافىك خاسلىقى"
 
-#: ../panel-plugin/properties.c:57 ../panel-plugin/cpugraph.desktop.in.in.h:1
+#: ../panel-plugin/properties.c:90 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "CPU گرافىكى"
 
-#: ../panel-plugin/properties.c:68
+#: ../panel-plugin/properties.c:102
 msgid "Use non-linear time-scale"
 msgstr "非線形の時間スケールにする"
 
-#: ../panel-plugin/properties.c:69
+#: ../panel-plugin/properties.c:103
 msgid "Show frame"
 msgstr "フレームを表示する"
 
-#: ../panel-plugin/properties.c:70
+#: ../panel-plugin/properties.c:104
 msgid "Show border"
 msgstr "گىرۋەكنى كۆرسەت"
 
-#: ../panel-plugin/properties.c:71
+#: ../panel-plugin/properties.c:105
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "ئىشلىتىلىشىنى كۆرسىتىدىغان بالداقنى كۆرسەت"
 
-#: ../panel-plugin/properties.c:73
+#: ../panel-plugin/properties.c:107
 msgid "Run in terminal"
 msgstr "تېرمىنالدا ئىجرا قىلىدۇ"
 
-#: ../panel-plugin/properties.c:74
+#: ../panel-plugin/properties.c:108
 msgid "Use startup notification"
 msgstr "قوزغالغاندا ئۇقتۇرۇش قىلىدۇ"
 
-#: ../panel-plugin/properties.c:77
+#: ../panel-plugin/properties.c:111
 msgid "Color 1:"
 msgstr "رەڭ 1:"
 
-#: ../panel-plugin/properties.c:78
+#: ../panel-plugin/properties.c:112
 msgid "Color 2:"
 msgstr "رەڭ 2:"
 
-#: ../panel-plugin/properties.c:79
+#: ../panel-plugin/properties.c:113
 msgid "Color 3:"
 msgstr "رەڭ 3:"
 
-#: ../panel-plugin/properties.c:80
+#: ../panel-plugin/properties.c:114
 msgid "Background:"
 msgstr "تەگلىك:"
 
-#: ../panel-plugin/properties.c:87
+#: ../panel-plugin/properties.c:121
 msgid "Appearance"
 msgstr "كۆرۈنۈشى"
 
-#: ../panel-plugin/properties.c:89
+#: ../panel-plugin/properties.c:123
 msgid "Advanced"
 msgstr "ئالىي"
 
-#: ../panel-plugin/properties.c:165
+#: ../panel-plugin/properties.c:199
 msgid "Fastest (~250ms)"
 msgstr "بەك تەز (~250 مىللىسېكۇنت)"
 
-#: ../panel-plugin/properties.c:166
+#: ../panel-plugin/properties.c:200
 msgid "Fast (~500ms)"
 msgstr "تەز (~500مىللىسېكۇنت)"
 
-#: ../panel-plugin/properties.c:167
+#: ../panel-plugin/properties.c:201
 msgid "Normal (~750ms)"
 msgstr "normal (~750مىللىسېكۇنت)"
 
-#: ../panel-plugin/properties.c:168
+#: ../panel-plugin/properties.c:202
 msgid "Slow (~1s)"
 msgstr "遅い (~1مىللىسېكۇنت)"
 
-#: ../panel-plugin/properties.c:172
+#: ../panel-plugin/properties.c:206
 msgid "Update Interval:"
 msgstr "يېڭىلاش ۋاقتى:"
 
-#: ../panel-plugin/properties.c:181
+#: ../panel-plugin/properties.c:214
+msgid "All"
+msgstr ""
+
+#: ../panel-plugin/properties.c:220
+msgid "Tracked Core:"
+msgstr ""
+
+#: ../panel-plugin/properties.c:231
 msgid "Width:"
 msgstr "كەڭلىك:"
 
-#: ../panel-plugin/properties.c:183
+#: ../panel-plugin/properties.c:233
 msgid "Height:"
 msgstr "ئېگىزلىك:"
 
-#: ../panel-plugin/properties.c:197
+#: ../panel-plugin/properties.c:247
 msgid "Associated command :"
 msgstr "مۇناسىۋەتلىك بۇيرۇق :"
 
-#: ../panel-plugin/properties.c:221
+#: ../panel-plugin/properties.c:271
 msgid "Normal"
 msgstr "نورمال"
 
-#: ../panel-plugin/properties.c:222
+#: ../panel-plugin/properties.c:272
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:223
+#: ../panel-plugin/properties.c:273
 msgid "No history"
 msgstr "ئىز يوق"
 
-#: ../panel-plugin/properties.c:224
+#: ../panel-plugin/properties.c:274
 msgid "Grid"
 msgstr "سېتكا"
 
-#: ../panel-plugin/properties.c:228
+#: ../panel-plugin/properties.c:278
 msgid "Mode:"
 msgstr "ئۇسۇلى:"
 
-#: ../panel-plugin/properties.c:233
+#: ../panel-plugin/properties.c:283
 msgid "Solid"
 msgstr "لىق تولغان"
 
-#: ../panel-plugin/properties.c:234
+#: ../panel-plugin/properties.c:284
 msgid "Gradient"
 msgstr "سۈزۈك گۈل نۇسخىسى"
 
-#: ../panel-plugin/properties.c:235
+#: ../panel-plugin/properties.c:285
 msgid "Fire"
 msgstr "炎"
 
-#: ../panel-plugin/properties.c:239
+#: ../panel-plugin/properties.c:289
 msgid "Color mode: "
 msgstr "رەڭگى: "
 

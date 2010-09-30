@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin 0.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-18 14:14+0900\n"
+"POT-Creation-Date: 2010-09-30 18:54+0900\n"
 "PO-Revision-Date: 2009-09-18 21:53+0100\n"
 "Last-Translator: Rihards Prieditis <rprieditis@gmail.com>\n"
 "Language-Team: Latvian <translation-team-lv@lists.sourceforge.net>\n"
+"Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,139 +20,147 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 
-#: ../panel-plugin/cpu.c:257
+#: ../panel-plugin/cpu.c:303
 #, c-format
 msgid "Usage: %u%%"
 msgstr ""
 
-#: ../panel-plugin/properties.c:45
+#: ../panel-plugin/properties.c:78
 #, fuzzy
 msgid "CPU Graph Properties"
 msgstr "CPU grafs"
 
-#: ../panel-plugin/properties.c:57 ../panel-plugin/cpugraph.desktop.in.in.h:1
+#: ../panel-plugin/properties.c:90 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "CPU grafs"
 
-#: ../panel-plugin/properties.c:68
+#: ../panel-plugin/properties.c:102
 #, fuzzy
 msgid "Use non-linear time-scale"
 msgstr "Ne lineārs laika mērogs"
 
-#: ../panel-plugin/properties.c:69
+#: ../panel-plugin/properties.c:103
 msgid "Show frame"
 msgstr "Rādīt kadrus:"
 
-#: ../panel-plugin/properties.c:70
+#: ../panel-plugin/properties.c:104
 #, fuzzy
 msgid "Show border"
 msgstr "Rādīt kadrus:"
 
-#: ../panel-plugin/properties.c:71
+#: ../panel-plugin/properties.c:105
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: ../panel-plugin/properties.c:73
+#: ../panel-plugin/properties.c:107
 msgid "Run in terminal"
 msgstr ""
 
-#: ../panel-plugin/properties.c:74
+#: ../panel-plugin/properties.c:108
 msgid "Use startup notification"
 msgstr ""
 
-#: ../panel-plugin/properties.c:77
+#: ../panel-plugin/properties.c:111
 msgid "Color 1:"
 msgstr "Krāsa 1:"
 
-#: ../panel-plugin/properties.c:78
+#: ../panel-plugin/properties.c:112
 msgid "Color 2:"
 msgstr "Krāsa 2:"
 
-#: ../panel-plugin/properties.c:79
+#: ../panel-plugin/properties.c:113
 msgid "Color 3:"
 msgstr "Krāsa 3:"
 
-#: ../panel-plugin/properties.c:80
+#: ../panel-plugin/properties.c:114
 msgid "Background:"
 msgstr "Fons:"
 
-#: ../panel-plugin/properties.c:87
+#: ../panel-plugin/properties.c:121
 msgid "Appearance"
 msgstr "Izskats"
 
-#: ../panel-plugin/properties.c:89
+#: ../panel-plugin/properties.c:123
 msgid "Advanced"
 msgstr "Paplašināti"
 
-#: ../panel-plugin/properties.c:165
+#: ../panel-plugin/properties.c:199
 msgid "Fastest (~250ms)"
 msgstr "Ātrākais (~250ms)"
 
-#: ../panel-plugin/properties.c:166
+#: ../panel-plugin/properties.c:200
 msgid "Fast (~500ms)"
 msgstr "Ātrs (~500ms)"
 
-#: ../panel-plugin/properties.c:167
+#: ../panel-plugin/properties.c:201
 msgid "Normal (~750ms)"
 msgstr "Parasts (~750ms)"
 
-#: ../panel-plugin/properties.c:168
+#: ../panel-plugin/properties.c:202
 msgid "Slow (~1s)"
 msgstr "Lēns (~1s)"
 
-#: ../panel-plugin/properties.c:172
+#: ../panel-plugin/properties.c:206
 #, fuzzy
 msgid "Update Interval:"
 msgstr "Atjaunināšanas intervāls: "
 
-#: ../panel-plugin/properties.c:181
+#: ../panel-plugin/properties.c:214
+msgid "All"
+msgstr ""
+
+#: ../panel-plugin/properties.c:220
+msgid "Tracked Core:"
+msgstr ""
+
+#: ../panel-plugin/properties.c:231
 msgid "Width:"
 msgstr "Platums:"
 
-#: ../panel-plugin/properties.c:183
+#: ../panel-plugin/properties.c:233
 msgid "Height:"
 msgstr "Augstums:"
 
-#: ../panel-plugin/properties.c:197
+#: ../panel-plugin/properties.c:247
 msgid "Associated command :"
 msgstr "Saistītās komandas :"
 
-#: ../panel-plugin/properties.c:221
+#: ../panel-plugin/properties.c:271
 msgid "Normal"
 msgstr "Parasts"
 
-#: ../panel-plugin/properties.c:222
+#: ../panel-plugin/properties.c:272
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:223
+#: ../panel-plugin/properties.c:273
 msgid "No history"
 msgstr "Nav vēstures"
 
-#: ../panel-plugin/properties.c:224
+#: ../panel-plugin/properties.c:274
 msgid "Grid"
 msgstr ""
 
-#: ../panel-plugin/properties.c:228
+#: ../panel-plugin/properties.c:278
 msgid "Mode:"
 msgstr "Režīms:"
 
-#: ../panel-plugin/properties.c:233
+#: ../panel-plugin/properties.c:283
 msgid "Solid"
 msgstr ""
 
-#: ../panel-plugin/properties.c:234
+#: ../panel-plugin/properties.c:284
 msgid "Gradient"
 msgstr "Gradients"
 
-#: ../panel-plugin/properties.c:235
+#: ../panel-plugin/properties.c:285
 msgid "Fire"
 msgstr "Uguns"
 
-#: ../panel-plugin/properties.c:239
+#: ../panel-plugin/properties.c:289
 msgid "Color mode: "
 msgstr "Krāsu režīms: "
 

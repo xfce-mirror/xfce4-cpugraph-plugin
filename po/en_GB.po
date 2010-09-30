@@ -2,157 +2,158 @@
 # Copyright (C) 2007 THE xfce4-cpugraph-plugin'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the xfce4-cpugraph-plugin package.
 # Jeff Bailes <thepizzaking@gmail.com>, 2007.
+#
+#
 #, fuzzy
-# 
-# 
 msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-22 22:02+0000\n"
+"POT-Creation-Date: 2010-09-30 18:54+0900\n"
 "PO-Revision-Date: 2009-08-18 19:30+1000\n"
 "Last-Translator: Jeff Bailes <thepizzaking@gmail.com>\n"
 "Language-Team: English/GB\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../panel-plugin/cpu.c:281
+#: ../panel-plugin/cpu.c:303
 #, c-format
 msgid "Usage: %u%%"
 msgstr "Usage: %u%%"
 
-#: ../panel-plugin/properties.c:55
+#: ../panel-plugin/properties.c:78
 msgid "CPU Graph Properties"
 msgstr "CPU Graph Properties"
 
-#: ../panel-plugin/properties.c:67 ../panel-plugin/cpugraph.desktop.in.in.h:1
+#: ../panel-plugin/properties.c:90 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "CPU Graph"
 
-#: ../panel-plugin/properties.c:79
+#: ../panel-plugin/properties.c:102
 msgid "Use non-linear time-scale"
 msgstr "Use non-linear time-scale"
 
-#: ../panel-plugin/properties.c:80
+#: ../panel-plugin/properties.c:103
 msgid "Show frame"
 msgstr "Show frame"
 
-#: ../panel-plugin/properties.c:81
+#: ../panel-plugin/properties.c:104
 msgid "Show border"
 msgstr "Show border"
 
-#: ../panel-plugin/properties.c:82
+#: ../panel-plugin/properties.c:105
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Show current usage bar"
 msgstr[1] "Show current usage bars"
 
-#: ../panel-plugin/properties.c:84
+#: ../panel-plugin/properties.c:107
 msgid "Run in terminal"
 msgstr "Run in terminal"
 
-#: ../panel-plugin/properties.c:85
+#: ../panel-plugin/properties.c:108
 msgid "Use startup notification"
 msgstr "Use startup notification"
 
-#: ../panel-plugin/properties.c:88
+#: ../panel-plugin/properties.c:111
 msgid "Color 1:"
 msgstr "Colour 1:"
 
-#: ../panel-plugin/properties.c:89
+#: ../panel-plugin/properties.c:112
 msgid "Color 2:"
 msgstr "Colour 2:"
 
-#: ../panel-plugin/properties.c:90
+#: ../panel-plugin/properties.c:113
 msgid "Color 3:"
 msgstr "Colour 3:"
 
-#: ../panel-plugin/properties.c:91
+#: ../panel-plugin/properties.c:114
 msgid "Background:"
 msgstr "Background:"
 
-#: ../panel-plugin/properties.c:98
+#: ../panel-plugin/properties.c:121
 msgid "Appearance"
 msgstr "Appearance"
 
-#: ../panel-plugin/properties.c:100
+#: ../panel-plugin/properties.c:123
 msgid "Advanced"
 msgstr "Advanced"
 
-#: ../panel-plugin/properties.c:176
+#: ../panel-plugin/properties.c:199
 msgid "Fastest (~250ms)"
 msgstr "Fastest (~250ms)"
 
-#: ../panel-plugin/properties.c:177
+#: ../panel-plugin/properties.c:200
 msgid "Fast (~500ms)"
 msgstr "Fast (~500ms)"
 
-#: ../panel-plugin/properties.c:178
+#: ../panel-plugin/properties.c:201
 msgid "Normal (~750ms)"
 msgstr "Normal (~750ms)"
 
-#: ../panel-plugin/properties.c:179
+#: ../panel-plugin/properties.c:202
 msgid "Slow (~1s)"
 msgstr "Slow (~1s)"
 
-#: ../panel-plugin/properties.c:183
+#: ../panel-plugin/properties.c:206
 msgid "Update Interval:"
 msgstr "Update Interval:"
 
-#: ../panel-plugin/properties.c:191
+#: ../panel-plugin/properties.c:214
 msgid "All"
 msgstr "All"
 
-#: ../panel-plugin/properties.c:197
+#: ../panel-plugin/properties.c:220
 msgid "Tracked Core:"
 msgstr "Tracked Core:"
 
-#: ../panel-plugin/properties.c:208
+#: ../panel-plugin/properties.c:231
 msgid "Width:"
 msgstr "Width:"
 
-#: ../panel-plugin/properties.c:210
+#: ../panel-plugin/properties.c:233
 msgid "Height:"
 msgstr "Height:"
 
-#: ../panel-plugin/properties.c:224
+#: ../panel-plugin/properties.c:247
 msgid "Associated command :"
 msgstr "Associated command :"
 
-#: ../panel-plugin/properties.c:248
+#: ../panel-plugin/properties.c:271
 msgid "Normal"
 msgstr "Normal"
 
-#: ../panel-plugin/properties.c:249
+#: ../panel-plugin/properties.c:272
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:250
+#: ../panel-plugin/properties.c:273
 msgid "No history"
 msgstr "No history"
 
-#: ../panel-plugin/properties.c:251
+#: ../panel-plugin/properties.c:274
 msgid "Grid"
 msgstr "Grid"
 
-#: ../panel-plugin/properties.c:255
+#: ../panel-plugin/properties.c:278
 msgid "Mode:"
 msgstr "Mode:"
 
-#: ../panel-plugin/properties.c:260
+#: ../panel-plugin/properties.c:283
 msgid "Solid"
 msgstr "Solid"
 
-#: ../panel-plugin/properties.c:261
+#: ../panel-plugin/properties.c:284
 msgid "Gradient"
 msgstr "Gradient"
 
-#: ../panel-plugin/properties.c:262
+#: ../panel-plugin/properties.c:285
 msgid "Fire"
 msgstr "Fire"
 
-#: ../panel-plugin/properties.c:266
+#: ../panel-plugin/properties.c:289
 msgid "Color mode: "
 msgstr "Colour mode: "
 
