@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-30 18:54+0900\n"
+"POT-Creation-Date: 2010-10-01 00:33+0900\n"
 "PO-Revision-Date: 2010-06-22 13:52+0900\n"
 "Last-Translator: Masato Hashimoto <cabezon.hashimoto@gmail.com>\n"
 "Language-Team: Japanese <xfce-i18n@xfce.org>\n"
@@ -101,7 +101,7 @@ msgstr "更新間隔:"
 
 #: ../panel-plugin/properties.c:214
 msgid "All"
-msgstr "全て"
+msgstr "すべて"
 
 #: ../panel-plugin/properties.c:220
 msgid "Tracked Core:"
