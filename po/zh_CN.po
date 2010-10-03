@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce 4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-03 16:48+0900\n"
+"POT-Creation-Date: 2010-10-03 17:28+0900\n"
 "PO-Revision-Date: 2010-04-18 16:47+0800\n"
 "Last-Translator: Hunt Xu <huntxu@live.cn>\n"
 "Language-Team: Chinese (simplified)\n"
@@ -158,9 +158,3 @@ msgstr "颜色模式: "
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "CPU 负载的图形化显示"
-
-#~ msgid "Configure CPU Graph"
-#~ msgstr "配置 CPU 图像"
-
-#~ msgid "None"
-#~ msgstr "无"

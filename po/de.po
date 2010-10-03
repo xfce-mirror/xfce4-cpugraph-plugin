@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-03 16:48+0900\n"
+"POT-Creation-Date: 2010-10-03 17:28+0900\n"
 "PO-Revision-Date: 2010-04-18 10:40+0200\n"
 "Last-Translator: Fabian Nowak <timystery@arcor.de>\n"
 "Language-Team: German\n"
@@ -160,9 +160,3 @@ msgstr "Farbmodus: "
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Grafische Darstellung der CPU-Last"
-
-#~ msgid "Configure CPU Graph"
-#~ msgstr "CPU-Graph einstellen"
-
-#~ msgid "None"
-#~ msgstr "Keiner"

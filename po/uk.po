@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-03 16:48+0900\n"
+"POT-Creation-Date: 2010-10-03 17:28+0900\n"
 "PO-Revision-Date: 2008-07-28 18:20+0300\n"
 "Last-Translator: Dmitry Nikitin <luckas_fb@mail.ru>\n"
 "Language-Team: Ukrainian <xfce4-dev@xfce.org>\n"
@@ -162,9 +162,3 @@ msgstr "Тип кольору: "
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Графічне представлення завантаження процесора"
-
-#~ msgid "Configure CPU Graph"
-#~ msgstr "Налаштувати статистику процесора"
-
-#~ msgid "None"
-#~ msgstr "Нічого"

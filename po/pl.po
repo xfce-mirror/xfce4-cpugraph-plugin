@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin 0.4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-03 16:48+0900\n"
+"POT-Creation-Date: 2010-10-03 17:28+0900\n"
 "PO-Revision-Date: 2009-04-08 20:18+0100\n"
 "Last-Translator: Piotr Sokół <piotr.sokol@10g.pl>\n"
 "Language-Team: Polish\n"
@@ -20,16 +20,14 @@ msgid "Usage: %u%%"
 msgstr ""
 
 #: ../panel-plugin/properties.c:78
-#, fuzzy
 msgid "CPU Graph Properties"
-msgstr "Monitor CPU"
+msgstr ""
 
 #: ../panel-plugin/properties.c:90 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "Monitor CPU"
 
 #: ../panel-plugin/properties.c:102
-#, fuzzy
 msgid "Use non-linear time-scale"
 msgstr "Nie-liniowa skala czasu"
 
@@ -38,9 +36,8 @@ msgid "Show frame"
 msgstr "Ramka"
 
 #: ../panel-plugin/properties.c:104
-#, fuzzy
 msgid "Show border"
-msgstr "Ramka"
+msgstr ""
 
 #: ../panel-plugin/properties.c:105
 msgid "Show current usage bar"
@@ -97,7 +94,6 @@ msgid "Slow (~1s)"
 msgstr "Długi (~1s)"
 
 #: ../panel-plugin/properties.c:206
-#, fuzzy
 msgid "Update Interval:"
 msgstr "Okres aktualizacji:"
 
@@ -160,9 +156,3 @@ msgstr "Tryb kolorów:"
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Dostarcza informacje na temat obciążenia CPU w postaci graficznej"
-
-#~ msgid "Configure CPU Graph"
-#~ msgstr "Monitor CPU"
-
-#~ msgid "None"
-#~ msgstr "Brak"

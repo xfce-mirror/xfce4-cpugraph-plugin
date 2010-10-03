@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-03 16:48+0900\n"
+"POT-Creation-Date: 2010-10-03 17:28+0900\n"
 "PO-Revision-Date: 2008-11-02 12:51+0100\n"
 "Last-Translator: Erdal Ronahi <erdal.ronahi@gmail.com>\n"
 "Language-Team: Kurdish <ku@li.org>\n"
@@ -22,9 +22,8 @@ msgid "Usage: %u%%"
 msgstr ""
 
 #: ../panel-plugin/properties.c:78
-#, fuzzy
 msgid "CPU Graph Properties"
-msgstr "Graf a CPU"
+msgstr ""
 
 #: ../panel-plugin/properties.c:90 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
@@ -39,9 +38,8 @@ msgid "Show frame"
 msgstr "Çarçovê nîşan bide"
 
 #: ../panel-plugin/properties.c:104
-#, fuzzy
 msgid "Show border"
-msgstr "Çarçovê nîşan bide"
+msgstr ""
 
 #: ../panel-plugin/properties.c:105
 msgid "Show current usage bar"
@@ -98,7 +96,6 @@ msgid "Slow (~1s)"
 msgstr "Hêdî (~1s)"
 
 #: ../panel-plugin/properties.c:206
-#, fuzzy
 msgid "Update Interval:"
 msgstr "Dema Rojanekirinê: "
 
@@ -161,9 +158,3 @@ msgstr "Moda rengan: "
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Nîşandayîna grafîkî a bara CPU'yê"
-
-#~ msgid "Configure CPU Graph"
-#~ msgstr "Graf a CPU'yê mîheng bike"
-
-#~ msgid "None"
-#~ msgstr "Tu yek"

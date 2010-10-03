@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce 4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-03 16:48+0900\n"
+"POT-Creation-Date: 2010-10-03 17:28+0900\n"
 "PO-Revision-Date: 2007-08-31 16:54-0300\n"
 "Last-Translator: Fábio Nogueira <deb-user-ba@ubuntu.com>\n"
 "Language-Team: Brazilian Portuguese <ldp-br@bazar2.conectiva.com.br>\n"
@@ -23,16 +23,14 @@ msgid "Usage: %u%%"
 msgstr ""
 
 #: ../panel-plugin/properties.c:78
-#, fuzzy
 msgid "CPU Graph Properties"
-msgstr "Gráfico da CPU"
+msgstr ""
 
 #: ../panel-plugin/properties.c:90 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "Gráfico da CPU"
 
 #: ../panel-plugin/properties.c:102
-#, fuzzy
 msgid "Use non-linear time-scale"
 msgstr "Escala de tempo não-linear"
 
@@ -41,9 +39,8 @@ msgid "Show frame"
 msgstr "Mostrar borda"
 
 #: ../panel-plugin/properties.c:104
-#, fuzzy
 msgid "Show border"
-msgstr "Mostrar borda"
+msgstr ""
 
 #: ../panel-plugin/properties.c:105
 msgid "Show current usage bar"
@@ -100,7 +97,6 @@ msgid "Slow (~1s)"
 msgstr "Devagar (~1s)"
 
 #: ../panel-plugin/properties.c:206
-#, fuzzy
 msgid "Update Interval:"
 msgstr "Intervalo de atualização: "
 
@@ -163,9 +159,3 @@ msgstr "Modo de cor: "
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Representação gráfica do uso da CPU"
-
-#~ msgid "Configure CPU Graph"
-#~ msgstr "Configura o gráfico da CPU"
-
-#~ msgid "None"
-#~ msgstr "Nenhum"

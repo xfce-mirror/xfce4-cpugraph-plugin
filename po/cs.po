@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin 0.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-03 16:48+0900\n"
+"POT-Creation-Date: 2010-10-03 17:28+0900\n"
 "PO-Revision-Date: 2008-11-02 17:40+0100\n"
 "Last-Translator: Michal Várady <miko.vaji@gmail.com>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -23,16 +23,14 @@ msgid "Usage: %u%%"
 msgstr ""
 
 #: ../panel-plugin/properties.c:78
-#, fuzzy
 msgid "CPU Graph Properties"
-msgstr "Graf procesoru"
+msgstr ""
 
 #: ../panel-plugin/properties.c:90 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
 msgstr "Graf procesoru"
 
 #: ../panel-plugin/properties.c:102
-#, fuzzy
 msgid "Use non-linear time-scale"
 msgstr "Nelineární časová osa"
 
@@ -41,9 +39,8 @@ msgid "Show frame"
 msgstr "Zobrazovat rámeček"
 
 #: ../panel-plugin/properties.c:104
-#, fuzzy
 msgid "Show border"
-msgstr "Zobrazovat rámeček"
+msgstr ""
 
 #: ../panel-plugin/properties.c:105
 msgid "Show current usage bar"
@@ -101,7 +98,6 @@ msgid "Slow (~1s)"
 msgstr "Pomalý (~1 s)"
 
 #: ../panel-plugin/properties.c:206
-#, fuzzy
 msgid "Update Interval:"
 msgstr "Interval obnovení:"
 
@@ -164,9 +160,3 @@ msgstr "Barvený režim:"
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Grafická reprezentace zatížení procesoru"
-
-#~ msgid "Configure CPU Graph"
-#~ msgstr "Konfigurace grafu procesoru"
-
-#~ msgid "None"
-#~ msgstr "Žádný"

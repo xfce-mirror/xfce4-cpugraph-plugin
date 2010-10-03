@@ -4,12 +4,11 @@
 # Jeff Bailes <thepizzaking@gmail.com>, 2007.
 #
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-03 16:48+0900\n"
+"POT-Creation-Date: 2010-10-03 17:28+0900\n"
 "PO-Revision-Date: 2009-08-18 19:30+1000\n"
 "Last-Translator: Jeff Bailes <thepizzaking@gmail.com>\n"
 "Language-Team: English/GB\n"
@@ -160,9 +159,3 @@ msgstr "Colour mode: "
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Graphical representation of the CPU load"
-
-#~ msgid "Configure CPU Graph"
-#~ msgstr "Configure CPU Graph"
-
-#~ msgid "None"
-#~ msgstr "None"
