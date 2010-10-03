@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-03 17:28+0900\n"
 "PO-Revision-Date: 2008-11-24 21:06+0100\n"
-"Last-Translator: Maximilian Schleiss <maximilian@xfce.org>\n"
+"Last-Translator: Florian Rivoal <frivoal@gmail.com>\n"
 "Language-Team: French <xfce-i18n@xfce.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -19,11 +19,11 @@ msgstr ""
 #: ../panel-plugin/cpu.c:303
 #, c-format
 msgid "Usage: %u%%"
-msgstr "CPU : %u%%"
+msgstr "Utilisation : %u%%"
 
 #: ../panel-plugin/properties.c:78
 msgid "CPU Graph Properties"
-msgstr "Paramètres CPU Graph"
+msgstr "Paramètres de CPU Graph"
 
 #: ../panel-plugin/properties.c:90 ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
@@ -35,17 +35,17 @@ msgstr "Échelle de temps non-linéaire"
 
 #: ../panel-plugin/properties.c:103
 msgid "Show frame"
-msgstr "Afficher un cadre"
+msgstr "Afficher le cadre"
 
 #: ../panel-plugin/properties.c:104
 msgid "Show border"
-msgstr "Afficher une bordure"
+msgstr "Afficher la bordure"
 
 #: ../panel-plugin/properties.c:105
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
-msgstr[0] "Afficher une barre d'utilisation"
-msgstr[1] "Afficher des barres d'utilisation"
+msgstr[0] "Afficher la barre d'utilisation"
+msgstr[1] "Afficher les barres d'utilisation"
 
 #: ../panel-plugin/properties.c:107
 msgid "Run in terminal"
@@ -105,7 +105,7 @@ msgstr "Tous"
 
 #: ../panel-plugin/properties.c:220
 msgid "Tracked Core:"
-msgstr "Nombre de coeurs surveillé :"
+msgstr "Coeur surveillé :"
 
 #: ../panel-plugin/properties.c:231
 msgid "Width:"
@@ -125,7 +125,7 @@ msgstr "Normal"
 
 #: ../panel-plugin/properties.c:272
 msgid "LED"
-msgstr "LED"
+msgstr "Diodes"
 
 #: ../panel-plugin/properties.c:273
 msgid "No history"
@@ -157,10 +157,4 @@ msgstr "Mode de couleur :"
 
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
-msgstr "Représentation graphique de la charge CPU"
-
-#~ msgid "Configure CPU Graph"
-#~ msgstr "Configurer CPU graph"
-
-#~ msgid "None"
-#~ msgstr "Aucun"
+msgstr "Représentation graphique de la charge processeur"
