@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin 0.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-30 18:54+0900\n"
+"POT-Creation-Date: 2010-10-03 16:48+0900\n"
 "PO-Revision-Date: 2009-09-18 21:53+0100\n"
 "Last-Translator: Rihards Prieditis <rprieditis@gmail.com>\n"
 "Language-Team: Latvian <translation-team-lv@lists.sourceforge.net>\n"
@@ -125,8 +125,8 @@ msgid "Height:"
 msgstr "Augstums:"
 
 #: ../panel-plugin/properties.c:247
-msgid "Associated command :"
-msgstr "Saistītās komandas :"
+msgid "Associated command:"
+msgstr "Saistītās komandas:"
 
 #: ../panel-plugin/properties.c:271
 msgid "Normal"

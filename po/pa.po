@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-30 18:54+0900\n"
+"POT-Creation-Date: 2010-10-03 16:48+0900\n"
 "PO-Revision-Date: 2009-10-19 08:09+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
@@ -121,7 +121,7 @@ msgid "Height:"
 msgstr "ਉਚਾਈ"
 
 #: ../panel-plugin/properties.c:247
-msgid "Associated command :"
+msgid "Associated command:"
 msgstr "ਸਬੰਧਿਤ ਕਮਾਂਡ:"
 
 #: ../panel-plugin/properties.c:271

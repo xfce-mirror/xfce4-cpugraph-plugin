@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4 cpugraph plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-30 18:54+0900\n"
+"POT-Creation-Date: 2010-10-03 16:48+0900\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Samed Beyribey <ras0ir@eventualis.org>\n"
 "Language-Team: Xfce-TR <xfce-tr@googlegroups.com>\n"
@@ -121,8 +121,8 @@ msgid "Height:"
 msgstr "Yükseklik:"
 
 #: ../panel-plugin/properties.c:247
-msgid "Associated command :"
-msgstr "İlişkilendirilmiş komut :"
+msgid "Associated command:"
+msgstr "İlişkilendirilmiş komut:"
 
 #: ../panel-plugin/properties.c:271
 msgid "Normal"

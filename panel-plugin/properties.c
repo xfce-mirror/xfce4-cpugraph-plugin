@@ -244,7 +244,7 @@ static void setup_command_option( GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base
 	GtkBox *hbox;
 	GtkWidget *AssociateCommand;
 
-	hbox = create_option_line( vbox, sg, _("Associated command :") );
+	hbox = create_option_line( vbox, sg, _("Associated command:") );
 
 	AssociateCommand = gtk_entry_new();
 	gtk_entry_set_text( GTK_ENTRY(AssociateCommand), base->command );

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-30 18:54+0900\n"
+"POT-Creation-Date: 2010-10-03 16:48+0900\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Urmas <davian818@gmail.com>\n"
 "Language-Team: Andriy Kovtun <kovtunos@yandex.ru>\n"
@@ -116,7 +116,7 @@ msgid "Height:"
 msgstr "Высота:"
 
 #: ../panel-plugin/properties.c:247
-msgid "Associated command :"
+msgid "Associated command:"
 msgstr "Связанная команда:"
 
 #: ../panel-plugin/properties.c:271

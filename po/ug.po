@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-30 18:54+0900\n"
+"POT-Creation-Date: 2010-10-03 16:48+0900\n"
 "PO-Revision-Date: 2010-04-18 16:18+0900\n"
 "Last-Translator: Gheyret T.Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -116,8 +116,8 @@ msgid "Height:"
 msgstr "ئېگىزلىك:"
 
 #: ../panel-plugin/properties.c:247
-msgid "Associated command :"
-msgstr "مۇناسىۋەتلىك بۇيرۇق :"
+msgid "Associated command:"
+msgstr "مۇناسىۋەتلىك بۇيرۇق:"
 
 #: ../panel-plugin/properties.c:271
 msgid "Normal"

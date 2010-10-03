@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin 0.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-30 18:54+0900\n"
+"POT-Creation-Date: 2010-10-03 16:48+0900\n"
 "PO-Revision-Date: 2010-06-24 00:04+0700\n"
 "Last-Translator: Andhika Padmawan <andhika.padmawan@gmail.com>\n"
 "Language-Team: Indonesian <translation-team-id@lists.sourceforge.net>\n"
@@ -115,8 +115,8 @@ msgid "Height:"
 msgstr "Tinggi:"
 
 #: ../panel-plugin/properties.c:247
-msgid "Associated command :"
-msgstr "Perintah diasosiasikan :"
+msgid "Associated command:"
+msgstr "Perintah diasosiasikan:"
 
 #: ../panel-plugin/properties.c:271
 msgid "Normal"

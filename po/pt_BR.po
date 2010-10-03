@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce 4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-30 18:54+0900\n"
+"POT-Creation-Date: 2010-10-03 16:48+0900\n"
 "PO-Revision-Date: 2007-08-31 16:54-0300\n"
 "Last-Translator: Fábio Nogueira <deb-user-ba@ubuntu.com>\n"
 "Language-Team: Brazilian Portuguese <ldp-br@bazar2.conectiva.com.br>\n"
@@ -121,8 +121,8 @@ msgid "Height:"
 msgstr "Altura:"
 
 #: ../panel-plugin/properties.c:247
-msgid "Associated command :"
-msgstr "Comando associado :"
+msgid "Associated command:"
+msgstr "Comando associado:"
 
 #: ../panel-plugin/properties.c:271
 msgid "Normal"

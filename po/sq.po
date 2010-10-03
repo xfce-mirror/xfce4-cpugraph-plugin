@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin 0.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-30 18:54+0900\n"
+"POT-Creation-Date: 2010-10-03 16:48+0900\n"
 "PO-Revision-Date: 2008-11-04 23:05+0200\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <translation-team-sq@lists.sourceforge.net>\n"
@@ -120,8 +120,8 @@ msgid "Height:"
 msgstr "Lartësi:"
 
 #: ../panel-plugin/properties.c:247
-msgid "Associated command :"
-msgstr "Urdhër përshoqërues :"
+msgid "Associated command:"
+msgstr "Urdhër përshoqërues:"
 
 #: ../panel-plugin/properties.c:271
 msgid "Normal"

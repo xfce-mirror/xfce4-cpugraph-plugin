@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Alexander Nyakhaychyk <nyakhaychyk@gmail.com>\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-30 18:54+0900\n"
+"POT-Creation-Date: 2010-10-03 16:48+0900\n"
 "PO-Revision-Date: 2008-11-09 14:04+0200\n"
 "Last-Translator: Alexander Nyakhaychyk <nyakhaychyk@gmail.com>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
@@ -113,15 +113,15 @@ msgstr ""
 
 #: ../panel-plugin/properties.c:231
 msgid "Width:"
-msgstr "Шырыня"
+msgstr "Шырыня:"
 
 #: ../panel-plugin/properties.c:233
 msgid "Height:"
 msgstr "Вышыня:"
 
 #: ../panel-plugin/properties.c:247
-msgid "Associated command :"
-msgstr "Зьвязаны загад: "
+msgid "Associated command:"
+msgstr "Зьвязаны загад:"
 
 #: ../panel-plugin/properties.c:271
 msgid "Normal"

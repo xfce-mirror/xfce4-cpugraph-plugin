@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-01 00:33+0900\n"
+"POT-Creation-Date: 2010-10-03 16:48+0900\n"
 "PO-Revision-Date: 2010-06-22 13:52+0900\n"
 "Last-Translator: Masato Hashimoto <cabezon.hashimoto@gmail.com>\n"
 "Language-Team: Japanese <xfce-i18n@xfce.org>\n"
@@ -116,8 +116,8 @@ msgid "Height:"
 msgstr "高さ:"
 
 #: ../panel-plugin/properties.c:247
-msgid "Associated command :"
-msgstr "割当てコマンド :"
+msgid "Associated command:"
+msgstr "割当てコマンド:"
 
 #: ../panel-plugin/properties.c:271
 msgid "Normal"
