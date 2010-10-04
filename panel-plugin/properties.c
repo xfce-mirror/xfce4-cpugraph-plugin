@@ -75,7 +75,7 @@ void create_options( XfcePanelPlugin *plugin, CPUGraph *base )
 
 	xfce_panel_plugin_block_menu( plugin );
 
-	dlg = gtk_dialog_new_with_buttons( _("CPU Graph Properties"),
+	dlg = xfce_titled_dialog_new_with_buttons( _("CPU Graph Properties"),
 	                                   GTK_WINDOW( gtk_widget_get_toplevel( GTK_WIDGET( plugin ) ) ),
 	                                   GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_NO_SEPARATOR,
 	                                   GTK_STOCK_CLOSE,
@@ -85,13 +85,7 @@ void create_options( XfcePanelPlugin *plugin, CPUGraph *base )
 
 	g_signal_connect( dlg, "response", G_CALLBACK( response_cb ), base );
 
-	gtk_container_set_border_width( GTK_CONTAINER( dlg ), 2 );
-
-	header = xfce_create_header( NULL, _("CPU Graph") );
-	gtk_widget_set_size_request( GTK_BIN( header )->child, -1, 32 );
-	gtk_container_set_border_width( GTK_CONTAINER( header ), BORDER - 2 );
-	gtk_widget_show( header );
-	gtk_box_pack_start( GTK_BOX( GTK_DIALOG( dlg )->vbox ), header, FALSE, TRUE, 0 );
+	gtk_window_set_icon_name( GTK_WINDOW (dlg), "xfce4-cpugraph-plugin" );
 
 	sg = gtk_size_group_new( GTK_SIZE_GROUP_HORIZONTAL );
 
