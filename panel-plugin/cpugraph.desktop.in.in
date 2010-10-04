@@ -3,6 +3,6 @@ Type=X-XFCE-PanelPlugin
 Encoding=UTF-8
 _Name=CPU Graph
 _Comment=Graphical representation of the CPU load
-Icon=xfce-mouse
+Icon=xfce4-cpugraph-plugin
 X-XFCE-Exec=@PLUGIN_PATH@/xfce4-cpugraph-plugin
 
