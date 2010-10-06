@@ -6,6 +6,7 @@
  *  Copyright (c) 2007-2008 Angelo Arrifano <miknix@gmail.com>
  *  Copyright (c) 2007-2008 Lidiriel <lidiriel@coriolys.org>
  *  Copyright (c) 2010 Florian Rivoal <frivoal@gmail.com>
+ *  Copyright (c) 2010  Peter Tribble <peter.tribble@gmail.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -59,6 +60,11 @@
 #include <sys/param.h>
 #include <sys/sched.h>
 #include <sys/sysctl.h>
+#endif
+
+#if defined (__sun__)
+#include <kstat.h>
+static kstat_ctl_t *kc;
 #endif
 
 #if defined (__linux__) || defined (__FreeBSD_kernel__)
@@ -231,6 +237,68 @@ gboolean read_cpu_data( CpuData *data, guint nb_cpu)
 		data[i].previous_total = total;
 		data[0].load += data[i].load;
 	}
+	data[0].load /= nb_cpu;
+	return TRUE;
+}
+
+#elif defined (__sun__)
+static void init_stats()
+{
+	kc = kstat_open();
+}
+
+guint detect_cpu_number()
+{
+	kstat_t *ksp;
+	kstat_named_t *knp;
+
+	if( !kc )
+		init_stats();
+
+	if( !(ksp = kstat_lookup( kc, "unix", 0, "system_misc" )) )
+		return 0;
+	else
+		kstat_read( kc, ksp, NULL );
+		knp = kstat_data_lookup( ksp, "ncpus" );
+		return knp->value.ui32;
+}
+
+gboolean read_cpu_data( CpuData *data, guint nb_cpu )
+{
+	kstat_t *ksp;
+	kstat_named_t *knp;
+	guint64 used, total;
+	gint i;
+	data[0].load = 0;
+
+	if( !kc )
+		init_stats();
+
+	i = 1;
+	for( ksp = kc->kc_chain; ksp != NULL; ksp = ksp->ks_next )
+	{
+		if( !g_strcmp0( ksp->ks_module, "cpu" ) && !g_strcmp0( ksp->ks_name, "sys" ) )
+		{
+			kstat_read( kc, ksp, NULL );
+			knp = kstat_data_lookup( ksp, "cpu_nsec_user" );
+			used = knp->value.ul;
+			knp = kstat_data_lookup( ksp, "cpu_nsec_intr" );
+			used += knp->value.ul;
+			knp = kstat_data_lookup( ksp, "cpu_nsec_kernel" );
+			used += knp->value.ul;
+			knp = kstat_data_lookup( ksp, "cpu_nsec_idle" );
+			total = used + knp->value.ul;
+			if( total - data[i].previous_total != 0 )
+				data[i].load = (CPU_SCALE * (used - data[i].previous_used))/(total - data[i].previous_total);
+			else
+				data[i].load = 0;
+			data[i].previous_used = used;
+			data[i].previous_total = total;
+			data[0].load += data[i].load;
+			i++;
+		}
+	}
+
 	data[0].load /= nb_cpu;
 	return TRUE;
 }
