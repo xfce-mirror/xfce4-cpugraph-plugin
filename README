@@ -2,9 +2,9 @@ CPU Graph plugin for the XFce4 panel.
 
 This plugin displays an graph from your latest system load.
 
-Currently supporting Linux, FreeBSD, NetBSD and OpenBSD, and GNU/kFreeBSD.
-The *BSD support is derived from Riccardo's <riccardo.persichetti@tin.it>
-system load plugin.
+Currently supporting Linux, FreeBSD, NetBSD and OpenBSD, GNU/kFreeBSD and
+Solaris. The *BSD support is derived from Riccardo's
+<riccardo.persichetti@tin.it> system load plugin.
 
 i18n support is up to 15 fully supported languages, with another 20 partially
 supported languages.
