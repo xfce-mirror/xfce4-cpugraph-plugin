@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin 0.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-03 17:28+0900\n"
+"POT-Creation-Date: 2010-12-06 00:28+0900\n"
 "PO-Revision-Date: 2008-11-16 14:18+0100\n"
 "Last-Translator: Carles Muñoz Gorriz <carlesmu@internautas.org>\n"
 "Language-Team: Catalan <xfce-i18n@xfce.org>\n"
@@ -29,135 +29,135 @@ msgstr "Utilització: %u%%"
 msgid "CPU Graph Properties"
 msgstr "Propietats de les gràfiques de CPU"
 
-#: ../panel-plugin/properties.c:90 ../panel-plugin/cpugraph.desktop.in.in.h:1
-msgid "CPU Graph"
-msgstr "Gràfica de CPU"
-
-#: ../panel-plugin/properties.c:102
+#: ../panel-plugin/properties.c:96
 msgid "Use non-linear time-scale"
 msgstr "Escala de temps no lineal"
 
-#: ../panel-plugin/properties.c:103
+#: ../panel-plugin/properties.c:97
 msgid "Show frame"
 msgstr "Mostrar el marc"
 
-#: ../panel-plugin/properties.c:104
+#: ../panel-plugin/properties.c:98
 msgid "Show border"
 msgstr "Mostrar marges"
 
-#: ../panel-plugin/properties.c:105
+#: ../panel-plugin/properties.c:99
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Mostrar la barra d'ús actual"
 msgstr[1] "Mostrar les barres d'ús actuals"
 
-#: ../panel-plugin/properties.c:107
+#: ../panel-plugin/properties.c:101
 msgid "Run in terminal"
 msgstr "Executar en un terminal"
 
-#: ../panel-plugin/properties.c:108
+#: ../panel-plugin/properties.c:102
 msgid "Use startup notification"
 msgstr "Usar notificació d'inicialització"
 
-#: ../panel-plugin/properties.c:111
+#: ../panel-plugin/properties.c:105
 msgid "Color 1:"
 msgstr "Color 1:"
 
-#: ../panel-plugin/properties.c:112
+#: ../panel-plugin/properties.c:106
 msgid "Color 2:"
 msgstr "Color 2:"
 
-#: ../panel-plugin/properties.c:113
+#: ../panel-plugin/properties.c:107
 msgid "Color 3:"
 msgstr "Color 3:"
 
-#: ../panel-plugin/properties.c:114
+#: ../panel-plugin/properties.c:108
 msgid "Background:"
 msgstr "Fons:"
 
-#: ../panel-plugin/properties.c:121
+#: ../panel-plugin/properties.c:115
 msgid "Appearance"
 msgstr "Aparença"
 
-#: ../panel-plugin/properties.c:123
+#: ../panel-plugin/properties.c:117
 msgid "Advanced"
 msgstr "Avançat"
 
-#: ../panel-plugin/properties.c:199
+#: ../panel-plugin/properties.c:193
 msgid "Fastest (~250ms)"
 msgstr "Molt ràpid (~250ms)"
 
-#: ../panel-plugin/properties.c:200
+#: ../panel-plugin/properties.c:194
 msgid "Fast (~500ms)"
 msgstr "Ràpid (~500ms)"
 
-#: ../panel-plugin/properties.c:201
+#: ../panel-plugin/properties.c:195
 msgid "Normal (~750ms)"
 msgstr "Normal (~750ms)"
 
-#: ../panel-plugin/properties.c:202
+#: ../panel-plugin/properties.c:196
 msgid "Slow (~1s)"
 msgstr "Lent (~1s)"
 
-#: ../panel-plugin/properties.c:206
+#: ../panel-plugin/properties.c:200
 msgid "Update Interval:"
 msgstr "Interval d'actualització:"
 
-#: ../panel-plugin/properties.c:214
+#: ../panel-plugin/properties.c:208
 msgid "All"
 msgstr "Tot"
 
-#: ../panel-plugin/properties.c:220
+#: ../panel-plugin/properties.c:214
 msgid "Tracked Core:"
 msgstr "Nucli seguit:"
 
-#: ../panel-plugin/properties.c:231
+#: ../panel-plugin/properties.c:225
 msgid "Width:"
 msgstr "Amplada:"
 
-#: ../panel-plugin/properties.c:233
+#: ../panel-plugin/properties.c:227
 msgid "Height:"
 msgstr "Alçada:"
 
-#: ../panel-plugin/properties.c:247
+#: ../panel-plugin/properties.c:241
 msgid "Associated command:"
 msgstr "Ordre associada:"
 
-#: ../panel-plugin/properties.c:271
+#: ../panel-plugin/properties.c:265
 msgid "Normal"
 msgstr "Normal"
 
-#: ../panel-plugin/properties.c:272
+#: ../panel-plugin/properties.c:266
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:273
+#: ../panel-plugin/properties.c:267
 msgid "No history"
 msgstr "Sense historial"
 
-#: ../panel-plugin/properties.c:274
+#: ../panel-plugin/properties.c:268
 msgid "Grid"
 msgstr "Graella"
 
-#: ../panel-plugin/properties.c:278
+#: ../panel-plugin/properties.c:272
 msgid "Mode:"
 msgstr "Mode:"
 
-#: ../panel-plugin/properties.c:283
+#: ../panel-plugin/properties.c:277
 msgid "Solid"
 msgstr "Sòlid"
 
-#: ../panel-plugin/properties.c:284
+#: ../panel-plugin/properties.c:278
 msgid "Gradient"
 msgstr "Degradat"
 
-#: ../panel-plugin/properties.c:285
+#: ../panel-plugin/properties.c:279
 msgid "Fire"
 msgstr "Foc"
 
-#: ../panel-plugin/properties.c:289
+#: ../panel-plugin/properties.c:283
 msgid "Color mode: "
 msgstr "Mode de color"
+
+#: ../panel-plugin/cpugraph.desktop.in.in.h:1
+msgid "CPU Graph"
+msgstr "Gràfica de CPU"
 
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"

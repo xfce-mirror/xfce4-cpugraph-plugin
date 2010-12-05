@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-03 17:28+0900\n"
+"POT-Creation-Date: 2010-12-06 00:28+0900\n"
 "PO-Revision-Date: 2008-11-02 12:51+0100\n"
 "Last-Translator: Erdal Ronahi <erdal.ronahi@gmail.com>\n"
 "Language-Team: Kurdish <ku@li.org>\n"
@@ -25,135 +25,135 @@ msgstr ""
 msgid "CPU Graph Properties"
 msgstr ""
 
-#: ../panel-plugin/properties.c:90 ../panel-plugin/cpugraph.desktop.in.in.h:1
-msgid "CPU Graph"
-msgstr "Graf a CPU"
-
-#: ../panel-plugin/properties.c:102
+#: ../panel-plugin/properties.c:96
 msgid "Use non-linear time-scale"
 msgstr ""
 
-#: ../panel-plugin/properties.c:103
+#: ../panel-plugin/properties.c:97
 msgid "Show frame"
 msgstr "Çarçovê nîşan bide"
 
-#: ../panel-plugin/properties.c:104
+#: ../panel-plugin/properties.c:98
 msgid "Show border"
 msgstr ""
 
-#: ../panel-plugin/properties.c:105
+#: ../panel-plugin/properties.c:99
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../panel-plugin/properties.c:107
+#: ../panel-plugin/properties.c:101
 msgid "Run in terminal"
 msgstr ""
 
-#: ../panel-plugin/properties.c:108
+#: ../panel-plugin/properties.c:102
 msgid "Use startup notification"
 msgstr ""
 
-#: ../panel-plugin/properties.c:111
+#: ../panel-plugin/properties.c:105
 msgid "Color 1:"
 msgstr "Rengê 1:"
 
-#: ../panel-plugin/properties.c:112
+#: ../panel-plugin/properties.c:106
 msgid "Color 2:"
 msgstr "Rengê 2:"
 
-#: ../panel-plugin/properties.c:113
+#: ../panel-plugin/properties.c:107
 msgid "Color 3:"
 msgstr "Rengê 3:"
 
-#: ../panel-plugin/properties.c:114
+#: ../panel-plugin/properties.c:108
 msgid "Background:"
 msgstr "Zemîn:"
 
-#: ../panel-plugin/properties.c:121
+#: ../panel-plugin/properties.c:115
 msgid "Appearance"
 msgstr "Xuyanî"
 
-#: ../panel-plugin/properties.c:123
+#: ../panel-plugin/properties.c:117
 msgid "Advanced"
 msgstr "Pêşketî"
 
-#: ../panel-plugin/properties.c:199
+#: ../panel-plugin/properties.c:193
 msgid "Fastest (~250ms)"
 msgstr "Bileztirîn (~250ms)"
 
-#: ../panel-plugin/properties.c:200
+#: ../panel-plugin/properties.c:194
 msgid "Fast (~500ms)"
 msgstr "Bilez (~500ms)"
 
-#: ../panel-plugin/properties.c:201
+#: ../panel-plugin/properties.c:195
 msgid "Normal (~750ms)"
 msgstr "Asayî (~750ms)"
 
-#: ../panel-plugin/properties.c:202
+#: ../panel-plugin/properties.c:196
 msgid "Slow (~1s)"
 msgstr "Hêdî (~1s)"
 
-#: ../panel-plugin/properties.c:206
+#: ../panel-plugin/properties.c:200
 msgid "Update Interval:"
 msgstr "Dema Rojanekirinê: "
 
-#: ../panel-plugin/properties.c:214
+#: ../panel-plugin/properties.c:208
 msgid "All"
 msgstr ""
 
-#: ../panel-plugin/properties.c:220
+#: ../panel-plugin/properties.c:214
 msgid "Tracked Core:"
 msgstr ""
 
-#: ../panel-plugin/properties.c:231
+#: ../panel-plugin/properties.c:225
 msgid "Width:"
 msgstr "Firehî:"
 
-#: ../panel-plugin/properties.c:233
+#: ../panel-plugin/properties.c:227
 msgid "Height:"
 msgstr "Bilindahî:"
 
-#: ../panel-plugin/properties.c:247
+#: ../panel-plugin/properties.c:241
 msgid "Associated command:"
 msgstr "Fermana girêdayî:"
 
-#: ../panel-plugin/properties.c:271
+#: ../panel-plugin/properties.c:265
 msgid "Normal"
 msgstr "Asayî"
 
-#: ../panel-plugin/properties.c:272
+#: ../panel-plugin/properties.c:266
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:273
+#: ../panel-plugin/properties.c:267
 msgid "No history"
 msgstr "Bê dîrokê"
 
-#: ../panel-plugin/properties.c:274
+#: ../panel-plugin/properties.c:268
 msgid "Grid"
 msgstr "Tor"
 
-#: ../panel-plugin/properties.c:278
+#: ../panel-plugin/properties.c:272
 msgid "Mode:"
 msgstr "Mod:"
 
-#: ../panel-plugin/properties.c:283
+#: ../panel-plugin/properties.c:277
 msgid "Solid"
 msgstr ""
 
-#: ../panel-plugin/properties.c:284
+#: ../panel-plugin/properties.c:278
 msgid "Gradient"
 msgstr "Gradyan"
 
-#: ../panel-plugin/properties.c:285
+#: ../panel-plugin/properties.c:279
 msgid "Fire"
 msgstr "Agir"
 
-#: ../panel-plugin/properties.c:289
+#: ../panel-plugin/properties.c:283
 msgid "Color mode: "
 msgstr "Moda rengan: "
+
+#: ../panel-plugin/cpugraph.desktop.in.in.h:1
+msgid "CPU Graph"
+msgstr "Graf a CPU"
 
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"

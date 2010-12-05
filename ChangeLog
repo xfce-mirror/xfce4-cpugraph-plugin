@@ -1,3 +1,186 @@
+commit 34e55f3dc4209bacd39b91199c3be47df1e343f3
+Author: Florian Rivoal <frivoal@xfce.org>
+Date:   Sun Dec 5 01:49:32 2010 +0900
+
+    Adjust files
+    
+    Rename configure.ac into configure.ac.in, as it should be; and remove
+    the now unneeded LINGUAS.
+
+commit 570fbee3008d715d604c2843bfe7fd4dea538e71
+Author: Florian Rivoal <frivoal@xfce.org>
+Date:   Sun Dec 5 01:37:53 2010 +0900
+
+    Fix a minor typo in the README
+
+commit c159a3366aa92ad19d88367b6a4e488ce4d7a692
+Author: Xu Meihong <mhuntxu@gmail.com>
+Date:   Sat Nov 27 13:47:08 2010 +0100
+
+    l10n: Updated Chinese (China) (zh_CN) translation to 100%
+    
+    New status: 35 messages complete with 0 fuzzies and 0 untranslated.
+    
+    Transmitted-via: Transifex (translations.xfce.org).
+
+commit d37c30dd681b95e4834f0562c500896578394057
+Author: Sergio Marques <smarquespt@gmail.com>
+Date:   Wed Nov 17 15:49:50 2010 +0100
+
+    l10n: Updated Portuguese (pt) translation to 100%
+    
+    New status: 35 messages complete with 0 fuzzies and 0 untranslated.
+    
+    Transmitted-via: Transifex (translations.xfce.org).
+
+commit aa173974d485f2610f35f90cfb2de5a4d8092602
+Author: Florian Rivoal <frivoal@xfce.org>
+Date:   Sun Nov 7 21:49:48 2010 +0900
+
+    Fix a typo in the NetBSD code
+
+commit 6a0608f54cd1ddb9838dbebaa7801a5054e35ac5
+Author: Gabor Kelemen <kelemeng@gnome.hu>
+Date:   Wed Nov 3 14:17:16 2010 +0100
+
+    l10n: Updated Hungarian (hu) translation to 100%
+    
+    New status: 35 messages complete with 0 fuzzies and 0 untranslated.
+    
+    Transmitted-via: Transifex (translations.xfce.org).
+
+commit f7553fb4041669032b385e04b3387d5029c1bde6
+Author: Piarres Beobide <pi@beobide.net>
+Date:   Wed Nov 3 12:27:49 2010 +0100
+
+    l10n: Updated Basque (eu) translation to 97%
+    
+    New status: 34 messages complete with 0 fuzzies and 1 untranslated.
+    
+    Transmitted-via: Transifex (translations.xfce.org).
+
+commit b8dc5f49f8e504cc31d2ad623707af7e8ccfc0b7
+Author: Daniel Nylander <po@danielnylander.se>
+Date:   Mon Oct 18 20:37:55 2010 +0200
+
+    l10n: Updated Swedish (sv) translation to 100%
+    
+    New status: 35 messages complete with 0 fuzzies and 0 untranslated.
+    
+    Transmitted-via: Transifex (translations.xfce.org).
+
+commit d080dffa1af3dc8c1e45115dd1f489b0e128aff8
+Merge: 7ed44cb b06e8d7
+Author: Florian Rivoal <frivoal@xfce.org>
+Date:   Sun Oct 10 12:55:23 2010 +0900
+
+    Merge branch 'taskbranch/bug-6721'
+
+commit b06e8d7db4b93cfa643e2ad5a0ef60307b99df83
+Author: Florian Rivoal <frivoal@xfce.org>
+Date:   Sun Oct 10 12:48:32 2010 +0900
+
+    Update the documentation
+    
+    Mention Solaris support in the README file.
+
+commit f7b418caac951462ec13462d06168321427d0efe
+Author: Florian Rivoal <frivoal@xfce.org>
+Date:   Sun Oct 10 12:33:09 2010 +0900
+
+    Update copyright notices
+    
+    Add Peter Tribble's name and copyright notice to the AUTHOR file, and
+    to the COPYING file.
+
+commit 7ed44cb4ff4c7385d8ad8afac42bfd9ba8c854df
+Merge: f402618 2dcfd3d
+Author: Florian Rivoal <frivoal@gmail.com>
+Date:   Thu Oct 7 01:18:38 2010 +0900
+
+    Merge branch 'taskbranch/bug-6700'
+
+commit 2dcfd3d41dd34a4acabc55309be88ee5fed6bc45
+Author: Florian Rivoal <frivoal@gmail.com>
+Date:   Thu Oct 7 01:14:49 2010 +0900
+
+    Improve the properties dialog
+    
+    Use an Xfce style dialog for the properties. This makes it prettier, in
+    large part due to the new icons.
+    
+    This is a dummy commit, as the actual change was actually included in
+    the previous commit, but the commit message didn't reflect this.
+
+commit 71a1d163c5d31f78e91fb9d2f5bdc9ffb2dd017a
+Author: Peter Tribble <peter.tribble@gmail.com>
+Date:   Thu Oct 7 00:37:25 2010 +0900
+
+    Add Solaris support
+    
+    Extends the platform specific code to support Solaris, with multicore
+    support. Patch from Peter Tribble.
+
+commit f4026184946a33c725414d635de96a709b53a730
+Merge: 8d62033 175a87e
+Author: Florian Rivoal <frivoal@gmail.com>
+Date:   Mon Oct 4 20:37:46 2010 +0900
+
+    Merge branch 'taskbranch/bug-6700'
+
+commit 175a87e8313a45d0e61ada3712404a4938dcf7a2
+Author: Florian Rivoal <frivoal@gmail.com>
+Date:   Mon Oct 4 10:30:05 2010 +0900
+
+    Add icons
+    
+    CPU Graph now has its own icon, available in 3 sizes. Thanks to Simon
+    Steinbeiss for making it.
+    
+    Currently used only for the .desktop file.
+
+commit 8d620338811d4de37211aa417ed6379168938b2f
+Author: Florian Rivoal <frivoal@gmail.com>
+Date:   Sun Oct 3 17:37:49 2010 +0900
+
+    Improve the French translation
+
+commit 91a1fae90d5bb7ad342ed02dcddfb661b83518ff
+Author: Florian Rivoal <frivoal@gmail.com>
+Date:   Sun Oct 3 17:35:04 2010 +0900
+
+    Review fuzzy translations
+    
+    Remove the fuzzy marker on correct translations, and delete the
+    translation (as well as the fuzzy marker) on the incorrect ones.
+
+commit ca56a73dfcbeaf4acda58c4b4eb2e933edc365ec
+Author: Florian Rivoal <frivoal@gmail.com>
+Date:   Sun Oct 3 16:45:57 2010 +0900
+
+    Fix a typo
+    
+    There should not be a space before columns in English.
+
+commit c7950c4a678fea35242d52d2f9b751a578ad0ade
+Author: Masato Hashimoto <cabezon.hashimoto@gmail.com>
+Date:   Thu Sep 30 17:40:03 2010 +0200
+
+    l10n: Updated Japanese (ja) translation to 100%
+    
+    New status: 35 messages complete with 0 fuzzies and 0 untranslated.
+    
+    Transmitted-via: Transifex (translations.xfce.org).
+
+commit cacc35ee18a348a45b899690257a51889d55230f
+Author: Florian Rivoal <frivoal@gmail.com>
+Date:   Thu Sep 30 18:30:40 2010 +0900
+
+    Make the 1.0.0 release
+    
+    Bump the version number, and update the changelog, and update the po
+    files.
+
 commit 1cfbca423b866d897eb0c783b25228f5ba38fc2b
 Author: Florian Rivoal <frivoal@gmail.com>
 Date:   Thu Sep 30 18:22:39 2010 +0900

@@ -1,3 +1,11 @@
+1.0.1
+=====
+- Added support for Solaris
+- Fixed support for NetBSD
+- Improved translations, with now 18 out of 35 languages fully translated
+- New icon
+- Improvement to the apearance of the Properties dialog
+
 1.0.0
 =====
 - Clean up, bug fixing and optimization
