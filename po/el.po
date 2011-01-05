@@ -1,52 +1,52 @@
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-04 11:16+0000\n"
+"POT-Creation-Date: 2011-01-05 11:16+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: George Vasilakos <forfolias@linuxteam.cs.teilar.gr>\n"
 "Language-Team: Greek  <<nls@tux.hellug.gr>>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\\n\n"
-"X-Poedit-Language: Greek\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\\n\\nX-Poedit-Language: Greek\n"
 "X-Poedit-Country: GREECE\n"
 
 #: ../panel-plugin/cpu.c:303
 #, c-format
 msgid "Usage: %u%%"
-msgstr ""
+msgstr "Χρήση: %u%%"
 
 #: ../panel-plugin/properties.c:78
 msgid "CPU Graph Properties"
-msgstr ""
+msgstr "Ιδιότητες Γραφήματος CPU"
 
 #: ../panel-plugin/properties.c:96
 msgid "Use non-linear time-scale"
-msgstr ""
+msgstr "Χρήση μη γραμμικής χρονικής κλίμακας"
 
 #: ../panel-plugin/properties.c:97
 msgid "Show frame"
-msgstr ""
+msgstr "Εμφάνιση πλαισίου"
 
 #: ../panel-plugin/properties.c:98
 msgid "Show border"
-msgstr ""
+msgstr "Εμφάνιση περιγράμματος"
 
 #: ../panel-plugin/properties.c:99
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Προβολή μπάρας με την τρέχουσα χρήση"
+msgstr[1] "Προβολή μπαρών με την τρέχουσα χρήση"
 
 #: ../panel-plugin/properties.c:101
 msgid "Run in terminal"
-msgstr ""
+msgstr "Εκτέλεση σε τερματικό"
 
 #: ../panel-plugin/properties.c:102
 msgid "Use startup notification"
-msgstr ""
+msgstr "Χρήση γνωστοποίησης εκκίνησης"
 
 #: ../panel-plugin/properties.c:105
 msgid "Color 1:"
@@ -62,7 +62,7 @@ msgstr "Χρώμα 3:"
 
 #: ../panel-plugin/properties.c:108
 msgid "Background:"
-msgstr ""
+msgstr "Παρασκήνιο:"
 
 #: ../panel-plugin/properties.c:115
 msgid "Appearance"
@@ -70,35 +70,35 @@ msgstr "Εμφάνιση"
 
 #: ../panel-plugin/properties.c:117
 msgid "Advanced"
-msgstr ""
+msgstr "Για προχωρημένους"
 
 #: ../panel-plugin/properties.c:193
 msgid "Fastest (~250ms)"
-msgstr ""
+msgstr "Γρηγορότερα (~250ms)"
 
 #: ../panel-plugin/properties.c:194
 msgid "Fast (~500ms)"
-msgstr ""
+msgstr "Γρήγορα (~500ms)"
 
 #: ../panel-plugin/properties.c:195
 msgid "Normal (~750ms)"
-msgstr ""
+msgstr "Κανονικά (~750ms)"
 
 #: ../panel-plugin/properties.c:196
 msgid "Slow (~1s)"
-msgstr ""
+msgstr "Αργά (~1s)"
 
 #: ../panel-plugin/properties.c:200
 msgid "Update Interval:"
-msgstr ""
+msgstr "Μεσοδιάστημα ενημέρωσης:"
 
 #: ../panel-plugin/properties.c:208
 msgid "All"
-msgstr ""
+msgstr "Όλα"
 
 #: ../panel-plugin/properties.c:214
 msgid "Tracked Core:"
-msgstr ""
+msgstr "Ανιχνεύσιμος πυρήνας:"
 
 #: ../panel-plugin/properties.c:225
 msgid "Width:"
@@ -110,49 +110,48 @@ msgstr "Ύψος"
 
 #: ../panel-plugin/properties.c:241
 msgid "Associated command:"
-msgstr ""
+msgstr "Συσχετισμένη εντολή:"
 
 #: ../panel-plugin/properties.c:265
 msgid "Normal"
-msgstr ""
+msgstr "Κανονικά"
 
 #: ../panel-plugin/properties.c:266
 msgid "LED"
-msgstr ""
+msgstr "LED"
 
 #: ../panel-plugin/properties.c:267
 msgid "No history"
-msgstr ""
+msgstr "Χωρίς ιστορικό"
 
 #: ../panel-plugin/properties.c:268
 msgid "Grid"
-msgstr ""
+msgstr "Πλέγμα"
 
 #: ../panel-plugin/properties.c:272
 msgid "Mode:"
-msgstr ""
+msgstr "Τρόπος:"
 
 #: ../panel-plugin/properties.c:277
 msgid "Solid"
-msgstr ""
+msgstr "Συμπαγές"
 
 #: ../panel-plugin/properties.c:278
 msgid "Gradient"
-msgstr ""
+msgstr "Διαβάθμιση"
 
 #: ../panel-plugin/properties.c:279
 msgid "Fire"
-msgstr ""
+msgstr "Φωτιά"
 
 #: ../panel-plugin/properties.c:283
 msgid "Color mode: "
-msgstr ""
+msgstr "Λειτουργία χρώματος:"
 
 #: ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
-msgstr ""
+msgstr "Γράφημα CPU"
 
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
-msgstr ""
-
+msgstr "Γραφική αναπαράσταση του φόρτου της CPU"
