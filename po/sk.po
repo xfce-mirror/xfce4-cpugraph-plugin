@@ -2,12 +2,12 @@
 # Copyright (C) 2006 THE xfce4-cpugraph-plugin'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the xfce4-cpugraph-plugin package.
 # Tomáš Vadina <kyberdev@gmail.com>, 2011.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-03 10:04+0000\n"
+"POT-Creation-Date: 2011-07-23 10:04+0000\n"
 "PO-Revision-Date: 2011-06-03 16:42+0100\n"
 "Last-Translator: Tomáš Vadina <kyberdev@gmail.com>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -48,7 +48,7 @@ msgstr[2] "Zobraziť stĺpce aktuálneho využitia"
 
 #: ../panel-plugin/properties.c:101
 msgid "Run in terminal"
-msgstr "Spustiť v terminále"
+msgstr "Spustiť v termináli"
 
 #: ../panel-plugin/properties.c:102
 msgid "Use startup notification"
@@ -161,4 +161,3 @@ msgstr "Graf procesora"
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Grafická prezentácia zaťaženia procesora"
-
