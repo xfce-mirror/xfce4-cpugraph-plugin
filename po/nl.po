@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-27 10:04+0000\n"
-"PO-Revision-Date: 2011-05-25 11:34+0200\n"
+"POT-Creation-Date: 2011-09-09 04:04+0000\n"
+"PO-Revision-Date: 2011-09-09 11:34+0200\n"
 "Last-Translator: Pjotr\n"
 "Language-Team: Dutch (Flemish)\n"
 "MIME-Version: 1.0\n"
@@ -103,7 +103,7 @@ msgstr "Alle"
 
 #: ../panel-plugin/properties.c:214
 msgid "Tracked Core:"
-msgstr "Bewaakte Kern:"
+msgstr "Bewaakte kern:"
 
 #: ../panel-plugin/properties.c:225
 msgid "Width:"
@@ -159,4 +159,4 @@ msgstr "CPU Graph"
 
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
-msgstr "Grafische weergave van de Processorbelasting"
+msgstr "Grafische weergave van de processorbelasting"
