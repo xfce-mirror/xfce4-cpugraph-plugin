@@ -26,7 +26,7 @@
 #include "mode.h"
 #include "properties.h"
 
-#include <libxfcegui4/libxfcegui4.h>
+#include <libxfce4ui/libxfce4ui.h>
 #include <libxfce4panel/xfce-hvbox.h>
 #ifndef _
 # include <libintl.h>
@@ -344,7 +344,7 @@ static gboolean command_cb( GtkWidget *w,GdkEventButton *event, CPUGraph *base )
 {
 	if( event->button == 1 && base->command )
 	{
-		xfce_exec( base->command, base->in_terminal, base->startup_notification, NULL );
+		xfce_spawn_command_line_on_screen( gdk_screen_get_default(), base->command, base->in_terminal, base->startup_notification, NULL );
 	}
 	return FALSE;
 }

@@ -26,7 +26,7 @@
 #include "settings.h"
 
 #include <glib/gprintf.h>
-#include <libxfcegui4/libxfcegui4.h>
+#include <libxfce4ui/libxfce4ui.h>
 
 #ifndef _
 # include <libintl.h>

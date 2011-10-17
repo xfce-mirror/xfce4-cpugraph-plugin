@@ -22,7 +22,7 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 #include "settings.h"
-#include <libxfcegui4/libxfcegui4.h>
+#include <libxfce4ui/libxfce4ui.h>
 
 static void default_command( const gchar ** command, gboolean * in_terminal, gboolean * startup_notification )
 {
