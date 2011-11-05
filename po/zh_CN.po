@@ -2,14 +2,14 @@
 # Copyright (C) 2008 THE xfce4-cpugraph-plugin'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the xfce4-cpugraph-plugin package.
 # Hunt Xu <huntxu@live.cn>, 2008, 2009, 2010.
-#
+# Chipong Luo <chipong_l@yahoo.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-06 00:28+0900\n"
+"POT-Creation-Date: 2011-10-09 04:02+0000\n"
 "PO-Revision-Date: 2010-11-27 20:45+0800\n"
-"Last-Translator: Hunt Xu <huntxu@live.cn>\n"
+"Last-Translator: Chipong Luo <chipong_l@yahoo.com>\n"
 "Language-Team: Chinese (simplified)\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: ../panel-plugin/cpu.c:303
 #, c-format
 msgid "Usage: %u%%"
-msgstr "使用率: %u%%"
+msgstr "使用率：%u%%"
 
 #: ../panel-plugin/properties.c:78
 msgid "CPU Graph Properties"
@@ -28,11 +28,11 @@ msgstr "CPU 图像属性"
 
 #: ../panel-plugin/properties.c:96
 msgid "Use non-linear time-scale"
-msgstr "使用非线性时间缩放"
+msgstr "使用非线性时间调整"
 
 #: ../panel-plugin/properties.c:97
 msgid "Show frame"
-msgstr "显示框架"
+msgstr "显示帧数"
 
 #: ../panel-plugin/properties.c:98
 msgid "Show border"
@@ -53,19 +53,19 @@ msgstr "使用启动通知"
 
 #: ../panel-plugin/properties.c:105
 msgid "Color 1:"
-msgstr "颜色1:"
+msgstr "颜色 1："
 
 #: ../panel-plugin/properties.c:106
 msgid "Color 2:"
-msgstr "颜色2:"
+msgstr "颜色 2："
 
 #: ../panel-plugin/properties.c:107
 msgid "Color 3:"
-msgstr "颜色3:"
+msgstr "颜色 3："
 
 #: ../panel-plugin/properties.c:108
 msgid "Background:"
-msgstr "背景:"
+msgstr "背景："
 
 #: ../panel-plugin/properties.c:115
 msgid "Appearance"
@@ -77,23 +77,23 @@ msgstr "高级"
 
 #: ../panel-plugin/properties.c:193
 msgid "Fastest (~250ms)"
-msgstr "最快（约250毫秒）"
+msgstr "最快(约 250 毫秒)"
 
 #: ../panel-plugin/properties.c:194
 msgid "Fast (~500ms)"
-msgstr "快（约500毫秒）"
+msgstr "快(约 500 毫秒)"
 
 #: ../panel-plugin/properties.c:195
 msgid "Normal (~750ms)"
-msgstr "正常（约750毫秒）"
+msgstr "正常(约 750 毫秒)"
 
 #: ../panel-plugin/properties.c:196
 msgid "Slow (~1s)"
-msgstr "慢（约1秒）"
+msgstr "慢(约 1 秒)"
 
 #: ../panel-plugin/properties.c:200
 msgid "Update Interval:"
-msgstr "更新时间间隔:"
+msgstr "更新时间间隔："
 
 #: ../panel-plugin/properties.c:208
 msgid "All"
@@ -101,19 +101,19 @@ msgstr "所有"
 
 #: ../panel-plugin/properties.c:214
 msgid "Tracked Core:"
-msgstr "被跟踪的核心:"
+msgstr "跟踪的核心："
 
 #: ../panel-plugin/properties.c:225
 msgid "Width:"
-msgstr "宽度:"
+msgstr "宽度："
 
 #: ../panel-plugin/properties.c:227
 msgid "Height:"
-msgstr "高度:"
+msgstr "高度："
 
 #: ../panel-plugin/properties.c:241
 msgid "Associated command:"
-msgstr "指定命令:"
+msgstr "指定命令："
 
 #: ../panel-plugin/properties.c:265
 msgid "Normal"
@@ -125,7 +125,7 @@ msgstr "LED"
 
 #: ../panel-plugin/properties.c:267
 msgid "No history"
-msgstr "历史为空"
+msgstr "无历史"
 
 #: ../panel-plugin/properties.c:268
 msgid "Grid"
@@ -133,7 +133,7 @@ msgstr "网格"
 
 #: ../panel-plugin/properties.c:272
 msgid "Mode:"
-msgstr "模式:"
+msgstr "模式："
 
 #: ../panel-plugin/properties.c:277
 msgid "Solid"
@@ -149,7 +149,7 @@ msgstr "火焰"
 
 #: ../panel-plugin/properties.c:283
 msgid "Color mode: "
-msgstr "颜色模式: "
+msgstr "颜色模式："
 
 #: ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
@@ -157,4 +157,4 @@ msgstr "CPU 图像"
 
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
-msgstr "CPU 负载的图形化显示"
+msgstr "图形化的 CPU 负载表示"
