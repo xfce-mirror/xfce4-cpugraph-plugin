@@ -141,7 +141,7 @@ msgstr "固定"
 
 #: ../panel-plugin/properties.c:278
 msgid "Gradient"
-msgstr "渐变"
+msgstr "梯度"
 
 #: ../panel-plugin/properties.c:279
 msgid "Fire"
