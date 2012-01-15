@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-06 00:28+0900\n"
-"PO-Revision-Date: 2010-06-28 13:31+0800\n"
+"POT-Creation-Date: 2012-01-14 23:00+0000\n"
+"PO-Revision-Date: 2012-01-15 10:48+0800\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -139,11 +139,11 @@ msgstr "模式："
 
 #: ../panel-plugin/properties.c:277
 msgid "Solid"
-msgstr ""
+msgstr "實心"
 
 #: ../panel-plugin/properties.c:278
 msgid "Gradient"
-msgstr ""
+msgstr "灰階"
 
 #: ../panel-plugin/properties.c:279
 msgid "Fire"
@@ -160,3 +160,4 @@ msgstr "CPU 圖表"
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "圖形化呈現 CPU 負載狀況"
+
