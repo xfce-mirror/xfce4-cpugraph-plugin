@@ -231,6 +231,7 @@ static void orientation_cb( XfcePanelPlugin * plugin, GtkOrientation orientation
 	if( base->has_bars )
 		set_bars_orientation( base, orientation );
 
+	size_cb( plugin, xfce_panel_plugin_get_size( base->plugin ), base);
 }
 
 static void set_bars_orientation( CPUGraph *base, GtkOrientation orientation)
