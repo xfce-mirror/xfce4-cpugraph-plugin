@@ -1,57 +1,61 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
-#, fuzzy
+# Mohammad Alhargan <malham1@hotmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-22 17:15+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2012-02-04 02:57+0000\n"
+"PO-Revision-Date: 2012-02-04 09:50+0300\n"
+"Last-Translator: Mohammad Alhargan <malham1@hotmail.com>\n"
+"Language-Team: http://www.vertaal.com.ar/files/opensuse-11-4/ar/list/\n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+"X-Generator: Virtaal 0.7.0\n"
 
 #: ../panel-plugin/cpu.c:303
 #, c-format
 msgid "Usage: %u%%"
-msgstr "إستعمال: %u%%"
+msgstr "الإستخدام: %u%%"
 
 #: ../panel-plugin/properties.c:78
 msgid "CPU Graph Properties"
-msgstr "رسم بياني لخصائص وحدة المعالجة"
+msgstr "خصائص الرسم البياني لوحدة المعالجة المركزية"
 
 #: ../panel-plugin/properties.c:96
 msgid "Use non-linear time-scale"
-msgstr "إستعمال non-linear time-scale"
+msgstr "استخدام مقياس الوقت غير الخطي"
 
 #: ../panel-plugin/properties.c:97
 msgid "Show frame"
-msgstr "عرض الإطار"
+msgstr "اعرض الإطار"
 
 #: ../panel-plugin/properties.c:98
 msgid "Show border"
-msgstr "عرض الحدود"
+msgstr "اعرض الحواف"
 
 #: ../panel-plugin/properties.c:99
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
-msgstr[0] "عرض شريط الإستعمال الحالي"
-msgstr[1] "عرض أشرطة الإستعمالات الحالية"
+msgstr[0] "إظهار شريط الاستخدام الحالي"
+msgstr[1] "إظهار شريطي الاستخدام الحاليين"
+msgstr[2] "إظهار أشرطة الاستخدام الحالية"
+msgstr[3] "إظهار أشرطة الاستخدام الحالية"
+msgstr[4] "إظهار أشرطة الاستخدام الحالية"
+msgstr[5] "إظهار أشرطة الاستخدام الحالية"
 
 #: ../panel-plugin/properties.c:101
 msgid "Run in terminal"
-msgstr "شغل في الطرفية"
+msgstr "شغّل في الطرفيّة"
 
 #: ../panel-plugin/properties.c:102
 msgid "Use startup notification"
-msgstr "إستعمال إشعارات بدء التشغيل"
+msgstr "أستخدم تنبية بدأ التشغيل"
 
 #: ../panel-plugin/properties.c:105
 msgid "Color 1:"
@@ -59,15 +63,15 @@ msgstr "لون 1:"
 
 #: ../panel-plugin/properties.c:106
 msgid "Color 2:"
-msgstr "لون 2:"
+msgstr "اللون 2:"
 
 #: ../panel-plugin/properties.c:107
 msgid "Color 3:"
-msgstr "لون 3:"
+msgstr "اللون 3:"
 
 #: ../panel-plugin/properties.c:108
 msgid "Background:"
-msgstr "خلفية:"
+msgstr "الخلفية:"
 
 #: ../panel-plugin/properties.c:115
 msgid "Appearance"
@@ -75,27 +79,27 @@ msgstr "مظهر"
 
 #: ../panel-plugin/properties.c:117
 msgid "Advanced"
-msgstr "مخصص"
+msgstr "متقدم"
 
 #: ../panel-plugin/properties.c:193
 msgid "Fastest (~250ms)"
-msgstr "أسرع (~250ms)"
+msgstr "سرعة (~ 250ms)"
 
 #: ../panel-plugin/properties.c:194
 msgid "Fast (~500ms)"
-msgstr "سريع (~500ms)"
+msgstr "سرعة (~ 500ms)"
 
 #: ../panel-plugin/properties.c:195
 msgid "Normal (~750ms)"
-msgstr "عادي (~750ms)"
+msgstr "عادي (~ 750ms)"
 
 #: ../panel-plugin/properties.c:196
 msgid "Slow (~1s)"
-msgstr "بطيء (~1s)"
+msgstr "بطيئ (~ 1s)"
 
 #: ../panel-plugin/properties.c:200
 msgid "Update Interval:"
-msgstr "مجال التحديث:"
+msgstr "فترة التحديث:"
 
 #: ../panel-plugin/properties.c:208
 msgid "All"
@@ -103,7 +107,7 @@ msgstr "الكل"
 
 #: ../panel-plugin/properties.c:214
 msgid "Tracked Core:"
-msgstr ""
+msgstr "تعقب الأنوية:"
 
 #: ../panel-plugin/properties.c:225
 msgid "Width:"
@@ -111,19 +115,19 @@ msgstr "العرض:"
 
 #: ../panel-plugin/properties.c:227
 msgid "Height:"
-msgstr "الطول:"
+msgstr "الارتفاع:"
 
 #: ../panel-plugin/properties.c:241
 msgid "Associated command:"
-msgstr ""
+msgstr "الأوامر الملحقة:"
 
 #: ../panel-plugin/properties.c:265
 msgid "Normal"
-msgstr "عادي"
+msgstr "عادية"
 
 #: ../panel-plugin/properties.c:266
 msgid "LED"
-msgstr "صمام"
+msgstr "LED"
 
 #: ../panel-plugin/properties.c:267
 msgid "No history"
@@ -131,11 +135,11 @@ msgstr "بدون تاريخ"
 
 #: ../panel-plugin/properties.c:268
 msgid "Grid"
-msgstr "شبكة"
+msgstr "الشبكة"
 
 #: ../panel-plugin/properties.c:272
 msgid "Mode:"
-msgstr "نمط:"
+msgstr "النمط:"
 
 #: ../panel-plugin/properties.c:277
 msgid "Solid"
@@ -143,7 +147,7 @@ msgstr "صلب"
 
 #: ../panel-plugin/properties.c:278
 msgid "Gradient"
-msgstr "متدرج"
+msgstr "التدرج"
 
 #: ../panel-plugin/properties.c:279
 msgid "Fire"
@@ -151,12 +155,12 @@ msgstr "نار"
 
 #: ../panel-plugin/properties.c:283
 msgid "Color mode: "
-msgstr "نمط اللون:"
+msgstr "نمط اللون: "
 
 #: ../panel-plugin/cpugraph.desktop.in.in.h:1
 msgid "CPU Graph"
-msgstr "رسم بياني لوحدة المعالجة"
+msgstr "الرسم البياني لوحدة المعالجة المركزية"
 
 #: ../panel-plugin/cpugraph.desktop.in.in.h:2
 msgid "Graphical representation of the CPU load"
-msgstr "رسم بياني لحمل وحدة المعالجة"
+msgstr "تمثيل رسومي لتحميل وحدة المعالجة المركزية"
