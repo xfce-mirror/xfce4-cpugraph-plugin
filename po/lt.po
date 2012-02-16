@@ -1,0 +1,164 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Algimantas Margevičius <margevicius.algimantas@gmail.com>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: cpu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-02-16 10:51+0000\n"
+"PO-Revision-Date: 2012-02-16 14:21+0200\n"
+"Last-Translator: Algimantas Margevičius <margevicius.algimantas@gmail.com>\n"
+"Language-Team: Lietuvių <>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
+"%100<10 || n%100>=20) ? 1 : 2)\n"
+
+#: ../panel-plugin/cpu.c:303
+#, c-format
+msgid "Usage: %u%%"
+msgstr "Apkrova: %u%%"
+
+#: ../panel-plugin/properties.c:78
+msgid "CPU Graph Properties"
+msgstr "CPU Graph savybės"
+
+#: ../panel-plugin/properties.c:96
+msgid "Use non-linear time-scale"
+msgstr "Naudoti nelinijinę laiko skalę"
+
+#: ../panel-plugin/properties.c:97
+msgid "Show frame"
+msgstr "Rodyti rėmelį"
+
+#: ../panel-plugin/properties.c:98
+msgid "Show border"
+msgstr "Rodyti kampus"
+
+#: ../panel-plugin/properties.c:99
+msgid "Show current usage bar"
+msgid_plural "Show current usage bars"
+msgstr[0] "Rodyti dabartinę apkrovos juostą"
+msgstr[1] "Rodyti dabartines apkrovos juostas"
+msgstr[2] "Rodyti dabartinių apkrovos juostų"
+
+#: ../panel-plugin/properties.c:101
+msgid "Run in terminal"
+msgstr "Vykdyti terminale"
+
+#: ../panel-plugin/properties.c:102
+msgid "Use startup notification"
+msgstr "Paleidimo metu naudoti perspėjimą"
+
+#: ../panel-plugin/properties.c:105
+msgid "Color 1:"
+msgstr "Spalva 1:"
+
+#: ../panel-plugin/properties.c:106
+msgid "Color 2:"
+msgstr "Spalva 2:"
+
+#: ../panel-plugin/properties.c:107
+msgid "Color 3:"
+msgstr "Spalva 3:"
+
+#: ../panel-plugin/properties.c:108
+msgid "Background:"
+msgstr "Fonas:"
+
+#: ../panel-plugin/properties.c:115
+msgid "Appearance"
+msgstr "Išvaizda"
+
+#: ../panel-plugin/properties.c:117
+msgid "Advanced"
+msgstr "Papildomi"
+
+#: ../panel-plugin/properties.c:193
+msgid "Fastest (~250ms)"
+msgstr "Greičiausias (~250ms)"
+
+#: ../panel-plugin/properties.c:194
+msgid "Fast (~500ms)"
+msgstr "Greitas ((~500ms)"
+
+#: ../panel-plugin/properties.c:195
+msgid "Normal (~750ms)"
+msgstr "Normalus (~750ms)"
+
+#: ../panel-plugin/properties.c:196
+msgid "Slow (~1s)"
+msgstr "Lėtas (~1s)"
+
+#: ../panel-plugin/properties.c:200
+msgid "Update Interval:"
+msgstr "Atnaujinimo intervalas:"
+
+#: ../panel-plugin/properties.c:208
+msgid "All"
+msgstr "Visi"
+
+#: ../panel-plugin/properties.c:214
+msgid "Tracked Core:"
+msgstr "Stebimas branduolys:"
+
+#: ../panel-plugin/properties.c:225
+msgid "Width:"
+msgstr "Plotis:"
+
+#: ../panel-plugin/properties.c:227
+msgid "Height:"
+msgstr "Aukštis:"
+
+#: ../panel-plugin/properties.c:241
+msgid "Associated command:"
+msgstr "Susieta komanda:"
+
+#: ../panel-plugin/properties.c:265
+msgid "Normal"
+msgstr "Normalus"
+
+#: ../panel-plugin/properties.c:266
+msgid "LED"
+msgstr "LED"
+
+#: ../panel-plugin/properties.c:267
+msgid "No history"
+msgstr "Be istorijos"
+
+#: ../panel-plugin/properties.c:268
+msgid "Grid"
+msgstr "Tinklelis"
+
+#: ../panel-plugin/properties.c:272
+msgid "Mode:"
+msgstr "Režimas:"
+
+#: ../panel-plugin/properties.c:277
+msgid "Solid"
+msgstr "Vientisa"
+
+#: ../panel-plugin/properties.c:278
+msgid "Gradient"
+msgstr "Gradientas"
+
+#: ../panel-plugin/properties.c:279
+msgid "Fire"
+msgstr "Ugnis"
+
+#: ../panel-plugin/properties.c:283
+msgid "Color mode: "
+msgstr "Spalvų režimas:"
+
+#: ../panel-plugin/cpugraph.desktop.in.in.h:1
+msgid "CPU Graph"
+msgstr "CPU Graph"
+
+#: ../panel-plugin/cpugraph.desktop.in.in.h:2
+msgid "Graphical representation of the CPU load"
+msgstr "Grafinis CPU apkrovos atvaizdavimas"
