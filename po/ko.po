@@ -44,7 +44,7 @@ msgstr "테두리 보이기"
 #: ../panel-plugin/properties.c:99
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
-msgstr[0] "현재 사용 막대(들) 보이기"
+msgstr[0] "현재 사용 막대 보이기"
 
 #: ../panel-plugin/properties.c:101
 msgid "Run in terminal"
