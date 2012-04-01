@@ -35,16 +35,16 @@ msgstr "비선형 타임스케일 사용"
 
 #: ../panel-plugin/properties.c:97
 msgid "Show frame"
-msgstr "틀 보이기"
+msgstr "틀 보기"
 
 #: ../panel-plugin/properties.c:98
 msgid "Show border"
-msgstr "테두리 보이기"
+msgstr "테두리 보기"
 
 #: ../panel-plugin/properties.c:99
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
-msgstr[0] "현재 사용 막대 보이기"
+msgstr[0] "현재 사용 막대 보기"
 
 #: ../panel-plugin/properties.c:101
 msgid "Run in terminal"
