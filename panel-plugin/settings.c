@@ -98,7 +98,7 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 			mode = xfce_rc_read_int_entry( rc, "Mode", mode );
 			color_mode = xfce_rc_read_int_entry( rc, "ColorMode", color_mode );
 			frame = xfce_rc_read_int_entry( rc, "Frame", frame );
-			associated_command = xfce_rc_read_entry( rc, "Command", associated_command );
+			associated_command = g_strdup(xfce_rc_read_entry( rc, "Command", associated_command ));
 			in_terminal = xfce_rc_read_int_entry( rc, "InTerminal", in_terminal );
 			startup_notification = xfce_rc_read_int_entry( rc, "StartupNotification", startup_notification );
 			border = xfce_rc_read_int_entry( rc, "Border", border );
