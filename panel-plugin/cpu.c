@@ -50,7 +50,7 @@ static void draw_area_cb( GtkWidget *da, GdkEventExpose *event, gpointer data );
 static void draw_graph( CPUGraph *base );
 static gboolean command_cb( GtkWidget *w, GdkEventButton *event, CPUGraph *base );
 
-XFCE_PANEL_PLUGIN_REGISTER_EXTERNAL( cpugraph_construct );
+XFCE_PANEL_PLUGIN_REGISTER( cpugraph_construct );
 
 static void cpugraph_construct( XfcePanelPlugin *plugin )
 {
