@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin 0.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-11 11:15+0000\n"
+"POT-Creation-Date: 2012-04-18 23:23+0200\n"
 "PO-Revision-Date: 2010-12-11 14:27+0100\n"
 "Last-Translator: Michal Várady <miko.vaji@gmail.com>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
+"Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: ../panel-plugin/cpu.c:303
@@ -101,63 +101,62 @@ msgstr "Interval obnovení:"
 msgid "All"
 msgstr "Vše"
 
-#: ../panel-plugin/properties.c:214
+#: ../panel-plugin/properties.c:213
 msgid "Tracked Core:"
 msgstr "Sledované jádro:"
 
-#: ../panel-plugin/properties.c:225
+#: ../panel-plugin/properties.c:224
 msgid "Width:"
 msgstr "Šířka:"
 
-#: ../panel-plugin/properties.c:227
+#: ../panel-plugin/properties.c:226
 msgid "Height:"
 msgstr "Výška:"
 
-#: ../panel-plugin/properties.c:241
+#: ../panel-plugin/properties.c:240
 msgid "Associated command:"
 msgstr "Přiřazený příkaz:"
 
-#: ../panel-plugin/properties.c:265
+#: ../panel-plugin/properties.c:264
 msgid "Normal"
 msgstr "Běžný"
 
-#: ../panel-plugin/properties.c:266
+#: ../panel-plugin/properties.c:265
 msgid "LED"
 msgstr "LED diody"
 
-#: ../panel-plugin/properties.c:267
+#: ../panel-plugin/properties.c:266
 msgid "No history"
 msgstr "Bez historie"
 
-#: ../panel-plugin/properties.c:268
+#: ../panel-plugin/properties.c:267
 msgid "Grid"
 msgstr "Mřížka"
 
-#: ../panel-plugin/properties.c:272
+#: ../panel-plugin/properties.c:271
 msgid "Mode:"
 msgstr "Režim:"
 
-#: ../panel-plugin/properties.c:277
+#: ../panel-plugin/properties.c:276
 msgid "Solid"
 msgstr "Jednobarevný"
 
-#: ../panel-plugin/properties.c:278
+#: ../panel-plugin/properties.c:277
 msgid "Gradient"
 msgstr "Stupňovaný"
 
-#: ../panel-plugin/properties.c:279
+#: ../panel-plugin/properties.c:278
 msgid "Fire"
 msgstr "Oheň"
 
-#: ../panel-plugin/properties.c:283
+#: ../panel-plugin/properties.c:282
 msgid "Color mode: "
 msgstr "Barvený režim:"
 
-#: ../panel-plugin/cpugraph.desktop.in.in.h:1
+#: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
 msgstr "Graf procesoru"
 
-#: ../panel-plugin/cpugraph.desktop.in.in.h:2
+#: ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Grafická reprezentace zatížení procesoru"
-

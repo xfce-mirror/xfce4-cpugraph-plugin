@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-06 00:28+0900\n"
+"POT-Creation-Date: 2012-04-18 23:23+0200\n"
 "PO-Revision-Date: 2008-11-24 21:06+0100\n"
 "Last-Translator: Florian Rivoal <frivoal@gmail.com>\n"
 "Language-Team: French <xfce-i18n@xfce.org>\n"
@@ -99,62 +99,62 @@ msgstr "Taux de rafraichissement :"
 msgid "All"
 msgstr "Tous"
 
-#: ../panel-plugin/properties.c:214
+#: ../panel-plugin/properties.c:213
 msgid "Tracked Core:"
 msgstr "Coeur surveillé :"
 
-#: ../panel-plugin/properties.c:225
+#: ../panel-plugin/properties.c:224
 msgid "Width:"
 msgstr "Largeur :"
 
-#: ../panel-plugin/properties.c:227
+#: ../panel-plugin/properties.c:226
 msgid "Height:"
 msgstr "Hauteur :"
 
-#: ../panel-plugin/properties.c:241
+#: ../panel-plugin/properties.c:240
 msgid "Associated command:"
 msgstr "Commande associée :"
 
-#: ../panel-plugin/properties.c:265
+#: ../panel-plugin/properties.c:264
 msgid "Normal"
 msgstr "Normal"
 
-#: ../panel-plugin/properties.c:266
+#: ../panel-plugin/properties.c:265
 msgid "LED"
 msgstr "Diodes"
 
-#: ../panel-plugin/properties.c:267
+#: ../panel-plugin/properties.c:266
 msgid "No history"
 msgstr "Pas d'historique"
 
-#: ../panel-plugin/properties.c:268
+#: ../panel-plugin/properties.c:267
 msgid "Grid"
 msgstr "Grille"
 
-#: ../panel-plugin/properties.c:272
+#: ../panel-plugin/properties.c:271
 msgid "Mode:"
 msgstr "Mode :"
 
-#: ../panel-plugin/properties.c:277
+#: ../panel-plugin/properties.c:276
 msgid "Solid"
 msgstr "Solide"
 
-#: ../panel-plugin/properties.c:278
+#: ../panel-plugin/properties.c:277
 msgid "Gradient"
 msgstr "Dégradé"
 
-#: ../panel-plugin/properties.c:279
+#: ../panel-plugin/properties.c:278
 msgid "Fire"
 msgstr "Feu"
 
-#: ../panel-plugin/properties.c:283
+#: ../panel-plugin/properties.c:282
 msgid "Color mode: "
 msgstr "Mode de couleur :"
 
-#: ../panel-plugin/cpugraph.desktop.in.in.h:1
+#: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
 msgstr "CPU Graph"
 
-#: ../panel-plugin/cpugraph.desktop.in.in.h:2
+#: ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Représentation graphique de la charge processeur"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-06 00:28+0900\n"
+"POT-Creation-Date: 2012-04-18 23:23+0200\n"
 "PO-Revision-Date: 2009-10-19 08:09+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
@@ -100,62 +100,62 @@ msgstr "ਅੱਪਡੇਟ ਇੰਟਰਵਲ:"
 msgid "All"
 msgstr ""
 
-#: ../panel-plugin/properties.c:214
+#: ../panel-plugin/properties.c:213
 msgid "Tracked Core:"
 msgstr ""
 
-#: ../panel-plugin/properties.c:225
+#: ../panel-plugin/properties.c:224
 msgid "Width:"
 msgstr "ਚੌੜਾਈ:"
 
-#: ../panel-plugin/properties.c:227
+#: ../panel-plugin/properties.c:226
 msgid "Height:"
 msgstr "ਉਚਾਈ"
 
-#: ../panel-plugin/properties.c:241
+#: ../panel-plugin/properties.c:240
 msgid "Associated command:"
 msgstr "ਸਬੰਧਿਤ ਕਮਾਂਡ:"
 
-#: ../panel-plugin/properties.c:265
+#: ../panel-plugin/properties.c:264
 msgid "Normal"
 msgstr "ਸਧਾਰਨ"
 
-#: ../panel-plugin/properties.c:266
+#: ../panel-plugin/properties.c:265
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:267
+#: ../panel-plugin/properties.c:266
 msgid "No history"
 msgstr "ਅਤੀਤ ਨਹੀਂ"
 
-#: ../panel-plugin/properties.c:268
+#: ../panel-plugin/properties.c:267
 msgid "Grid"
 msgstr ""
 
-#: ../panel-plugin/properties.c:272
+#: ../panel-plugin/properties.c:271
 msgid "Mode:"
 msgstr "ਮੋਡ:"
 
-#: ../panel-plugin/properties.c:277
+#: ../panel-plugin/properties.c:276
 msgid "Solid"
 msgstr ""
 
-#: ../panel-plugin/properties.c:278
+#: ../panel-plugin/properties.c:277
 msgid "Gradient"
 msgstr "ਗਰੇਡੀਐਂਟ"
 
-#: ../panel-plugin/properties.c:279
+#: ../panel-plugin/properties.c:278
 msgid "Fire"
 msgstr "ਫਾਇਰ"
 
-#: ../panel-plugin/properties.c:283
+#: ../panel-plugin/properties.c:282
 msgid "Color mode: "
 msgstr "ਰੰਗ ਮੋਡ: "
 
-#: ../panel-plugin/cpugraph.desktop.in.in.h:1
+#: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
 msgstr "CPU ਗਰਾਫ਼"
 
-#: ../panel-plugin/cpugraph.desktop.in.in.h:2
+#: ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "CPU ਲੋਡ ਲਈ ਗਰਾਫਿਕਲ ਦਿੱਖ"

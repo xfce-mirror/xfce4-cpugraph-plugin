@@ -2,15 +2,16 @@
 # Copyright (C) 2006 THE xfce4-cpugraph-plugin'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the xfce4-cpugraph-plugin package.
 # Tomáš Vadina <kyberdev@gmail.com>, 2011.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-23 10:04+0000\n"
+"POT-Creation-Date: 2012-04-18 23:23+0200\n"
 "PO-Revision-Date: 2011-06-03 16:42+0100\n"
 "Last-Translator: Tomáš Vadina <kyberdev@gmail.com>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
+"Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -102,62 +103,62 @@ msgstr "Interval obnovenia:"
 msgid "All"
 msgstr "Všetky"
 
-#: ../panel-plugin/properties.c:214
+#: ../panel-plugin/properties.c:213
 msgid "Tracked Core:"
 msgstr "Sledované jadro:"
 
-#: ../panel-plugin/properties.c:225
+#: ../panel-plugin/properties.c:224
 msgid "Width:"
 msgstr "Šírka:"
 
-#: ../panel-plugin/properties.c:227
+#: ../panel-plugin/properties.c:226
 msgid "Height:"
 msgstr "Výška:"
 
-#: ../panel-plugin/properties.c:241
+#: ../panel-plugin/properties.c:240
 msgid "Associated command:"
 msgstr "Priradený príkaz:"
 
-#: ../panel-plugin/properties.c:265
+#: ../panel-plugin/properties.c:264
 msgid "Normal"
 msgstr "Normálny"
 
-#: ../panel-plugin/properties.c:266
+#: ../panel-plugin/properties.c:265
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:267
+#: ../panel-plugin/properties.c:266
 msgid "No history"
 msgstr "Bez histórie"
 
-#: ../panel-plugin/properties.c:268
+#: ../panel-plugin/properties.c:267
 msgid "Grid"
 msgstr "Mriežka"
 
-#: ../panel-plugin/properties.c:272
+#: ../panel-plugin/properties.c:271
 msgid "Mode:"
 msgstr "Režim:"
 
-#: ../panel-plugin/properties.c:277
+#: ../panel-plugin/properties.c:276
 msgid "Solid"
 msgstr "Jednofarebný"
 
-#: ../panel-plugin/properties.c:278
+#: ../panel-plugin/properties.c:277
 msgid "Gradient"
 msgstr "Stupňovaný"
 
-#: ../panel-plugin/properties.c:279
+#: ../panel-plugin/properties.c:278
 msgid "Fire"
 msgstr "Oheň"
 
-#: ../panel-plugin/properties.c:283
+#: ../panel-plugin/properties.c:282
 msgid "Color mode: "
 msgstr "Farebný režim:"
 
-#: ../panel-plugin/cpugraph.desktop.in.in.h:1
+#: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
 msgstr "Graf procesora"
 
-#: ../panel-plugin/cpugraph.desktop.in.in.h:2
+#: ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Grafická prezentácia zaťaženia procesora"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cpu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-16 10:51+0000\n"
+"POT-Creation-Date: 2012-04-18 23:23+0200\n"
 "PO-Revision-Date: 2012-02-16 14:21+0200\n"
 "Last-Translator: Algimantas Margevičius <margevicius.algimantas@gmail.com>\n"
 "Language-Team: Lietuvių <>\n"
@@ -103,62 +103,62 @@ msgstr "Atnaujinimo intervalas:"
 msgid "All"
 msgstr "Visi"
 
-#: ../panel-plugin/properties.c:214
+#: ../panel-plugin/properties.c:213
 msgid "Tracked Core:"
 msgstr "Stebimas branduolys:"
 
-#: ../panel-plugin/properties.c:225
+#: ../panel-plugin/properties.c:224
 msgid "Width:"
 msgstr "Plotis:"
 
-#: ../panel-plugin/properties.c:227
+#: ../panel-plugin/properties.c:226
 msgid "Height:"
 msgstr "Aukštis:"
 
-#: ../panel-plugin/properties.c:241
+#: ../panel-plugin/properties.c:240
 msgid "Associated command:"
 msgstr "Susieta komanda:"
 
-#: ../panel-plugin/properties.c:265
+#: ../panel-plugin/properties.c:264
 msgid "Normal"
 msgstr "Normalus"
 
-#: ../panel-plugin/properties.c:266
+#: ../panel-plugin/properties.c:265
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:267
+#: ../panel-plugin/properties.c:266
 msgid "No history"
 msgstr "Be istorijos"
 
-#: ../panel-plugin/properties.c:268
+#: ../panel-plugin/properties.c:267
 msgid "Grid"
 msgstr "Tinklelis"
 
-#: ../panel-plugin/properties.c:272
+#: ../panel-plugin/properties.c:271
 msgid "Mode:"
 msgstr "Režimas:"
 
-#: ../panel-plugin/properties.c:277
+#: ../panel-plugin/properties.c:276
 msgid "Solid"
 msgstr "Vientisa"
 
-#: ../panel-plugin/properties.c:278
+#: ../panel-plugin/properties.c:277
 msgid "Gradient"
 msgstr "Gradientas"
 
-#: ../panel-plugin/properties.c:279
+#: ../panel-plugin/properties.c:278
 msgid "Fire"
 msgstr "Ugnis"
 
-#: ../panel-plugin/properties.c:283
+#: ../panel-plugin/properties.c:282
 msgid "Color mode: "
 msgstr "Spalvų režimas:"
 
-#: ../panel-plugin/cpugraph.desktop.in.in.h:1
+#: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
 msgstr "CPU Graph"
 
-#: ../panel-plugin/cpugraph.desktop.in.in.h:2
+#: ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Grafinis CPU apkrovos atvaizdavimas"
