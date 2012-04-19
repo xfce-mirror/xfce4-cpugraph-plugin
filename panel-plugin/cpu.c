@@ -33,6 +33,13 @@
 # define _(String) gettext (String)
 #endif
 
+/* check for new Xfce 4.10 panel features */
+#ifdef LIBXFCE4PANEL_CHECK_VERSION
+#if LIBXFCE4PANEL_CHECK_VERSION (4,9,0)
+#define HAS_PANEL_49
+#endif
+#endif
+
 static void cpugraph_construct( XfcePanelPlugin *plugin );
 static CPUGraph *create_gui( XfcePanelPlugin *plugin );
 static void create_bars( CPUGraph *base );
@@ -41,7 +48,11 @@ static void shutdown( XfcePanelPlugin *plugin, CPUGraph *base );
 static void delete_bars( CPUGraph *base );
 static gboolean size_cb( XfcePanelPlugin *plugin, guint size, CPUGraph *base );
 static void set_bars_size( CPUGraph *base, gint size, GtkOrientation orientation );
+#ifdef HAS_PANEL_49
+static void mode_cb( XfcePanelPlugin *plugin, XfcePanelPluginMode mode, CPUGraph *base );
+#else
 static void orientation_cb( XfcePanelPlugin *plugin, GtkOrientation orientation, CPUGraph *base );
+#endif
 static void set_bars_orientation( CPUGraph *base, GtkOrientation orientation);
 static gboolean update_cb( CPUGraph *base );
 static void update_tooltip( CPUGraph *base );
@@ -66,7 +77,11 @@ static void cpugraph_construct( XfcePanelPlugin *plugin )
 	g_signal_connect( plugin, "save", G_CALLBACK( write_settings ), base );
 	g_signal_connect( plugin, "configure-plugin", G_CALLBACK( create_options ), base );
 	g_signal_connect( plugin, "size-changed", G_CALLBACK( size_cb ), base );
+#ifdef HAS_PANEL_49
+	g_signal_connect( plugin, "mode-changed", G_CALLBACK( mode_cb ), base );
+#else
 	g_signal_connect( plugin, "orientation-changed", G_CALLBACK( orientation_cb ), base );
+#endif
 }
 
 static CPUGraph * create_gui( XfcePanelPlugin * plugin )
@@ -101,7 +116,11 @@ static CPUGraph * create_gui( XfcePanelPlugin * plugin )
 	base->has_bars = FALSE;
 	base->bars = NULL;
 
+#ifdef HAS_PANEL_49
+	mode_cb(plugin, orientation, base);
+#else
 	orientation_cb(plugin, orientation, base);
+#endif
 	gtk_widget_show_all(ebox);
 
 	base->tooltip_text = gtk_label_new( NULL );
@@ -224,10 +243,19 @@ static void set_bars_size( CPUGraph *base, gint size, GtkOrientation orientation
 	for( i=0; i < n ; i++ )
 		gtk_widget_set_size_request( GTK_WIDGET(base->bars[i]), h, v );
 }
+#ifdef HAS_PANEL_49
+static void mode_cb( XfcePanelPlugin * plugin, XfcePanelPluginMode mode, CPUGraph *base )
+{
+	GtkOrientation panel_orientation = xfce_panel_plugin_get_orientation (plugin);
+	GtkOrientation orientation = (mode == XFCE_PANEL_PLUGIN_MODE_VERTICAL) ?
+		GTK_ORIENTATION_VERTICAL : GTK_ORIENTATION_HORIZONTAL;
 
+	xfce_hvbox_set_orientation( XFCE_HVBOX( base->box ), panel_orientation );
+#else
 static void orientation_cb( XfcePanelPlugin * plugin, GtkOrientation orientation, CPUGraph *base )
 {
 	xfce_hvbox_set_orientation( XFCE_HVBOX( base->box ), orientation );
+#endif
 	if( base->has_bars )
 		set_bars_orientation( base, orientation );
 
