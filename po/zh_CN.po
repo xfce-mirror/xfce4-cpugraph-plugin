@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
-"Report-Msgid-Bugs-To: <xfce-i18n@xfce.org>\n"
-"POT-Creation-Date: 2012-04-20 06:30+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-04-23 20:45+0000\n"
 "PO-Revision-Date: 2010-11-27 20:45+0800\n"
 "Last-Translator: Chipong Luo <chipong.luo@yahoo.com>\n"
 "Language-Team: Chinese (Simplified) <xfce-i18n-cn@xfce.org>\n"
@@ -19,7 +19,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../panel-plugin/cpu.c:332
+#: ../panel-plugin/cpu.c:150 ../panel-plugin/cpugraph.desktop.in.h:2
+msgid "Graphical representation of the CPU load"
+msgstr "图形化的 CPU 负载呈现"
+
+#: ../panel-plugin/cpu.c:152
+msgid "Copyright (c) 2003-2012\n"
+msgstr "版权 (c) 2003-2012\n"
+
+#: ../panel-plugin/cpu.c:359
 #, c-format
 msgid "Usage: %u%%"
 msgstr "使用率：%u%%"
@@ -156,7 +164,3 @@ msgstr "颜色模式："
 #: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
 msgstr "CPU 图像"
-
-#: ../panel-plugin/cpugraph.desktop.in.h:2
-msgid "Graphical representation of the CPU load"
-msgstr "图形化的 CPU 负载呈现"
