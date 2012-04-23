@@ -47,6 +47,7 @@ static guint init_cpu_data( CpuData **data );
 static void shutdown( XfcePanelPlugin *plugin, CPUGraph *base );
 static void delete_bars( CPUGraph *base );
 static gboolean size_cb( XfcePanelPlugin *plugin, guint size, CPUGraph *base );
+static void about_cb( XfcePanelPlugin *plugin, CPUGraph *base );
 static void set_bars_size( CPUGraph *base, gint size, GtkOrientation orientation );
 #ifdef HAS_PANEL_49
 static void mode_cb( XfcePanelPlugin *plugin, XfcePanelPluginMode mode, CPUGraph *base );
@@ -73,6 +74,9 @@ static void cpugraph_construct( XfcePanelPlugin *plugin )
 	read_settings( plugin, base );
 	xfce_panel_plugin_menu_show_configure( plugin );
 
+	xfce_panel_plugin_menu_show_about( plugin );
+
+	g_signal_connect (plugin, "about", G_CALLBACK (about_cb), base );
 	g_signal_connect( plugin, "free-data", G_CALLBACK( shutdown ), base );
 	g_signal_connect( plugin, "save", G_CALLBACK( write_settings ), base );
 	g_signal_connect( plugin, "configure-plugin", G_CALLBACK( create_options ), base );
@@ -127,6 +131,29 @@ static CPUGraph * create_gui( XfcePanelPlugin * plugin )
 	g_object_ref( base->tooltip_text );
 
 	return base;
+}
+
+static void
+about_cb( XfcePanelPlugin *plugin, CPUGraph *base )
+{
+	GdkPixbuf *icon;
+	const gchar *auth[] = {
+		"Alexander Nordfelth <alex.nordfelth@telia.com>", "gatopeich <gatoguan-os@yahoo.com>",
+		"lidiriel <lidiriel@coriolys.org>","Angelo Miguel Arrifano <miknix@gmail.com>",
+		"Florian Rivoal <frivoal@gmail.com>","Peter Tribble <peter.tribble@gmail.com>", NULL};
+	icon = xfce_panel_pixbuf_from_source("xfce4-cpugraph-plugin", NULL, 32);
+	gtk_show_about_dialog(NULL,
+		"logo", icon,
+		"license", xfce_get_license_text (XFCE_LICENSE_TEXT_GPL),
+		"version", PACKAGE_VERSION,
+		"program-name", PACKAGE_NAME,
+		"comments", _("Graphical representation of the CPU load"),
+		"website", "http://goodies.xfce.org/projects/panel-plugins/xfce4-cpugraph-plugin",
+		"copyright", _("Copyright (c) 2003-2012\n"),
+		"authors", auth, NULL);
+
+	if(icon)
+		g_object_unref(G_OBJECT(icon));
 }
 
 static guint nb_bars( CPUGraph * base )
