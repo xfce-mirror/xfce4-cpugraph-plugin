@@ -2,24 +2,31 @@
 # Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
 # This file is distributed under the same license as the xfce4-cpugraph-plugin package.
 # Elias Julkunen <elias.julkunen@gmail.com>, 2007.
-# Jari Rahkonen <jari.rahkonen@pp1.inet.fi>, 2008-2010.
+# Jari Rahkonen <jari.rahkonen@pp1.inet.fi>, 2008-2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-18 23:23+0200\n"
-"PO-Revision-Date: 2010-06-21 19:20+0300\n"
+"POT-Creation-Date: 2012-04-27 06:39+0000\n"
+"PO-Revision-Date: 2012-04-27 14:55+0300\n"
 "Last-Translator: Jari Rahkonen <jari.rahkonen@pp1.inet.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2008-06-21 16:08+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../panel-plugin/cpu.c:303
+#: ../panel-plugin/cpu.c:150 ../panel-plugin/cpugraph.desktop.in.h:2
+msgid "Graphical representation of the CPU load"
+msgstr "Suorittimien käyttöasteen kuvaaja"
+
+#: ../panel-plugin/cpu.c:152
+msgid "Copyright (c) 2003-2012\n"
+msgstr "Tekijänoikeus (c) 2003-2012\n"
+
+#: ../panel-plugin/cpu.c:359
 #, c-format
 msgid "Usage: %u%%"
 msgstr "Käyttö: %u%%"
@@ -157,7 +164,3 @@ msgstr "Väritys: "
 #: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
 msgstr "Suoritinkäyttö"
-
-#: ../panel-plugin/cpugraph.desktop.in.h:2
-msgid "Graphical representation of the CPU load"
-msgstr "Suorittimien käyttöasteen kuvaaja"
