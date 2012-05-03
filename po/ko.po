@@ -23,7 +23,7 @@ msgstr ""
 #: ../panel-plugin/cpu.c:150
 #: ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
-msgstr "CPU 부하를 그래픽으로 표현"
+msgstr "CPU 부하를 그래픽으로 표현합니다"
 
 #: ../panel-plugin/cpu.c:152
 msgid "Copyright (c) 2003-2012\n"
