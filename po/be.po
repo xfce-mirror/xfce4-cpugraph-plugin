@@ -22,7 +22,7 @@ msgstr "Графічнае прадстаўленьне нагрузкі на Ц
 
 #: ../panel-plugin/cpu.c:152
 msgid "Copyright (c) 2003-2012\n"
-msgstr ""
+msgstr "Аўтарскія правы (c) 2003-2012\n"
 
 #: ../panel-plugin/cpu.c:359
 #, c-format
