@@ -101,6 +101,7 @@ static CPUGraph * create_gui( XfcePanelPlugin * plugin )
 	base->plugin = plugin;
 
 	ebox = gtk_event_box_new();
+	gtk_event_box_set_visible_window(GTK_EVENT_BOX(ebox), FALSE);
 	gtk_container_add( GTK_CONTAINER( plugin ), ebox );
 	xfce_panel_plugin_add_action_widget( plugin, ebox );
 	g_signal_connect( ebox, "button-press-event", G_CALLBACK( command_cb ), base );
