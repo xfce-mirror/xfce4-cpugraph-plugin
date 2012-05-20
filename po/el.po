@@ -1,20 +1,30 @@
 #
+# Efstathios Iosifidis <iosifidis@opensuse.org>, 2012.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-18 23:23+0200\n"
-"PO-Revision-Date: \n"
-"Last-Translator: George Vasilakos <forfolias@linuxteam.cs.teilar.gr>\n"
-"Language-Team: Greek  <<nls@tux.hellug.gr>>\n"
+"POT-Creation-Date: 2012-05-19 22:54+0000\n"
+"PO-Revision-Date: 2012-05-20 11:20+0300\n"
+"Last-Translator: Efstathios Iosifidis <iosifidis@opensuse.org>\n"
+"Language-Team: Ελληνικά, Σύγχρονα <opensuse-translation-el@opensuse.org>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\\n\\nX-Poedit-Language: Greek\n"
+"Content-Transfer-Encoding: 8bits\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Poedit-Country: GREECE\n"
 
-#: ../panel-plugin/cpu.c:303
+#: ../panel-plugin/cpu.c:152 ../panel-plugin/cpugraph.desktop.in.h:2
+msgid "Graphical representation of the CPU load"
+msgstr "Γραφική αναπαράσταση του φόρτου της CPU"
+
+#: ../panel-plugin/cpu.c:154
+msgid "Copyright (c) 2003-2012\n"
+msgstr "Πνευματικά Δικαιώματα (c) 2003-2012\n"
+
+#: ../panel-plugin/cpu.c:361
 #, c-format
 msgid "Usage: %u%%"
 msgstr "Χρήση: %u%%"
@@ -152,7 +162,3 @@ msgstr "Λειτουργία χρώματος:"
 #: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
 msgstr "Γράφημα CPU"
-
-#: ../panel-plugin/cpugraph.desktop.in.h:2
-msgid "Graphical representation of the CPU load"
-msgstr "Γραφική αναπαράσταση του φόρτου της CPU"
