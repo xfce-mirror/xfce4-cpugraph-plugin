@@ -1,4 +1,4 @@
-# Uyghur translations for xfce4-cpugraph-plugin package.
+# Uyghur translations for xfce4-cpugraph-plugin .
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Gheyret T.Kenji <gheyret@gmail.com>, 2010.
@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
@@ -28,11 +28,11 @@ msgstr "CPU گرافىك خاسلىقى"
 
 #: ../panel-plugin/properties.c:96
 msgid "Use non-linear time-scale"
-msgstr "非線形の時間スケールにする"
+msgstr "سىزىقسىز ۋاقىت ئۆلچىكى ئىشلەت"
 
 #: ../panel-plugin/properties.c:97
 msgid "Show frame"
-msgstr "フレームを表示する"
+msgstr "كاندۇك كۆرسەت"
 
 #: ../panel-plugin/properties.c:98
 msgid "Show border"
@@ -45,11 +45,11 @@ msgstr[0] "ئىشلىتىلىشىنى كۆرسىتىدىغان بالداقنى 
 
 #: ../panel-plugin/properties.c:101
 msgid "Run in terminal"
-msgstr "تېرمىنالدا ئىجرا قىلىدۇ"
+msgstr "تېرمىنالدا ئىجرا قىل"
 
 #: ../panel-plugin/properties.c:102
 msgid "Use startup notification"
-msgstr "قوزغالغاندا ئۇقتۇرۇش قىلىدۇ"
+msgstr "قوزغالغاندا ئۇقتۇرۇش قىل"
 
 #: ../panel-plugin/properties.c:105
 msgid "Color 1:"
@@ -81,15 +81,15 @@ msgstr "بەك تەز (~250 مىللىسېكۇنت)"
 
 #: ../panel-plugin/properties.c:194
 msgid "Fast (~500ms)"
-msgstr "تەز (~500مىللىسېكۇنت)"
+msgstr "تەز (~500 مىللىسېكۇنت)"
 
 #: ../panel-plugin/properties.c:195
 msgid "Normal (~750ms)"
-msgstr "normal (~750مىللىسېكۇنت)"
+msgstr "نورمال (~750 مىللىسېكۇنت)"
 
 #: ../panel-plugin/properties.c:196
 msgid "Slow (~1s)"
-msgstr "遅い (~1مىللىسېكۇنت)"
+msgstr "ئاستا (~1 سېكۇنت)"
 
 #: ../panel-plugin/properties.c:200
 msgid "Update Interval:"
@@ -97,7 +97,7 @@ msgstr "يېڭىلاش ۋاقتى:"
 
 #: ../panel-plugin/properties.c:208
 msgid "All"
-msgstr ""
+msgstr "ھەممىسى"
 
 #: ../panel-plugin/properties.c:213
 msgid "Tracked Core:"
@@ -141,11 +141,11 @@ msgstr "لىق تولغان"
 
 #: ../panel-plugin/properties.c:277
 msgid "Gradient"
-msgstr "سۈزۈك گۈل نۇسخىسى"
+msgstr "كۆركەم"
 
 #: ../panel-plugin/properties.c:278
 msgid "Fire"
-msgstr "炎"
+msgstr "ئۇچقۇن"
 
 #: ../panel-plugin/properties.c:282
 msgid "Color mode: "
