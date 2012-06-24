@@ -249,6 +249,7 @@ static gboolean size_cb( XfcePanelPlugin *plugin, guint size, CPUGraph *base )
 
 	if( base->has_bars )
 		set_bars_size( base, size, orientation );
+	set_border( base, base->has_border );
 
 	return TRUE;
 }
@@ -260,13 +261,13 @@ static void set_bars_size( CPUGraph *base, gint size, GtkOrientation orientation
 	gint h, v;
 	if( orientation == GTK_ORIENTATION_HORIZONTAL )
 	{
-		h = BORDER;
-		v = size;
+		h = 8;
+		v = -1;
 	}
 	else
 	{
-		h = size;
-		v = BORDER;
+		h = -1;
+		v = 8;
 	}
 	n = nb_bars( base );
 	for( i=0; i < n ; i++ )
@@ -443,8 +444,11 @@ void set_bars( CPUGraph * base, gboolean bars)
 
 void set_border( CPUGraph *base, gboolean border )
 {
+	int border_width = (xfce_panel_plugin_get_size( base->plugin ) > 26 ? 2 : 1);
 	base->has_border = border;
-	gtk_container_set_border_width( GTK_CONTAINER( base->box ), border ? BORDER / 2 : 0 );
+	if (!base->has_border)
+		border_width = 0;
+	gtk_container_set_border_width( GTK_CONTAINER( base->box ), border_width);
 }
 
 void set_frame( CPUGraph *base, gboolean frame )
