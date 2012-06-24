@@ -62,6 +62,8 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	GdkColor foreground3;
 	GdkColor background;
 	GdkColor barscolor;
+	GtkWidget* bar;
+	GtkStyle* barstyle;
 	guint size;
 	const gchar  *associated_command;
 	gboolean in_terminal;
@@ -83,10 +85,11 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	background.green = 65535;
 	background.blue = 65535;
 
-	/* gold yellow */
-	barscolor.red = 65535;
-	barscolor.green = 47872;
-	barscolor.blue = 0;
+	/* use color from theme for default bar color */
+	bar = gtk_progress_bar_new();
+	barstyle = gtk_widget_get_style(bar);
+	gtk_widget_destroy(bar);
+	barscolor = barstyle->bg[GTK_STATE_SELECTED];
 
 	size = xfce_panel_plugin_get_size( plugin );
 	default_command( &associated_command, &in_terminal, &startup_notification );
