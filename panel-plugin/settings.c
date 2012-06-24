@@ -88,8 +88,8 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	/* use color from theme for default bar color */
 	bar = gtk_progress_bar_new();
 	barstyle = gtk_widget_get_style(bar);
-	gtk_widget_destroy(bar);
 	barscolor = barstyle->bg[GTK_STATE_SELECTED];
+	gtk_widget_destroy(bar);
 
 	size = xfce_panel_plugin_get_size( plugin );
 	default_command( &associated_command, &in_terminal, &startup_notification );
