@@ -150,7 +150,6 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 
 void write_settings( XfcePanelPlugin *plugin, CPUGraph *base )
 {
-	char value[10];
 	XfceRc *rc;
 	char *file;
 
@@ -176,15 +175,10 @@ void write_settings( XfcePanelPlugin *plugin, CPUGraph *base )
 	xfce_rc_write_int_entry( rc, "StartupNotification", base->startup_notification );
 	xfce_rc_write_int_entry( rc, "ColorMode", base->color_mode );
 
-	g_snprintf( value, 8, "#%02X%02X%02X", base->colors[1].red >> 8, base->colors[1].green >> 8, base->colors[1].blue >> 8 );
-	xfce_rc_write_entry( rc, "Foreground1", value );
-	g_snprintf( value, 8, "#%02X%02X%02X", base->colors[2].red >> 8, base->colors[2].green >> 8, base->colors[2].blue >> 8 );
-	xfce_rc_write_entry( rc, "Foreground2", value );
-	g_snprintf( value, 8, "#%02X%02X%02X", base->colors[0].red >> 8, base->colors[0].green >> 8, base->colors[0].blue >> 8 );
-	xfce_rc_write_entry( rc, "Background", value );
-	g_snprintf( value, 8, "#%02X%02X%02X", base->colors[3].red >> 8, base->colors[3].green >> 8, base->colors[3].blue >> 8 );
-	xfce_rc_write_entry( rc, "Foreground3", value );
-	g_snprintf( value, 8, "#%02X%02X%02X", base->colors[4].red >> 8, base->colors[4].green >> 8, base->colors[4].blue >> 8 );
-	xfce_rc_write_entry( rc, "BarsColor", value );
+	xfce_rc_write_entry( rc, "Foreground1", gdk_color_to_string(&(base->colors[1])) );
+	xfce_rc_write_entry( rc, "Foreground2", gdk_color_to_string(&(base->colors[2])) );
+	xfce_rc_write_entry( rc, "Foreground3", gdk_color_to_string(&(base->colors[3])) );
+	xfce_rc_write_entry( rc, "Background", gdk_color_to_string(&(base->colors[0])) );
+	xfce_rc_write_entry( rc, "BarsColor", gdk_color_to_string(&(base->colors[4])) );
 	xfce_rc_close( rc );
 }
