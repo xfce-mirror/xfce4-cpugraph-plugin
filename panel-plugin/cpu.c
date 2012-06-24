@@ -172,6 +172,11 @@ static void create_bars( CPUGraph *base )
 	for( i=0; i< n; i++ )
 	{
 		base->bars[i] = GTK_WIDGET(gtk_progress_bar_new());
+		/* Set bar colors */
+		gtk_widget_modify_bg(base->bars[i], GTK_STATE_PRELIGHT, &base->colors[4]);
+		gtk_widget_modify_bg(base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
+		gtk_widget_modify_base(base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
+
 		gtk_box_pack_end( GTK_BOX(base->box), base->bars[i], FALSE, FALSE, 0 );
 		gtk_widget_show( base->bars[i] );
 	}
@@ -505,11 +510,25 @@ void set_mode( CPUGraph *base, guint mode )
 
 void set_color( CPUGraph *base, guint number, GdkColor color )
 {
+	guint i, n;
+
 	base->colors[number] = color;
 	if( number == 0 )
 	{
 		gtk_widget_modify_bg( base->draw_area, GTK_STATE_INSENSITIVE, &base->colors[0] );
 		gtk_widget_modify_bg( base->draw_area, GTK_STATE_NORMAL, &base->colors[0] );
+	}
+	if( number == 4 )
+	{
+		n = nb_bars( base );
+
+		for( i=0; i< n; i++ )
+		{
+			/* Set bar colors */
+			gtk_widget_modify_bg(base->bars[i], GTK_STATE_PRELIGHT, &base->colors[4]);
+			gtk_widget_modify_bg(base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
+			gtk_widget_modify_base(base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
+		}
 	}
 }
 

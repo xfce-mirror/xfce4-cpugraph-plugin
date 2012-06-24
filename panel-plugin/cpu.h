@@ -42,7 +42,7 @@ typedef struct
 	GtkWidget *draw_area;
 	GtkWidget *box;
 	GtkWidget **bars;
-	GtkWidget *color_buttons[4];
+	GtkWidget *color_buttons[5];
 	GtkWidget *tooltip_text;
 
 	/* Settings */
@@ -57,7 +57,7 @@ typedef struct
 	gchar  *command;
 	gboolean in_terminal;
 	gboolean startup_notification;
-	GdkColor colors[4];
+	GdkColor colors[5];
 	guint tracked_core;
 
 	/* Runtime data */

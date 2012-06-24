@@ -61,6 +61,7 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	GdkColor foreground2;
 	GdkColor foreground3;
 	GdkColor background;
+	GdkColor barscolor;
 	guint size;
 	const gchar  *associated_command;
 	gboolean in_terminal;
@@ -81,6 +82,11 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	background.red = 65535;
 	background.green = 65535;
 	background.blue = 65535;
+
+	/* gold yellow */
+	barscolor.red = 65535;
+	barscolor.green = 47872;
+	barscolor.blue = 0;
 
 	size = xfce_panel_plugin_get_size( plugin );
 	default_command( &associated_command, &in_terminal, &startup_notification );
@@ -113,6 +119,8 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 				gdk_color_parse( value, &foreground3 );
 			if( (value = xfce_rc_read_entry( rc, "Background", NULL )) )
 				gdk_color_parse( value, &background );
+			if( (value = xfce_rc_read_entry( rc, "BarsColor", NULL )) )
+				gdk_color_parse( value, &barscolor );
 
 			xfce_rc_close( rc );
 		}
@@ -134,6 +142,7 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	set_color( base, 2, foreground2 );
 	set_color( base, 3, foreground3 );
 	set_color( base, 0, background );
+	set_color( base, 4, barscolor );
 }
 
 void write_settings( XfcePanelPlugin *plugin, CPUGraph *base )
@@ -172,5 +181,7 @@ void write_settings( XfcePanelPlugin *plugin, CPUGraph *base )
 	xfce_rc_write_entry( rc, "Background", value );
 	g_snprintf( value, 8, "#%02X%02X%02X", base->colors[3].red >> 8, base->colors[3].green >> 8, base->colors[3].blue >> 8 );
 	xfce_rc_write_entry( rc, "Foreground3", value );
+	g_snprintf( value, 8, "#%02X%02X%02X", base->colors[4].red >> 8, base->colors[4].green >> 8, base->colors[4].blue >> 8 );
+	xfce_rc_write_entry( rc, "BarsColor", value );
 	xfce_rc_close( rc );
 }

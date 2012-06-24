@@ -53,7 +53,9 @@ static void change_color_0( GtkColorButton *button, CPUGraph *base );
 static void change_color_1( GtkColorButton * button, CPUGraph * base );
 static void change_color_2( GtkColorButton *button, CPUGraph *base );
 static void change_color_3( GtkColorButton *button, CPUGraph *base );
+static void change_color_4( GtkColorButton *button, CPUGraph *base );
 static void select_active_colors( CPUGraph * base );
+static void select_active_barscolors( CPUGraph * base );
 static void change_mode( GtkComboBox *om, CPUGraph *base );
 static void change_color_mode( GtkComboBox *om, CPUGraph *base );
 static void response_cb( GtkWidget *dlg, gint response, CPUGraph *base );
@@ -109,6 +111,8 @@ void create_options( XfcePanelPlugin *plugin, CPUGraph *base )
 	select_active_colors( base );
 	setup_mode_option( vbox2, sg, base );
 	setup_color_mode_option( vbox2, sg, base );
+	setup_color_option( vbox2, sg, base, 4, _("Bars color:"), G_CALLBACK( change_color_4 ) );
+	select_active_barscolors( base );
 
 	Notebook = gtk_notebook_new();
 	gtk_container_set_border_width( GTK_CONTAINER( Notebook ), BORDER - 2 );
@@ -324,6 +328,11 @@ static void change_color_0( GtkColorButton * button, CPUGraph * base )
 	change_color( button, base, 0);
 }
 
+static void change_color_4( GtkColorButton * button, CPUGraph * base )
+{
+	change_color( button, base, 4);
+}
+
 static void select_active_colors( CPUGraph * base )
 {
 	if( base->color_mode != 0 || base->mode == 1 || base->mode == 3 )
@@ -335,6 +344,14 @@ static void select_active_colors( CPUGraph * base )
 		gtk_widget_set_sensitive( GTK_WIDGET( base->color_buttons[3] ), TRUE );
 	else
 		gtk_widget_set_sensitive( GTK_WIDGET( base->color_buttons[3] ), FALSE );
+}
+
+static void select_active_barscolors( CPUGraph * base )
+{
+	if( base->has_bars )
+		gtk_widget_set_sensitive( GTK_WIDGET( base->color_buttons[4] ), TRUE );
+	else
+		gtk_widget_set_sensitive( GTK_WIDGET( base->color_buttons[4] ), FALSE );
 }
 
 static void change_mode( GtkComboBox * combo, CPUGraph * base )
@@ -369,6 +386,7 @@ static void change_border( GtkToggleButton * button, CPUGraph * base )
 static void change_bars( GtkToggleButton * button, CPUGraph * base )
 {
 	set_bars( base, gtk_toggle_button_get_active( button ) );
+	select_active_barscolors( base );
 }
 
 static void change_size( GtkSpinButton * sb, CPUGraph *base)
