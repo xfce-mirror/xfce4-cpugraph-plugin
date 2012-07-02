@@ -517,7 +517,7 @@ void set_color( CPUGraph *base, guint number, GdkColor color )
 		gtk_widget_modify_bg( base->draw_area, GTK_STATE_INSENSITIVE, &base->colors[0] );
 		gtk_widget_modify_bg( base->draw_area, GTK_STATE_NORMAL, &base->colors[0] );
 	}
-	if( number == 4 )
+	if( number == 4 && base->has_bars )
 	{
 		n = nb_bars( base );
 
