@@ -281,18 +281,17 @@ static void set_bars_size( CPUGraph *base, gint size, GtkOrientation orientation
 #ifdef HAS_PANEL_49
 static void mode_cb( XfcePanelPlugin * plugin, XfcePanelPluginMode mode, CPUGraph *base )
 {
-	GtkOrientation panel_orientation = xfce_panel_plugin_get_orientation (plugin);
-	GtkOrientation orientation = (mode == XFCE_PANEL_PLUGIN_MODE_VERTICAL) ?
-		GTK_ORIENTATION_VERTICAL : GTK_ORIENTATION_HORIZONTAL;
+	GtkOrientation orientation = (mode == XFCE_PANEL_PLUGIN_MODE_HORIZONTAL) ?
+		GTK_ORIENTATION_HORIZONTAL : GTK_ORIENTATION_VERTICAL;
 
-	xfce_hvbox_set_orientation( XFCE_HVBOX( base->box ), panel_orientation );
+	xfce_hvbox_set_orientation( XFCE_HVBOX( base->box ), xfce_panel_plugin_get_orientation (plugin));
 #else
 static void orientation_cb( XfcePanelPlugin * plugin, GtkOrientation orientation, CPUGraph *base )
 {
 	xfce_hvbox_set_orientation( XFCE_HVBOX( base->box ), orientation );
 #endif
 	if( base->has_bars )
-		set_bars_orientation( base, panel_orientation );
+		set_bars_orientation( base, orientation );
 
 	size_cb( plugin, xfce_panel_plugin_get_size( base->plugin ), base);
 }
