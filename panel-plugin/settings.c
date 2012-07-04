@@ -62,8 +62,6 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	GdkColor foreground3;
 	GdkColor background;
 	GdkColor barscolor;
-	GtkWidget* bar;
-	GtkStyle* barstyle;
 	guint size;
 	const gchar  *associated_command;
 	gboolean in_terminal;
@@ -85,11 +83,9 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	background.green = 65535;
 	background.blue = 65535;
 
-	/* use color from theme for default bar color */
-	bar = gtk_progress_bar_new();
-	barstyle = gtk_widget_get_style(bar);
-	barscolor = barstyle->bg[GTK_STATE_SELECTED];
-	gtk_widget_destroy(bar);
+	barscolor.red = 65535;
+	barscolor.green = 47872;
+	barscolor.blue = 0;
 
 	size = xfce_panel_plugin_get_size( plugin );
 	default_command( &associated_command, &in_terminal, &startup_notification );
@@ -122,8 +118,10 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 				gdk_color_parse( value, &foreground3 );
 			if( (value = xfce_rc_read_entry( rc, "Background", NULL )) )
 				gdk_color_parse( value, &background );
-			if( (value = xfce_rc_read_entry( rc, "BarsColor", NULL )) )
+			if( (value = xfce_rc_read_entry( rc, "BarsColor", NULL )) ) {
 				gdk_color_parse( value, &barscolor );
+				base->has_barcolor = TRUE;
+			}
 
 			xfce_rc_close( rc );
 		}
@@ -179,6 +177,7 @@ void write_settings( XfcePanelPlugin *plugin, CPUGraph *base )
 	xfce_rc_write_entry( rc, "Foreground2", gdk_color_to_string(&(base->colors[2])) );
 	xfce_rc_write_entry( rc, "Foreground3", gdk_color_to_string(&(base->colors[3])) );
 	xfce_rc_write_entry( rc, "Background", gdk_color_to_string(&(base->colors[0])) );
-	xfce_rc_write_entry( rc, "BarsColor", gdk_color_to_string(&(base->colors[4])) );
+	if (base->has_barcolor)
+		xfce_rc_write_entry( rc, "BarsColor", gdk_color_to_string(&(base->colors[4])) );
 	xfce_rc_close( rc );
 }

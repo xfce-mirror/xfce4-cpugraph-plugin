@@ -330,6 +330,7 @@ static void change_color_0( GtkColorButton * button, CPUGraph * base )
 
 static void change_color_4( GtkColorButton * button, CPUGraph * base )
 {
+	base->has_barcolor = TRUE;
 	change_color( button, base, 4);
 }
 

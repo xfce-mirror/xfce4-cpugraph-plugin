@@ -120,6 +120,7 @@ static CPUGraph * create_gui( XfcePanelPlugin * plugin )
 	g_signal_connect_after( base->draw_area, "expose-event", G_CALLBACK( draw_area_cb ), base );
 
 	base->has_bars = FALSE;
+	base->has_barcolor = FALSE;
 	base->bars = NULL;
 
 #ifdef HAS_PANEL_49
@@ -173,10 +174,11 @@ static void create_bars( CPUGraph *base )
 	{
 		base->bars[i] = GTK_WIDGET(gtk_progress_bar_new());
 		/* Set bar colors */
-		gtk_widget_modify_bg(base->bars[i], GTK_STATE_PRELIGHT, &base->colors[4]);
-		gtk_widget_modify_bg(base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
-		gtk_widget_modify_base(base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
-
+		if (base->has_barcolor) {
+			gtk_widget_modify_bg(base->bars[i], GTK_STATE_PRELIGHT, &base->colors[4]);
+			gtk_widget_modify_bg(base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
+			gtk_widget_modify_base(base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
+		}
 		gtk_box_pack_end( GTK_BOX(base->box), base->bars[i], FALSE, FALSE, 0 );
 		gtk_widget_show( base->bars[i] );
 	}
@@ -517,7 +519,7 @@ void set_color( CPUGraph *base, guint number, GdkColor color )
 		gtk_widget_modify_bg( base->draw_area, GTK_STATE_INSENSITIVE, &base->colors[0] );
 		gtk_widget_modify_bg( base->draw_area, GTK_STATE_NORMAL, &base->colors[0] );
 	}
-	if( number == 4 && base->has_bars )
+	if( number == 4 && base->has_bars && base->has_barcolor )
 	{
 		n = nb_bars( base );
 

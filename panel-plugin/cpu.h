@@ -54,6 +54,7 @@ typedef struct
 	gboolean has_frame;
 	gboolean has_border;
 	gboolean has_bars;
+	gboolean has_barcolor;
 	gchar  *command;
 	gboolean in_terminal;
 	gboolean startup_notification;
