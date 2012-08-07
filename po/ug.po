@@ -24,7 +24,7 @@ msgstr "ئىشلىتىلىۋاتقىنى: %u%%"
 
 #: ../panel-plugin/properties.c:78
 msgid "CPU Graph Properties"
-msgstr "CPU گرافىك خاسلىقى"
+msgstr "س پ ئۇ(CPU) گرافىك خاسلىقى"
 
 #: ../panel-plugin/properties.c:96
 msgid "Use non-linear time-scale"
@@ -101,7 +101,7 @@ msgstr "ھەممىسى"
 
 #: ../panel-plugin/properties.c:213
 msgid "Tracked Core:"
-msgstr ""
+msgstr "كۆزىتىلىدىغان يادرو:"
 
 #: ../panel-plugin/properties.c:224
 msgid "Width:"
@@ -153,8 +153,8 @@ msgstr "رەڭگى: "
 
 #: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
-msgstr "CPU گرافىكى"
+msgstr "س پ ئۇ(CPU) گرافىكى"
 
 #: ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
-msgstr "CPU يۈكىنى گرافىك شەكلىدە قىلىپ كۆرسىتىدۇ"
+msgstr "س پ ئۇ(CPU) يۈكىنى گرافىك شەكلىدە قىلىپ كۆرسىتىدۇ"
