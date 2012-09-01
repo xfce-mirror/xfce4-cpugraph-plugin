@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xfce4-cpugraph-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-30 06:33+0000\n"
+"POT-Creation-Date: 2012-09-01 12:03+0000\n"
 "PO-Revision-Date: 2008-11-24 21:06+0100\n"
 "Last-Translator: Florian Rivoal <frivoal@gmail.com>\n"
 "Language-Team: French <xfce-i18n@xfce.org>\n"
@@ -76,7 +76,6 @@ msgid "Background:"
 msgstr "Arrière-plan :"
 
 #: ../panel-plugin/properties.c:114
-#, fuzzy
 msgid "Bars color:"
 msgstr "Barres de couleurs :"
 
