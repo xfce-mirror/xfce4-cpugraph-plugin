@@ -9,24 +9,24 @@ msgstr ""
 "Project-Id-Version: master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-09-24 11:06+0000\n"
-"PO-Revision-Date: 2012-09-24 20:22+0100\n"
+"PO-Revision-Date: 2012-09-25 10:35+0200\n"
 "Last-Translator: Саша Петровић <salepetronije@gmail.com>\n"
 "Language-Team: српски <xfce-i18n@xfce.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
+"%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Gtranslator 2.91.5\n"
 
-#: ../panel-plugin/cpu.c:153
-#: ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.c:153 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Сликовни приказ оптерећења процесора"
 
 #: ../panel-plugin/cpu.c:155
 msgid "Copyright (c) 2003-2012\n"
-msgstr "Ауторска права (c) 2003-2012"
+msgstr "Ауторска права (c) 2003-2012\n"
 
 #: ../panel-plugin/cpu.c:368
 #, c-format
@@ -66,15 +66,15 @@ msgstr "Користи обавештења при покретању"
 
 #: ../panel-plugin/properties.c:107
 msgid "Color 1:"
-msgstr "Боја 1"
+msgstr "Боја 1:"
 
 #: ../panel-plugin/properties.c:108
 msgid "Color 2:"
-msgstr "Боја 2"
+msgstr "Боја 2:"
 
 #: ../panel-plugin/properties.c:109
 msgid "Color 3:"
-msgstr "Боја 3"
+msgstr "Боја 3:"
 
 #: ../panel-plugin/properties.c:110
 msgid "Background:"
@@ -82,7 +82,7 @@ msgstr "Позадина:"
 
 #: ../panel-plugin/properties.c:114
 msgid "Bars color:"
-msgstr "Боја трака"
+msgstr "Боја трака:"
 
 #: ../panel-plugin/properties.c:119
 msgid "Appearance"
@@ -102,7 +102,7 @@ msgstr "брзо (~500ms)"
 
 #: ../panel-plugin/properties.c:199
 msgid "Normal (~750ms)"
-msgstr "нормалнo(~750ms)"
+msgstr "нормалнo (~750ms)"
 
 #: ../panel-plugin/properties.c:200
 msgid "Slow (~1s)"
@@ -171,4 +171,3 @@ msgstr "Начин бојења: "
 #: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
 msgstr "График процесора"
-
