@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-03 20:54+0200\n"
-"PO-Revision-Date: 2014-04-27 16:16+0000\n"
+"PO-Revision-Date: 2014-05-12 17:51+0000\n"
 "Last-Translator: haarek <haarektrans@gmail.com>\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/projects/p/xfce-panel-plugins/language/nb/)\n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,7 @@ msgstr "Forbruk: %u%%"
 
 #: ../panel-plugin/properties.c:80
 msgid "CPU Graph Properties"
-msgstr ""
+msgstr "Egenskaper for prosessorgraf"
 
 #: ../panel-plugin/properties.c:98
 msgid "Use non-linear time-scale"
@@ -46,13 +46,13 @@ msgstr "Vis ramme"
 
 #: ../panel-plugin/properties.c:100
 msgid "Show border"
-msgstr ""
+msgstr "Vis kanter"
 
 #: ../panel-plugin/properties.c:101
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Vis nåværende forbruksstolpe"
+msgstr[1] "Vis nåværende forbruksstolper"
 
 #: ../panel-plugin/properties.c:103
 msgid "Run in terminal"
@@ -80,7 +80,7 @@ msgstr "Bakgrunn:"
 
 #: ../panel-plugin/properties.c:114
 msgid "Bars color:"
-msgstr ""
+msgstr "Stolpefarger:"
 
 #: ../panel-plugin/properties.c:119
 msgid "Appearance"
@@ -116,7 +116,7 @@ msgstr "Alle"
 
 #: ../panel-plugin/properties.c:217
 msgid "Tracked Core:"
-msgstr ""
+msgstr "Overvåket kjerne:"
 
 #: ../panel-plugin/properties.c:228
 msgid "Width:"
@@ -144,7 +144,7 @@ msgstr "Ingen historikk"
 
 #: ../panel-plugin/properties.c:271
 msgid "Grid"
-msgstr ""
+msgstr "Rutenett"
 
 #: ../panel-plugin/properties.c:275
 msgid "Mode:"
