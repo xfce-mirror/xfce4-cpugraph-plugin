@@ -5,14 +5,15 @@
 # Translators:
 #  <abel.martin.ruiz@gmail.com>, 2009
 # Adolfo Jayme Barrientos <fitoschido@ubuntu.com>, 2014
+# Pablo Lezaeta <prflr88@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-03 20:54+0200\n"
-"PO-Revision-Date: 2014-03-22 11:36+0000\n"
-"Last-Translator: Adolfo Jayme Barrientos <fitoschido@ubuntu.com>\n"
-"Language-Team: Spanish (http://www.transifex.com/projects/p/xfce/language/es/)\n"
+"PO-Revision-Date: 2014-05-19 05:23+0000\n"
+"Last-Translator: Pablo Lezaeta <prflr88@gmail.com>\n"
+"Language-Team: Spanish (http://www.transifex.com/projects/p/xfce-panel-plugins/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,20 +22,20 @@ msgstr ""
 
 #: ../panel-plugin/cpu.c:153 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
-msgstr "Representación gráfica de la carga de CPU"
+msgstr "Representación gráfica de la carga del procesador"
 
 #: ../panel-plugin/cpu.c:155
 msgid "Copyright (c) 2003-2012\n"
-msgstr "Copyright (c) 2003-2012\n"
+msgstr "Derechos de autor (c) 2003-2012\n"
 
 #: ../panel-plugin/cpu.c:368
 #, c-format
 msgid "Usage: %u%%"
-msgstr "Uso: %u%%"
+msgstr "Uso: %u %%"
 
 #: ../panel-plugin/properties.c:80
 msgid "CPU Graph Properties"
-msgstr "Propiedades del gráfico de CPU"
+msgstr "Propiedades del gráfico del procesador"
 
 #: ../panel-plugin/properties.c:98
 msgid "Use non-linear time-scale"
@@ -140,7 +141,7 @@ msgstr "LED"
 
 #: ../panel-plugin/properties.c:270
 msgid "No history"
-msgstr "Sin historial"
+msgstr "Sin histórico"
 
 #: ../panel-plugin/properties.c:271
 msgid "Grid"
@@ -156,7 +157,7 @@ msgstr "Sólido"
 
 #: ../panel-plugin/properties.c:281
 msgid "Gradient"
-msgstr "Gradiente"
+msgstr "Degradado"
 
 #: ../panel-plugin/properties.c:282
 msgid "Fire"
@@ -168,4 +169,4 @@ msgstr "Modo de color:"
 
 #: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
-msgstr "Gráfica de CPU"
+msgstr "Gráfico del procesador"
