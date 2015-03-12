@@ -1,164 +1,169 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# Algimantas Margevičius <margevicius.algimantas@gmail.com>, 2012.
 # 
+# Translators:
+# Algimantas Margevičius <margevicius.algimantas@gmail.com>, 2012
+# Moo, 2015
 msgid ""
 msgstr ""
-"Project-Id-Version: cpu\n"
+"Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-24 02:30+0000\n"
-"PO-Revision-Date: 2012-02-16 14:21+0200\n"
-"Last-Translator: Algimantas Margevičius <margevicius.algimantas@gmail.com>\n"
-"Language-Team: Lietuvių <>\n"
+"POT-Creation-Date: 2013-07-03 20:54+0200\n"
+"PO-Revision-Date: 2015-03-12 19:55+0000\n"
+"Last-Translator: Moo\n"
+"Language-Team: Lithuanian (http://www.transifex.com/projects/p/xfce-panel-plugins/language/lt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Language: lt\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../panel-plugin/cpu.c:150 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.c:153 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Grafinis CPU apkrovos atvaizdavimas"
 
-#: ../panel-plugin/cpu.c:152
+#: ../panel-plugin/cpu.c:155
 msgid "Copyright (c) 2003-2012\n"
 msgstr "Autorinės teisės (c) 2003-2012\n"
 
-#: ../panel-plugin/cpu.c:359
+#: ../panel-plugin/cpu.c:368
 #, c-format
 msgid "Usage: %u%%"
 msgstr "Apkrova: %u%%"
 
-#: ../panel-plugin/properties.c:78
+#: ../panel-plugin/properties.c:80
 msgid "CPU Graph Properties"
 msgstr "CPU Graph savybės"
 
-#: ../panel-plugin/properties.c:96
+#: ../panel-plugin/properties.c:98
 msgid "Use non-linear time-scale"
 msgstr "Naudoti nelinijinę laiko skalę"
 
-#: ../panel-plugin/properties.c:97
+#: ../panel-plugin/properties.c:99
 msgid "Show frame"
 msgstr "Rodyti rėmelį"
 
-#: ../panel-plugin/properties.c:98
+#: ../panel-plugin/properties.c:100
 msgid "Show border"
 msgstr "Rodyti kampus"
 
-#: ../panel-plugin/properties.c:99
+#: ../panel-plugin/properties.c:101
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Rodyti dabartinę apkrovos juostą"
 msgstr[1] "Rodyti dabartines apkrovos juostas"
 msgstr[2] "Rodyti dabartinių apkrovos juostų"
 
-#: ../panel-plugin/properties.c:101
+#: ../panel-plugin/properties.c:103
 msgid "Run in terminal"
 msgstr "Vykdyti terminale"
 
-#: ../panel-plugin/properties.c:102
+#: ../panel-plugin/properties.c:104
 msgid "Use startup notification"
 msgstr "Paleidimo metu naudoti perspėjimą"
 
-#: ../panel-plugin/properties.c:105
+#: ../panel-plugin/properties.c:107
 msgid "Color 1:"
 msgstr "Spalva 1:"
 
-#: ../panel-plugin/properties.c:106
+#: ../panel-plugin/properties.c:108
 msgid "Color 2:"
 msgstr "Spalva 2:"
 
-#: ../panel-plugin/properties.c:107
+#: ../panel-plugin/properties.c:109
 msgid "Color 3:"
 msgstr "Spalva 3:"
 
-#: ../panel-plugin/properties.c:108
+#: ../panel-plugin/properties.c:110
 msgid "Background:"
 msgstr "Fonas:"
 
-#: ../panel-plugin/properties.c:115
+#: ../panel-plugin/properties.c:114
+msgid "Bars color:"
+msgstr "Juostų spalva:"
+
+#: ../panel-plugin/properties.c:119
 msgid "Appearance"
 msgstr "Išvaizda"
 
-#: ../panel-plugin/properties.c:117
+#: ../panel-plugin/properties.c:121
 msgid "Advanced"
 msgstr "Papildomi"
 
-#: ../panel-plugin/properties.c:193
+#: ../panel-plugin/properties.c:197
 msgid "Fastest (~250ms)"
 msgstr "Greičiausias (~250ms)"
 
-#: ../panel-plugin/properties.c:194
+#: ../panel-plugin/properties.c:198
 msgid "Fast (~500ms)"
 msgstr "Greitas ((~500ms)"
 
-#: ../panel-plugin/properties.c:195
+#: ../panel-plugin/properties.c:199
 msgid "Normal (~750ms)"
 msgstr "Normalus (~750ms)"
 
-#: ../panel-plugin/properties.c:196
+#: ../panel-plugin/properties.c:200
 msgid "Slow (~1s)"
 msgstr "Lėtas (~1s)"
 
-#: ../panel-plugin/properties.c:200
+#: ../panel-plugin/properties.c:204
 msgid "Update Interval:"
 msgstr "Atnaujinimo intervalas:"
 
-#: ../panel-plugin/properties.c:208
+#: ../panel-plugin/properties.c:212
 msgid "All"
 msgstr "Visi"
 
-#: ../panel-plugin/properties.c:213
+#: ../panel-plugin/properties.c:217
 msgid "Tracked Core:"
 msgstr "Stebimas branduolys:"
 
-#: ../panel-plugin/properties.c:224
+#: ../panel-plugin/properties.c:228
 msgid "Width:"
 msgstr "Plotis:"
 
-#: ../panel-plugin/properties.c:226
+#: ../panel-plugin/properties.c:230
 msgid "Height:"
 msgstr "Aukštis:"
 
-#: ../panel-plugin/properties.c:240
+#: ../panel-plugin/properties.c:244
 msgid "Associated command:"
 msgstr "Susieta komanda:"
 
-#: ../panel-plugin/properties.c:264
+#: ../panel-plugin/properties.c:268
 msgid "Normal"
 msgstr "Normalus"
 
-#: ../panel-plugin/properties.c:265
+#: ../panel-plugin/properties.c:269
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:266
+#: ../panel-plugin/properties.c:270
 msgid "No history"
 msgstr "Be istorijos"
 
-#: ../panel-plugin/properties.c:267
+#: ../panel-plugin/properties.c:271
 msgid "Grid"
 msgstr "Tinklelis"
 
-#: ../panel-plugin/properties.c:271
+#: ../panel-plugin/properties.c:275
 msgid "Mode:"
 msgstr "Režimas:"
 
-#: ../panel-plugin/properties.c:276
+#: ../panel-plugin/properties.c:280
 msgid "Solid"
 msgstr "Vientisa"
 
-#: ../panel-plugin/properties.c:277
+#: ../panel-plugin/properties.c:281
 msgid "Gradient"
 msgstr "Gradientas"
 
-#: ../panel-plugin/properties.c:278
+#: ../panel-plugin/properties.c:282
 msgid "Fire"
 msgstr "Ugnis"
 
-#: ../panel-plugin/properties.c:282
+#: ../panel-plugin/properties.c:286
 msgid "Color mode: "
 msgstr "Spalvų režimas:"
 
