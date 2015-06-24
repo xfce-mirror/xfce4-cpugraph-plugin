@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-03 20:54+0200\n"
-"PO-Revision-Date: 2015-03-12 19:55+0000\n"
+"PO-Revision-Date: 2015-06-24 12:25+0000\n"
 "Last-Translator: Moo\n"
 "Language-Team: Lithuanian (http://www.transifex.com/projects/p/xfce-panel-plugins/language/lt/)\n"
 "MIME-Version: 1.0\n"
@@ -149,7 +149,7 @@ msgstr "Tinklelis"
 
 #: ../panel-plugin/properties.c:275
 msgid "Mode:"
-msgstr "Režimas:"
+msgstr "Veiksena:"
 
 #: ../panel-plugin/properties.c:280
 msgid "Solid"
@@ -165,7 +165,7 @@ msgstr "Ugnis"
 
 #: ../panel-plugin/properties.c:286
 msgid "Color mode: "
-msgstr "Spalvų režimas:"
+msgstr "Spalvų veiksena:"
 
 #: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
