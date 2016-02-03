@@ -1,0 +1,170 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Elishai Eliyahu <e1907@mm.st>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: Xfce Panel Plugins\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-07-03 20:54+0200\n"
+"PO-Revision-Date: 2016-02-03 19:45+0000\n"
+"Last-Translator: Elishai Eliyahu <e1907@mm.st>\n"
+"Language-Team: Hebrew (http://www.transifex.com/xfce/xfce-panel-plugins/language/he/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: he\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../panel-plugin/cpu.c:153 ../panel-plugin/cpugraph.desktop.in.h:2
+msgid "Graphical representation of the CPU load"
+msgstr "תיאור גרפי של עומס המעבד"
+
+#: ../panel-plugin/cpu.c:155
+msgid "Copyright (c) 2003-2012\n"
+msgstr "זכות יוצרים (c) 2003-2012\n"
+
+#: ../panel-plugin/cpu.c:368
+#, c-format
+msgid "Usage: %u%%"
+msgstr "שימוש: %u%% "
+
+#: ../panel-plugin/properties.c:80
+msgid "CPU Graph Properties"
+msgstr "מאפייני גרף מעבד"
+
+#: ../panel-plugin/properties.c:98
+msgid "Use non-linear time-scale"
+msgstr "השתמש בסקאלת זמן לא לינארית"
+
+#: ../panel-plugin/properties.c:99
+msgid "Show frame"
+msgstr "הצג מסגרת"
+
+#: ../panel-plugin/properties.c:100
+msgid "Show border"
+msgstr "הצג גבול"
+
+#: ../panel-plugin/properties.c:101
+msgid "Show current usage bar"
+msgid_plural "Show current usage bars"
+msgstr[0] "הצג סרגל שימוש נוכחי"
+msgstr[1] "הצג סרגלי שימוש נוכחי"
+
+#: ../panel-plugin/properties.c:103
+msgid "Run in terminal"
+msgstr "הפעל במסוף"
+
+#: ../panel-plugin/properties.c:104
+msgid "Use startup notification"
+msgstr "השתמש בהודעת התחלה"
+
+#: ../panel-plugin/properties.c:107
+msgid "Color 1:"
+msgstr "צבע 1:"
+
+#: ../panel-plugin/properties.c:108
+msgid "Color 2:"
+msgstr "צבע 2:"
+
+#: ../panel-plugin/properties.c:109
+msgid "Color 3:"
+msgstr "צבע 3:"
+
+#: ../panel-plugin/properties.c:110
+msgid "Background:"
+msgstr "רקע:"
+
+#: ../panel-plugin/properties.c:114
+msgid "Bars color:"
+msgstr "צבע סרגלים:"
+
+#: ../panel-plugin/properties.c:119
+msgid "Appearance"
+msgstr "מראה"
+
+#: ../panel-plugin/properties.c:121
+msgid "Advanced"
+msgstr "מתקדם"
+
+#: ../panel-plugin/properties.c:197
+msgid "Fastest (~250ms)"
+msgstr "המהיר ביותר (~250 מילישנייה)"
+
+#: ../panel-plugin/properties.c:198
+msgid "Fast (~500ms)"
+msgstr "מהר (~500 מילישנייה)"
+
+#: ../panel-plugin/properties.c:199
+msgid "Normal (~750ms)"
+msgstr "רגיל (~750 מילישנייה)"
+
+#: ../panel-plugin/properties.c:200
+msgid "Slow (~1s)"
+msgstr "איטי (~1 שנייה)"
+
+#: ../panel-plugin/properties.c:204
+msgid "Update Interval:"
+msgstr "מרווח עדכון:"
+
+#: ../panel-plugin/properties.c:212
+msgid "All"
+msgstr "הכל"
+
+#: ../panel-plugin/properties.c:217
+msgid "Tracked Core:"
+msgstr "ליבה במעקב:"
+
+#: ../panel-plugin/properties.c:228
+msgid "Width:"
+msgstr "רוחב:"
+
+#: ../panel-plugin/properties.c:230
+msgid "Height:"
+msgstr "גובה:"
+
+#: ../panel-plugin/properties.c:244
+msgid "Associated command:"
+msgstr "פקודה משויכת:"
+
+#: ../panel-plugin/properties.c:268
+msgid "Normal"
+msgstr "רגיל"
+
+#: ../panel-plugin/properties.c:269
+msgid "LED"
+msgstr "LED"
+
+#: ../panel-plugin/properties.c:270
+msgid "No history"
+msgstr "בלי היסטוריה"
+
+#: ../panel-plugin/properties.c:271
+msgid "Grid"
+msgstr "רשת"
+
+#: ../panel-plugin/properties.c:275
+msgid "Mode:"
+msgstr "מצב:"
+
+#: ../panel-plugin/properties.c:280
+msgid "Solid"
+msgstr "מלא"
+
+#: ../panel-plugin/properties.c:281
+msgid "Gradient"
+msgstr "גרדיאנט"
+
+#: ../panel-plugin/properties.c:282
+msgid "Fire"
+msgstr "אש"
+
+#: ../panel-plugin/properties.c:286
+msgid "Color mode: "
+msgstr "מצב צבע:"
+
+#: ../panel-plugin/cpugraph.desktop.in.h:1
+msgid "CPU Graph"
+msgstr "גרף מעבד"
