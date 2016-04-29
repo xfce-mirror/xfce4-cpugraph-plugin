@@ -4,15 +4,15 @@
 # 
 # Translators:
 # Algimantas Margevičius <margevicius.algimantas@gmail.com>, 2012
-# Moo, 2015
+# Moo, 2015-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-03 20:54+0200\n"
-"PO-Revision-Date: 2015-06-24 12:25+0000\n"
+"PO-Revision-Date: 2016-04-29 18:29+0000\n"
 "Last-Translator: Moo\n"
-"Language-Team: Lithuanian (http://www.transifex.com/projects/p/xfce-panel-plugins/language/lt/)\n"
+"Language-Team: Lithuanian (http://www.transifex.com/xfce/xfce-panel-plugins/language/lt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -34,7 +34,7 @@ msgstr "Apkrova: %u%%"
 
 #: ../panel-plugin/properties.c:80
 msgid "CPU Graph Properties"
-msgstr "CPU Graph savybės"
+msgstr "CPU grafiko savybės"
 
 #: ../panel-plugin/properties.c:98
 msgid "Use non-linear time-scale"
@@ -97,7 +97,7 @@ msgstr "Greičiausias (~250ms)"
 
 #: ../panel-plugin/properties.c:198
 msgid "Fast (~500ms)"
-msgstr "Greitas ((~500ms)"
+msgstr "Greitas (~500ms)"
 
 #: ../panel-plugin/properties.c:199
 msgid "Normal (~750ms)"
@@ -133,7 +133,7 @@ msgstr "Susieta komanda:"
 
 #: ../panel-plugin/properties.c:268
 msgid "Normal"
-msgstr "Normalus"
+msgstr "Normali"
 
 #: ../panel-plugin/properties.c:269
 msgid "LED"
@@ -169,4 +169,4 @@ msgstr "Spalvų veiksena:"
 
 #: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
-msgstr "CPU Graph"
+msgstr "CPU grafikas"
