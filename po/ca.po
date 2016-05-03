@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-03 20:54+0200\n"
-"PO-Revision-Date: 2016-05-01 18:03+0000\n"
+"PO-Revision-Date: 2016-05-03 08:51+0000\n"
 "Last-Translator: Robert Antoni Buj i Gelonch <rbuj@fedoraproject.org>\n"
 "Language-Team: Catalan (http://www.transifex.com/xfce/xfce-panel-plugins/language/ca/)\n"
 "MIME-Version: 1.0\n"
@@ -93,19 +93,19 @@ msgstr "Avançat"
 
 #: ../panel-plugin/properties.c:197
 msgid "Fastest (~250ms)"
-msgstr "Molt ràpid (~250ms)"
+msgstr "Molt ràpid (~250 ms)"
 
 #: ../panel-plugin/properties.c:198
 msgid "Fast (~500ms)"
-msgstr "Ràpid (~500ms)"
+msgstr "Ràpid (~500 ms)"
 
 #: ../panel-plugin/properties.c:199
 msgid "Normal (~750ms)"
-msgstr "Normal (~750ms)"
+msgstr "Normal (~750 ms)"
 
 #: ../panel-plugin/properties.c:200
 msgid "Slow (~1s)"
-msgstr "Lent (~1s)"
+msgstr "Lent (~1 s)"
 
 #: ../panel-plugin/properties.c:204
 msgid "Update Interval:"
