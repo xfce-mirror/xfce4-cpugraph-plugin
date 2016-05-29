@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-03 20:54+0200\n"
-"PO-Revision-Date: 2016-05-29 11:24+0000\n"
+"PO-Revision-Date: 2016-05-29 16:34+0000\n"
 "Last-Translator: Sergey Alyoshin <alyoshin.s@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/xfce/xfce-panel-plugins/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -24,7 +24,7 @@ msgstr "Графическое представление загруженнос
 
 #: ../panel-plugin/cpu.c:155
 msgid "Copyright (c) 2003-2012\n"
-msgstr " \t\r\n\r\nCopyright (c) 2003-2012\n"
+msgstr "Copyright (c) 2003-2012\n"
 
 #: ../panel-plugin/cpu.c:368
 #, c-format
@@ -52,7 +52,7 @@ msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Показать панель загруженности"
 msgstr[1] "Показать панели загруженности"
-msgstr[2] "Показать панелей загруженности"
+msgstr[2] "Показать панели загруженности"
 msgstr[3] "Показать панели загруженности"
 
 #: ../panel-plugin/properties.c:103
