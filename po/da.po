@@ -1,25 +1,24 @@
-# Danish (da.po) translation for xfce4-cpugraph-plugin
-# Copyright (C) 2007 THE xfce4-cpugraph-plugin'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the xfce4-cpugraph-plugin package.
-# Jens Hyllegaard <jens.hyllegaard@gmail.com>, 2007.
-# Claus Futtrup <cfuttrup@stofanet.dk>, 2008.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # 
+# Translators:
+# Claus Futtrup <cfuttrup@stofanet.dk>, 2008
+# Jens Hyllegaard <jens.hyllegaard@gmail.com>, 2007
+# scootergrisen, 2017
 msgid ""
 msgstr ""
-"Project-Id-Version: xfce4-cpugraph-plugin 0.4.0\n"
+"Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-21 08:54+0000\n"
-"PO-Revision-Date: 2008-10-05 21:31+0100\n"
-"Last-Translator: Claus Futtrup <cfuttrup@stofanet.dk>\n"
-"Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
+"POT-Creation-Date: 2013-07-03 20:54+0200\n"
+"PO-Revision-Date: 2017-01-14 14:24+0000\n"
+"Last-Translator: scootergrisen\n"
+"Language-Team: Danish (http://www.transifex.com/xfce/xfce-panel-plugins/language/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: da\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-Language: Danish\n"
-"X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-Country: DENMARK\n"
 
 #: ../panel-plugin/cpu.c:153 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
@@ -27,7 +26,7 @@ msgstr "Grafisk visning af CPU belastningen"
 
 #: ../panel-plugin/cpu.c:155
 msgid "Copyright (c) 2003-2012\n"
-msgstr "Copyright (c) 2003-2012\n"
+msgstr "Ophavsret (c) 2003-2012\n"
 
 #: ../panel-plugin/cpu.c:368
 #, c-format
