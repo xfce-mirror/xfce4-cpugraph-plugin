@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-03 20:54+0200\n"
-"PO-Revision-Date: 2017-01-14 14:24+0000\n"
+"PO-Revision-Date: 2017-01-22 17:49+0000\n"
 "Last-Translator: scootergrisen\n"
 "Language-Team: Danish (http://www.transifex.com/xfce/xfce-panel-plugins/language/da/)\n"
 "MIME-Version: 1.0\n"
@@ -61,7 +61,7 @@ msgstr "Kør i terminal"
 
 #: ../panel-plugin/properties.c:104
 msgid "Use startup notification"
-msgstr "Brug opstartspåmindelser"
+msgstr "Brug opstartspåmindelse"
 
 #: ../panel-plugin/properties.c:107
 msgid "Color 1:"
