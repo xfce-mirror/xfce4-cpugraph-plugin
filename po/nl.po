@@ -1,32 +1,31 @@
-# Dutch translation of the xfce4-cpugraph-plugin package.
-# Copyright (C) The Xfce development team.
-# This file is distributed under the same license as the
-# xfce4-cpugraph-plugin package.
-# Pjotr <pjotrvertaalt@gmail.com> , 2011 - 2013.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # 
+# Translators:
 msgid ""
 msgstr ""
-"Project-Id-Version: xfce4-cpugraph-plugin\n"
+"Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-24 14:54+0000\n"
-"PO-Revision-Date: 2011-09-09 11:34+0200\n"
-"Last-Translator: Pjotr pjotrvertaalt@gmail.com\n"
-"Language-Team: Dutch (Flemish)\n"
+"POT-Creation-Date: 2013-07-03 20:54+0200\n"
+"PO-Revision-Date: 2017-07-25 11:28+0000\n"
+"Last-Translator: Pjotr <pjotrvertaalt@gmail.com>\n"
+"Language-Team: Dutch (http://www.transifex.com/xfce/xfce-panel-plugins/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../panel-plugin/cpu.c:152 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.c:153 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Grafische weergave van de processorbelasting"
 
-#: ../panel-plugin/cpu.c:154
+#: ../panel-plugin/cpu.c:155
 msgid "Copyright (c) 2003-2012\n"
 msgstr "Auteursrecht (c) 2003-2012\n"
 
-#: ../panel-plugin/cpu.c:367
+#: ../panel-plugin/cpu.c:368
 #, c-format
 msgid "Usage: %u%%"
 msgstr "Gebruik: %u%%"
@@ -107,7 +106,7 @@ msgstr "Langzaam (~1s)"
 
 #: ../panel-plugin/properties.c:204
 msgid "Update Interval:"
-msgstr "Verversingsinterval:"
+msgstr "Verversingstussenpoze:"
 
 #: ../panel-plugin/properties.c:212
 msgid "All"
@@ -155,7 +154,7 @@ msgstr "Effen"
 
 #: ../panel-plugin/properties.c:281
 msgid "Gradient"
-msgstr "Gradiënt"
+msgstr "Verloop"
 
 #: ../panel-plugin/properties.c:282
 msgid "Fire"
