@@ -4,20 +4,20 @@
 # 
 # Translators:
 # Piotr Maliński <admin@rk.edu.pl>, 2006
-# Piotr Sokół <psokol@jabster.pl>, 2013
+# Piotr Sokół <psokol.l10n@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-03 20:54+0200\n"
-"PO-Revision-Date: 2013-08-24 06:52+0000\n"
-"Last-Translator: Piotr Sokół <psokol@jabster.pl>\n"
-"Language-Team: Polish <xfce-i18n-pl@xfce.org>\n"
+"PO-Revision-Date: 2017-07-25 11:28+0000\n"
+"Last-Translator: Piotr Sokół <psokol.l10n@gmail.com>\n"
+"Language-Team: Polish (http://www.transifex.com/xfce/xfce-panel-plugins/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pl\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 #: ../panel-plugin/cpu.c:153 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
@@ -25,7 +25,7 @@ msgstr "Dostarcza informacje na temat obciążenia CPU w postaci graficznej"
 
 #: ../panel-plugin/cpu.c:155
 msgid "Copyright (c) 2003-2012\n"
-msgstr "Prawa autorskie (c) 2003-2012\n"
+msgstr "Copyright (c) 2003-2012\n"
 
 #: ../panel-plugin/cpu.c:368
 #, c-format
@@ -34,34 +34,35 @@ msgstr "Użycie: %u%%"
 
 #: ../panel-plugin/properties.c:80
 msgid "CPU Graph Properties"
-msgstr "Właściwości CPU Graph"
+msgstr "Monitor użycia CPU"
 
 #: ../panel-plugin/properties.c:98
 msgid "Use non-linear time-scale"
-msgstr "Nie-liniowa skala czasu"
+msgstr "Nieliniowa skala czasu"
 
 #: ../panel-plugin/properties.c:99
 msgid "Show frame"
-msgstr "Ramka"
+msgstr "Obramowanie"
 
 #: ../panel-plugin/properties.c:100
 msgid "Show border"
-msgstr "Pokaż granicę"
+msgstr "Odstęp od krawędzi"
 
 #: ../panel-plugin/properties.c:101
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
-msgstr[0] "Wyświetlanie paska aktualnego użycia"
-msgstr[1] "Wyświetlanie pasków aktualnego użycia"
-msgstr[2] "Wyświetlanie pasków aktualnego użycia"
+msgstr[0] "Pasek aktualnego użycia"
+msgstr[1] "Paski aktualnego użycia"
+msgstr[2] "Paski aktualnego użycia"
+msgstr[3] "Paski aktualnego użycia"
 
 #: ../panel-plugin/properties.c:103
 msgid "Run in terminal"
-msgstr "Uruchom w terminalu"
+msgstr "Uruchamianie w terminalu"
 
 #: ../panel-plugin/properties.c:104
 msgid "Use startup notification"
-msgstr "Użyj powiadomienia na starcie"
+msgstr "Powiadamianie o uruchamianiu"
 
 #: ../panel-plugin/properties.c:107
 msgid "Color 1:"
@@ -93,19 +94,19 @@ msgstr "Zaawansowane"
 
 #: ../panel-plugin/properties.c:197
 msgid "Fastest (~250ms)"
-msgstr "Bardzo krótki (~250ms)"
+msgstr "Bardzo krótki (~250 ms)"
 
 #: ../panel-plugin/properties.c:198
 msgid "Fast (~500ms)"
-msgstr "Krótki (~500ms)"
+msgstr "Krótki (~500 ms)"
 
 #: ../panel-plugin/properties.c:199
 msgid "Normal (~750ms)"
-msgstr "Średni (~750ms)"
+msgstr "Średni (~750 ms)"
 
 #: ../panel-plugin/properties.c:200
 msgid "Slow (~1s)"
-msgstr "Długi (~1s)"
+msgstr "Długi (~1 s)"
 
 #: ../panel-plugin/properties.c:204
 msgid "Update Interval:"
@@ -117,11 +118,11 @@ msgstr "Wszystkie"
 
 #: ../panel-plugin/properties.c:217
 msgid "Tracked Core:"
-msgstr "Śledzone rdzenia:"
+msgstr "Śledzony rdzeń:"
 
 #: ../panel-plugin/properties.c:228
 msgid "Width:"
-msgstr "Długość:"
+msgstr "Szerokość:"
 
 #: ../panel-plugin/properties.c:230
 msgid "Height:"
@@ -133,11 +134,11 @@ msgstr "Powiązane polecenie:"
 
 #: ../panel-plugin/properties.c:268
 msgid "Normal"
-msgstr "Normalny"
+msgstr "Zwykły"
 
 #: ../panel-plugin/properties.c:269
 msgid "LED"
-msgstr "Diody LED"
+msgstr "LED"
 
 #: ../panel-plugin/properties.c:270
 msgid "No history"
@@ -145,15 +146,15 @@ msgstr "Brak historii"
 
 #: ../panel-plugin/properties.c:271
 msgid "Grid"
-msgstr "Kratka"
+msgstr "Siatka"
 
 #: ../panel-plugin/properties.c:275
 msgid "Mode:"
-msgstr "Tryb:"
+msgstr "Styl:"
 
 #: ../panel-plugin/properties.c:280
 msgid "Solid"
-msgstr "Pełny"
+msgstr "Wypełnienie"
 
 #: ../panel-plugin/properties.c:281
 msgid "Gradient"
@@ -169,4 +170,4 @@ msgstr "Tryb kolorów:"
 
 #: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
-msgstr "Monitor CPU"
+msgstr "Monitor użycia CPU"
