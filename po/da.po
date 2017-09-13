@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-03 20:54+0200\n"
-"PO-Revision-Date: 2017-07-25 11:28+0000\n"
+"PO-Revision-Date: 2017-09-13 21:23+0000\n"
 "Last-Translator: scootergrisen\n"
 "Language-Team: Danish (http://www.transifex.com/xfce/xfce-panel-plugins/language/da/)\n"
 "MIME-Version: 1.0\n"
@@ -31,11 +31,11 @@ msgstr "Ophavsret (c) 2003-2012\n"
 #: ../panel-plugin/cpu.c:368
 #, c-format
 msgid "Usage: %u%%"
-msgstr "Bruger: %u%%"
+msgstr "Brug: %u%%"
 
 #: ../panel-plugin/properties.c:80
 msgid "CPU Graph Properties"
-msgstr "Indstillinger til CPU-graf"
+msgstr "Præferencer til CPU-graf"
 
 #: ../panel-plugin/properties.c:98
 msgid "Use non-linear time-scale"
