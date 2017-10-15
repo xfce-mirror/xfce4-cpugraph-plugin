@@ -22,6 +22,7 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <cairo/cairo.h>
 #include "mode.h"
 
 static guint16 _lerp( gdouble t, guint16 a, guint16 b )
@@ -29,13 +30,14 @@ static guint16 _lerp( gdouble t, guint16 a, guint16 b )
 	return (guint16) (a + t * (b - a));
 }
 
-static void mix_colors( gdouble ratio, GdkColor *color1, GdkColor *color2, GdkGC *target )
+static void mix_colors( gdouble ratio, GdkRGBA *color1, GdkRGBA *color2, cairo_t *target )
 {
-	GdkColor color;
+	GdkRGBA color;
 	color.red = _lerp (ratio, color1->red, color2->red);
 	color.green = _lerp (ratio, color1->green, color2->green);
 	color.blue = _lerp (ratio, color1->blue, color2->blue);
-	gdk_gc_set_rgb_fg_color( target, &color );
+	color.alpha = 1.0;
+	gdk_cairo_set_source_rgba( target, &color );
 }
 
 void draw_graph_normal( CPUGraph *base, GtkWidget *da, gint w, gint h )
@@ -44,10 +46,10 @@ void draw_graph_normal( CPUGraph *base, GtkWidget *da, gint w, gint h )
 	gint usage;
 	gdouble t;
 	gint tmp;
-	GdkGC *fg1 = gdk_gc_new( da->window );
+	cairo_t *fg1 = gdk_cairo_create( gtk_widget_get_window( da ) );
 
 	if( base->color_mode == 0 )
-		gdk_gc_set_rgb_fg_color( fg1, &base->colors[1] );
+		gdk_cairo_set_source_rgba( fg1, &base->colors[1] );
 
 	for( x = 0; x < w; x++ )
 	{
@@ -57,7 +59,11 @@ void draw_graph_normal( CPUGraph *base, GtkWidget *da, gint w, gint h )
 
 		if( base->color_mode == 0 )
 		{
-			gdk_draw_line( da->window, fg1, x, h-usage, x, h-1 );
+			/* draw line */
+			cairo_set_line_cap( fg1, CAIRO_LINE_CAP_SQUARE );
+			cairo_move_to( fg1, x, h - usage );
+			cairo_line_to( fg1, x, h - 1 );
+			cairo_stroke( fg1 );
 		}
 		else
 		{
@@ -67,12 +73,15 @@ void draw_graph_normal( CPUGraph *base, GtkWidget *da, gint w, gint h )
 				t = (base->color_mode == 1) ?
 					(tmp / (gdouble) (h)) :
 					(tmp / (gdouble) (usage));
-				mix_colors( t, &base->colors[1], &base->colors[2], fg1);
-				gdk_draw_point( da->window, fg1, x, y );
+				mix_colors( t, &base->colors[1], &base->colors[2], fg1 );
+				/* draw point */
+				cairo_set_line_cap( fg1, CAIRO_LINE_CAP_SQUARE );
+				cairo_move_to( fg1, x, y );
+				cairo_stroke( fg1 );
 			}
 		}
 	}
-	g_object_unref( fg1 );
+	cairo_destroy( fg1 );
 }
 
 void draw_graph_LED( CPUGraph *base, GtkWidget *da, gint w, gint h )
@@ -83,10 +92,10 @@ void draw_graph_LED( CPUGraph *base, GtkWidget *da, gint w, gint h )
 	gint idx;
 	gint limit;
 
-	GdkGC *fg1 = gdk_gc_new( da->window );
-	GdkGC *fg2 = gdk_gc_new( da->window );
-	gdk_gc_set_rgb_fg_color( fg1, &base->colors[1] );
-	gdk_gc_set_rgb_fg_color( fg2, &base->colors[2] );
+	cairo_t *fg1 = gdk_cairo_create( gtk_widget_get_window( da ) );
+	cairo_t *fg2 = gdk_cairo_create( gtk_widget_get_window( da ) );
+	gdk_cairo_set_source_rgba( fg1, &base->colors[1] );
+	gdk_cairo_set_source_rgba( fg2, &base->colors[2] );
 
 	for( x = 0; x * 3 < w; x++ )
 	{
@@ -99,13 +108,16 @@ void draw_graph_LED( CPUGraph *base, GtkWidget *da, gint w, gint h )
 				gdouble t = (base->color_mode == 1) ?
 				           (y / (gdouble)nry) :
 				           (y / (gdouble)limit);
-				mix_colors( t, &base->colors[3], &base->colors[2], fg2);
+				mix_colors( t, &base->colors[3], &base->colors[2], fg2 );
 			}
-			gdk_draw_rectangle (da->window, y >= limit ? fg1 : fg2, TRUE, x * 3, y * 2, 2, 1);
+			/* draw rectangle */
+			cairo_t *fg = y >= limit ? fg1 : fg2;
+			cairo_rectangle( fg, x * 3, y * 2, 2, 1 );
+			cairo_fill( fg );
 		}
 	}
-	g_object_unref( fg1 );
-	g_object_unref( fg2 );
+	cairo_destroy( fg1 );
+	cairo_destroy( fg2 );
 }
 
 void draw_graph_no_history( CPUGraph *base, GtkWidget *da, gint w, gint h )
@@ -114,12 +126,13 @@ void draw_graph_no_history( CPUGraph *base, GtkWidget *da, gint w, gint h )
 	gint usage = h * base->history[0] / CPU_SCALE;
 	gint tmp = 0;
 	gdouble t;
-	GdkGC *fg1 = gdk_gc_new( da->window );
+	cairo_t *fg1 = gdk_cairo_create( gtk_widget_get_window( da ) );
 
 	if( base->color_mode == 0 )
 	{
-		gdk_gc_set_rgb_fg_color( fg1, &base->colors[1] );
-		gdk_draw_rectangle( da->window, fg1, TRUE, 0, h-usage, w, usage );
+		gdk_cairo_set_source_rgba( fg1, &base->colors[1] );
+		cairo_rectangle( fg1, 0, h - usage, w, usage );
+		cairo_fill( fg1 );
 	}
 	else
 	{
@@ -130,10 +143,14 @@ void draw_graph_no_history( CPUGraph *base, GtkWidget *da, gint w, gint h )
 				(tmp / (gdouble) (usage));
 			mix_colors( t, &base->colors[1], &base->colors[2], fg1 );
 			tmp++;
-			gdk_draw_line( da->window, fg1, 0, y, w-1, y );
+			/* draw line */
+			cairo_set_line_cap( fg1, CAIRO_LINE_CAP_SQUARE );
+			cairo_move_to( fg1, 0, y );
+			cairo_line_to( fg1, w -1, y );
+			cairo_stroke( fg1 );
 		}
 	}
-	g_object_unref( fg1 );
+	cairo_destroy( fg1 );
 }
 
 typedef struct
@@ -149,26 +166,38 @@ void draw_graph_grid( CPUGraph *base, GtkWidget *da, gint w, gint h )
 	point last, current;
 	last.x = 0;
 	last.y = h;
-	GdkGC *fg1 = gdk_gc_new( da->window );
+	cairo_t *fg1 = gdk_cairo_create( gtk_widget_get_window( da ) );
 
-	gdk_gc_set_rgb_fg_color( fg1, &base->colors[1] );
+	gdk_cairo_set_source_rgba( fg1, &base->colors[1] );
 	for( x = 0; x * 6 < w; x++ )
 	{
-		gdk_draw_line( da->window, fg1, x*6, 0, x*6, h-1 );
+		/* draw line */
+		cairo_set_line_cap( fg1, CAIRO_LINE_CAP_SQUARE );
+		cairo_move_to( fg1, x * 6, 0 );
+		cairo_line_to( fg1, x * 6,  h - 1 );
+		cairo_stroke( fg1 );
 	}
 	for( y = 0; y * 4 < h; y++ )
 	{
-		gdk_draw_line( da->window, fg1, 0, y*4, w-1, y*4 );
+		/* draw line */
+		cairo_set_line_cap( fg1, CAIRO_LINE_CAP_SQUARE );
+		cairo_move_to( fg1, 0, y * 4 );
+		cairo_line_to( fg1, w - 1,  y * 4 );
+		cairo_stroke( fg1 );
 	}
 
-	gdk_gc_set_rgb_fg_color( fg1, &base->colors[2] );
+	gdk_cairo_set_source_rgba( fg1, &base->colors[2] );
 	for( x = 0; x < w; x++ )
 	{
 		usage = h * base->history[w - 1- x] / CPU_SCALE;
 		current.x = x;
 		current.y = h - usage;
-		gdk_draw_line( da->window, fg1, current.x, current.y, last.x, last.y );
+		/* draw line */
+		cairo_set_line_cap( fg1, CAIRO_LINE_CAP_SQUARE );
+		cairo_move_to( fg1, current.x, current.y );
+		cairo_line_to( fg1, last.x,  last.y );
+		cairo_stroke( fg1 );
 		last = current;
 	}
-	g_object_unref( fg1 );
+	cairo_destroy( fg1 );
 }

@@ -58,7 +58,7 @@ typedef struct
 	gchar  *command;
 	gboolean in_terminal;
 	gboolean startup_notification;
-	GdkColor colors[5];
+	GdkRGBA colors[5];
 	guint tracked_core;
 
 	/* Runtime data */
@@ -80,6 +80,6 @@ void set_update_rate( CPUGraph *base, guint rate );
 void set_size( CPUGraph *base, guint width );
 void set_color_mode( CPUGraph *base, guint color_mode );
 void set_mode( CPUGraph *base, guint mode );
-void set_color( CPUGraph *base, guint number, GdkColor color );
+void set_color( CPUGraph *base, guint number, GdkRGBA color );
 void set_tracked_core( CPUGraph *base, guint core );
 #endif /* !_XFCE_CPU_H_ */

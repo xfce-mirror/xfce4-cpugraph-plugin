@@ -57,35 +57,40 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 	gboolean bars = TRUE;
 	guint tracked_core = 0;
 
-	GdkColor foreground1;
-	GdkColor foreground2;
-	GdkColor foreground3;
-	GdkColor background;
-	GdkColor barscolor;
+	GdkRGBA foreground1;
+	GdkRGBA foreground2;
+	GdkRGBA foreground3;
+	GdkRGBA background;
+	GdkRGBA barscolor;
 	guint size;
 	const gchar  *associated_command;
 	gboolean in_terminal;
 	gboolean startup_notification;
 
-	foreground1.red = 0;
-	foreground1.green = 65535;
-	foreground1.blue = 0;
+	foreground1.red = 0.0;
+	foreground1.green = 1.0;
+	foreground1.blue = 0.0;
+	foreground1.alpha = 1.0;
 
-	foreground2.red = 65535;
-	foreground2.green = 0;
-	foreground2.blue = 0;
+	foreground2.red = 1.0;
+	foreground2.green = 0.0;
+	foreground2.blue = 0.0;
+	foreground2.alpha = 1.0;
 
-	foreground3.red = 0;
-	foreground3.green = 0;
-	foreground3.blue = 65535;
+	foreground3.red = 0.0;
+	foreground3.green = 0.0;
+	foreground3.blue = 1.0;
+	foreground3.alpha = 1.0;
 
-	background.red = 65535;
-	background.green = 65535;
-	background.blue = 65535;
+	background.red = 1.0;
+	background.green = 1.0;
+	background.blue = 1.0;
+	background.alpha = 1.0;
 
-	barscolor.red = 65535;
-	barscolor.green = 47872;
-	barscolor.blue = 0;
+	barscolor.red = 1.0;
+	barscolor.green = 0.73048;
+	barscolor.blue = 0.0;
+	barscolor.alpha = 1.0;
 
 	size = xfce_panel_plugin_get_size( plugin );
 	default_command( &associated_command, &in_terminal, &startup_notification );
@@ -111,15 +116,15 @@ void read_settings( XfcePanelPlugin * plugin, CPUGraph * base )
 			tracked_core = xfce_rc_read_int_entry( rc, "TrackedCore", tracked_core );
 
 			if( (value = xfce_rc_read_entry( rc, "Foreground1", NULL )) )
-				gdk_color_parse( value, &foreground1 );
+				gdk_rgba_parse( &foreground1, value );
 			if( (value = xfce_rc_read_entry( rc, "Foreground2", NULL )) )
-				gdk_color_parse( value, &foreground2 );
+				gdk_rgba_parse( &foreground2, value );
 			if( (value = xfce_rc_read_entry( rc, "Foreground3", NULL )) )
-				gdk_color_parse( value, &foreground3 );
+				gdk_rgba_parse( &foreground3, value );
 			if( (value = xfce_rc_read_entry( rc, "Background", NULL )) )
-				gdk_color_parse( value, &background );
+				gdk_rgba_parse( &background, value );
 			if( (value = xfce_rc_read_entry( rc, "BarsColor", NULL )) ) {
-				gdk_color_parse( value, &barscolor );
+				gdk_rgba_parse( &barscolor, value );
 				base->has_barcolor = TRUE;
 			}
 
@@ -173,11 +178,11 @@ void write_settings( XfcePanelPlugin *plugin, CPUGraph *base )
 	xfce_rc_write_int_entry( rc, "StartupNotification", base->startup_notification );
 	xfce_rc_write_int_entry( rc, "ColorMode", base->color_mode );
 
-	xfce_rc_write_entry( rc, "Foreground1", gdk_color_to_string(&(base->colors[1])) );
-	xfce_rc_write_entry( rc, "Foreground2", gdk_color_to_string(&(base->colors[2])) );
-	xfce_rc_write_entry( rc, "Foreground3", gdk_color_to_string(&(base->colors[3])) );
-	xfce_rc_write_entry( rc, "Background", gdk_color_to_string(&(base->colors[0])) );
+	xfce_rc_write_entry( rc, "Foreground1", gdk_rgba_to_string(&(base->colors[1])) );
+	xfce_rc_write_entry( rc, "Foreground2", gdk_rgba_to_string(&(base->colors[2])) );
+	xfce_rc_write_entry( rc, "Foreground3", gdk_rgba_to_string(&(base->colors[3])) );
+	xfce_rc_write_entry( rc, "Background", gdk_rgba_to_string(&(base->colors[0])) );
 	if (base->has_barcolor)
-		xfce_rc_write_entry( rc, "BarsColor", gdk_color_to_string(&(base->colors[4])) );
+		xfce_rc_write_entry( rc, "BarsColor", gdk_rgba_to_string(&(base->colors[4])) );
 	xfce_rc_close( rc );
 }

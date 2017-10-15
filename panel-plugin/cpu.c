@@ -27,7 +27,6 @@
 #include "properties.h"
 
 #include <libxfce4ui/libxfce4ui.h>
-#include <libxfce4panel/xfce-hvbox.h>
 #ifndef _
 # include <libintl.h>
 # define _(String) gettext (String)
@@ -76,7 +75,7 @@ static void cpugraph_construct( XfcePanelPlugin *plugin )
 
 	xfce_panel_plugin_menu_show_about( plugin );
 
-	g_signal_connect (plugin, "about", G_CALLBACK (about_cb), base );
+	g_signal_connect( plugin, "about", G_CALLBACK (about_cb), base );
 	g_signal_connect( plugin, "free-data", G_CALLBACK( shutdown ), base );
 	g_signal_connect( plugin, "save", G_CALLBACK( write_settings ), base );
 	g_signal_connect( plugin, "configure-plugin", G_CALLBACK( create_options ), base );
@@ -107,7 +106,7 @@ static CPUGraph * create_gui( XfcePanelPlugin * plugin )
 	xfce_panel_plugin_add_action_widget( plugin, ebox );
 	g_signal_connect( ebox, "button-press-event", G_CALLBACK( command_cb ), base );
 
-	base->box = xfce_hvbox_new(orientation, FALSE, 0);
+	base->box = gtk_box_new(orientation, 0);
 	gtk_container_add(GTK_CONTAINER(ebox), base->box);
 	gtk_widget_set_has_tooltip( base->box, TRUE);
 	g_signal_connect( base->box, "query-tooltip", G_CALLBACK( tooltip_cb ), base );
@@ -175,9 +174,9 @@ static void create_bars( CPUGraph *base )
 		base->bars[i] = GTK_WIDGET(gtk_progress_bar_new());
 		/* Set bar colors */
 		if (base->has_barcolor) {
-			gtk_widget_modify_bg(base->bars[i], GTK_STATE_PRELIGHT, &base->colors[4]);
-			gtk_widget_modify_bg(base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
-			gtk_widget_modify_base(base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
+			gtk_widget_override_background_color(base->bars[i], GTK_STATE_PRELIGHT, &base->colors[4]);
+			gtk_widget_override_background_color(base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
+			gtk_widget_override_color(base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
 		}
 		gtk_box_pack_end( GTK_BOX(base->box), base->bars[i], FALSE, FALSE, 0 );
 		gtk_widget_show( base->bars[i] );
@@ -286,11 +285,11 @@ static void mode_cb( XfcePanelPlugin * plugin, XfcePanelPluginMode mode, CPUGrap
 	GtkOrientation orientation = (mode == XFCE_PANEL_PLUGIN_MODE_HORIZONTAL) ?
 		GTK_ORIENTATION_HORIZONTAL : GTK_ORIENTATION_VERTICAL;
 
-	xfce_hvbox_set_orientation( XFCE_HVBOX( base->box ), xfce_panel_plugin_get_orientation (plugin));
+	gtk_orientable_set_orientation( GTK_ORIENTABLE( base->box ), xfce_panel_plugin_get_orientation (plugin));
 #else
 static void orientation_cb( XfcePanelPlugin * plugin, GtkOrientation orientation, CPUGraph *base )
 {
-	xfce_hvbox_set_orientation( XFCE_HVBOX( base->box ), orientation );
+	gtk_orientable_set_orientation( base->box, orientation );
 #endif
 	if( base->has_bars )
 		set_bars_orientation( base, orientation );
@@ -300,22 +299,17 @@ static void orientation_cb( XfcePanelPlugin * plugin, GtkOrientation orientation
 
 static void set_bars_orientation( CPUGraph *base, GtkOrientation orientation)
 {
-	GtkProgressBarOrientation barOrientation;
-	guint i; 
-	guint n; 
-	if( orientation == GTK_ORIENTATION_HORIZONTAL )
-		barOrientation = GTK_PROGRESS_BOTTOM_TO_TOP;
-	else
-		barOrientation = GTK_PROGRESS_LEFT_TO_RIGHT;
+	guint i, n;
 
 	n = nb_bars( base );
 	for( i=0; i < n; i++ )
-		gtk_progress_bar_set_orientation( GTK_PROGRESS_BAR( base->bars[i] ), barOrientation );	
+		gtk_orientable_set_orientation( GTK_ORIENTABLE( base->bars[i] ), orientation );	
 }
 
 static gboolean update_cb( CPUGraph * base )
 {
 	gint i, a, b, factor;
+
 	if( !read_cpu_data( base->cpu_data, base->nr_cores ) )
 		return TRUE;
 
@@ -383,10 +377,12 @@ static void draw_area_cb( GtkWidget * da, GdkEventExpose * event, gpointer data 
 static void draw_graph( CPUGraph * base )
 {
 	GtkWidget *da = base->draw_area;
+	GtkAllocation alloc;
 	gint w, h;
 
-	w = da->allocation.width;
-	h = da->allocation.height;
+	gtk_widget_get_allocation( da, &alloc );
+	w = alloc.width;
+	h = alloc.height;
 
 	switch( base->mode )
 	{
@@ -490,7 +486,7 @@ void set_update_rate( CPUGraph *base, guint rate )
 		default:
 			update = 1000;
 	}
-	base->timeout_id = g_timeout_add( update, (GtkFunction) update_cb, base );
+	base->timeout_id = g_timeout_add( update, (GSourceFunc) update_cb, base );
 }
 
 void set_size( CPUGraph *base, guint size )
@@ -509,15 +505,15 @@ void set_mode( CPUGraph *base, guint mode )
 	base->mode = mode;
 }
 
-void set_color( CPUGraph *base, guint number, GdkColor color )
+void set_color( CPUGraph *base, guint number, GdkRGBA color )
 {
 	guint i, n;
 
 	base->colors[number] = color;
 	if( number == 0 )
 	{
-		gtk_widget_modify_bg( base->draw_area, GTK_STATE_INSENSITIVE, &base->colors[0] );
-		gtk_widget_modify_bg( base->draw_area, GTK_STATE_NORMAL, &base->colors[0] );
+		gtk_widget_override_background_color( base->draw_area, GTK_STATE_INSENSITIVE, &base->colors[0] );
+		gtk_widget_override_background_color( base->draw_area, GTK_STATE_NORMAL, &base->colors[0] );
 	}
 	if( number == 4 && base->has_bars && base->has_barcolor )
 	{
@@ -526,9 +522,9 @@ void set_color( CPUGraph *base, guint number, GdkColor color )
 		for( i=0; i< n; i++ )
 		{
 			/* Set bar colors */
-			gtk_widget_modify_bg(base->bars[i], GTK_STATE_PRELIGHT, &base->colors[4]);
-			gtk_widget_modify_bg(base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
-			gtk_widget_modify_base(base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
+			gtk_widget_override_background_color(base->bars[i], GTK_STATE_PRELIGHT, &base->colors[4]);
+			gtk_widget_override_background_color(base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
+			gtk_widget_override_color(base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
 		}
 	}
 }
