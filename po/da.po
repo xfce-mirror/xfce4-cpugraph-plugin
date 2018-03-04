@@ -5,13 +5,13 @@
 # Translators:
 # Claus Futtrup <cfuttrup@stofanet.dk>, 2008
 # Jens Hyllegaard <jens.hyllegaard@gmail.com>, 2007
-# scootergrisen, 2017
+# scootergrisen, 2017-2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-03 20:54+0200\n"
-"PO-Revision-Date: 2017-11-03 11:13+0000\n"
+"PO-Revision-Date: 2018-03-04 08:14+0000\n"
 "Last-Translator: scootergrisen\n"
 "Language-Team: Danish (http://www.transifex.com/xfce/xfce-panel-plugins/language/da/)\n"
 "MIME-Version: 1.0\n"
@@ -52,8 +52,8 @@ msgstr "Vis kant"
 #: ../panel-plugin/properties.c:101
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
-msgstr[0] "Vis aktuelle forbrugsstatus"
-msgstr[1] "Vis nuværende forbrugsbjælker"
+msgstr[0] "Vis nuværende forbrug-bjælke"
+msgstr[1] "Vis nuværende forbrug-bjælker"
 
 #: ../panel-plugin/properties.c:103
 msgid "Run in terminal"
