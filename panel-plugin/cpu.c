@@ -101,7 +101,7 @@ static CPUGraph * create_gui( XfcePanelPlugin * plugin )
 
 	base->draw_area = gtk_drawing_area_new();
 	gtk_container_add( GTK_CONTAINER( frame ), GTK_WIDGET( base->draw_area ) );
-	g_signal_connect_after( base->draw_area, "expose-event", G_CALLBACK( draw_area_cb ), base );
+	g_signal_connect_after( base->draw_area, "draw", G_CALLBACK( draw_area_cb ), base );
 
 	base->has_bars = FALSE;
 	base->has_barcolor = FALSE;
