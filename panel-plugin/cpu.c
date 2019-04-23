@@ -277,9 +277,13 @@ static void set_bars_orientation( CPUGraph *base, GtkOrientation orientation)
 {
 	guint i, n;
 
+	/* the received orientation refers to the panel's, so we need to invert it for the bars */
+	orientation = (orientation == GTK_ORIENTATION_HORIZONTAL) ?
+		GTK_ORIENTATION_VERTICAL : GTK_ORIENTATION_HORIZONTAL;
+
 	n = nb_bars( base );
 	for( i=0; i < n; i++ )
-		gtk_orientable_set_orientation( GTK_ORIENTABLE( base->bars[i] ), orientation );	
+		gtk_orientable_set_orientation( GTK_ORIENTABLE( base->bars[i] ), orientation );
 }
 
 static gboolean update_cb( CPUGraph * base )
