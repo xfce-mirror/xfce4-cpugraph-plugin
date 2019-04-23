@@ -7,20 +7,20 @@ dnl
 
 m4_define([cpugraph_version],[1.1.0])
 
-AC_INIT([xfce4-cpugraph-plugin], [cpugraph_version],
-	[goodies-dev@xfce.org])
+AC_INIT([xfce4-cpugraph-plugin], [cpugraph_version], [https://bugzilla.xfce.org/])
 AC_USE_SYSTEM_EXTENSIONS()
 
 CPUGRAPH_VERSION=cpugraph_version()
-AM_INIT_AUTOMAKE([xfce4-cpugraph-plugin], [$CPUGRAPH_VERSION])
+AM_INIT_AUTOMAKE([1.11 dist-bzip2 tar-ustar no-dist-gzip])
 AM_CONFIG_HEADER([config.h])
 
 AM_MAINTAINER_MODE
+AM_SILENT_RULES([yes])
 
 dnl Check for basic programs
 AC_PROG_CC
 AC_PROG_INSTALL
-AC_PROG_INTLTOOL
+IT_PROG_INTLTOOL([0.35.0])
 AM_PROG_CC_C_O
 
 dnl Initialize libtool
