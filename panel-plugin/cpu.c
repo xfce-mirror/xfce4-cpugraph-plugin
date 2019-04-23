@@ -363,16 +363,16 @@ static void draw_area_cb( GtkWidget * widget, cairo_t * cr, gpointer data )
 	switch( base->mode )
 	{
 		case 0:
-			draw_graph_normal( base, da, w, h );
+			draw_graph_normal( base, cr, w, h );
 			break;
 		case 1:
-			draw_graph_LED( base, da, w, h );
+			draw_graph_LED( base, cr, w, h );
 			break;
 		case 2:
-			draw_graph_no_history( base, da, w, h );
+			draw_graph_no_history( base, cr, w, h );
 			break;
 		case 3:
-			draw_graph_grid(base, da, w, h);
+			draw_graph_grid(base, cr, w, h);
 			break;
 	}
 }
