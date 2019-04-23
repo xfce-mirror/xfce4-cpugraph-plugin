@@ -352,13 +352,16 @@ static gboolean tooltip_cb( GtkWidget *widget, gint x, gint y, gboolean keyboard
 static void draw_area_cb( GtkWidget * widget, cairo_t * cr, gpointer data )
 {
 	CPUGraph *base = (CPUGraph *) data;
-	GtkWidget *da = base->draw_area;
 	GtkAllocation alloc;
 	gint w, h;
 
-	gtk_widget_get_allocation( da, &alloc );
+	gtk_widget_get_allocation( base->draw_area, &alloc );
 	w = alloc.width;
 	h = alloc.height;
+
+	gdk_cairo_set_source_rgba(cr, &base->colors[0]);
+	cairo_rectangle(cr, 0, 0, w, h);
+	cairo_fill(cr);
 
 	switch( base->mode )
 	{
