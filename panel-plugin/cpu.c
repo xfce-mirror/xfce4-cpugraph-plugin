@@ -46,8 +46,7 @@ static void set_bars_orientation( CPUGraph *base, GtkOrientation orientation);
 static gboolean update_cb( CPUGraph *base );
 static void update_tooltip( CPUGraph *base );
 static gboolean tooltip_cb( GtkWidget *widget, gint x, gint y, gboolean keyboard, GtkTooltip * tooltip, CPUGraph *base);
-static void draw_area_cb( GtkWidget *da, GdkEventExpose *event, gpointer data );
-static void draw_graph( CPUGraph *base );
+static void draw_area_cb( GtkWidget *w, cairo_t *cr, gpointer data );
 static gboolean command_cb( GtkWidget *w, GdkEventButton *event, CPUGraph *base );
 
 XFCE_PANEL_PLUGIN_REGISTER( cpugraph_construct );
@@ -346,13 +345,9 @@ static gboolean tooltip_cb( GtkWidget *widget, gint x, gint y, gboolean keyboard
 	return TRUE;
 }
 
-static void draw_area_cb( GtkWidget * da, GdkEventExpose * event, gpointer data )
+static void draw_area_cb( GtkWidget * widget, cairo_t * cr, gpointer data )
 {
-	draw_graph( (CPUGraph *) data );
-}
-
-static void draw_graph( CPUGraph * base )
-{
+	CPUGraph *base = (CPUGraph *) data;
 	GtkWidget *da = base->draw_area;
 	GtkAllocation alloc;
 	gint w, h;
