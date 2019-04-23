@@ -145,7 +145,7 @@ static GtkBox *create_option_line( GtkBox *tab, GtkSizeGroup *sg, const gchar *n
 	line = GTK_BOX( gtk_box_new( GTK_ORIENTATION_HORIZONTAL, BORDER ) );
 	gtk_widget_show( GTK_WIDGET( line ) );
 	gtk_box_pack_start( GTK_BOX( tab ), GTK_WIDGET( line ), FALSE, FALSE, 0 );
-	
+
 	if( name )
 	{
 		label = gtk_label_new( name );

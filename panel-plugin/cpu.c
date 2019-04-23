@@ -210,7 +210,7 @@ static gboolean size_cb( XfcePanelPlugin *plugin, guint size, CPUGraph *base )
 {
 	gint frame_h, frame_v, history;
 	GtkOrientation orientation;
-	
+
 	orientation = xfce_panel_plugin_get_orientation( plugin );
 
 	if( orientation == GTK_ORIENTATION_HORIZONTAL )
