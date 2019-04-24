@@ -157,20 +157,21 @@ void draw_graph_grid( CPUGraph *base, cairo_t *cr, gint w, gint h )
 	last.y = h;
 
 	gdk_cairo_set_source_rgba( cr, &base->colors[1] );
+	cairo_set_line_cap( cr, CAIRO_LINE_CAP_SQUARE );
+	cairo_set_line_width( cr, 1 );
+
 	for( x = 0; x * 6 < w; x++ )
 	{
 		/* draw line */
-		cairo_set_line_cap( cr, CAIRO_LINE_CAP_SQUARE );
-		cairo_move_to( cr, x * 6, 0 );
-		cairo_line_to( cr, x * 6,  h - 1 );
+		cairo_move_to( cr, x * 6 + 0.5, 0.5 );
+		cairo_line_to( cr, x * 6 + 0.5, h - 1 + 0.5 );
 		cairo_stroke( cr );
 	}
 	for( y = 0; y * 4 < h; y++ )
 	{
 		/* draw line */
-		cairo_set_line_cap( cr, CAIRO_LINE_CAP_SQUARE );
-		cairo_move_to( cr, 0, y * 4 );
-		cairo_line_to( cr, w - 1,  y * 4 );
+		cairo_move_to( cr, 0.5, y * 4 + 0.5 );
+		cairo_line_to( cr, w - 1  + 0.5, y * 4 + 0.5 );
 		cairo_stroke( cr );
 	}
 
@@ -181,9 +182,8 @@ void draw_graph_grid( CPUGraph *base, cairo_t *cr, gint w, gint h )
 		current.x = x;
 		current.y = h - usage;
 		/* draw line */
-		cairo_set_line_cap( cr, CAIRO_LINE_CAP_SQUARE );
-		cairo_move_to( cr, current.x, current.y );
-		cairo_line_to( cr, last.x,  last.y );
+		cairo_move_to( cr, current.x + 0.5, current.y + 0.5 );
+		cairo_line_to( cr, last.x + 0.5, last.y + 0.5 );
 		cairo_stroke( cr );
 		last = current;
 	}
