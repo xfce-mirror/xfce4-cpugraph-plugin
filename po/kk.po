@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: kk\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: ../panel-plugin/cpu.c:153 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
@@ -51,6 +51,7 @@ msgstr "Шекарасын көрсету"
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Қолдану панелін көрсету"
+msgstr[1] "Қолдану панелін көрсету"
 
 #: ../panel-plugin/properties.c:103
 msgid "Run in terminal"
