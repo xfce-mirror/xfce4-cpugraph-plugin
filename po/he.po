@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: he\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;\n"
 
 #: ../panel-plugin/cpu.c:153 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
@@ -52,6 +52,8 @@ msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "הצג סרגל שימוש נוכחי"
 msgstr[1] "הצג סרגלי שימוש נוכחי"
+msgstr[2] "הצג סרגלי שימוש נוכחי"
+msgstr[3] "הצג סרגלי שימוש נוכחי"
 
 #: ../panel-plugin/properties.c:103
 msgid "Run in terminal"
