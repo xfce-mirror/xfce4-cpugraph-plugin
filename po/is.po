@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Sveinn í Felli <sv1@fellsnet.is>, 2014
+# Sveinn í Felli <sv1@fellsnet.is>, 2013-2014,2019
 # Sveinn í Felli <sveinki@nett.is>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-03 20:54+0200\n"
-"PO-Revision-Date: 2017-09-19 18:06+0000\n"
+"PO-Revision-Date: 2019-05-10 11:26+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic (http://www.transifex.com/xfce/xfce-panel-plugins/language/is/)\n"
 "MIME-Version: 1.0\n"
@@ -56,7 +56,7 @@ msgstr[1] "Birta núverandi notkunarstöpla"
 
 #: ../panel-plugin/properties.c:103
 msgid "Run in terminal"
-msgstr "Keyra í skjáhermi"
+msgstr "Keyra í skjáhermi (terminal)"
 
 #: ../panel-plugin/properties.c:104
 msgid "Use startup notification"
