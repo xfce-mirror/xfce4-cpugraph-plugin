@@ -5,13 +5,13 @@
 # Translators:
 # Claus Futtrup <cfuttrup@stofanet.dk>, 2008
 # Jens Hyllegaard <jens.hyllegaard@gmail.com>, 2007
-# scootergrisen, 2017-2018
+# scootergrisen, 2017-2019
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-03 20:54+0200\n"
-"PO-Revision-Date: 2018-03-04 08:14+0000\n"
+"PO-Revision-Date: 2019-05-14 22:54+0000\n"
 "Last-Translator: scootergrisen\n"
 "Language-Team: Danish (http://www.transifex.com/xfce/xfce-panel-plugins/language/da/)\n"
 "MIME-Version: 1.0\n"
@@ -61,7 +61,7 @@ msgstr "Kør i terminal"
 
 #: ../panel-plugin/properties.c:104
 msgid "Use startup notification"
-msgstr "Brug opstartsnotifikation"
+msgstr "Brug opstartsunderretning"
 
 #: ../panel-plugin/properties.c:107
 msgid "Color 1:"
