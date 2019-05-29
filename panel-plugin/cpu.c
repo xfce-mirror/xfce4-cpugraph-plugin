@@ -130,8 +130,8 @@ about_cb( XfcePanelPlugin *plugin, CPUGraph *base )
 		"version", PACKAGE_VERSION,
 		"program-name", PACKAGE_NAME,
 		"comments", _("Graphical representation of the CPU load"),
-		"website", "http://goodies.xfce.org/projects/panel-plugins/xfce4-cpugraph-plugin",
-		"copyright", _("Copyright (c) 2003-2012\n"),
+		"website", "https://goodies.xfce.org/projects/panel-plugins/xfce4-cpugraph-plugin",
+		"copyright", _("Copyright (c) 2003-2019\n"),
 		"authors", auth, NULL);
 
 	if(icon)
