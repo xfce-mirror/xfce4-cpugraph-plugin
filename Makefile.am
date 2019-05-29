@@ -5,6 +5,9 @@ SUBDIRS = panel-plugin po icons
 distclean-local:
 	rm -rf *.cache *~
 
+distuninstallcheck_listfiles = 						\
+	find . -type f -print | grep -v ./share/icons/hicolor/icon-theme.cache
+
 AUTOMAKE_OPTIONS = 1.8 dist-bzip2
 
 .PHONY: ChangeLog
