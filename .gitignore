@@ -30,6 +30,7 @@ po/stamp-*
 *.o
 *.lo
 *.la
+*.tar.bz2
 .libs
 .deps
 config.h.in~
