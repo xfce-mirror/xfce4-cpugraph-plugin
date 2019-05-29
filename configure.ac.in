@@ -5,7 +5,7 @@ dnl
 dnl 2004 Alexander Nordfelth <alex.nordfelth@telia.com>
 dnl
 
-m4_define([cpugraph_version],[1.1.0])
+m4_define([cpugraph_version],[1.0.90])
 
 AC_INIT([xfce4-cpugraph-plugin], [cpugraph_version], [https://bugzilla.xfce.org/])
 AC_USE_SYSTEM_EXTENSIONS()
