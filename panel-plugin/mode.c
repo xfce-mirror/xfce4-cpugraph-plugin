@@ -25,9 +25,9 @@
 #include <cairo/cairo.h>
 #include "mode.h"
 
-static guint16 _lerp( gdouble t, guint16 a, guint16 b )
+static gdouble _lerp( gdouble t, gdouble a, gdouble b )
 {
-	return (guint16) (a + t * (b - a));
+	return (gdouble) (a + t * (b - a));
 }
 
 static void mix_colors( gdouble ratio, GdkRGBA *color1, GdkRGBA *color2, cairo_t *target )
@@ -74,8 +74,9 @@ void draw_graph_normal( CPUGraph *base, cairo_t *cr, gint w, gint h )
 					(tmp / (gdouble) (usage));
 				mix_colors( t, &base->colors[1], &base->colors[2], cr );
 				/* draw point */
-				cairo_set_line_cap( cr, CAIRO_LINE_CAP_SQUARE );
+				cairo_set_line_cap( cr, CAIRO_LINE_CAP_ROUND );
 				cairo_move_to( cr, x, y );
+				cairo_close_path (cr);
 				cairo_stroke( cr );
 			}
 		}
@@ -103,8 +104,11 @@ void draw_graph_LED( CPUGraph *base, cairo_t *cr, gint w, gint h )
 				           (y / (gdouble)limit);
 				mix_colors( t, &base->colors[3], &base->colors[2], cr );
 			}
+			else
+			{
+				gdk_cairo_set_source_rgba( cr, y >= limit ? &base->colors[1] : &base->colors[2] );
+			}
 			/* draw rectangle */
-			gdk_cairo_set_source_rgba( cr, y >= limit ? &base->colors[1] : &base->colors[2] );
 			cairo_rectangle( cr, x * 3, y * 2, 2, 1 );
 			cairo_fill( cr );
 		}
