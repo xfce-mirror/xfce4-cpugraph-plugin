@@ -177,9 +177,11 @@ create_bars (CPUGraph *base)
         base->bars[i] = GTK_WIDGET (gtk_progress_bar_new ());
         /* Set bar colors */
         if (base->has_barcolor) {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
             gtk_widget_override_background_color (base->bars[i], GTK_STATE_PRELIGHT, &base->colors[4]);
             gtk_widget_override_background_color (base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
             gtk_widget_override_color (base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
+G_GNUC_END_IGNORE_DEPRECATIONS
         }
 
         gtk_box_pack_end (GTK_BOX (base->box), base->bars[i], FALSE, FALSE, 0);
@@ -550,8 +552,10 @@ set_color (CPUGraph *base, guint number, GdkRGBA color)
 
     if (number == 0)
     {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
         gtk_widget_override_background_color (base->draw_area, GTK_STATE_INSENSITIVE, &base->colors[0]);
         gtk_widget_override_background_color (base->draw_area, GTK_STATE_NORMAL, &base->colors[0]);
+G_GNUC_END_IGNORE_DEPRECATIONS
     }
 
     if (number == 4 && base->has_bars && base->has_barcolor)
@@ -560,10 +564,12 @@ set_color (CPUGraph *base, guint number, GdkRGBA color)
 
         for (i = 0; i < n; i++)
         {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
             /* Set bar colors */
             gtk_widget_override_background_color (base->bars[i], GTK_STATE_PRELIGHT, &base->colors[4]);
             gtk_widget_override_background_color (base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
             gtk_widget_override_color (base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
+G_GNUC_END_IGNORE_DEPRECATIONS
         }
     }
 }
