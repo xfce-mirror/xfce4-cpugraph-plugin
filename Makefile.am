@@ -20,7 +20,7 @@ ChangeLog: Makefile
 dist-hook: ChangeLog
 
 EXTRA_DIST = 								\
-	README								\
+	README									\
 	intltool-extract.in						\
 	intltool-merge.in						\
 	intltool-update.in
