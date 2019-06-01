@@ -282,8 +282,11 @@ static void set_bars_orientation( CPUGraph *base, GtkOrientation orientation)
 		GTK_ORIENTATION_VERTICAL : GTK_ORIENTATION_HORIZONTAL;
 
 	n = nb_bars( base );
-	for( i=0; i < n; i++ )
+	for( i=0; i < n; i++ ) {
 		gtk_orientable_set_orientation( GTK_ORIENTABLE( base->bars[i] ), orientation );
+		gtk_progress_bar_set_inverted (GTK_PROGRESS_BAR (base->bars[i]),
+		                               orientation == GTK_ORIENTATION_VERTICAL);
+	}
 }
 
 static gboolean update_cb( CPUGraph * base )
