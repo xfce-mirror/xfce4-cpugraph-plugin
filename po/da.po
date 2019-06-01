@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-03 20:54+0200\n"
-"PO-Revision-Date: 2019-05-14 22:54+0000\n"
+"POT-Creation-Date: 2019-05-29 06:31+0200\n"
+"PO-Revision-Date: 2019-05-31 22:48+0000\n"
 "Last-Translator: scootergrisen\n"
 "Language-Team: Danish (http://www.transifex.com/xfce/xfce-panel-plugins/language/da/)\n"
 "MIME-Version: 1.0\n"
@@ -20,15 +20,15 @@ msgstr ""
 "Language: da\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../panel-plugin/cpu.c:153 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.c:132 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Grafisk visning af CPU-belastningen"
 
-#: ../panel-plugin/cpu.c:155
-msgid "Copyright (c) 2003-2012\n"
-msgstr "Ophavsret (c) 2003-2012\n"
+#: ../panel-plugin/cpu.c:134
+msgid "Copyright (c) 2003-2019\n"
+msgstr "Ophavsret (c) 2003-2019\n"
 
-#: ../panel-plugin/cpu.c:368
+#: ../panel-plugin/cpu.c:342
 #, c-format
 msgid "Usage: %u%%"
 msgstr "Forbrug: %u%%"
@@ -91,79 +91,79 @@ msgstr "Udseende"
 msgid "Advanced"
 msgstr "Avanceret"
 
-#: ../panel-plugin/properties.c:197
+#: ../panel-plugin/properties.c:199
 msgid "Fastest (~250ms)"
 msgstr "Hurtigst (~250 ms)"
 
-#: ../panel-plugin/properties.c:198
+#: ../panel-plugin/properties.c:200
 msgid "Fast (~500ms)"
 msgstr "Hurtig (~500 ms)"
 
-#: ../panel-plugin/properties.c:199
+#: ../panel-plugin/properties.c:201
 msgid "Normal (~750ms)"
 msgstr "Normal (~750 ms)"
 
-#: ../panel-plugin/properties.c:200
+#: ../panel-plugin/properties.c:202
 msgid "Slow (~1s)"
 msgstr "Langsom (~1 s)"
 
-#: ../panel-plugin/properties.c:204
+#: ../panel-plugin/properties.c:206
 msgid "Update Interval:"
 msgstr "Opdateringsinterval:"
 
-#: ../panel-plugin/properties.c:212
+#: ../panel-plugin/properties.c:214
 msgid "All"
 msgstr "Alle"
 
-#: ../panel-plugin/properties.c:217
+#: ../panel-plugin/properties.c:219
 msgid "Tracked Core:"
 msgstr "Overvåget kerne:"
 
-#: ../panel-plugin/properties.c:228
+#: ../panel-plugin/properties.c:230
 msgid "Width:"
 msgstr "Bredde:"
 
-#: ../panel-plugin/properties.c:230
+#: ../panel-plugin/properties.c:232
 msgid "Height:"
 msgstr "Højde:"
 
-#: ../panel-plugin/properties.c:244
+#: ../panel-plugin/properties.c:246
 msgid "Associated command:"
 msgstr "Tilknyttet kommando:"
 
-#: ../panel-plugin/properties.c:268
+#: ../panel-plugin/properties.c:270
 msgid "Normal"
 msgstr "Normal"
 
-#: ../panel-plugin/properties.c:269
+#: ../panel-plugin/properties.c:271
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:270
+#: ../panel-plugin/properties.c:272
 msgid "No history"
 msgstr "Ingen historik"
 
-#: ../panel-plugin/properties.c:271
+#: ../panel-plugin/properties.c:273
 msgid "Grid"
 msgstr "Gitter"
 
-#: ../panel-plugin/properties.c:275
+#: ../panel-plugin/properties.c:277
 msgid "Mode:"
 msgstr "Tilstand:"
 
-#: ../panel-plugin/properties.c:280
+#: ../panel-plugin/properties.c:282
 msgid "Solid"
 msgstr "Ensfarvet"
 
-#: ../panel-plugin/properties.c:281
+#: ../panel-plugin/properties.c:283
 msgid "Gradient"
 msgstr "Gradient"
 
-#: ../panel-plugin/properties.c:282
+#: ../panel-plugin/properties.c:284
 msgid "Fire"
 msgstr "Ild"
 
-#: ../panel-plugin/properties.c:286
+#: ../panel-plugin/properties.c:288
 msgid "Color mode: "
 msgstr "Farvetilstand: "
 
