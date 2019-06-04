@@ -1,0 +1,170 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Ольга Смирнова, 2019
+msgid ""
+msgstr ""
+"Project-Id-Version: Xfce Panel Plugins\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-05-29 06:31+0200\n"
+"PO-Revision-Date: 2019-06-04 16:46+0000\n"
+"Last-Translator: Ольга Смирнова\n"
+"Language-Team: Interlingue (http://www.transifex.com/xfce/xfce-panel-plugins/language/ie/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ie\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../panel-plugin/cpu.c:132 ../panel-plugin/cpugraph.desktop.in.h:2
+msgid "Graphical representation of the CPU load"
+msgstr "Grafical representation del carga de CPU"
+
+#: ../panel-plugin/cpu.c:134
+msgid "Copyright (c) 2003-2019\n"
+msgstr "Copyright (c) 2003-2019\n"
+
+#: ../panel-plugin/cpu.c:342
+#, c-format
+msgid "Usage: %u%%"
+msgstr "Usage: %u%%"
+
+#: ../panel-plugin/properties.c:80
+msgid "CPU Graph Properties"
+msgstr "Proprietás de grafico de CPU"
+
+#: ../panel-plugin/properties.c:98
+msgid "Use non-linear time-scale"
+msgstr ""
+
+#: ../panel-plugin/properties.c:99
+msgid "Show frame"
+msgstr "Monstrar li cadre"
+
+#: ../panel-plugin/properties.c:100
+msgid "Show border"
+msgstr "Monstrar li borde"
+
+#: ../panel-plugin/properties.c:101
+msgid "Show current usage bar"
+msgid_plural "Show current usage bars"
+msgstr[0] "Monstrar li actual usagie"
+msgstr[1] "Monstrar li actual usagie"
+
+#: ../panel-plugin/properties.c:103
+msgid "Run in terminal"
+msgstr "Lansar in un terminal"
+
+#: ../panel-plugin/properties.c:104
+msgid "Use startup notification"
+msgstr "Usar li notification de inicie"
+
+#: ../panel-plugin/properties.c:107
+msgid "Color 1:"
+msgstr "Color 1:"
+
+#: ../panel-plugin/properties.c:108
+msgid "Color 2:"
+msgstr "Color 2:"
+
+#: ../panel-plugin/properties.c:109
+msgid "Color 3:"
+msgstr "Color 3:"
+
+#: ../panel-plugin/properties.c:110
+msgid "Background:"
+msgstr "Funde:"
+
+#: ../panel-plugin/properties.c:114
+msgid "Bars color:"
+msgstr "Color de barras:"
+
+#: ../panel-plugin/properties.c:119
+msgid "Appearance"
+msgstr "Aspecte"
+
+#: ../panel-plugin/properties.c:121
+msgid "Advanced"
+msgstr "Avansat"
+
+#: ../panel-plugin/properties.c:199
+msgid "Fastest (~250ms)"
+msgstr "Rapidissim (~250ms)"
+
+#: ../panel-plugin/properties.c:200
+msgid "Fast (~500ms)"
+msgstr "Rapid (~500ms)"
+
+#: ../panel-plugin/properties.c:201
+msgid "Normal (~750ms)"
+msgstr "Normal (~750ms)"
+
+#: ../panel-plugin/properties.c:202
+msgid "Slow (~1s)"
+msgstr "Lent (~1s)"
+
+#: ../panel-plugin/properties.c:206
+msgid "Update Interval:"
+msgstr "Actualisar chascun:"
+
+#: ../panel-plugin/properties.c:214
+msgid "All"
+msgstr "Omni"
+
+#: ../panel-plugin/properties.c:219
+msgid "Tracked Core:"
+msgstr "Monitorat cordie:"
+
+#: ../panel-plugin/properties.c:230
+msgid "Width:"
+msgstr "Largore:"
+
+#: ../panel-plugin/properties.c:232
+msgid "Height:"
+msgstr "Altore:"
+
+#: ../panel-plugin/properties.c:246
+msgid "Associated command:"
+msgstr "Associat comande:"
+
+#: ../panel-plugin/properties.c:270
+msgid "Normal"
+msgstr "Normal"
+
+#: ../panel-plugin/properties.c:271
+msgid "LED"
+msgstr "LED"
+
+#: ../panel-plugin/properties.c:272
+msgid "No history"
+msgstr "Sin diarium"
+
+#: ../panel-plugin/properties.c:273
+msgid "Grid"
+msgstr "Grille"
+
+#: ../panel-plugin/properties.c:277
+msgid "Mode:"
+msgstr "Mode:"
+
+#: ../panel-plugin/properties.c:282
+msgid "Solid"
+msgstr "Solid"
+
+#: ../panel-plugin/properties.c:283
+msgid "Gradient"
+msgstr "Gradiente"
+
+#: ../panel-plugin/properties.c:284
+msgid "Fire"
+msgstr "Foy"
+
+#: ../panel-plugin/properties.c:288
+msgid "Color mode: "
+msgstr "Mode de color:"
+
+#: ../panel-plugin/cpugraph.desktop.in.h:1
+msgid "CPU Graph"
+msgstr "Grafico de CPU"
