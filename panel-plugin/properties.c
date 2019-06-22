@@ -334,14 +334,19 @@ setup_color_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base,
 static void
 setup_mode_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base)
 {
-    const gchar *items[] = { _("Normal"),
+    const gchar *items[] = { _("Disabled"),
+                             _("Normal"),
                              _("LED"),
                              _("No history"),
                              _("Grid")
                            };
     gsize nb_items = sizeof (items) / sizeof (gchar*);
 
-    create_drop_down (vbox, sg, _("Mode:"), items, nb_items, base->mode, change_mode, base);
+    /* 'Disabled' mode was introduced in 1.1.0 as '-1'
+     * for this reason we need to increment the selected value */
+    gint selected = base->mode + 1;
+
+    create_drop_down (vbox, sg, _("Mode:"), items, nb_items, selected, change_mode, base);
 }
 
 static void
@@ -439,7 +444,11 @@ select_active_barscolors (CPUGraph *base)
 static void
 change_mode (GtkComboBox *combo, CPUGraph *base)
 {
-    set_mode (base, gtk_combo_box_get_active (combo));
+    /* 'Disabled' mode was introduced in 1.1.0 as '-1'
+     * for this reason we need to decrement the selected value */
+    gint selected = gtk_combo_box_get_active (combo) - 1;
+
+    set_mode (base, selected);
     select_active_colors (base);
 }
 

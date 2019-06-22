@@ -372,6 +372,12 @@ update_cb (CPUGraph *base)
         }
     }
 
+    if (base->mode == -1)
+    {
+        /* Disabled mode, skip updating history and drawing the graph */
+        return TRUE;
+    }
+
     if (base->non_linear)
     {
         i = base->history_size - 1;
@@ -559,6 +565,18 @@ void
 set_mode (CPUGraph *base, guint mode)
 {
     base->mode = mode;
+
+    if (mode == -1)
+    {
+        /* 'Disabled' mode, hide graph and clear history */
+        gtk_widget_hide (base->frame_widget);
+        for (gint i = 0; i < base->history_size; i++)
+            base->history[i] = 0;
+    }
+    else
+    {
+        gtk_widget_show (base->frame_widget);
+    }
 }
 
 void

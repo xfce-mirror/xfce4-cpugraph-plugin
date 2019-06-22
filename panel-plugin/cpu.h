@@ -49,7 +49,7 @@ typedef struct
     guint update_interval; /* Number of ms between updates. */
     gboolean non_linear;
     guint size;
-    guint mode;
+    gint mode;
     guint color_mode;
     gboolean has_frame;
     gboolean has_border;
