@@ -50,6 +50,7 @@ static void       set_bars_size        (CPUGraph           *base,
 static void       mode_cb              (XfcePanelPlugin    *plugin,
                                         XfcePanelPluginMode mode,
                                         CPUGraph           *base);
+static void       set_bars_color       (CPUGraph           *base);
 static void       set_bars_orientation (CPUGraph           *base,
                                         GtkOrientation      orientation);
 static gboolean   update_cb            (CPUGraph           *base);
@@ -132,6 +133,13 @@ create_gui (XfcePanelPlugin *plugin)
     base->tooltip_text = gtk_label_new (NULL);
     g_object_ref (base->tooltip_text);
 
+    base->css_provider = gtk_css_provider_new ();
+    gtk_style_context_add_provider_for_screen (
+            gtk_widget_get_screen (GTK_WIDGET (plugin)),
+            GTK_STYLE_PROVIDER (base->css_provider),
+            GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    g_object_unref (base->css_provider);
+
     return base;
 }
 
@@ -175,17 +183,12 @@ create_bars (CPUGraph *base)
     for (i = 0; i < n; i++)
     {
         base->bars[i] = GTK_WIDGET (gtk_progress_bar_new ());
-        /* Set bar colors */
-        if (base->has_barcolor) {
-G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-            gtk_widget_override_background_color (base->bars[i], GTK_STATE_PRELIGHT, &base->colors[4]);
-            gtk_widget_override_background_color (base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
-            gtk_widget_override_color (base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
-G_GNUC_END_IGNORE_DEPRECATIONS
-        }
-
         gtk_box_pack_end (GTK_BOX (base->box), base->bars[i], FALSE, FALSE, 0);
         gtk_widget_show (base->bars[i]);
+    }
+
+    if (base->has_barcolor) {
+        set_bars_color (base);
     }
 }
 
@@ -306,6 +309,21 @@ mode_cb (XfcePanelPlugin *plugin, XfcePanelPluginMode mode, CPUGraph *base)
         set_bars_orientation (base, orientation);
 
     size_cb (plugin, xfce_panel_plugin_get_size (base->plugin), base);
+}
+
+static void
+set_bars_color (CPUGraph *base)
+{
+    gchar *color = gdk_rgba_to_string (&base->colors[4]);
+    gchar *css = g_strdup_printf ("progressbar progress { \
+                                    background-color: %1$s; \
+                                    background-image: none; \
+                                    border-color: darker (%1$s)}", color);
+
+    gtk_css_provider_load_from_data (base->css_provider, css, strlen(css), NULL);
+
+    g_free (color);
+    g_free (css);
 }
 
 static void
@@ -560,17 +578,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 
     if (number == 4 && base->has_bars && base->has_barcolor)
     {
-        n = nb_bars (base);
-
-        for (i = 0; i < n; i++)
-        {
-G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-            /* Set bar colors */
-            gtk_widget_override_background_color (base->bars[i], GTK_STATE_PRELIGHT, &base->colors[4]);
-            gtk_widget_override_background_color (base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
-            gtk_widget_override_color (base->bars[i], GTK_STATE_SELECTED, &base->colors[4]);
-G_GNUC_END_IGNORE_DEPRECATIONS
-        }
+        set_bars_color (base);
     }
 }
 

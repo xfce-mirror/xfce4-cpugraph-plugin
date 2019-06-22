@@ -67,6 +67,7 @@ typedef struct
     guint *history;
     gssize history_size;
     CpuData *cpu_data;
+    GtkCssProvider *css_provider;
 } CPUGraph;
 
 void set_startup_notification (CPUGraph *base, gboolean startup_notification);
