@@ -1,3 +1,10 @@
+1.0.91 (22/6/2019)
+=====
+- Add option to disable the graph (Bug #15163)
+- Use css to change bar colors (Bug #15186)
+- Fix bars in horizontal mode
+- Updated translations
+
 1.0.90 (28/5/2019)
 =====
 - GTK 3 Port
