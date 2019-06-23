@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Michal Várady <miko.vaji@gmail.com>, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-03 20:54+0200\n"
-"PO-Revision-Date: 2017-09-19 18:06+0000\n"
-"Last-Translator: Nick Schermer <nick@xfce.org>\n"
+"POT-Creation-Date: 2019-06-23 00:31+0200\n"
+"PO-Revision-Date: 2019-06-23 05:43+0000\n"
+"Last-Translator: Michal Várady <miko.vaji@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/xfce/xfce-panel-plugins/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,36 +18,36 @@ msgstr ""
 "Language: cs\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
-#: ../panel-plugin/cpu.c:153 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.c:160 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Grafická reprezentace zatížení procesoru"
 
-#: ../panel-plugin/cpu.c:155
-msgid "Copyright (c) 2003-2012\n"
-msgstr "Copyright (c) 2003-2012\n"
+#: ../panel-plugin/cpu.c:162
+msgid "Copyright (c) 2003-2019\n"
+msgstr "Copyright (c) 2003-2019\n"
 
-#: ../panel-plugin/cpu.c:368
+#: ../panel-plugin/cpu.c:407
 #, c-format
 msgid "Usage: %u%%"
 msgstr "Použití: %u%%"
 
-#: ../panel-plugin/properties.c:80
+#: ../panel-plugin/properties.c:132
 msgid "CPU Graph Properties"
 msgstr "Vlastnosti Grafu procesoru"
 
-#: ../panel-plugin/properties.c:98
+#: ../panel-plugin/properties.c:149
 msgid "Use non-linear time-scale"
 msgstr "Nelineární časová osa"
 
-#: ../panel-plugin/properties.c:99
+#: ../panel-plugin/properties.c:150
 msgid "Show frame"
 msgstr "Zobrazovat rámeček"
 
-#: ../panel-plugin/properties.c:100
+#: ../panel-plugin/properties.c:151
 msgid "Show border"
 msgstr "Zobrazit okraje"
 
-#: ../panel-plugin/properties.c:101
+#: ../panel-plugin/properties.c:152
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Zobrazit sloupec současného využití"
@@ -54,115 +55,119 @@ msgstr[1] "Zobrazit sloupce současného využití"
 msgstr[2] "Zobrazit sloupce současného využití"
 msgstr[3] "Zobrazit sloupce současného využití"
 
-#: ../panel-plugin/properties.c:103
+#: ../panel-plugin/properties.c:154
 msgid "Run in terminal"
 msgstr "Spustit v terminálu"
 
-#: ../panel-plugin/properties.c:104
+#: ../panel-plugin/properties.c:155
 msgid "Use startup notification"
 msgstr "Použít oznámení o spuštění"
 
-#: ../panel-plugin/properties.c:107
+#: ../panel-plugin/properties.c:158
 msgid "Color 1:"
 msgstr "Barva 1:"
 
-#: ../panel-plugin/properties.c:108
+#: ../panel-plugin/properties.c:159
 msgid "Color 2:"
 msgstr "Barva 2:"
 
-#: ../panel-plugin/properties.c:109
+#: ../panel-plugin/properties.c:160
 msgid "Color 3:"
 msgstr "Barva 3:"
 
-#: ../panel-plugin/properties.c:110
+#: ../panel-plugin/properties.c:161
 msgid "Background:"
 msgstr "Pozadí:"
 
-#: ../panel-plugin/properties.c:114
+#: ../panel-plugin/properties.c:165
 msgid "Bars color:"
 msgstr "Barva sloupců:"
 
-#: ../panel-plugin/properties.c:119
+#: ../panel-plugin/properties.c:170
 msgid "Appearance"
 msgstr "Vzhled"
 
-#: ../panel-plugin/properties.c:121
+#: ../panel-plugin/properties.c:172
 msgid "Advanced"
 msgstr "Pokročilé"
 
-#: ../panel-plugin/properties.c:197
+#: ../panel-plugin/properties.c:258
 msgid "Fastest (~250ms)"
 msgstr "Nejrychlejší (~250 ms)"
 
-#: ../panel-plugin/properties.c:198
+#: ../panel-plugin/properties.c:259
 msgid "Fast (~500ms)"
 msgstr "Rychlý (~500 ms)"
 
-#: ../panel-plugin/properties.c:199
+#: ../panel-plugin/properties.c:260
 msgid "Normal (~750ms)"
 msgstr "Standardní (~750 ms)"
 
-#: ../panel-plugin/properties.c:200
+#: ../panel-plugin/properties.c:261
 msgid "Slow (~1s)"
 msgstr "Pomalý (~1 s)"
 
-#: ../panel-plugin/properties.c:204
+#: ../panel-plugin/properties.c:265
 msgid "Update Interval:"
 msgstr "Interval obnovení:"
 
-#: ../panel-plugin/properties.c:212
+#: ../panel-plugin/properties.c:274
 msgid "All"
 msgstr "Vše"
 
-#: ../panel-plugin/properties.c:217
+#: ../panel-plugin/properties.c:281
 msgid "Tracked Core:"
 msgstr "Sledované jádro:"
 
-#: ../panel-plugin/properties.c:228
+#: ../panel-plugin/properties.c:293
 msgid "Width:"
 msgstr "Šířka:"
 
-#: ../panel-plugin/properties.c:230
+#: ../panel-plugin/properties.c:295
 msgid "Height:"
 msgstr "Výška:"
 
-#: ../panel-plugin/properties.c:244
+#: ../panel-plugin/properties.c:310
 msgid "Associated command:"
 msgstr "Přiřazený příkaz:"
 
-#: ../panel-plugin/properties.c:268
+#: ../panel-plugin/properties.c:337
+msgid "Disabled"
+msgstr "Zakázáno"
+
+#: ../panel-plugin/properties.c:338
 msgid "Normal"
 msgstr "Běžný"
 
-#: ../panel-plugin/properties.c:269
+#: ../panel-plugin/properties.c:339
 msgid "LED"
 msgstr "LED diody"
 
-#: ../panel-plugin/properties.c:270
+#: ../panel-plugin/properties.c:340
 msgid "No history"
 msgstr "Bez historie"
 
-#: ../panel-plugin/properties.c:271
+#: ../panel-plugin/properties.c:341
 msgid "Grid"
 msgstr "Mřížka"
 
-#: ../panel-plugin/properties.c:275
+#: ../panel-plugin/properties.c:349
 msgid "Mode:"
 msgstr "Režim:"
 
-#: ../panel-plugin/properties.c:280
+#: ../panel-plugin/properties.c:355
 msgid "Solid"
 msgstr "Jednobarevný"
 
-#: ../panel-plugin/properties.c:281
+#: ../panel-plugin/properties.c:356
 msgid "Gradient"
 msgstr "Stupňovaný"
 
-#: ../panel-plugin/properties.c:282
+#: ../panel-plugin/properties.c:357
 msgid "Fire"
 msgstr "Oheň"
 
-#: ../panel-plugin/properties.c:286
+#: ../panel-plugin/properties.c:361
 msgid "Color mode: "
 msgstr "Barvený režim:"
 
