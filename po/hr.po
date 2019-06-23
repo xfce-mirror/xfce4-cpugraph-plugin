@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Edin Veskovic <edin.lockedin@gmail.com>, 2019
 # Edin Veskovic <edin.lockedin@gmail.com>, 2014
 # Ivica  Kolić <ikoli@yahoo.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-03 20:54+0200\n"
-"PO-Revision-Date: 2017-09-23 19:02+0000\n"
-"Last-Translator: Ivica  Kolić <ikoli@yahoo.com>\n"
+"POT-Creation-Date: 2019-06-23 00:31+0200\n"
+"PO-Revision-Date: 2019-06-23 05:27+0000\n"
+"Last-Translator: Edin Veskovic <edin.lockedin@gmail.com>\n"
 "Language-Team: Croatian (http://www.transifex.com/xfce/xfce-panel-plugins/language/hr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,151 +20,155 @@ msgstr ""
 "Language: hr\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
-#: ../panel-plugin/cpu.c:153 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.c:160 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Grafički prikaz opterećenja CPU-a"
 
-#: ../panel-plugin/cpu.c:155
-msgid "Copyright (c) 2003-2012\n"
-msgstr "Autorska prava (c) 2003-2012\n"
+#: ../panel-plugin/cpu.c:162
+msgid "Copyright (c) 2003-2019\n"
+msgstr "Autorska prava (c) 2003-2019\n"
 
-#: ../panel-plugin/cpu.c:368
+#: ../panel-plugin/cpu.c:407
 #, c-format
 msgid "Usage: %u%%"
 msgstr "Upotreba: %u%%"
 
-#: ../panel-plugin/properties.c:80
+#: ../panel-plugin/properties.c:132
 msgid "CPU Graph Properties"
 msgstr "Svojstva CPU grafa"
 
-#: ../panel-plugin/properties.c:98
+#: ../panel-plugin/properties.c:149
 msgid "Use non-linear time-scale"
 msgstr "Koristi nelinearno vremensko mjerilo"
 
-#: ../panel-plugin/properties.c:99
+#: ../panel-plugin/properties.c:150
 msgid "Show frame"
 msgstr "Pokaži okvir"
 
-#: ../panel-plugin/properties.c:100
+#: ../panel-plugin/properties.c:151
 msgid "Show border"
 msgstr "Pokaži rub"
 
-#: ../panel-plugin/properties.c:101
+#: ../panel-plugin/properties.c:152
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Pokaži traku trenutne upotrebe"
 msgstr[1] "Pokaži trake trenutnih upotreba"
 msgstr[2] "Pokaži trake trenutnih upotreba"
 
-#: ../panel-plugin/properties.c:103
+#: ../panel-plugin/properties.c:154
 msgid "Run in terminal"
 msgstr "Pokreni u treminalu"
 
-#: ../panel-plugin/properties.c:104
+#: ../panel-plugin/properties.c:155
 msgid "Use startup notification"
 msgstr "Obavijesti pri pokretanju"
 
-#: ../panel-plugin/properties.c:107
+#: ../panel-plugin/properties.c:158
 msgid "Color 1:"
 msgstr "Boja 1:"
 
-#: ../panel-plugin/properties.c:108
+#: ../panel-plugin/properties.c:159
 msgid "Color 2:"
 msgstr "Boja 2:"
 
-#: ../panel-plugin/properties.c:109
+#: ../panel-plugin/properties.c:160
 msgid "Color 3:"
 msgstr "Boja 3:"
 
-#: ../panel-plugin/properties.c:110
+#: ../panel-plugin/properties.c:161
 msgid "Background:"
 msgstr "Pozadina:"
 
-#: ../panel-plugin/properties.c:114
+#: ../panel-plugin/properties.c:165
 msgid "Bars color:"
 msgstr "Boja traka:"
 
-#: ../panel-plugin/properties.c:119
+#: ../panel-plugin/properties.c:170
 msgid "Appearance"
 msgstr "Izgled"
 
-#: ../panel-plugin/properties.c:121
+#: ../panel-plugin/properties.c:172
 msgid "Advanced"
 msgstr "Napredno"
 
-#: ../panel-plugin/properties.c:197
+#: ../panel-plugin/properties.c:258
 msgid "Fastest (~250ms)"
 msgstr "Najbrže  (~250ms)"
 
-#: ../panel-plugin/properties.c:198
+#: ../panel-plugin/properties.c:259
 msgid "Fast (~500ms)"
 msgstr "Brzo (~500ms)"
 
-#: ../panel-plugin/properties.c:199
+#: ../panel-plugin/properties.c:260
 msgid "Normal (~750ms)"
 msgstr "Normalno (~750ms)"
 
-#: ../panel-plugin/properties.c:200
+#: ../panel-plugin/properties.c:261
 msgid "Slow (~1s)"
 msgstr "Sporo (~1s)"
 
-#: ../panel-plugin/properties.c:204
+#: ../panel-plugin/properties.c:265
 msgid "Update Interval:"
 msgstr "Interval osvježavanja:"
 
-#: ../panel-plugin/properties.c:212
+#: ../panel-plugin/properties.c:274
 msgid "All"
 msgstr "Sve"
 
-#: ../panel-plugin/properties.c:217
+#: ../panel-plugin/properties.c:281
 msgid "Tracked Core:"
 msgstr "Praćena jezgra:"
 
-#: ../panel-plugin/properties.c:228
+#: ../panel-plugin/properties.c:293
 msgid "Width:"
 msgstr "Dužina:"
 
-#: ../panel-plugin/properties.c:230
+#: ../panel-plugin/properties.c:295
 msgid "Height:"
 msgstr "Visina:"
 
-#: ../panel-plugin/properties.c:244
+#: ../panel-plugin/properties.c:310
 msgid "Associated command:"
 msgstr "Pridružena naredba:"
 
-#: ../panel-plugin/properties.c:268
+#: ../panel-plugin/properties.c:337
+msgid "Disabled"
+msgstr "Onemogućeno"
+
+#: ../panel-plugin/properties.c:338
 msgid "Normal"
 msgstr "Normalno"
 
-#: ../panel-plugin/properties.c:269
+#: ../panel-plugin/properties.c:339
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:270
+#: ../panel-plugin/properties.c:340
 msgid "No history"
 msgstr "Nema povijesti"
 
-#: ../panel-plugin/properties.c:271
+#: ../panel-plugin/properties.c:341
 msgid "Grid"
 msgstr "Rešetka"
 
-#: ../panel-plugin/properties.c:275
+#: ../panel-plugin/properties.c:349
 msgid "Mode:"
 msgstr "Način:"
 
-#: ../panel-plugin/properties.c:280
+#: ../panel-plugin/properties.c:355
 msgid "Solid"
 msgstr "Puna"
 
-#: ../panel-plugin/properties.c:281
+#: ../panel-plugin/properties.c:356
 msgid "Gradient"
 msgstr "Gradijent"
 
-#: ../panel-plugin/properties.c:282
+#: ../panel-plugin/properties.c:357
 msgid "Fire"
 msgstr "Vatra"
 
-#: ../panel-plugin/properties.c:286
+#: ../panel-plugin/properties.c:361
 msgid "Color mode: "
 msgstr "Način boje:"
 
