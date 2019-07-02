@@ -54,7 +54,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     gboolean nonlinear = FALSE;
     guint mode = 0;
     guint color_mode = 0;
-    gboolean frame = TRUE;
+    gboolean frame = FALSE;
     gboolean border = TRUE;
     gboolean bars = TRUE;
     guint tracked_core = 0;
@@ -87,7 +87,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     background.red = 1.0;
     background.green = 1.0;
     background.blue = 1.0;
-    background.alpha = 1.0;
+    background.alpha = 0.0;
 
     barscolor.red = 1.0;
     barscolor.green = 0.73048;
