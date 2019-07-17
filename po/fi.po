@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-23 00:31+0200\n"
-"PO-Revision-Date: 2019-07-16 20:47+0000\n"
+"PO-Revision-Date: 2019-07-17 08:25+0000\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish (http://www.transifex.com/xfce/xfce-panel-plugins/language/fi/)\n"
 "MIME-Version: 1.0\n"
@@ -92,19 +92,19 @@ msgstr "Lisäasetukset"
 
 #: ../panel-plugin/properties.c:258
 msgid "Fastest (~250ms)"
-msgstr "Nopein (~250ms)"
+msgstr "Nopein (~250 ms)"
 
 #: ../panel-plugin/properties.c:259
 msgid "Fast (~500ms)"
-msgstr "Nopea (~500ms)"
+msgstr "Nopea (~500 ms)"
 
 #: ../panel-plugin/properties.c:260
 msgid "Normal (~750ms)"
-msgstr "Normaali (~750ms)"
+msgstr "Normaali (~750 ms)"
 
 #: ../panel-plugin/properties.c:261
 msgid "Slow (~1s)"
-msgstr "Hidas (~1s)"
+msgstr "Hidas (~1 s)"
 
 #: ../panel-plugin/properties.c:265
 msgid "Update Interval:"
