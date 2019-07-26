@@ -1,0 +1,174 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Real School <translator_students@realschool.am>, 2019
+msgid ""
+msgstr ""
+"Project-Id-Version: Xfce Panel Plugins\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-06-23 00:31+0200\n"
+"PO-Revision-Date: 2019-07-26 13:08+0000\n"
+"Last-Translator: Real School <translator_students@realschool.am>\n"
+"Language-Team: Armenian (Armenia) (http://www.transifex.com/xfce/xfce-panel-plugins/language/hy_AM/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: hy_AM\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../panel-plugin/cpu.c:160 ../panel-plugin/cpugraph.desktop.in.h:2
+msgid "Graphical representation of the CPU load"
+msgstr "ԿՄՍ֊ի բեռնման գծապատկերային ներկայացում"
+
+#: ../panel-plugin/cpu.c:162
+msgid "Copyright (c) 2003-2019\n"
+msgstr "Հեղինակային իրաւունք  © 2003-2019\n"
+
+#: ../panel-plugin/cpu.c:407
+#, c-format
+msgid "Usage: %u%%"
+msgstr "Աւգտագործում․ %u%%"
+
+#: ../panel-plugin/properties.c:132
+msgid "CPU Graph Properties"
+msgstr "CPU Graph Յատկութիւններ"
+
+#: ../panel-plugin/properties.c:149
+msgid "Use non-linear time-scale"
+msgstr "Աւգտագործել ոչ գծային ժամային սանդղակը"
+
+#: ../panel-plugin/properties.c:150
+msgid "Show frame"
+msgstr "Ցուցադրել շրջանակը"
+
+#: ../panel-plugin/properties.c:151
+msgid "Show border"
+msgstr "Ցուցադրել եզրը"
+
+#: ../panel-plugin/properties.c:152
+msgid "Show current usage bar"
+msgid_plural "Show current usage bars"
+msgstr[0] "Ցուցադրել ընթացիկ աւգտագործուող գաւտին"
+msgstr[1] "Ցուցադրել ընթացիմկ աւգտագործուող գաւտիները"
+
+#: ../panel-plugin/properties.c:154
+msgid "Run in terminal"
+msgstr "Գործարկել վահանակում"
+
+#: ../panel-plugin/properties.c:155
+msgid "Use startup notification"
+msgstr "Աւգտագործել մեկնարկի ծանուցումը"
+
+#: ../panel-plugin/properties.c:158
+msgid "Color 1:"
+msgstr "Գոյն 1․"
+
+#: ../panel-plugin/properties.c:159
+msgid "Color 2:"
+msgstr "Գոյն 2."
+
+#: ../panel-plugin/properties.c:160
+msgid "Color 3:"
+msgstr "Գոյն 3."
+
+#: ../panel-plugin/properties.c:161
+msgid "Background:"
+msgstr "Յետնաշերտ․"
+
+#: ../panel-plugin/properties.c:165
+msgid "Bars color:"
+msgstr "Գաւտիների գոյն."
+
+#: ../panel-plugin/properties.c:170
+msgid "Appearance"
+msgstr "Տեսք"
+
+#: ../panel-plugin/properties.c:172
+msgid "Advanced"
+msgstr "Յառաջացած"
+
+#: ../panel-plugin/properties.c:258
+msgid "Fastest (~250ms)"
+msgstr "Ամենաարագ (~250ms)"
+
+#: ../panel-plugin/properties.c:259
+msgid "Fast (~500ms)"
+msgstr "Արագ (~500ms)"
+
+#: ../panel-plugin/properties.c:260
+msgid "Normal (~750ms)"
+msgstr "Հասարակ (~750ms)"
+
+#: ../panel-plugin/properties.c:261
+msgid "Slow (~1s)"
+msgstr "Դանդաղ (~1s)"
+
+#: ../panel-plugin/properties.c:265
+msgid "Update Interval:"
+msgstr "Թարմեցնել դադարը․"
+
+#: ../panel-plugin/properties.c:274
+msgid "All"
+msgstr "Բոլորը"
+
+#: ../panel-plugin/properties.c:281
+msgid "Tracked Core:"
+msgstr "Շաւիղուած Միջուկ․"
+
+#: ../panel-plugin/properties.c:293
+msgid "Width:"
+msgstr "Լայնութիւն․"
+
+#: ../panel-plugin/properties.c:295
+msgid "Height:"
+msgstr "Բարձրութիւն․"
+
+#: ../panel-plugin/properties.c:310
+msgid "Associated command:"
+msgstr "Համակցուած հրաման․"
+
+#: ../panel-plugin/properties.c:337
+msgid "Disabled"
+msgstr "Անջատուած"
+
+#: ../panel-plugin/properties.c:338
+msgid "Normal"
+msgstr "Միջին"
+
+#: ../panel-plugin/properties.c:339
+msgid "LED"
+msgstr "LED"
+
+#: ../panel-plugin/properties.c:340
+msgid "No history"
+msgstr "Պատմութիւն չկայ"
+
+#: ../panel-plugin/properties.c:341
+msgid "Grid"
+msgstr "Վանդակացանց"
+
+#: ../panel-plugin/properties.c:349
+msgid "Mode:"
+msgstr "Աշխատակերպ․"
+
+#: ../panel-plugin/properties.c:355
+msgid "Solid"
+msgstr "Հոծ"
+
+#: ../panel-plugin/properties.c:356
+msgid "Gradient"
+msgstr "Սահանցում"
+
+#: ../panel-plugin/properties.c:357
+msgid "Fire"
+msgstr "Կրակ"
+
+#: ../panel-plugin/properties.c:361
+msgid "Color mode: "
+msgstr "Գոյնի աշխատակերպ․"
+
+#: ../panel-plugin/cpugraph.desktop.in.h:1
+msgid "CPU Graph"
+msgstr "CPU Graph"
