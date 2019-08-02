@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-23 00:31+0200\n"
-"PO-Revision-Date: 2019-06-26 04:58+0000\n"
+"PO-Revision-Date: 2019-08-02 07:25+0000\n"
 "Last-Translator: Daniel Muñiz Fontoira <dani@damufo.com>\n"
 "Language-Team: Galician (http://www.transifex.com/xfce/xfce-panel-plugins/language/gl/)\n"
 "MIME-Version: 1.0\n"
@@ -149,7 +149,7 @@ msgstr "Sen historial"
 
 #: ../panel-plugin/properties.c:341
 msgid "Grid"
-msgstr "Reixa"
+msgstr "Grade"
 
 #: ../panel-plugin/properties.c:349
 msgid "Mode:"
@@ -161,7 +161,7 @@ msgstr "Sólida"
 
 #: ../panel-plugin/properties.c:356
 msgid "Gradient"
-msgstr "Degradado"
+msgstr "Gradiente"
 
 #: ../panel-plugin/properties.c:357
 msgid "Fire"
