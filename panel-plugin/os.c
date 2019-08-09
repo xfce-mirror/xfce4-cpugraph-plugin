@@ -226,7 +226,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
     data[0].load = 0;
     for (i = 1; i <= nb_cpu; i++)
     {
-        cp_time1 = cp_time + CPUSTATE * (i - 1);
+        cp_time1 = cp_time + CPUSTATES * (i - 1);
         used = cp_time1[CP_USER] + cp_time1[CP_NICE] + cp_time1[CP_SYS] + cp_time1[CP_INTR];
         total = used + cp_time1[CP_IDLE];
 
