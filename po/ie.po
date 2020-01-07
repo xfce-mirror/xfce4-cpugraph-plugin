@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Ольга Смирнова, 2019
+# Caarmi, 2020
+# Caarmi, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-29 06:31+0200\n"
-"PO-Revision-Date: 2019-06-04 16:46+0000\n"
-"Last-Translator: Ольга Смирнова\n"
+"POT-Creation-Date: 2019-06-23 00:31+0200\n"
+"PO-Revision-Date: 2020-01-07 07:14+0000\n"
+"Last-Translator: Caarmi\n"
 "Language-Team: Interlingue (http://www.transifex.com/xfce/xfce-panel-plugins/language/ie/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,150 +19,154 @@ msgstr ""
 "Language: ie\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../panel-plugin/cpu.c:132 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.c:160 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Grafical representation del carga de CPU"
 
-#: ../panel-plugin/cpu.c:134
+#: ../panel-plugin/cpu.c:162
 msgid "Copyright (c) 2003-2019\n"
 msgstr "Copyright (c) 2003-2019\n"
 
-#: ../panel-plugin/cpu.c:342
+#: ../panel-plugin/cpu.c:407
 #, c-format
 msgid "Usage: %u%%"
 msgstr "Usage: %u%%"
 
-#: ../panel-plugin/properties.c:80
+#: ../panel-plugin/properties.c:132
 msgid "CPU Graph Properties"
 msgstr "Proprietás de grafico de CPU"
 
-#: ../panel-plugin/properties.c:98
+#: ../panel-plugin/properties.c:149
 msgid "Use non-linear time-scale"
-msgstr ""
+msgstr "Usar non-lineari témpor-scale"
 
-#: ../panel-plugin/properties.c:99
+#: ../panel-plugin/properties.c:150
 msgid "Show frame"
 msgstr "Monstrar li cadre"
 
-#: ../panel-plugin/properties.c:100
+#: ../panel-plugin/properties.c:151
 msgid "Show border"
 msgstr "Monstrar li borde"
 
-#: ../panel-plugin/properties.c:101
+#: ../panel-plugin/properties.c:152
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Monstrar li actual usagie"
 msgstr[1] "Monstrar li actual usagie"
 
-#: ../panel-plugin/properties.c:103
+#: ../panel-plugin/properties.c:154
 msgid "Run in terminal"
 msgstr "Lansar in un terminal"
 
-#: ../panel-plugin/properties.c:104
+#: ../panel-plugin/properties.c:155
 msgid "Use startup notification"
 msgstr "Usar li notification de inicie"
 
-#: ../panel-plugin/properties.c:107
+#: ../panel-plugin/properties.c:158
 msgid "Color 1:"
 msgstr "Color 1:"
 
-#: ../panel-plugin/properties.c:108
+#: ../panel-plugin/properties.c:159
 msgid "Color 2:"
 msgstr "Color 2:"
 
-#: ../panel-plugin/properties.c:109
+#: ../panel-plugin/properties.c:160
 msgid "Color 3:"
 msgstr "Color 3:"
 
-#: ../panel-plugin/properties.c:110
+#: ../panel-plugin/properties.c:161
 msgid "Background:"
 msgstr "Funde:"
 
-#: ../panel-plugin/properties.c:114
+#: ../panel-plugin/properties.c:165
 msgid "Bars color:"
 msgstr "Color de barras:"
 
-#: ../panel-plugin/properties.c:119
+#: ../panel-plugin/properties.c:170
 msgid "Appearance"
 msgstr "Aspecte"
 
-#: ../panel-plugin/properties.c:121
+#: ../panel-plugin/properties.c:172
 msgid "Advanced"
 msgstr "Avansat"
 
-#: ../panel-plugin/properties.c:199
+#: ../panel-plugin/properties.c:258
 msgid "Fastest (~250ms)"
 msgstr "Rapidissim (~250ms)"
 
-#: ../panel-plugin/properties.c:200
+#: ../panel-plugin/properties.c:259
 msgid "Fast (~500ms)"
 msgstr "Rapid (~500ms)"
 
-#: ../panel-plugin/properties.c:201
+#: ../panel-plugin/properties.c:260
 msgid "Normal (~750ms)"
 msgstr "Normal (~750ms)"
 
-#: ../panel-plugin/properties.c:202
+#: ../panel-plugin/properties.c:261
 msgid "Slow (~1s)"
 msgstr "Lent (~1s)"
 
-#: ../panel-plugin/properties.c:206
+#: ../panel-plugin/properties.c:265
 msgid "Update Interval:"
 msgstr "Actualisar chascun:"
 
-#: ../panel-plugin/properties.c:214
+#: ../panel-plugin/properties.c:274
 msgid "All"
 msgstr "Omni"
 
-#: ../panel-plugin/properties.c:219
+#: ../panel-plugin/properties.c:281
 msgid "Tracked Core:"
 msgstr "Monitorat cordie:"
 
-#: ../panel-plugin/properties.c:230
+#: ../panel-plugin/properties.c:293
 msgid "Width:"
 msgstr "Largore:"
 
-#: ../panel-plugin/properties.c:232
+#: ../panel-plugin/properties.c:295
 msgid "Height:"
 msgstr "Altore:"
 
-#: ../panel-plugin/properties.c:246
+#: ../panel-plugin/properties.c:310
 msgid "Associated command:"
 msgstr "Associat comande:"
 
-#: ../panel-plugin/properties.c:270
+#: ../panel-plugin/properties.c:337
+msgid "Disabled"
+msgstr "Ínactiv"
+
+#: ../panel-plugin/properties.c:338
 msgid "Normal"
 msgstr "Normal"
 
-#: ../panel-plugin/properties.c:271
+#: ../panel-plugin/properties.c:339
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:272
+#: ../panel-plugin/properties.c:340
 msgid "No history"
 msgstr "Sin diarium"
 
-#: ../panel-plugin/properties.c:273
+#: ../panel-plugin/properties.c:341
 msgid "Grid"
 msgstr "Grille"
 
-#: ../panel-plugin/properties.c:277
+#: ../panel-plugin/properties.c:349
 msgid "Mode:"
 msgstr "Mode:"
 
-#: ../panel-plugin/properties.c:282
+#: ../panel-plugin/properties.c:355
 msgid "Solid"
 msgstr "Solid"
 
-#: ../panel-plugin/properties.c:283
+#: ../panel-plugin/properties.c:356
 msgid "Gradient"
 msgstr "Gradiente"
 
-#: ../panel-plugin/properties.c:284
+#: ../panel-plugin/properties.c:357
 msgid "Fire"
 msgstr "Foy"
 
-#: ../panel-plugin/properties.c:288
+#: ../panel-plugin/properties.c:361
 msgid "Color mode: "
 msgstr "Mode de color:"
 
