@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-23 00:31+0200\n"
-"PO-Revision-Date: 2020-04-21 01:46+0000\n"
+"PO-Revision-Date: 2020-04-30 15:54+0000\n"
 "Last-Translator: Ignacio Poggi <ignaciop.3@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/xfce/xfce-panel-plugins/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -95,7 +95,7 @@ msgstr "Avanzado"
 
 #: ../panel-plugin/properties.c:258
 msgid "Fastest (~250ms)"
-msgstr "El rapidísimo (~250ms)"
+msgstr "Muy rápido (~250ms)"
 
 #: ../panel-plugin/properties.c:259
 msgid "Fast (~500ms)"
