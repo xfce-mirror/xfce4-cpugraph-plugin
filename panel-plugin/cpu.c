@@ -542,8 +542,11 @@ set_update_rate (CPUGraph *base, guint rate)
         case 2:
             update = 750;
             break;
-        default:
+        case 3:
             update = 1000;
+            break;
+        default:
+            update = 3000;
     }
     base->timeout_id = g_timeout_add (update, (GSourceFunc) update_cb, base);
 }
