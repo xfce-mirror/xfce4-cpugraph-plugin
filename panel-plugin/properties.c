@@ -258,7 +258,8 @@ setup_update_interval_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base)
     const gchar *items[] = { _("Fastest (~250ms)"),
                              _("Fast (~500ms)"),
                              _("Normal (~750ms)"),
-                             _("Slow (~1s)")
+                             _("Slow (~1s)"),
+                             _("Slowest (~3s)")
                            };
     gsize nb_items = sizeof (items) / sizeof (gchar*);
 
