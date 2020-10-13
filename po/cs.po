@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Michal Várady <miko.vaji@gmail.com>, 2019
+# Michal Várady <miko.vaji@gmail.com>, 2019-2020
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-23 00:31+0200\n"
-"PO-Revision-Date: 2019-06-23 05:43+0000\n"
+"POT-Creation-Date: 2020-10-13 00:47+0200\n"
+"PO-Revision-Date: 2020-10-13 13:22+0000\n"
 "Last-Translator: Michal Várady <miko.vaji@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/xfce/xfce-panel-plugins/language/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -107,67 +107,71 @@ msgstr "Standardní (~750 ms)"
 msgid "Slow (~1s)"
 msgstr "Pomalý (~1 s)"
 
-#: ../panel-plugin/properties.c:265
+#: ../panel-plugin/properties.c:262
+msgid "Slowest (~3s)"
+msgstr "Nejpomalejší (~3 s)"
+
+#: ../panel-plugin/properties.c:266
 msgid "Update Interval:"
 msgstr "Interval obnovení:"
 
-#: ../panel-plugin/properties.c:274
+#: ../panel-plugin/properties.c:275
 msgid "All"
 msgstr "Vše"
 
-#: ../panel-plugin/properties.c:281
+#: ../panel-plugin/properties.c:282
 msgid "Tracked Core:"
 msgstr "Sledované jádro:"
 
-#: ../panel-plugin/properties.c:293
+#: ../panel-plugin/properties.c:294
 msgid "Width:"
 msgstr "Šířka:"
 
-#: ../panel-plugin/properties.c:295
+#: ../panel-plugin/properties.c:296
 msgid "Height:"
 msgstr "Výška:"
 
-#: ../panel-plugin/properties.c:310
+#: ../panel-plugin/properties.c:311
 msgid "Associated command:"
 msgstr "Přiřazený příkaz:"
 
-#: ../panel-plugin/properties.c:337
+#: ../panel-plugin/properties.c:338
 msgid "Disabled"
 msgstr "Zakázáno"
 
-#: ../panel-plugin/properties.c:338
+#: ../panel-plugin/properties.c:339
 msgid "Normal"
 msgstr "Běžný"
 
-#: ../panel-plugin/properties.c:339
+#: ../panel-plugin/properties.c:340
 msgid "LED"
 msgstr "LED diody"
 
-#: ../panel-plugin/properties.c:340
+#: ../panel-plugin/properties.c:341
 msgid "No history"
 msgstr "Bez historie"
 
-#: ../panel-plugin/properties.c:341
+#: ../panel-plugin/properties.c:342
 msgid "Grid"
 msgstr "Mřížka"
 
-#: ../panel-plugin/properties.c:349
+#: ../panel-plugin/properties.c:350
 msgid "Mode:"
 msgstr "Režim:"
 
-#: ../panel-plugin/properties.c:355
+#: ../panel-plugin/properties.c:356
 msgid "Solid"
 msgstr "Jednobarevný"
 
-#: ../panel-plugin/properties.c:356
+#: ../panel-plugin/properties.c:357
 msgid "Gradient"
 msgstr "Stupňovaný"
 
-#: ../panel-plugin/properties.c:357
+#: ../panel-plugin/properties.c:358
 msgid "Fire"
 msgstr "Oheň"
 
-#: ../panel-plugin/properties.c:361
+#: ../panel-plugin/properties.c:362
 msgid "Color mode: "
 msgstr "Barvený režim:"
 
