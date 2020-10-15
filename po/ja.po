@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Nobuhiro Iwamatsu <iwamatsu@nigauri.org>, 2019
+# UTUMI Hirosi <utuhiro78@yahoo.co.jp>, 2020
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-23 00:31+0200\n"
-"PO-Revision-Date: 2019-07-22 14:24+0000\n"
-"Last-Translator: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>\n"
+"POT-Creation-Date: 2020-10-13 00:47+0200\n"
+"PO-Revision-Date: 2020-10-15 09:46+0000\n"
+"Last-Translator: UTUMI Hirosi <utuhiro78@yahoo.co.jp>\n"
 "Language-Team: Japanese (http://www.transifex.com/xfce/xfce-panel-plugins/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -104,67 +105,71 @@ msgstr "通常 (約750ミリ秒)"
 msgid "Slow (~1s)"
 msgstr "遅い (約1秒)"
 
-#: ../panel-plugin/properties.c:265
+#: ../panel-plugin/properties.c:262
+msgid "Slowest (~3s)"
+msgstr "最も遅い (約3秒)"
+
+#: ../panel-plugin/properties.c:266
 msgid "Update Interval:"
 msgstr "更新間隔:"
 
-#: ../panel-plugin/properties.c:274
+#: ../panel-plugin/properties.c:275
 msgid "All"
 msgstr "すべて"
 
-#: ../panel-plugin/properties.c:281
+#: ../panel-plugin/properties.c:282
 msgid "Tracked Core:"
 msgstr "監視コア:"
 
-#: ../panel-plugin/properties.c:293
+#: ../panel-plugin/properties.c:294
 msgid "Width:"
 msgstr "幅:"
 
-#: ../panel-plugin/properties.c:295
+#: ../panel-plugin/properties.c:296
 msgid "Height:"
 msgstr "高さ:"
 
-#: ../panel-plugin/properties.c:310
+#: ../panel-plugin/properties.c:311
 msgid "Associated command:"
 msgstr "割当てコマンド:"
 
-#: ../panel-plugin/properties.c:337
+#: ../panel-plugin/properties.c:338
 msgid "Disabled"
 msgstr "無効"
 
-#: ../panel-plugin/properties.c:338
+#: ../panel-plugin/properties.c:339
 msgid "Normal"
 msgstr "通常"
 
-#: ../panel-plugin/properties.c:339
+#: ../panel-plugin/properties.c:340
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:340
+#: ../panel-plugin/properties.c:341
 msgid "No history"
 msgstr "履歴なし"
 
-#: ../panel-plugin/properties.c:341
+#: ../panel-plugin/properties.c:342
 msgid "Grid"
 msgstr "グリッド"
 
-#: ../panel-plugin/properties.c:349
+#: ../panel-plugin/properties.c:350
 msgid "Mode:"
 msgstr "モード:"
 
-#: ../panel-plugin/properties.c:355
+#: ../panel-plugin/properties.c:356
 msgid "Solid"
 msgstr "単色"
 
-#: ../panel-plugin/properties.c:356
+#: ../panel-plugin/properties.c:357
 msgid "Gradient"
 msgstr "グラデーション"
 
-#: ../panel-plugin/properties.c:357
+#: ../panel-plugin/properties.c:358
 msgid "Fire"
 msgstr "炎"
 
-#: ../panel-plugin/properties.c:361
+#: ../panel-plugin/properties.c:362
 msgid "Color mode: "
 msgstr "カラーモード: "
 
