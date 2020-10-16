@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Daniel Muñiz Fontoira <dani@damufo.com>, 2019
+# Daniel Muñiz Fontoira <dani@damufo.com>, 2019-2020
 # Leandro Regueiro <leandro.regueiro@gmail.com>, 2008-2009
 # Xosé, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-23 00:31+0200\n"
-"PO-Revision-Date: 2019-11-11 06:08+0000\n"
+"POT-Creation-Date: 2020-10-13 00:47+0200\n"
+"PO-Revision-Date: 2020-10-13 04:17+0000\n"
 "Last-Translator: Daniel Muñiz Fontoira <dani@damufo.com>\n"
 "Language-Team: Galician (http://www.transifex.com/xfce/xfce-panel-plugins/language/gl/)\n"
 "MIME-Version: 1.0\n"
@@ -107,67 +107,71 @@ msgstr "Normal (~750ms)"
 msgid "Slow (~1s)"
 msgstr "Lento (~1s)"
 
-#: ../panel-plugin/properties.c:265
+#: ../panel-plugin/properties.c:262
+msgid "Slowest (~3s)"
+msgstr "Máis lento (~3s)"
+
+#: ../panel-plugin/properties.c:266
 msgid "Update Interval:"
 msgstr "Intervalo de actualización: "
 
-#: ../panel-plugin/properties.c:274
+#: ../panel-plugin/properties.c:275
 msgid "All"
 msgstr "Todo"
 
-#: ../panel-plugin/properties.c:281
+#: ../panel-plugin/properties.c:282
 msgid "Tracked Core:"
 msgstr "Núcleo seguido:"
 
-#: ../panel-plugin/properties.c:293
+#: ../panel-plugin/properties.c:294
 msgid "Width:"
 msgstr "Ancho:"
 
-#: ../panel-plugin/properties.c:295
+#: ../panel-plugin/properties.c:296
 msgid "Height:"
 msgstr "Alto:"
 
-#: ../panel-plugin/properties.c:310
+#: ../panel-plugin/properties.c:311
 msgid "Associated command:"
 msgstr "Orde asociada:"
 
-#: ../panel-plugin/properties.c:337
+#: ../panel-plugin/properties.c:338
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: ../panel-plugin/properties.c:338
+#: ../panel-plugin/properties.c:339
 msgid "Normal"
 msgstr "Normal"
 
-#: ../panel-plugin/properties.c:339
+#: ../panel-plugin/properties.c:340
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:340
+#: ../panel-plugin/properties.c:341
 msgid "No history"
 msgstr "Sen historial"
 
-#: ../panel-plugin/properties.c:341
+#: ../panel-plugin/properties.c:342
 msgid "Grid"
 msgstr "Grade"
 
-#: ../panel-plugin/properties.c:349
+#: ../panel-plugin/properties.c:350
 msgid "Mode:"
 msgstr "Modo:"
 
-#: ../panel-plugin/properties.c:355
+#: ../panel-plugin/properties.c:356
 msgid "Solid"
 msgstr "Sólida"
 
-#: ../panel-plugin/properties.c:356
+#: ../panel-plugin/properties.c:357
 msgid "Gradient"
 msgstr "Gradiente"
 
-#: ../panel-plugin/properties.c:357
+#: ../panel-plugin/properties.c:358
 msgid "Fire"
 msgstr "Lume"
 
-#: ../panel-plugin/properties.c:361
+#: ../panel-plugin/properties.c:362
 msgid "Color mode: "
 msgstr "Modo de cor:"
 
