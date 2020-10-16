@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Zmicer Turok <nashtlumach@gmail.com>, 2018-2019
+# Zmicer Turok <nashtlumach@gmail.com>, 2018-2020
 # Zmicer Turok <nashtlumach@gmail.com>, 2018
 # Zmicer Turok <zmicerturok@gmail.com >, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-23 00:31+0200\n"
-"PO-Revision-Date: 2020-03-03 10:36+0000\n"
+"POT-Creation-Date: 2020-10-13 00:47+0200\n"
+"PO-Revision-Date: 2020-10-13 06:51+0000\n"
 "Last-Translator: Zmicer Turok <nashtlumach@gmail.com>\n"
 "Language-Team: Belarusian (http://www.transifex.com/xfce/xfce-panel-plugins/language/be/)\n"
 "MIME-Version: 1.0\n"
@@ -109,67 +109,71 @@ msgstr "Звычайны (~750 мс)"
 msgid "Slow (~1s)"
 msgstr "Павольны (~1 с)"
 
-#: ../panel-plugin/properties.c:265
+#: ../panel-plugin/properties.c:262
+msgid "Slowest (~3s)"
+msgstr "Вельмі павольны (~3с)"
+
+#: ../panel-plugin/properties.c:266
 msgid "Update Interval:"
 msgstr "Інтэрвал абнаўлення:"
 
-#: ../panel-plugin/properties.c:274
+#: ../panel-plugin/properties.c:275
 msgid "All"
 msgstr "Усе"
 
-#: ../panel-plugin/properties.c:281
+#: ../panel-plugin/properties.c:282
 msgid "Tracked Core:"
 msgstr "Ядро:"
 
-#: ../panel-plugin/properties.c:293
+#: ../panel-plugin/properties.c:294
 msgid "Width:"
 msgstr "Шырыня:"
 
-#: ../panel-plugin/properties.c:295
+#: ../panel-plugin/properties.c:296
 msgid "Height:"
 msgstr "Вышыня:"
 
-#: ../panel-plugin/properties.c:310
+#: ../panel-plugin/properties.c:311
 msgid "Associated command:"
 msgstr "Звязаны загад:"
 
-#: ../panel-plugin/properties.c:337
+#: ../panel-plugin/properties.c:338
 msgid "Disabled"
 msgstr "Выключана"
 
-#: ../panel-plugin/properties.c:338
+#: ../panel-plugin/properties.c:339
 msgid "Normal"
 msgstr "Звычайны"
 
-#: ../panel-plugin/properties.c:339
+#: ../panel-plugin/properties.c:340
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:340
+#: ../panel-plugin/properties.c:341
 msgid "No history"
 msgstr "Без гісторыі"
 
-#: ../panel-plugin/properties.c:341
+#: ../panel-plugin/properties.c:342
 msgid "Grid"
 msgstr "Сетка"
 
-#: ../panel-plugin/properties.c:349
+#: ../panel-plugin/properties.c:350
 msgid "Mode:"
 msgstr "Рэжым:"
 
-#: ../panel-plugin/properties.c:355
+#: ../panel-plugin/properties.c:356
 msgid "Solid"
 msgstr "Суцэльны"
 
-#: ../panel-plugin/properties.c:356
+#: ../panel-plugin/properties.c:357
 msgid "Gradient"
 msgstr "Градыент"
 
-#: ../panel-plugin/properties.c:357
+#: ../panel-plugin/properties.c:358
 msgid "Fire"
 msgstr "Полымя"
 
-#: ../panel-plugin/properties.c:361
+#: ../panel-plugin/properties.c:362
 msgid "Color mode: "
 msgstr "Рэжым колераў: "
 
