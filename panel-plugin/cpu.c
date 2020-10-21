@@ -127,7 +127,7 @@ create_gui (XfcePanelPlugin *plugin)
     base->has_barcolor = FALSE;
     base->bars = NULL;
 
-    mode_cb (plugin, orientation, base);
+    mode_cb (plugin, (XfcePanelPluginMode) orientation, base);
     gtk_widget_show_all (ebox);
 
     base->tooltip_text = gtk_label_new (NULL);
@@ -347,8 +347,6 @@ set_bars_orientation (CPUGraph *base, GtkOrientation orientation)
 static gboolean
 update_cb (CPUGraph *base)
 {
-    gint i, a, b, factor;
-
     if (!read_cpu_data (base->cpu_data, base->nr_cores))
         return TRUE;
 
@@ -366,6 +364,7 @@ update_cb (CPUGraph *base)
         }
         else
         {
+            guint i;
             for (i = 0; i < base->nr_cores; i++)
                 gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (base->bars[i]),
                     (gdouble) base->cpu_data[i+1].load / CPU_SCALE);
@@ -380,9 +379,10 @@ update_cb (CPUGraph *base)
 
     if (base->non_linear)
     {
-        i = base->history_size - 1;
+        gssize i = base->history_size - 1;
         while (i > 0)
         {
+            gint a, b, factor;
             a = base->history[i], b = base->history[i-1];
             if (a < b) a++;
             factor = (i * 2);
@@ -565,7 +565,7 @@ set_color_mode (CPUGraph *base, guint color_mode)
 }
 
 void
-set_mode (CPUGraph *base, guint mode)
+set_mode (CPUGraph *base, gint mode)
 {
     base->mode = mode;
 
@@ -585,15 +585,13 @@ set_mode (CPUGraph *base, guint mode)
 void
 set_color (CPUGraph *base, guint number, GdkRGBA color)
 {
-    guint i, n;
-
     base->colors[number] = color;
 
     if (number == 0)
     {
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-        gtk_widget_override_background_color (base->draw_area, GTK_STATE_INSENSITIVE, &base->colors[0]);
-        gtk_widget_override_background_color (base->draw_area, GTK_STATE_NORMAL, &base->colors[0]);
+        gtk_widget_override_background_color (base->draw_area, GTK_STATE_FLAG_INSENSITIVE, &base->colors[0]);
+        gtk_widget_override_background_color (base->draw_area, GTK_STATE_FLAG_NORMAL, &base->colors[0]);
 G_GNUC_END_IGNORE_DEPRECATIONS
     }
 

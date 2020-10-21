@@ -80,7 +80,7 @@ void set_nonlinear_time (CPUGraph *base, gboolean nonlinear);
 void set_update_rate (CPUGraph *base, guint rate);
 void set_size (CPUGraph *base, guint width);
 void set_color_mode (CPUGraph *base, guint color_mode);
-void set_mode (CPUGraph *base, guint mode);
+void set_mode (CPUGraph *base, gint mode);
 void set_color (CPUGraph *base, guint number, GdkRGBA color);
 void set_tracked_core (CPUGraph *base, guint core);
 
