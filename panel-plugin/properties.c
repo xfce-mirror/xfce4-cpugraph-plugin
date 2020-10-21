@@ -121,7 +121,7 @@ static void    change_core                   (GtkComboBox     *combo,
 void
 create_options (XfcePanelPlugin *plugin, CPUGraph *base)
 {
-    GtkWidget *dlg, *header, *content;
+    GtkWidget *dlg, *content;
     GtkBox *vbox, *vbox2;
     GtkWidget *label;
     GtkSizeGroup *sg;
@@ -235,7 +235,7 @@ create_drop_down (GtkBox *tab, GtkSizeGroup *sg, const gchar *name,
 {
     GtkBox *hbox;
     GtkWidget *combo;
-    gint i;
+    gsize i;
 
     hbox = create_option_line (tab, sg, name);
 

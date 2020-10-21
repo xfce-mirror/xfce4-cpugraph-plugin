@@ -52,7 +52,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
 
     guint rate = 0;
     gboolean nonlinear = FALSE;
-    guint mode = 0;
+    gint mode = 0;
     guint color_mode = 0;
     gboolean frame = FALSE;
     gboolean border = TRUE;
