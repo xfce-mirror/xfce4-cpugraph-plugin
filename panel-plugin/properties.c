@@ -180,7 +180,7 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
 }
 
 static GtkBox *
-create_tab ()
+create_tab (void)
 {
     GtkBox *tab;
     tab = GTK_BOX (gtk_box_new (GTK_ORIENTATION_VERTICAL, BORDER));

@@ -69,7 +69,7 @@ static kstat_ctl_t *kc;
 
 #if defined (__linux__) || defined (__FreeBSD_kernel__)
 guint
-detect_cpu_number ()
+detect_cpu_number (void)
 {
     guint nb_lines= 0;
     FILE *fstat = NULL;
@@ -137,7 +137,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
 
 #elif defined (__FreeBSD__)
 guint
-detect_cpu_number ()
+detect_cpu_number (void)
 {
     static gint mib[] = {CTL_HW, HW_NCPU};
     gint ncpu;
@@ -198,7 +198,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
 
 #elif defined (__NetBSD__)
 guint
-detect_cpu_number ()
+detect_cpu_number (void)
 {
     static gint mib[] = {CTL_HW, HW_NCPU};
     gint ncpu;
@@ -247,7 +247,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
 
 #elif defined (__OpenBSD__)
 guint
-detect_cpu_number ()
+detect_cpu_number (void)
 {
     static gint mib[] = {CTL_HW, HW_NCPU};
     gint ncpu;
@@ -301,7 +301,7 @@ init_stats ()
 }
 
 guint
-detect_cpu_number ()
+detect_cpu_number (void)
 {
     kstat_t *ksp;
     kstat_named_t *knp;
