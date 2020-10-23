@@ -175,12 +175,12 @@ nb_bars (CPUGraph *base)
 static void
 create_bars (CPUGraph *base)
 {
-    guint i;
+    gint i;
     guint n;
     n = nb_bars (base);
     base->bars = (GtkWidget **) g_malloc (sizeof (GtkWidget *) * n);
 
-    for (i = 0; i < n; i++)
+    for (i = (gint) n - 1; i >= 0; i--)
     {
         base->bars[i] = GTK_WIDGET (gtk_progress_bar_new ());
         gtk_box_pack_end (GTK_BOX (base->box), base->bars[i], FALSE, FALSE, 0);
