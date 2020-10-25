@@ -98,9 +98,19 @@ read_cpu_data (CpuData *data, guint nb_cpu)
     gchar cpuStr[PROCMAXLNLEN];
     gulong user, nice, system, idle, used, total, iowait, irq, softirq;
     guint line;
+    const size_t buf_size = 1 << 12;
+#ifdef __GNUC__
+    gchar buf[buf_size] __attribute__ ((aligned (64)));
+#else
+    gchar *const buf = alloca (buf_size);
+#endif
 
     if (!(fStat = fopen (PROC_STAT, "r")))
         return FALSE;
+
+    /* Try to read the file using a single syscall
+     * even on machines with more than 20 CPUs */
+    setvbuf (fStat, buf, _IOFBF, buf_size);
 
     for (line = 0; line < nb_cpu + 1; line++)
     {
