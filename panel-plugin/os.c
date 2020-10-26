@@ -28,6 +28,7 @@
 
 #include "os.h"
 
+#include <errno.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -91,13 +92,25 @@ detect_cpu_number (void)
     return nb_lines > 1 ? nb_lines - 1 : 0;
 }
 
+static gulong
+parse_ulong (gchar **s)
+{
+    guint64 v;
+
+    errno = 0;
+    v = g_ascii_strtoull (*s, s, 0);
+    if (errno || v != (gulong) v)
+        v = 0;
+
+    return v;
+}
+
 gboolean
 read_cpu_data (CpuData *data, guint nb_cpu)
 {
     FILE *fStat;
     gchar cpuStr[PROCMAXLNLEN];
-    guint cpu;
-    gulong used[nb_cpu+1], total[nb_cpu+1];
+    gulong cpu, used[nb_cpu+1], total[nb_cpu+1];
 
     if (!(fStat = fopen (PROC_STAT, "r")))
         return FALSE;
@@ -107,6 +120,9 @@ read_cpu_data (CpuData *data, guint nb_cpu)
 
     while (TRUE)
     {
+        gchar *s;
+        gulong user, nice, system, idle, iowait, irq, softirq;
+
         if (!fgets (cpuStr, PROCMAXLNLEN, fStat))
         {
             fclose (fStat);
@@ -116,21 +132,20 @@ read_cpu_data (CpuData *data, guint nb_cpu)
         if (strncmp (cpuStr, "cpu", 3) != 0)
             break;
 
-        const gchar *const s = cpuStr + 3;
-        gulong user, nice, system, idle, iowait, irq, softirq;
+        s = cpuStr + 3;
 
         if (g_ascii_isspace (*s))
-        {
-            if (sscanf (s, " %lu %lu %lu %lu %lu %lu %lu", &user, &nice, &system, &idle, &iowait, &irq, &softirq) < 7)
-                iowait = irq = softirq = 0;
             cpu = 0;
-        }
         else
-        {
-            if (sscanf (s, "%u %lu %lu %lu %lu %lu %lu %lu", &cpu, &user, &nice, &system, &idle, &iowait, &irq, &softirq) < 8)
-                iowait = irq = softirq = 0;
-            cpu++;
-        }
+            cpu = 1 + parse_ulong (&s);
+
+        user = parse_ulong (&s);
+        nice = parse_ulong (&s);
+        system = parse_ulong (&s);
+        idle = parse_ulong (&s);
+        iowait = parse_ulong (&s);
+        irq = parse_ulong (&s);
+        softirq = parse_ulong (&s);
 
         if (cpu < nb_cpu + 1)
         {
