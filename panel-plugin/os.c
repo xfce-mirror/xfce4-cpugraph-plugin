@@ -113,32 +113,30 @@ read_cpu_data (CpuData *data, guint nb_cpu)
             return FALSE;
         }
 
-        if (strncmp (cpuStr, "cpu", 3) == 0)
+        if (strncmp (cpuStr, "cpu", 3) != 0)
+            break;
+
+        const gchar *const s = cpuStr + 3;
+        gulong user, nice, system, idle, iowait, irq, softirq;
+
+        if (g_ascii_isspace (*s))
         {
-            const gchar *const s = cpuStr + 3;
-            gulong user, nice, system, idle, iowait, irq, softirq;
-
-            if (g_ascii_isspace (*s))
-            {
-                cpu = 0;
-                if (sscanf (s, " %lu %lu %lu %lu %lu %lu %lu", &user, &nice, &system, &idle, &iowait, &irq, &softirq) < 7)
-                    iowait = irq = softirq = 0;
-            }
-            else
-            {
-                if (sscanf (s, "%u %lu %lu %lu %lu %lu %lu %lu", &cpu, &user, &nice, &system, &idle, &iowait, &irq, &softirq) < 8)
-                    iowait = irq = softirq = 0;
-                cpu++;
-            }
-
-            if (cpu < nb_cpu + 1)
-            {
-                used[cpu] = user + nice + system + irq + softirq;
-                total[cpu] = used[cpu] + idle + iowait;
-            }
+            if (sscanf (s, " %lu %lu %lu %lu %lu %lu %lu", &user, &nice, &system, &idle, &iowait, &irq, &softirq) < 7)
+                iowait = irq = softirq = 0;
+            cpu = 0;
         }
         else
-            break;
+        {
+            if (sscanf (s, "%u %lu %lu %lu %lu %lu %lu %lu", &cpu, &user, &nice, &system, &idle, &iowait, &irq, &softirq) < 8)
+                iowait = irq = softirq = 0;
+            cpu++;
+        }
+
+        if (cpu < nb_cpu + 1)
+        {
+            used[cpu] = user + nice + system + irq + softirq;
+            total[cpu] = used[cpu] + idle + iowait;
+        }
     }
 
     for (cpu = 0; cpu < nb_cpu + 1; cpu++)
