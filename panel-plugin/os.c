@@ -96,38 +96,62 @@ read_cpu_data (CpuData *data, guint nb_cpu)
 {
     FILE *fStat;
     gchar cpuStr[PROCMAXLNLEN];
-    gulong user, nice, system, idle, used, total, iowait, irq, softirq;
-    guint line;
+    guint cpu;
+    gulong used[nb_cpu+1], total[nb_cpu+1];
 
     if (!(fStat = fopen (PROC_STAT, "r")))
         return FALSE;
 
-    for (line = 0; line < nb_cpu + 1; line++)
+    for (cpu = 0; cpu < nb_cpu+1; cpu++)
+        used[cpu] = total[cpu] = 0;
+
+    while (TRUE)
     {
-        if (!fgets (cpuStr, PROCMAXLNLEN, fStat) ||
-            strncmp (cpuStr, "cpu", 3) != 0)
+        if (!fgets (cpuStr, PROCMAXLNLEN, fStat))
         {
             fclose (fStat);
             return FALSE;
         }
 
-        if (sscanf (cpuStr, "%*s %lu %lu %lu %lu %lu %lu %lu", &user, &nice, &system, &idle, &iowait, &irq, &softirq) < 7)
-            iowait = irq = softirq = 0;
+        if (strncmp (cpuStr, "cpu", 3) != 0)
+            break;
 
-        used = user + nice + system + irq + softirq;
-        total = used + idle + iowait;
+        const gchar *const s = cpuStr + 3;
+        gulong user, nice, system, idle, iowait, irq, softirq;
 
-        if ((total - data[line].previous_total) != 0)
+        if (g_ascii_isspace (*s))
         {
-            data[line].load = CPU_SCALE * (used - data[line].previous_used) /
-                              (total - data[line].previous_total);
+            if (sscanf (s, " %lu %lu %lu %lu %lu %lu %lu", &user, &nice, &system, &idle, &iowait, &irq, &softirq) < 7)
+                iowait = irq = softirq = 0;
+            cpu = 0;
         }
         else
         {
-            data[line].load = 0;
+            if (sscanf (s, "%u %lu %lu %lu %lu %lu %lu %lu", &cpu, &user, &nice, &system, &idle, &iowait, &irq, &softirq) < 8)
+                iowait = irq = softirq = 0;
+            cpu++;
         }
-        data[line].previous_used = used;
-        data[line].previous_total = total;
+
+        if (cpu < nb_cpu + 1)
+        {
+            used[cpu] = user + nice + system + irq + softirq;
+            total[cpu] = used[cpu] + idle + iowait;
+        }
+    }
+
+    for (cpu = 0; cpu < nb_cpu + 1; cpu++)
+    {
+        if ((total[cpu] - data[cpu].previous_total) != 0)
+        {
+            data[cpu].load = CPU_SCALE * (used[cpu] - data[cpu].previous_used) /
+                              (total[cpu] - data[cpu].previous_total);
+        }
+        else
+        {
+            data[cpu].load = 0;
+        }
+        data[cpu].previous_used = used[cpu];
+        data[cpu].previous_total = total[cpu];
     }
 
     fclose (fStat);
