@@ -25,7 +25,7 @@ po/Makefile.in.in
 po/*.gmo
 po/*.mo
 po/POTFILES
-po/.intltool-merge-cache
+po/.intltool-merge-cache*
 po/stamp-*
 *.o
 *.lo
