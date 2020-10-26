@@ -117,7 +117,7 @@ create_gui (XfcePanelPlugin *plugin)
     g_signal_connect (base->box, "query-tooltip", G_CALLBACK (tooltip_cb), base);
 
     base->frame_widget = frame = gtk_frame_new (NULL);
-    gtk_box_pack_end (GTK_BOX (base->box), frame, TRUE, TRUE, 0);
+    gtk_box_pack_end (GTK_BOX (base->box), frame, TRUE, TRUE, 2);
 
     base->draw_area = gtk_drawing_area_new ();
     gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (base->draw_area));
