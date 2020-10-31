@@ -41,7 +41,12 @@ typedef struct
     GtkWidget *frame_widget;
     GtkWidget *draw_area;
     GtkWidget *box;
-    GtkWidget **bars;
+    struct {
+        /* Widget pointers are NULL if bars are disabled */
+        GtkWidget *frame;
+        GtkWidget *draw_area;
+        GtkOrientation orientation;
+    } bars;
     GtkWidget *color_buttons[5];
     GtkWidget *tooltip_text;
 
@@ -67,7 +72,6 @@ typedef struct
     guint *history;
     gssize history_size;
     CpuData *cpu_data;
-    GtkCssProvider *css_provider;
 } CPUGraph;
 
 void set_startup_notification (CPUGraph *base, gboolean startup_notification);
