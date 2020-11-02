@@ -34,7 +34,8 @@
 
 static void       cpugraph_construct   (XfcePanelPlugin    *plugin);
 static CPUGraph  *create_gui           (XfcePanelPlugin    *plugin);
-static void       create_bars          (CPUGraph           *base);
+static void       create_bars          (CPUGraph           *base,
+                                        GtkOrientation      orientation);
 static guint      init_cpu_data        (CpuData           **data);
 static void       shutdown             (XfcePanelPlugin    *plugin,
                                         CPUGraph           *base);
@@ -44,15 +45,10 @@ static gboolean   size_cb              (XfcePanelPlugin    *plugin,
                                         CPUGraph           *base);
 static void       about_cb             (XfcePanelPlugin    *plugin,
                                         CPUGraph           *base);
-static void       set_bars_size        (CPUGraph           *base,
-                                        gint                size,
-                                        GtkOrientation      orientation);
+static void       set_bars_size        (CPUGraph           *base);
 static void       mode_cb              (XfcePanelPlugin    *plugin,
                                         XfcePanelPluginMode mode,
                                         CPUGraph           *base);
-static void       set_bars_color       (CPUGraph           *base);
-static void       set_bars_orientation (CPUGraph           *base,
-                                        GtkOrientation      orientation);
 static gboolean   update_cb            (CPUGraph           *base);
 static void       update_tooltip       (CPUGraph           *base);
 static gboolean   tooltip_cb           (GtkWidget          *widget,
@@ -62,6 +58,9 @@ static gboolean   tooltip_cb           (GtkWidget          *widget,
                                         GtkTooltip         *tooltip,
                                         CPUGraph           *base);
 static void       draw_area_cb         (GtkWidget          *w,
+                                        cairo_t            *cr,
+                                        gpointer            data);
+static void       draw_bars_cb         (GtkWidget          *w,
                                         cairo_t            *cr,
                                         gpointer            data);
 static gboolean   command_cb           (GtkWidget          *w,
@@ -125,20 +124,13 @@ create_gui (XfcePanelPlugin *plugin)
 
     base->has_bars = FALSE;
     base->has_barcolor = FALSE;
-    base->bars = NULL;
+    base->bars.orientation = orientation;
 
     mode_cb (plugin, (XfcePanelPluginMode) orientation, base);
     gtk_widget_show_all (ebox);
 
     base->tooltip_text = gtk_label_new (NULL);
     g_object_ref (base->tooltip_text);
-
-    base->css_provider = gtk_css_provider_new ();
-    gtk_style_context_add_provider_for_screen (
-            gtk_widget_get_screen (GTK_WIDGET (plugin)),
-            GTK_STYLE_PROVIDER (base->css_provider),
-            GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    g_object_unref (base->css_provider);
 
     return base;
 }
@@ -173,23 +165,16 @@ nb_bars (CPUGraph *base)
 }
 
 static void
-create_bars (CPUGraph *base)
+create_bars (CPUGraph *base, GtkOrientation orientation)
 {
-    gint i;
-    guint n;
-    n = nb_bars (base);
-    base->bars = (GtkWidget **) g_malloc (sizeof (GtkWidget *) * n);
-
-    for (i = (gint) n - 1; i >= 0; i--)
-    {
-        base->bars[i] = GTK_WIDGET (gtk_progress_bar_new ());
-        gtk_box_pack_end (GTK_BOX (base->box), base->bars[i], FALSE, FALSE, 0);
-        gtk_widget_show (base->bars[i]);
-    }
-
-    if (base->has_barcolor) {
-        set_bars_color (base);
-    }
+    base->bars.frame = gtk_frame_new (NULL);
+    base->bars.draw_area = gtk_drawing_area_new ();
+    base->bars.orientation = orientation;
+    set_frame (base, base->has_frame);
+    gtk_container_add (GTK_CONTAINER (base->bars.frame), base->bars.draw_area);
+    gtk_box_pack_end (GTK_BOX (base->box), base->bars.frame, TRUE, TRUE, 0);
+    g_signal_connect_after (base->bars.draw_area, "draw", G_CALLBACK (draw_bars_cb), base);
+    gtk_widget_show_all (base->bars.frame);
 }
 
 guint
@@ -223,18 +208,11 @@ shutdown (XfcePanelPlugin *plugin, CPUGraph *base)
 static void
 delete_bars (CPUGraph *base)
 {
-    guint i;
-    guint n;
-    if (base->bars)
+    if (base->bars.frame)
     {
-        n = nb_bars (base);
-        for (i = 0; i < n; i++)
-        {
-            gtk_widget_hide (base->bars[i]);
-            gtk_widget_destroy (base->bars[i]);
-        }
-        g_free (base->bars);
-        base->bars = NULL;
+        gtk_widget_destroy (base->bars.frame);
+        base->bars.frame = NULL;
+        base->bars.draw_area = NULL;
     }
 }
 
@@ -243,19 +221,20 @@ size_cb (XfcePanelPlugin *plugin, guint size, CPUGraph *base)
 {
     gint frame_h, frame_v, history;
     GtkOrientation orientation;
+    gint shadow_width = base->has_frame ? 2*1 : 0;
 
     orientation = xfce_panel_plugin_get_orientation (plugin);
 
     if (orientation == GTK_ORIENTATION_HORIZONTAL)
     {
-        frame_h = base->size;
+        frame_h = base->size + shadow_width;
         frame_v = size;
         history = base->size;
     }
     else
     {
         frame_h = size;
-        frame_v = base->size;
+        frame_v = base->size + shadow_width;
         history = size;
     }
 
@@ -266,82 +245,45 @@ size_cb (XfcePanelPlugin *plugin, guint size, CPUGraph *base)
         memset (base->history + base->history_size, 0, (history - base->history_size) * sizeof (guint));
     base->history_size = history;
 
-    if (base->has_bars)
-        set_bars_size (base, size, orientation);
+    if (base->has_bars) {
+        base->bars.orientation = orientation;
+        set_bars_size (base);
+    }
+
     set_border (base, base->has_border);
 
     return TRUE;
 }
 
 static void
-set_bars_size (CPUGraph *base, gint size, GtkOrientation orientation)
+set_bars_size (CPUGraph *base)
 {
-    guint i;
-    guint n;
     gint h, v;
+    gint shadow_width;
 
-    if (orientation == GTK_ORIENTATION_HORIZONTAL)
+    shadow_width = base->has_frame ? 2*1 : 0;
+
+    if (base->bars.orientation == GTK_ORIENTATION_HORIZONTAL)
     {
-        h = 8;
+        h = 6 * nb_bars (base) - 2 + shadow_width;
         v = -1;
     }
     else
     {
         h = -1;
-        v = 8;
+        v = 6 * nb_bars (base) - 2 + shadow_width;
     }
 
-    n = nb_bars (base);
-    for (i = 0; i < n ; i++)
-        gtk_widget_set_size_request (GTK_WIDGET (base->bars[i]), h, v);
+    gtk_widget_set_size_request (base->bars.frame, h, v);
 }
 
 static void
 mode_cb (XfcePanelPlugin *plugin, XfcePanelPluginMode mode, CPUGraph *base)
 {
-    GtkOrientation orientation = (mode == XFCE_PANEL_PLUGIN_MODE_HORIZONTAL) ?
-        GTK_ORIENTATION_HORIZONTAL : GTK_ORIENTATION_VERTICAL;
-
     gtk_orientable_set_orientation (GTK_ORIENTABLE (base->box),
                                     xfce_panel_plugin_get_orientation (plugin));
 
-    if (base->has_bars)
-        set_bars_orientation (base, orientation);
-
     size_cb (plugin, xfce_panel_plugin_get_size (base->plugin), base);
-}
-
-static void
-set_bars_color (CPUGraph *base)
-{
-    gchar *color = gdk_rgba_to_string (&base->colors[4]);
-    gchar *css = g_strdup_printf ("progressbar progress { \
-                                    background-color: %1$s; \
-                                    background-image: none; \
-                                    border-color: darker (%1$s)}", color);
-
-    gtk_css_provider_load_from_data (base->css_provider, css, strlen(css), NULL);
-
-    g_free (color);
-    g_free (css);
-}
-
-static void
-set_bars_orientation (CPUGraph *base, GtkOrientation orientation)
-{
-    guint i, n;
-
-    /* the received orientation refers to the panel's, so we need to invert it for the bars */
-    orientation = (orientation == GTK_ORIENTATION_HORIZONTAL) ?
-        GTK_ORIENTATION_VERTICAL : GTK_ORIENTATION_HORIZONTAL;
-
-    n = nb_bars (base);
-    for (i = 0; i < n; i++)
-    {
-        gtk_orientable_set_orientation (GTK_ORIENTABLE (base->bars[i]), orientation);
-        gtk_progress_bar_set_inverted (GTK_PROGRESS_BAR (base->bars[i]),
-                                       orientation == GTK_ORIENTATION_VERTICAL);
-    }
 }
 
 static gboolean
@@ -355,47 +297,33 @@ update_cb (CPUGraph *base)
     else if (base->tracked_core != 0)
         base->cpu_data[0].load = base->cpu_data[base->tracked_core].load;
 
-    if (base->has_bars)
+    if (base->mode != -1)
     {
-        if (base->tracked_core != 0 || base->nr_cores == 1)
+        /* Update the history and draw the graph */
+        if (base->non_linear)
         {
-            gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (base->bars[0]),
-                (gdouble) base->cpu_data[0].load / CPU_SCALE);
+            gssize i = base->history_size - 1;
+            while (i > 0)
+            {
+                gint a, b, factor;
+                a = base->history[i], b = base->history[i-1];
+                if (a < b) a++;
+                factor = (i * 2);
+                base->history[i--] = (a * (factor-1) + b) / factor;
+            }
         }
-        else
-        {
-            guint i;
-            for (i = 0; i < base->nr_cores; i++)
-                gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (base->bars[i]),
-                    (gdouble) base->cpu_data[i+1].load / CPU_SCALE);
+        else {
+            memmove (base->history + 1 , base->history , (base->history_size - 1) * sizeof (guint));
         }
-    }
+        base->history[0] = base->cpu_data[0].load;
 
-    if (base->mode == -1)
-    {
-        /* Disabled mode, skip updating history and drawing the graph */
-        return TRUE;
+        gtk_widget_queue_draw (base->draw_area);
     }
-
-    if (base->non_linear)
-    {
-        gssize i = base->history_size - 1;
-        while (i > 0)
-        {
-            gint a, b, factor;
-            a = base->history[i], b = base->history[i-1];
-            if (a < b) a++;
-            factor = (i * 2);
-            base->history[i--] = (a * (factor-1) + b) / factor;
-        }
-    }
-    else {
-        memmove (base->history + 1 , base->history , (base->history_size - 1) * sizeof (guint));
-    }
-    base->history[0] = base->cpu_data[0].load;
 
     update_tooltip (base);
-    gtk_widget_queue_draw (base->draw_area);
+
+    if (base->bars.draw_area)
+        gtk_widget_queue_draw (base->bars.draw_area);
 
     return TRUE;
 }
@@ -447,6 +375,47 @@ draw_area_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
     }
 }
 
+static void
+draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
+{
+    CPUGraph *const base = (CPUGraph *) data;
+    GtkAllocation alloc;
+    gdouble size;
+    const gboolean horizontal = (base->bars.orientation == GTK_ORIENTATION_HORIZONTAL);
+
+    gtk_widget_get_allocation (base->bars.draw_area, &alloc);
+
+    gdk_cairo_set_source_rgba (cr, &base->colors[0]);
+    cairo_rectangle (cr, 0, 0, alloc.width, alloc.height);
+    cairo_fill (cr);
+
+    gdk_cairo_set_source_rgba (cr, &base->colors[4]);
+
+    size = (horizontal ? alloc.height : alloc.width);
+    if (base->tracked_core != 0 || base->nr_cores == 1)
+    {
+        gdouble usage = size * base->cpu_data[0].load / CPU_SCALE;
+        if (horizontal)
+            cairo_rectangle (cr, 0, size-usage, 4, usage);
+        else
+            cairo_rectangle (cr, 0, 0, usage, 4);
+        cairo_fill (cr);
+    }
+    else
+    {
+        guint i;
+        for (i = 0; i < base->nr_cores; i++)
+        {
+            gdouble usage = size * base->cpu_data[i+1].load / CPU_SCALE;
+            if (horizontal)
+                cairo_rectangle (cr, 6*i, size-usage, 4, usage);
+            else
+                cairo_rectangle (cr, 0, 6*i, usage, 4);
+            cairo_fill (cr);
+        }
+    }
+}
+
 static gboolean
 command_cb (GtkWidget *w, GdkEventButton *event, CPUGraph *base)
 {
@@ -481,17 +450,13 @@ set_command (CPUGraph *base, const gchar *command)
 void
 set_bars (CPUGraph *base, gboolean bars)
 {
-    GtkOrientation orientation;
-
     if (base->has_bars != bars)
     {
         base->has_bars = bars;
         if (bars)
         {
-            orientation = xfce_panel_plugin_get_orientation (base->plugin);
-            create_bars (base);
-            set_bars_orientation (base, orientation);
-            set_bars_size (base, xfce_panel_plugin_get_size (base->plugin), orientation);
+            create_bars (base, xfce_panel_plugin_get_orientation (base->plugin));
+            set_bars_size (base);
         }
         else
             delete_bars (base);
@@ -513,6 +478,9 @@ set_frame (CPUGraph *base, gboolean frame)
 {
     base->has_frame = frame;
     gtk_frame_set_shadow_type (GTK_FRAME (base->frame_widget), base->has_frame ? GTK_SHADOW_IN : GTK_SHADOW_NONE);
+    if (base->bars.frame)
+        gtk_frame_set_shadow_type (GTK_FRAME (base->bars.frame), base->has_frame ? GTK_SHADOW_IN : GTK_SHADOW_NONE);
+    size_cb (base->plugin, xfce_panel_plugin_get_size (base->plugin), base);
 }
 
 void
@@ -593,11 +561,6 @@ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
         gtk_widget_override_background_color (base->draw_area, GTK_STATE_FLAG_INSENSITIVE, &base->colors[0]);
         gtk_widget_override_background_color (base->draw_area, GTK_STATE_FLAG_NORMAL, &base->colors[0]);
 G_GNUC_END_IGNORE_DEPRECATIONS
-    }
-
-    if (number == 4 && base->has_bars && base->has_barcolor)
-    {
-        set_bars_color (base);
     }
 }
 
