@@ -69,10 +69,8 @@ draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h)
         if (base->color_mode == 0)
         {
             /* draw line */
-            cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
-            cairo_move_to (cr, x, h - usage);
-            cairo_line_to (cr, x, h - 1);
-            cairo_stroke (cr);
+            cairo_rectangle (cr, x, h - usage, 1, usage);
+            cairo_fill (cr);
         }
         else
         {
