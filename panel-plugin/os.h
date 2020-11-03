@@ -24,13 +24,11 @@
 #ifndef _XFCE_OS_H_
 #define _XFCE_OS_H_
 
-#define CPU_SCALE 256
-
 #include <glib.h>
 
 typedef struct
 {
-    guint load;
+    gfloat load; /* Range: from 0.0 to 1.0 */
     guint64 previous_used;
     guint64 previous_total;
 } CpuData;

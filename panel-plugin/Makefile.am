@@ -8,7 +8,8 @@ libcpugraph_la_CFLAGS =							\
 
 libcpugraph_la_LIBADD =							\
 	@LIBXFCE4UI_LIBS@							\
-	@LIBXFCE4PANEL_LIBS@
+	@LIBXFCE4PANEL_LIBS@						\
+	-lm
 
 libcpugraph_la_SOURCES =						\
 	mode.c										\

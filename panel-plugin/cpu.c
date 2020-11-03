@@ -27,6 +27,7 @@
 #include "properties.h"
 
 #include <libxfce4ui/libxfce4ui.h>
+#include <math.h>
 #ifndef _
 # include <libintl.h>
 # define _(String) gettext (String)
@@ -222,6 +223,7 @@ size_cb (XfcePanelPlugin *plugin, guint size, CPUGraph *base)
     gint frame_h, frame_v, history;
     GtkOrientation orientation;
     gint shadow_width = base->has_frame ? 2*1 : 0;
+    gint i;
 
     orientation = xfce_panel_plugin_get_orientation (plugin);
 
@@ -240,9 +242,9 @@ size_cb (XfcePanelPlugin *plugin, guint size, CPUGraph *base)
 
     gtk_widget_set_size_request (GTK_WIDGET (base->frame_widget), frame_h, frame_v);
 
-    base->history = (guint *) g_realloc (base->history, history * sizeof (guint));
-    if (history > base->history_size)
-        memset (base->history + base->history_size, 0, (history - base->history_size) * sizeof (guint));
+    base->history = (gfloat *) g_realloc (base->history, history * sizeof (gfloat));
+    for (i = base->history_size; i < history; i++)
+        base->history[i] = 0;
     base->history_size = history;
 
     if (base->has_bars) {
@@ -305,15 +307,16 @@ update_cb (CPUGraph *base)
             gssize i = base->history_size - 1;
             while (i > 0)
             {
-                gint a, b, factor;
-                a = base->history[i], b = base->history[i-1];
+                const gfloat scale = 256.0f;
+                gfloat a, b, factor;
+                a = base->history[i] * scale, b = base->history[i-1] * scale;
                 if (a < b) a++;
                 factor = (i * 2);
-                base->history[i--] = (a * (factor-1) + b) / factor;
+                base->history[i--] = (a * (factor-1) + b) / factor / scale;
             }
         }
         else {
-            memmove (base->history + 1 , base->history , (base->history_size - 1) * sizeof (guint));
+            memmove (base->history + 1 , base->history, (base->history_size - 1) * sizeof (*base->history));
         }
         base->history[0] = base->cpu_data[0].load;
 
@@ -332,7 +335,7 @@ static void
 update_tooltip (CPUGraph *base)
 {
     gchar tooltip[32];
-    g_snprintf (tooltip, 32, _("Usage: %u%%"), (guint) base->cpu_data[0].load * 100 / CPU_SCALE);
+    g_snprintf (tooltip, 32, _("Usage: %u%%"), (guint) roundf (base->cpu_data[0].load * 100));
     gtk_label_set_text (GTK_LABEL (base->tooltip_text), tooltip);
 }
 
@@ -380,7 +383,7 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
 {
     CPUGraph *const base = (CPUGraph *) data;
     GtkAllocation alloc;
-    gdouble size;
+    gfloat size;
     const gboolean horizontal = (base->bars.orientation == GTK_ORIENTATION_HORIZONTAL);
 
     gtk_widget_get_allocation (base->bars.draw_area, &alloc);
@@ -394,7 +397,7 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
     size = (horizontal ? alloc.height : alloc.width);
     if (base->tracked_core != 0 || base->nr_cores == 1)
     {
-        gdouble usage = size * base->cpu_data[0].load / CPU_SCALE;
+        gfloat usage = size * base->cpu_data[0].load;
         if (horizontal)
             cairo_rectangle (cr, 0, size-usage, 4, usage);
         else
@@ -406,7 +409,7 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
         guint i;
         for (i = 0; i < base->nr_cores; i++)
         {
-            gdouble usage = size * base->cpu_data[i+1].load / CPU_SCALE;
+            gfloat usage = size * base->cpu_data[i+1].load;
             if (horizontal)
                 cairo_rectangle (cr, 6*i, size-usage, 4, usage);
             else
