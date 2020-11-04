@@ -41,6 +41,7 @@ typedef struct
     GtkWidget *frame_widget;
     GtkWidget *draw_area;
     GtkWidget *box;
+    GtkWidget *ebox;
     struct {
         /* Widget pointers are NULL if bars are disabled */
         GtkWidget *frame;
