@@ -69,7 +69,7 @@ typedef struct
     /* Runtime data */
     guint nr_cores;
     guint timeout_id;
-    guint *history;
+    gfloat *history;
     gssize history_size;
     CpuData *cpu_data;
 } CPUGraph;

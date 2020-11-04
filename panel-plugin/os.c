@@ -158,8 +158,8 @@ read_cpu_data (CpuData *data, guint nb_cpu)
     {
         if ((total[cpu] - data[cpu].previous_total) != 0)
         {
-            data[cpu].load = CPU_SCALE * (used[cpu] - data[cpu].previous_used) /
-                              (total[cpu] - data[cpu].previous_total);
+            data[cpu].load = (gfloat) (used[cpu] - data[cpu].previous_used) /
+                             (gfloat) (total[cpu] - data[cpu].previous_total);
         }
         else
         {
@@ -220,8 +220,8 @@ read_cpu_data (CpuData *data, guint nb_cpu)
         total = used + cp_time1[CP_IDLE];
 
         if ((total - data[i].previous_total) != 0)
-            data[i].load = (CPU_SCALE * (used - data[i].previous_used)) /
-                           (total - data[i].previous_total);
+            data[i].load = (gfloat) (used - data[i].previous_used) /
+                           (gfloat) (total - data[i].previous_total);
         else
             data[i].load = 0;
 
@@ -270,8 +270,8 @@ read_cpu_data (CpuData *data, guint nb_cpu)
         total = used + cp_time1[CP_IDLE];
 
         if (total - data[i].previous_total != 0)
-            data[i].load = (CPU_SCALE * (used - data[i].previous_used)) /
-                           (total - data[i].previous_total);
+            data[i].load = (gfloat) (used - data[i].previous_used) /
+                           (gfloat) (total - data[i].previous_total);
         else
             data[i].load = 0;
 
@@ -318,8 +318,8 @@ read_cpu_data (CpuData *data, guint nb_cpu)
         total = used + cp_time[CP_IDLE];
 
         if (total - data[i].previous_total != 0)
-            data[i].load = (CPU_SCALE * (used - data[i].previous_used)) /
-                           (total - data[i].previous_total);
+            data[i].load = (gfloat) (used - data[i].previous_used) /
+                           (gfloat) (total - data[i].previous_total);
         else
             data[i].load = 0;
 
@@ -386,8 +386,8 @@ read_cpu_data (CpuData *data, guint nb_cpu)
             total = used + knp->value.ul;
 
             if (total - data[i].previous_total != 0)
-                data[i].load = (CPU_SCALE * (used - data[i].previous_used)) /
-                               (total - data[i].previous_total);
+                data[i].load = (gfloat) (used - data[i].previous_used) /
+                               (gfloat) (total - data[i].previous_total);
             else
                 data[i].load = 0;
 

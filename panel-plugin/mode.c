@@ -23,18 +23,18 @@
  */
 
 #include <cairo/cairo.h>
+#include <math.h>
 #include "mode.h"
 
 typedef struct
 {
-    gint x;
-    gint y;
+    gfloat x, y;
 } point;
 
 static gdouble
 _lerp (gdouble t, gdouble a, gdouble b)
 {
-    return (gdouble) (a + t * (b - a));
+    return a + t * (b - a);
 }
 
 static void
@@ -52,8 +52,6 @@ void
 draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h)
 {
     gint x, y;
-    gint usage;
-    gdouble t;
     gint tmp;
 
     if (base->color_mode == 0)
@@ -61,7 +59,7 @@ draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h)
 
     for (x = 0; x < w; x++)
     {
-        usage = h * base->history[w - 1- x] / CPU_SCALE;
+        const gfloat usage = h * base->history[w - 1 - x];
 
         if (usage == 0)
             continue;
@@ -74,12 +72,11 @@ draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h)
         }
         else
         {
+            const gint h_usage = h - (gint) roundf (usage);
             tmp = 0;
-            for (y = h - 1; y >= h - usage; y--, tmp++)
+            for (y = h - 1; y >= h_usage; y--, tmp++)
             {
-                t = (base->color_mode == 1) ?
-                    (tmp / (gdouble) (h)) :
-                    (tmp / (gdouble) (usage));
+                gfloat t = tmp / (base->color_mode == 1 ? (gfloat) h : usage);
                 mix_colors (t, &base->colors[1], &base->colors[2], cr);
                 /* draw point */
                 cairo_rectangle (cr, x, y, 1, 1);
@@ -95,21 +92,17 @@ draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h)
     gint nrx = (w + 1) / 3;
     gint nry = (h + 1) / 2;
     gint x, y;
-    gint idx;
-    gint limit;
 
     for (x = 0; x * 3 < w; x++)
     {
-        idx = nrx - x;
-        limit = nry - nry * base->history[idx] / CPU_SCALE;
+        gint idx = nrx - x;
+        gint limit = nry - (gint) roundf (nry * base->history[idx]);
 
         for (y = 0; y * 2 < h; y++)
         {
             if (base->color_mode != 0 && y < limit)
             {
-                gdouble t = (base->color_mode == 1) ?
-                            (y / (gdouble) nry) :
-                            (y / (gdouble) limit);
+                gfloat t = y / (gfloat) (base->color_mode == 1 ? nry : limit);
                 mix_colors (t, &base->colors[3], &base->colors[2], cr);
             }
             else
@@ -127,10 +120,8 @@ draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h)
 void
 draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h)
 {
-    gint y;
-    gint usage = h * base->history[0] / CPU_SCALE;
+    const gfloat usage = h * base->history[0];
     gint tmp = 0;
-    gdouble t;
 
     if (base->color_mode == 0)
     {
@@ -140,14 +131,12 @@ draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h)
     }
     else
     {
-        for (y = h - 1; y > h - 1 - usage; y--)
+        const gint h_usage = h - (gint) roundf (usage);
+        gint y;
+        for (y = h - 1; y >= h_usage; y--, tmp++)
         {
-            t = (base->color_mode == 1) ?
-                (tmp / (gdouble) (h)) :
-                (tmp / (gdouble) (usage));
+            gfloat t = tmp / (base->color_mode == 1 ? (gfloat) h : usage);
             mix_colors (t, &base->colors[1], &base->colors[2], cr);
-            tmp++;
-
             /* draw line */
             cairo_rectangle (cr, 0, y, w, 1);
             cairo_fill (cr);
@@ -158,8 +147,8 @@ draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h)
 void
 draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h)
 {
+    const gfloat thickness = 1.75f;
     gint x, y;
-    gint usage;
     point last, current;
     last.x = 0;
     last.y = h;
@@ -186,11 +175,13 @@ draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h)
 
     gdk_cairo_set_source_rgba (cr, &base->colors[2]);
 
+    cairo_save (cr);
+    cairo_set_line_width (cr, thickness);
     for (x = 0; x < w; x++)
     {
-        usage = h * base->history[w - 1 - x] / CPU_SCALE;
+        gfloat usage = h * base->history[w - 1 - x];
         current.x = x;
-        current.y = h - usage;
+        current.y = h + (thickness-1)/2 - usage;
 
         /* draw line */
         cairo_move_to (cr, current.x + 0.5, current.y + 0.5);
@@ -198,4 +189,5 @@ draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h)
         cairo_stroke (cr);
         last = current;
     }
+    cairo_restore (cr);
 }
