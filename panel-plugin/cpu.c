@@ -104,7 +104,7 @@ create_gui (XfcePanelPlugin *plugin)
 
     base->plugin = plugin;
 
-    ebox = gtk_event_box_new ();
+    base->ebox = ebox = gtk_event_box_new ();
     gtk_event_box_set_visible_window (GTK_EVENT_BOX (ebox), FALSE);
     gtk_event_box_set_above_child (GTK_EVENT_BOX (ebox), TRUE);
     gtk_container_add (GTK_CONTAINER (plugin), ebox);
@@ -159,6 +159,13 @@ about_cb (XfcePanelPlugin *plugin, CPUGraph *base)
         g_object_unref (G_OBJECT (icon));
 }
 
+static void
+ebox_revalidate (CPUGraph *base)
+{
+    gtk_event_box_set_above_child (GTK_EVENT_BOX (base->ebox), FALSE);
+    gtk_event_box_set_above_child (GTK_EVENT_BOX (base->ebox), TRUE);
+}
+
 static guint
 nb_bars (CPUGraph *base)
 {
@@ -176,6 +183,7 @@ create_bars (CPUGraph *base, GtkOrientation orientation)
     gtk_box_pack_end (GTK_BOX (base->box), base->bars.frame, TRUE, TRUE, 0);
     g_signal_connect_after (base->bars.draw_area, "draw", G_CALLBACK (draw_bars_cb), base);
     gtk_widget_show_all (base->bars.frame);
+    ebox_revalidate (base);
 }
 
 guint
@@ -197,7 +205,7 @@ shutdown (XfcePanelPlugin *plugin, CPUGraph *base)
 {
     g_free (base->cpu_data);
     delete_bars (base);
-    gtk_widget_destroy (base->box);
+    gtk_widget_destroy (base->ebox);
     gtk_widget_destroy (base->tooltip_text);
     if (base->timeout_id)
         g_source_remove (base->timeout_id);
@@ -550,6 +558,7 @@ set_mode (CPUGraph *base, gint mode)
     else
     {
         gtk_widget_show (base->frame_widget);
+        ebox_revalidate (base);
     }
 }
 
