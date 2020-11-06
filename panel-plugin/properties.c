@@ -424,23 +424,23 @@ static void
 select_active_colors (CPUGraph *base)
 {
     if (base->color_mode != 0 || base->mode == 1 || base->mode == 3)
-        gtk_widget_set_sensitive (GTK_WIDGET (base->color_buttons[2]), TRUE);
+        gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[2]), TRUE);
     else
-        gtk_widget_set_sensitive (GTK_WIDGET (base->color_buttons[2]), FALSE);
+        gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[2]), FALSE);
 
     if (base->color_mode != 0 && base->mode == 1)
-        gtk_widget_set_sensitive (GTK_WIDGET (base->color_buttons[3]), TRUE);
+        gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[3]), TRUE);
     else
-        gtk_widget_set_sensitive (GTK_WIDGET (base->color_buttons[3]), FALSE);
+        gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[3]), FALSE);
 }
 
 static void
 select_active_barscolors (CPUGraph *base)
 {
     if (base->has_bars)
-        gtk_widget_set_sensitive (GTK_WIDGET (base->color_buttons[4]), TRUE);
+        gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[4]), TRUE);
     else
-        gtk_widget_set_sensitive (GTK_WIDGET (base->color_buttons[4]), FALSE);
+        gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[4]), FALSE);
 }
 
 static void
