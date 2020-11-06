@@ -326,6 +326,7 @@ setup_color_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base,
     hbox = create_option_line (vbox, sg, name);
 
     base->color_buttons[number] = gtk_color_button_new_with_rgba (&base->colors[number]);
+    gtk_color_chooser_set_use_alpha (GTK_COLOR_CHOOSER (base->color_buttons[number]), TRUE);
     gtk_widget_show (GTK_WIDGET (base->color_buttons[number]));
     gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (base->color_buttons[number]), FALSE, FALSE, 0);
 
