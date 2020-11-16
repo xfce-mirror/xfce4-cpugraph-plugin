@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-13 00:47+0200\n"
-"PO-Revision-Date: 2020-10-18 11:26+0000\n"
+"PO-Revision-Date: 2020-11-16 02:18+0000\n"
 "Last-Translator: Emin Tufan <etcetin@gmail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/xfce/xfce-panel-plugins/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -54,8 +54,8 @@ msgstr "Sınırı göster"
 #: ../panel-plugin/properties.c:152
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
-msgstr[0] "Mevcut kullanım çubuğunu göster"
-msgstr[1] "Mevcut kullanım çubuklarını göster"
+msgstr[0] "Geçerli kullanım çubuğunu göster"
+msgstr[1] "Geçerli kullanım çubuklarını göster"
 
 #: ../panel-plugin/properties.c:154
 msgid "Run in terminal"
@@ -123,7 +123,7 @@ msgstr "Tümü"
 
 #: ../panel-plugin/properties.c:282
 msgid "Tracked Core:"
-msgstr "Takip edilen çekirdek:"
+msgstr "Takip Edilen Çekirdek:"
 
 #: ../panel-plugin/properties.c:294
 msgid "Width:"
