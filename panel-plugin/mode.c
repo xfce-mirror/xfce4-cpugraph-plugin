@@ -59,7 +59,12 @@ draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h)
 
     for (x = 0; x < w; x++)
     {
-        const gfloat usage = h * base->history[w - 1 - x];
+        gfloat usage;
+
+        if (G_LIKELY (w - 1 - x < base->history_size))
+            usage = h * base->history[w - 1 - x];
+        else
+            usage = 0;
 
         if (usage == 0)
             continue;
@@ -96,7 +101,12 @@ draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h)
     for (x = 0; x * 3 < w; x++)
     {
         gint idx = nrx - x;
-        gint limit = nry - (gint) roundf (nry * base->history[idx]);
+        gint limit;
+
+        if (G_LIKELY (idx < base->history_size))
+            limit = nry - (gint) roundf (nry * base->history[idx]);
+        else
+            limit = nry - 0;
 
         for (y = 0; y * 2 < h; y++)
         {
@@ -179,7 +189,13 @@ draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h)
     cairo_set_line_width (cr, thickness);
     for (x = 0; x < w; x++)
     {
-        gfloat usage = h * base->history[w - 1 - x];
+        gfloat usage;
+
+        if (G_LIKELY (w - 1 - x < base->history_size))
+            usage = h * base->history[w - 1 - x];
+        else
+            usage = 0;
+
         current.x = x;
         current.y = h + (thickness-1)/2 - usage;
 
