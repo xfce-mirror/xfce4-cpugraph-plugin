@@ -33,11 +33,17 @@
 # define _(String) gettext (String)
 #endif
 
+typedef struct
+{
+    CPUGraph *base;
+    GtkBox *hbox_in_terminal, *hbox_startup_notification;
+} CPUGraphOptions;
+
 static GtkBox *create_tab                    ();
 static GtkBox *create_option_line            (GtkBox       *tab,
                                               GtkSizeGroup *sg,
                                               const gchar  *name);
-static void    create_check_box              (GtkBox       *tab,
+static GtkBox* create_check_box              (GtkBox       *tab,
                                               GtkSizeGroup *sg,
                                               const gchar  *name,
                                               gboolean      init,
@@ -51,6 +57,8 @@ static void    create_drop_down              (GtkBox       *tab,
                                               guint         init,
                                               void (callback)(GtkComboBox *, CPUGraph *),
                                               void         *cb_data);
+static void    destroy_cb                    (GtkWidget       *dlg,
+                                              CPUGraphOptions *dlg_data);
 
 static void    setup_update_interval_option  (GtkBox          *vbox,
                                               GtkSizeGroup    *sg,
@@ -64,7 +72,7 @@ static void    setup_size_option             (GtkBox          *vbox,
                                               CPUGraph        *base);
 static void    setup_command_option          (GtkBox          *vbox,
                                               GtkSizeGroup    *sg,
-                                              CPUGraph        *base);
+                                              CPUGraphOptions *data);
 static void    setup_color_option            (GtkBox          *vbox,
                                               GtkSizeGroup    *sg,
                                               CPUGraph        *base,
@@ -83,7 +91,7 @@ static void    change_in_terminal            (GtkToggleButton *button,
 static void    change_startup_notification   (GtkToggleButton *button,
                                               CPUGraph        *base);
 static void    change_command                (GtkEntry        *entry,
-                                              CPUGraph        *base);
+                                              CPUGraphOptions *data);
 static void    change_color_0                (GtkColorButton  *button,
                                               CPUGraph        *base);
 static void    change_color_1                (GtkColorButton  *button,
@@ -123,9 +131,9 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
 {
     GtkWidget *dlg, *content;
     GtkBox *vbox, *vbox2;
-    GtkWidget *label;
+    GtkWidget *label, *notebook;
     GtkSizeGroup *sg;
-    GtkWidget *notebook;
+    CPUGraphOptions *dlg_data;
 
     xfce_panel_plugin_block_menu (plugin);
 
@@ -136,6 +144,10 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
                                        GTK_RESPONSE_OK,
                                        NULL);
 
+    dlg_data = g_new0 (CPUGraphOptions, 1);
+    dlg_data->base = base;
+
+    g_signal_connect (dlg, "destroy", G_CALLBACK (destroy_cb), dlg_data);
     g_signal_connect (dlg, "response", G_CALLBACK (response_cb), base);
 
     gtk_window_set_icon_name (GTK_WINDOW (dlg), "xfce4-cpugraph-plugin");
@@ -150,9 +162,17 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     create_check_box (vbox, sg, _("Show frame"), base->has_frame, change_frame, base);
     create_check_box (vbox, sg, _("Show border"), base->has_border, change_border, base);
     create_check_box (vbox, sg, ngettext ("Show current usage bar", "Show current usage bars", base->nr_cores), base->has_bars, change_bars, base);
-    setup_command_option (vbox, sg, base);
-    create_check_box (vbox, sg, _("Run in terminal"), base->in_terminal, change_in_terminal, base);
-    create_check_box (vbox, sg, _("Use startup notification"), base->startup_notification, change_startup_notification, base);
+
+    setup_command_option (vbox, sg, dlg_data);
+    dlg_data->hbox_in_terminal = create_check_box (vbox, sg, _("Run in terminal"),
+                                                   base->in_terminal, change_in_terminal, base);
+    dlg_data->hbox_startup_notification = create_check_box (vbox, sg, _("Use startup notification"),
+                                                            base->startup_notification, change_startup_notification, base);
+    if (!base->command)
+    {
+        gtk_widget_set_sensitive (GTK_WIDGET (dlg_data->hbox_in_terminal), FALSE);
+        gtk_widget_set_sensitive (GTK_WIDGET (dlg_data->hbox_startup_notification), FALSE);
+    }
 
     vbox2 = create_tab ();
     setup_color_option (vbox2, sg, base, 1, _("Color 1:"), G_CALLBACK (change_color_1));
@@ -212,7 +232,7 @@ create_option_line (GtkBox *tab, GtkSizeGroup *sg, const gchar *name)
     return line;
 }
 
-static void
+static GtkBox*
 create_check_box (GtkBox *tab, GtkSizeGroup *sg, const gchar *name, gboolean init,
                   void (callback)(GtkToggleButton *, CPUGraph *), void *cb_data)
 {
@@ -226,6 +246,8 @@ create_check_box (GtkBox *tab, GtkSizeGroup *sg, const gchar *name, gboolean ini
     gtk_widget_show (checkbox);
     gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (checkbox), FALSE, FALSE, 0);
     g_signal_connect (checkbox, "toggled", G_CALLBACK (callback), cb_data);
+
+    return hbox;
 }
 
 static void
@@ -250,6 +272,12 @@ create_drop_down (GtkBox *tab, GtkSizeGroup *sg, const gchar *name,
 
 
     g_signal_connect (combo, "changed", G_CALLBACK (callback), cb_data);
+}
+
+static void
+destroy_cb (GtkWidget *dlg, CPUGraphOptions *dlg_data)
+{
+    g_free (dlg_data);
 }
 
 static void
@@ -303,7 +331,7 @@ setup_size_option (GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, CPUG
 }
 
 static void
-setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base)
+setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraphOptions *data)
 {
     GtkBox *hbox;
     GtkWidget *associatecommand;
@@ -311,10 +339,10 @@ setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base)
     hbox = create_option_line (vbox, sg, _("Associated command:"));
 
     associatecommand = gtk_entry_new ();
-    gtk_entry_set_text (GTK_ENTRY (associatecommand), base->command);
+    gtk_entry_set_text (GTK_ENTRY (associatecommand), data->base->command ? data->base->command : "");
     gtk_widget_show (associatecommand);
     gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (associatecommand), FALSE, FALSE, 0);
-    g_signal_connect (associatecommand, "changed", G_CALLBACK (change_command), base);
+    g_signal_connect (associatecommand, "changed", G_CALLBACK (change_command), data);
 }
 
 static void
@@ -376,9 +404,13 @@ change_startup_notification (GtkToggleButton *button, CPUGraph *base)
 }
 
 static void
-change_command (GtkEntry *entry, CPUGraph *base)
+change_command (GtkEntry *entry, CPUGraphOptions *data)
 {
-    set_command (base, gtk_entry_get_text (entry));
+    gboolean default_command;
+    set_command (data->base, gtk_entry_get_text (entry));
+    default_command = (data->base->command == NULL);
+    gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_in_terminal), !default_command);
+    gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_startup_notification), !default_command);
 }
 
 static void

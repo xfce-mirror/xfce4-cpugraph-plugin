@@ -427,14 +427,57 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
     }
 }
 
+static const gchar*
+default_command (gboolean *in_terminal, gboolean *startup_notification)
+{
+    gchar *s = g_find_program_in_path ("xfce4-taskmanager");
+    if (s)
+    {
+        g_free (s);
+        *in_terminal = FALSE;
+        *startup_notification = TRUE;
+        return "xfce4-taskmanager";
+    }
+    else
+    {
+        *in_terminal = TRUE;
+        *startup_notification = FALSE;
+
+        s = g_find_program_in_path ("htop");
+        if (s)
+        {
+            g_free (s);
+            return "htop";
+        }
+        else
+        {
+            return "top";
+        }
+    }
+}
+
 static gboolean
 command_cb (GtkWidget *w, GdkEventButton *event, CPUGraph *base)
 {
-    if (event->button == 1 && base->command)
+    if (event->button == 1)
     {
+        const gchar *command;
+        gboolean in_terminal, startup_notification;
+
+        if (base->command)
+        {
+            command = base->command;
+            in_terminal = base->in_terminal;
+            startup_notification = base->startup_notification;
+        }
+        else
+        {
+            command = default_command (&in_terminal, &startup_notification);
+        }
+
         xfce_spawn_command_line_on_screen (gdk_screen_get_default (),
-                                           base->command, base->in_terminal,
-                                           base->startup_notification, NULL);
+                                           command, in_terminal,
+                                           startup_notification, NULL);
     }
     return FALSE;
 }
@@ -456,6 +499,12 @@ set_command (CPUGraph *base, const gchar *command)
 {
     g_free (base->command);
     base->command = g_strdup (command);
+    g_strstrip (base->command);
+    if (strlen (base->command) == 0)
+    {
+        g_free (base->command);
+        base->command = NULL;
+    }
 }
 
 void

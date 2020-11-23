@@ -24,29 +24,9 @@
 #include "settings.h"
 #include <libxfce4ui/libxfce4ui.h>
 
-static void
-default_command (const gchar **command, gboolean *in_terminal, gboolean *startup_notification)
-{
-    gchar *s = g_find_program_in_path ("xfce4-taskmanager");
-    if (s != NULL)
-    {
-        g_free (s);
-        *command = "xfce4-taskmanager";
-        *in_terminal = FALSE;
-        *startup_notification = TRUE;
-    }
-    else
-    {
-        *command = "top";
-        *in_terminal = TRUE;
-        *startup_notification = FALSE;
-    }
-}
-
 void
 read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
 {
-    const char *value;
     char *file;
     XfceRc *rc;
 
@@ -65,9 +45,9 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     GdkRGBA background;
     GdkRGBA barscolor;
     guint size;
-    const gchar  *associated_command;
-    gboolean in_terminal;
-    gboolean startup_notification;
+    gchar *command = NULL;
+    gboolean in_terminal = TRUE;
+    gboolean startup_notification = FALSE;
 
     foreground1.red = 0.0;
     foreground1.green = 1.0;
@@ -95,7 +75,6 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     barscolor.alpha = 1.0;
 
     size = xfce_panel_plugin_get_size (plugin);
-    default_command (&associated_command, &in_terminal, &startup_notification);
 
     if ((file = xfce_panel_plugin_lookup_rc_file (plugin)) != NULL)
     {
@@ -104,18 +83,23 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
 
         if (rc)
         {
+            const gchar *value;
+
             rate =  xfce_rc_read_int_entry (rc, "UpdateInterval", rate);
             nonlinear = xfce_rc_read_int_entry (rc, "TimeScale", nonlinear);
             size = xfce_rc_read_int_entry (rc, "Size", size);
             mode = xfce_rc_read_int_entry (rc, "Mode", mode);
             color_mode = xfce_rc_read_int_entry (rc, "ColorMode", color_mode);
             frame = xfce_rc_read_int_entry (rc, "Frame", frame);
-            associated_command = g_strdup (xfce_rc_read_entry (rc, "Command", associated_command));
             in_terminal = xfce_rc_read_int_entry (rc, "InTerminal", in_terminal);
             startup_notification = xfce_rc_read_int_entry (rc, "StartupNotification", startup_notification);
             border = xfce_rc_read_int_entry (rc, "Border", border);
             bars = xfce_rc_read_int_entry (rc, "Bars", bars);
             tracked_core = xfce_rc_read_int_entry (rc, "TrackedCore", tracked_core);
+
+            if ((value = xfce_rc_read_entry (rc, "Command", NULL))) {
+                command = g_strdup (value);
+            }
 
             if ((value = xfce_rc_read_entry (rc, "Foreground1", NULL)))
                 gdk_rgba_parse (&foreground1, value);
@@ -140,7 +124,8 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     set_mode (base, mode);
     set_color_mode (base, color_mode);
     set_frame (base, frame);
-    set_command (base, associated_command);
+    if (command)
+        set_command (base, command);
     set_in_terminal (base, in_terminal);
     set_startup_notification (base, startup_notification);
     set_border (base, border);
@@ -151,6 +136,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     set_color (base, 3, foreground3);
     set_color (base, 0, background);
     set_color (base, 4, barscolor);
+    g_free (command);
 }
 
 void
@@ -177,7 +163,10 @@ write_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     xfce_rc_write_int_entry (rc, "Border", base->has_border);
     xfce_rc_write_int_entry (rc, "Bars", base->has_bars);
     xfce_rc_write_int_entry (rc, "TrackedCore", base->tracked_core);
-    xfce_rc_write_entry (rc, "Command", base->command ? base->command : "");
+    if (base->command)
+        xfce_rc_write_entry (rc, "Command", base->command);
+    else
+        xfce_rc_delete_entry (rc, "Command", FALSE);
     xfce_rc_write_int_entry (rc, "InTerminal", base->in_terminal);
     xfce_rc_write_int_entry (rc, "StartupNotification", base->startup_notification);
     xfce_rc_write_int_entry (rc, "ColorMode", base->color_mode);
