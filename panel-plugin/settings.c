@@ -181,11 +181,22 @@ write_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     xfce_rc_write_int_entry (rc, "StartupNotification", base->startup_notification);
     xfce_rc_write_int_entry (rc, "ColorMode", base->color_mode);
 
-    xfce_rc_write_entry (rc, "Foreground1", gdk_rgba_to_string (&(base->colors[1])));
-    xfce_rc_write_entry (rc, "Foreground2", gdk_rgba_to_string (&(base->colors[2])));
-    xfce_rc_write_entry (rc, "Foreground3", gdk_rgba_to_string (&(base->colors[3])));
-    xfce_rc_write_entry (rc, "Background", gdk_rgba_to_string (&(base->colors[0])));
-    if (base->has_barcolor)
-        xfce_rc_write_entry (rc, "BarsColor", gdk_rgba_to_string (&(base->colors[4])));
+    for (i = 0; i < 5; i++)
+    {
+        gchar *rgba = gdk_rgba_to_string (&(base->colors[i]));
+        switch (i)
+        {
+            case 0: xfce_rc_write_entry (rc, "Background", rgba); break;
+            case 1: xfce_rc_write_entry (rc, "Foreground1", rgba); break;
+            case 2: xfce_rc_write_entry (rc, "Foreground2", rgba); break;
+            case 3: xfce_rc_write_entry (rc, "Foreground3", rgba); break;
+            case 4:
+                if (base->has_barcolor)
+                    xfce_rc_write_entry (rc, "BarsColor", rgba);
+                break;
+        }
+        g_free (rgba);
+    }
+
     xfce_rc_close (rc);
 }
