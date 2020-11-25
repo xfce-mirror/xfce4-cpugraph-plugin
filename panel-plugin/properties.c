@@ -340,6 +340,12 @@ setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraphOptions *data)
 
     associatecommand = gtk_entry_new ();
     gtk_entry_set_text (GTK_ENTRY (associatecommand), data->base->command ? data->base->command : "");
+    gtk_entry_set_icon_from_icon_name (GTK_ENTRY (associatecommand),
+                                       GTK_ENTRY_ICON_SECONDARY,
+                                       "help-contents");
+    gtk_entry_set_icon_tooltip_text (GTK_ENTRY (associatecommand),
+                                     GTK_ENTRY_ICON_SECONDARY,
+                                     _("Defaults to xfce4-taskmanager, htop or top."));
     gtk_widget_show (associatecommand);
     gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (associatecommand), FALSE, FALSE, 0);
     g_signal_connect (associatecommand, "changed", G_CALLBACK (change_command), data);
