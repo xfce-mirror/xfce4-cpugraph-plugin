@@ -144,7 +144,7 @@ about_cb (XfcePanelPlugin *plugin, CPUGraph *base)
         "Alexander Nordfelth <alex.nordfelth@telia.com>", "gatopeich <gatoguan-os@yahoo.com>",
         "lidiriel <lidiriel@coriolys.org>","Angelo Miguel Arrifano <miknix@gmail.com>",
         "Florian Rivoal <frivoal@gmail.com>","Peter Tribble <peter.tribble@gmail.com>", NULL};
-    icon = xfce_panel_pixbuf_from_source ("xfce4-cpugraph-plugin", NULL, 32);
+    icon = xfce_panel_pixbuf_from_source ("xfce4-cpugraph-plugin", NULL, 48);
     gtk_show_about_dialog (NULL,
         "logo", icon,
         "license", xfce_get_license_text (XFCE_LICENSE_TEXT_GPL),
