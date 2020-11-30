@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-13 00:47+0200\n"
-"PO-Revision-Date: 2020-10-15 09:46+0000\n"
+"POT-Creation-Date: 2020-11-25 12:48+0100\n"
+"PO-Revision-Date: 2020-11-30 05:40+0000\n"
 "Last-Translator: UTUMI Hirosi <utuhiro78@yahoo.co.jp>\n"
 "Language-Team: Japanese (http://www.transifex.com/xfce/xfce-panel-plugins/language/ja/)\n"
 "MIME-Version: 1.0\n"
@@ -19,157 +19,161 @@ msgstr ""
 "Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../panel-plugin/cpu.c:160 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.c:153 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "CPU 負荷のグラフを表示します"
 
-#: ../panel-plugin/cpu.c:162
+#: ../panel-plugin/cpu.c:155
 msgid "Copyright (c) 2003-2019\n"
 msgstr "Copyright (c) 2003-2019\n"
 
-#: ../panel-plugin/cpu.c:407
+#: ../panel-plugin/cpu.c:346
 #, c-format
 msgid "Usage: %u%%"
 msgstr "使用率: %u%%"
 
-#: ../panel-plugin/properties.c:132
+#: ../panel-plugin/properties.c:140
 msgid "CPU Graph Properties"
 msgstr "CPU グラフプロパティ"
 
-#: ../panel-plugin/properties.c:149
+#: ../panel-plugin/properties.c:161
 msgid "Use non-linear time-scale"
 msgstr "非線形の時間スケールにする"
 
-#: ../panel-plugin/properties.c:150
+#: ../panel-plugin/properties.c:162
 msgid "Show frame"
 msgstr "フレームを表示する"
 
-#: ../panel-plugin/properties.c:151
+#: ../panel-plugin/properties.c:163
 msgid "Show border"
 msgstr "枠を表示する"
 
-#: ../panel-plugin/properties.c:152
+#: ../panel-plugin/properties.c:164
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "使用率バーを表示する"
 
-#: ../panel-plugin/properties.c:154
+#: ../panel-plugin/properties.c:167
 msgid "Run in terminal"
 msgstr "ターミナルで実行する"
 
-#: ../panel-plugin/properties.c:155
+#: ../panel-plugin/properties.c:169
 msgid "Use startup notification"
 msgstr "起動通知を行う"
 
-#: ../panel-plugin/properties.c:158
+#: ../panel-plugin/properties.c:178
 msgid "Color 1:"
 msgstr "色 1:"
 
-#: ../panel-plugin/properties.c:159
+#: ../panel-plugin/properties.c:179
 msgid "Color 2:"
 msgstr "色 2:"
 
-#: ../panel-plugin/properties.c:160
+#: ../panel-plugin/properties.c:180
 msgid "Color 3:"
 msgstr "色 3:"
 
-#: ../panel-plugin/properties.c:161
+#: ../panel-plugin/properties.c:181
 msgid "Background:"
 msgstr "背景:"
 
-#: ../panel-plugin/properties.c:165
+#: ../panel-plugin/properties.c:185
 msgid "Bars color:"
 msgstr "バーの色:"
 
-#: ../panel-plugin/properties.c:170
+#: ../panel-plugin/properties.c:190
 msgid "Appearance"
 msgstr "外観"
 
-#: ../panel-plugin/properties.c:172
+#: ../panel-plugin/properties.c:192
 msgid "Advanced"
 msgstr "高度な設定"
 
-#: ../panel-plugin/properties.c:258
+#: ../panel-plugin/properties.c:286
 msgid "Fastest (~250ms)"
 msgstr "最速 (約250ミリ秒)"
 
-#: ../panel-plugin/properties.c:259
+#: ../panel-plugin/properties.c:287
 msgid "Fast (~500ms)"
 msgstr "速い (約500ミリ秒)"
 
-#: ../panel-plugin/properties.c:260
+#: ../panel-plugin/properties.c:288
 msgid "Normal (~750ms)"
 msgstr "通常 (約750ミリ秒)"
 
-#: ../panel-plugin/properties.c:261
+#: ../panel-plugin/properties.c:289
 msgid "Slow (~1s)"
 msgstr "遅い (約1秒)"
 
-#: ../panel-plugin/properties.c:262
+#: ../panel-plugin/properties.c:290
 msgid "Slowest (~3s)"
 msgstr "最も遅い (約3秒)"
 
-#: ../panel-plugin/properties.c:266
+#: ../panel-plugin/properties.c:294
 msgid "Update Interval:"
 msgstr "更新間隔:"
 
-#: ../panel-plugin/properties.c:275
+#: ../panel-plugin/properties.c:303
 msgid "All"
 msgstr "すべて"
 
-#: ../panel-plugin/properties.c:282
+#: ../panel-plugin/properties.c:310
 msgid "Tracked Core:"
 msgstr "監視コア:"
 
-#: ../panel-plugin/properties.c:294
+#: ../panel-plugin/properties.c:322
 msgid "Width:"
 msgstr "幅:"
 
-#: ../panel-plugin/properties.c:296
+#: ../panel-plugin/properties.c:324
 msgid "Height:"
 msgstr "高さ:"
 
-#: ../panel-plugin/properties.c:311
+#: ../panel-plugin/properties.c:339
 msgid "Associated command:"
 msgstr "割当てコマンド:"
 
-#: ../panel-plugin/properties.c:338
+#: ../panel-plugin/properties.c:348
+msgid "Defaults to xfce4-taskmanager, htop or top."
+msgstr "デフォルトは xfce4-taskmanager、htop、または top です。"
+
+#: ../panel-plugin/properties.c:373
 msgid "Disabled"
 msgstr "無効"
 
-#: ../panel-plugin/properties.c:339
+#: ../panel-plugin/properties.c:374
 msgid "Normal"
 msgstr "通常"
 
-#: ../panel-plugin/properties.c:340
+#: ../panel-plugin/properties.c:375
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:341
+#: ../panel-plugin/properties.c:376
 msgid "No history"
 msgstr "履歴なし"
 
-#: ../panel-plugin/properties.c:342
+#: ../panel-plugin/properties.c:377
 msgid "Grid"
 msgstr "グリッド"
 
-#: ../panel-plugin/properties.c:350
+#: ../panel-plugin/properties.c:385
 msgid "Mode:"
 msgstr "モード:"
 
-#: ../panel-plugin/properties.c:356
+#: ../panel-plugin/properties.c:391
 msgid "Solid"
 msgstr "単色"
 
-#: ../panel-plugin/properties.c:357
+#: ../panel-plugin/properties.c:392
 msgid "Gradient"
 msgstr "グラデーション"
 
-#: ../panel-plugin/properties.c:358
+#: ../panel-plugin/properties.c:393
 msgid "Fire"
 msgstr "炎"
 
-#: ../panel-plugin/properties.c:362
+#: ../panel-plugin/properties.c:397
 msgid "Color mode: "
 msgstr "カラーモード: "
 
