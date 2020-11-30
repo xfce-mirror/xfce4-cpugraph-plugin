@@ -1,34 +1,35 @@
-1.1.0 (2/7/2019)
+1.1.0 (2019-07-02)
 =====
 - Updated translations
 
-1.0.91 (22/6/2019)
-=====
+1.0.91 (2019-06-22)
+======
 - Add option to disable the graph (Bug #15163)
 - Use css to change bar colors (Bug #15186)
 - Fix bars in horizontal mode
 - Updated translations
 
-1.0.90 (28/5/2019)
-=====
+1.0.90 (2019-05-28)
+======
 - GTK 3 Port
 - Updated translations
 
-1.0.5 (4/7/2012)
+1.0.5 (2012-07-04)
 =====
 - Only set bar color if a color was actually specified (bug #9081)
 - Only set bar color if bars are enabled (bug #9071)
 
-1.0.4 (2/7/2012)
+1.0.4 (2012-07-02)
 =====
 - Fix FTBFS with panel 4.8
 
-1.0.3 (30/6/2012)
+1.0.3 (2012-06-30)
 =====
 - Better compliance with panel plugin HIG
 - Add an option allowing to set the bar color (bug #8923)
 - Fix transparency issues (bug #8893)
-1.0.2 (29/4/2012)
+
+1.0.2 (2012-04-29)
 =====
 - Ported to libxfce4ui
 - Fixed buffer overflow (bug #7247)
@@ -37,7 +38,7 @@
 - Add support for multicores on FreeBSD (bug #6531)
 - Adapt to panel 4.9 api
 
-1.0.1
+1.0.1 (2010-12-06)
 =====
 - Added support for Solaris
 - Fixed support for NetBSD
@@ -45,7 +46,7 @@
 - New icon
 - Improvement to the apearance of the Properties dialog
 
-1.0.0
+1.0.0 (2010-10-01)
 =====
 - Clean up, bug fixing and optimization
 - Added (back) support for FreeBSD, OpenBSD, NetBSD, and GNU/kFreeBSD
@@ -57,7 +58,7 @@
 - More settings, with better defaults
 - Make the cpu bar graphs optional
 
-0.4.0
+0.4.0 (2007-11-22)
 =====
 - Cleanup/Refactoring all code
 - Split in several file
