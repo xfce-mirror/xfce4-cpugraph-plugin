@@ -50,7 +50,7 @@ static GtkBox* create_check_box              (GtkBox       *tab,
                                               gboolean      init,
                                               void (callback)(GtkToggleButton *, CPUGraph *),
                                               void         *cb_data);
-static void    create_drop_down              (GtkBox       *tab,
+static GtkWidget* create_drop_down           (GtkBox       *tab,
                                               GtkSizeGroup *sg,
                                               const gchar  *name,
                                               const gchar **items,
@@ -106,8 +106,7 @@ static void    change_color_3                (GtkColorButton  *button,
                                               CPUGraph        *base);
 static void    change_color_4                (GtkColorButton  *button,
                                               CPUGraph        *base);
-static void    select_active_colors          (CPUGraph        *base);
-static void    select_active_barscolors      (CPUGraph        *base);
+static void    update_sensitivity            (CPUGraph        *base);
 static void    change_mode                   (GtkComboBox     *om,
                                               CPUGraph        *base);
 static void    change_color_mode             (GtkComboBox     *om,
@@ -186,11 +185,10 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     setup_color_option (vbox2, sg, base, 2, _("Color 2:"), G_CALLBACK (change_color_2));
     setup_color_option (vbox2, sg, base, 3, _("Color 3:"), G_CALLBACK (change_color_3));
     setup_color_option (vbox2, sg, base, 0, _("Background:"), G_CALLBACK (change_color_0));
-    select_active_colors (base);
     setup_mode_option (vbox2, sg, base);
     setup_color_mode_option (vbox2, sg, base);
     setup_color_option (vbox2, sg, base, 4, _("Bars color:"), G_CALLBACK (change_color_4));
-    select_active_barscolors (base);
+    update_sensitivity (base);
 
     notebook = gtk_notebook_new ();
     gtk_container_set_border_width (GTK_CONTAINER (notebook), BORDER - 2);
@@ -257,7 +255,7 @@ create_check_box (GtkBox *tab, GtkSizeGroup *sg, const gchar *name, gboolean ini
     return hbox;
 }
 
-static void
+static GtkWidget*
 create_drop_down (GtkBox *tab, GtkSizeGroup *sg, const gchar *name,
                   const gchar **items, gsize nb_items, guint init,
                   void (callback)(GtkComboBox *, CPUGraph *), void * cb_data)
@@ -277,8 +275,9 @@ create_drop_down (GtkBox *tab, GtkSizeGroup *sg, const gchar *name,
     gtk_box_pack_start (GTK_BOX (hbox), combo, FALSE, FALSE, 0);
     gtk_widget_show (combo);
 
-
     g_signal_connect (combo, "changed", G_CALLBACK (callback), cb_data);
+
+    return combo;
 }
 
 static void
@@ -398,10 +397,28 @@ setup_mode_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base)
                              _("Grid")
                            };
     gsize nb_items = sizeof (items) / sizeof (gchar*);
+    gint selected;
 
-    /* 'Disabled' mode was introduced in 1.1.0 as '-1'
-     * for this reason we need to increment the selected value */
-    gint selected = base->mode + 1;
+    switch (base->mode)
+    {
+        case MODE_DISABLED:
+            selected = 0;
+            break;
+        case MODE_NORMAL:
+            selected = 1;
+            break;
+        case MODE_LED:
+            selected = 2;
+            break;
+        case MODE_NO_HISTORY:
+            selected = 3;
+            break;
+        case MODE_GRID:
+            selected = 4;
+            break;
+        default:
+            selected = 0;
+    }
 
     create_drop_down (vbox, sg, _("Mode:"), items, nb_items, selected, change_mode, base);
 }
@@ -415,7 +432,8 @@ setup_color_mode_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base)
                            };
     gsize nb_items = sizeof (items) / sizeof (gchar*);
 
-    create_drop_down (vbox, sg, _("Color mode: "), items, nb_items, base->color_mode, change_color_mode, base);
+    base->color_mode_combobox = create_drop_down (vbox, sg, _("Color mode: "), items, nb_items,
+                                                  base->color_mode, change_color_mode, base);
 }
 
 static void
@@ -480,26 +498,21 @@ change_color_4 (GtkColorButton *button, CPUGraph *base)
 }
 
 static void
-select_active_colors (CPUGraph *base)
+update_sensitivity (CPUGraph *base)
 {
-    if (base->color_mode != 0 || base->mode == 1 || base->mode == 3)
+    if (base->color_mode != 0 || base->mode == MODE_LED || base->mode == MODE_GRID)
         gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[2]), TRUE);
     else
         gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[2]), FALSE);
 
-    if (base->color_mode != 0 && base->mode == 1)
+    if (base->color_mode != 0 && base->mode == MODE_LED)
         gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[3]), TRUE);
     else
         gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[3]), FALSE);
-}
 
-static void
-select_active_barscolors (CPUGraph *base)
-{
-    if (base->has_bars)
-        gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[4]), TRUE);
-    else
-        gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[4]), FALSE);
+    gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[4]), base->has_bars);
+
+    gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_mode_combobox), base->mode != MODE_GRID);
 }
 
 static void
@@ -508,16 +521,30 @@ change_mode (GtkComboBox *combo, CPUGraph *base)
     /* 'Disabled' mode was introduced in 1.1.0 as '-1'
      * for this reason we need to decrement the selected value */
     gint selected = gtk_combo_box_get_active (combo) - 1;
+    CPUGraphMode mode;
 
-    set_mode (base, selected);
-    select_active_colors (base);
+    switch (selected)
+    {
+        case MODE_DISABLED:
+        case MODE_NORMAL:
+        case MODE_LED:
+        case MODE_NO_HISTORY:
+        case MODE_GRID:
+            mode = selected;
+            break;
+        default:
+            mode = MODE_NORMAL;
+    }
+
+    set_mode (base, mode);
+    update_sensitivity (base);
 }
 
 static void
 change_color_mode (GtkComboBox *combo, CPUGraph *base)
 {
     set_color_mode (base, gtk_combo_box_get_active (combo));
-    select_active_colors (base);
+    update_sensitivity (base);
 }
 
 static void
@@ -544,7 +571,7 @@ static void
 change_bars (GtkToggleButton *button, CPUGraph *base)
 {
     set_bars (base, gtk_toggle_button_get_active (button));
-    select_active_barscolors (base);
+    update_sensitivity (base);
 }
 
 static void

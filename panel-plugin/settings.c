@@ -33,7 +33,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
 
     guint rate = 0;
     gboolean nonlinear = FALSE;
-    gint mode = 0;
+    CPUGraphMode mode = MODE_NORMAL;
     guint color_mode = 0;
     gboolean frame = FALSE;
     gboolean border = TRUE;
@@ -115,6 +115,18 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
             if ((value = xfce_rc_read_entry (rc, "BarsColor", NULL))) {
                 gdk_rgba_parse (&barscolor, value);
                 base->has_barcolor = TRUE;
+            }
+
+            switch (mode)
+            {
+                case MODE_DISABLED:
+                case MODE_NORMAL:
+                case MODE_LED:
+                case MODE_NO_HISTORY:
+                case MODE_GRID:
+                    break;
+                default:
+                    mode = MODE_NORMAL;
             }
 
             xfce_rc_close (rc);

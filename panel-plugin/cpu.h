@@ -35,6 +35,14 @@
 #define BORDER 8
 #define MAX_LOAD_THRESHOLD 0.2
 
+typedef enum {
+    MODE_DISABLED = -1,
+    MODE_NORMAL = 0,
+    MODE_LED = 1,
+    MODE_NO_HISTORY = 2,
+    MODE_GRID = 3,
+} CPUGraphMode;
+
 typedef struct
 {
     /* GUI components */
@@ -50,13 +58,14 @@ typedef struct
         GtkOrientation orientation;
     } bars;
     GtkWidget *color_buttons[5];
+    GtkWidget *color_mode_combobox;
     GtkWidget *tooltip_text;
 
     /* Settings */
     guint update_interval; /* Number of ms between updates. */
     gboolean non_linear;
     guint size;
-    gint mode;
+    CPUGraphMode mode;
     guint color_mode;
     gboolean has_frame;
     gboolean has_border;
@@ -65,7 +74,7 @@ typedef struct
     gchar *command;
     gboolean in_terminal;
     gboolean startup_notification;
-    GdkRGBA colors[5];
+    GdkRGBA colors[5]; /* [0]: background color */
     guint tracked_core;
     gfloat load_threshold; /* Range: from 0.0 to MAX_LOAD_THRESHOLD */
 
@@ -85,7 +94,7 @@ void set_command (CPUGraph *base, const gchar *command);
 void set_frame (CPUGraph *base, gboolean frame);
 void set_in_terminal (CPUGraph *base, gboolean in_terminal);
 void set_load_threshold (CPUGraph *base, gfloat threshold);
-void set_mode (CPUGraph *base, gint mode);
+void set_mode (CPUGraph *base, CPUGraphMode mode);
 void set_nonlinear_time (CPUGraph *base, gboolean nonlinear);
 void set_size (CPUGraph *base, guint width);
 void set_startup_notification (CPUGraph *base, gboolean startup_notification);
