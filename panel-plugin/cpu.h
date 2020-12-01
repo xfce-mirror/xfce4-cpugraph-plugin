@@ -33,6 +33,7 @@
 #include "os.h"
 
 #define BORDER 8
+#define MAX_LOAD_THRESHOLD 0.2
 
 typedef struct
 {
@@ -66,6 +67,7 @@ typedef struct
     gboolean startup_notification;
     GdkRGBA colors[5];
     guint tracked_core;
+    gfloat load_threshold; /* Range: from 0.0 to MAX_LOAD_THRESHOLD */
 
     /* Runtime data */
     guint nr_cores;
@@ -75,18 +77,19 @@ typedef struct
     CpuData *cpu_data;
 } CPUGraph;
 
-void set_startup_notification (CPUGraph *base, gboolean startup_notification);
-void set_in_terminal (CPUGraph *base, gboolean in_terminal);
-void set_command (CPUGraph *base, const gchar *command);
 void set_bars (CPUGraph * base, gboolean bars);
 void set_border (CPUGraph *base, gboolean border);
-void set_frame (CPUGraph *base, gboolean frame);
-void set_nonlinear_time (CPUGraph *base, gboolean nonlinear);
-void set_update_rate (CPUGraph *base, guint rate);
-void set_size (CPUGraph *base, guint width);
-void set_color_mode (CPUGraph *base, guint color_mode);
-void set_mode (CPUGraph *base, gint mode);
 void set_color (CPUGraph *base, guint number, GdkRGBA color);
+void set_color_mode (CPUGraph *base, guint color_mode);
+void set_command (CPUGraph *base, const gchar *command);
+void set_frame (CPUGraph *base, gboolean frame);
+void set_in_terminal (CPUGraph *base, gboolean in_terminal);
+void set_load_threshold (CPUGraph *base, gfloat threshold);
+void set_mode (CPUGraph *base, gint mode);
+void set_nonlinear_time (CPUGraph *base, gboolean nonlinear);
+void set_size (CPUGraph *base, guint width);
+void set_startup_notification (CPUGraph *base, gboolean startup_notification);
 void set_tracked_core (CPUGraph *base, guint core);
+void set_update_rate (CPUGraph *base, guint rate);
 
 #endif /* !_XFCE_CPU_H_ */

@@ -23,6 +23,7 @@
  */
 #include "settings.h"
 #include <libxfce4ui/libxfce4ui.h>
+#include <math.h>
 
 void
 read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
@@ -48,6 +49,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     gchar *command = NULL;
     gboolean in_terminal = TRUE;
     gboolean startup_notification = FALSE;
+    guint load_threshold = 0;
 
     foreground1.red = 0.0;
     foreground1.green = 1.0;
@@ -96,6 +98,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
             border = xfce_rc_read_int_entry (rc, "Border", border);
             bars = xfce_rc_read_int_entry (rc, "Bars", bars);
             tracked_core = xfce_rc_read_int_entry (rc, "TrackedCore", tracked_core);
+            load_threshold = xfce_rc_read_int_entry (rc, "LoadThreshold", load_threshold);
 
             if ((value = xfce_rc_read_entry (rc, "Command", NULL))) {
                 command = g_strdup (value);
@@ -136,6 +139,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     set_color (base, 3, foreground3);
     set_color (base, 0, background);
     set_color (base, 4, barscolor);
+    set_load_threshold (base, load_threshold * 0.01f);
     g_free (command);
 }
 
@@ -170,6 +174,10 @@ write_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     xfce_rc_write_int_entry (rc, "InTerminal", base->in_terminal);
     xfce_rc_write_int_entry (rc, "StartupNotification", base->startup_notification);
     xfce_rc_write_int_entry (rc, "ColorMode", base->color_mode);
+    if (base->load_threshold != 0)
+        xfce_rc_write_int_entry (rc, "LoadThreshold", (gint) roundf (100 * base->load_threshold));
+    else
+        xfce_rc_delete_entry (rc, "LoadThreshold", FALSE);
 
     for (i = 0; i < 5; i++)
     {
