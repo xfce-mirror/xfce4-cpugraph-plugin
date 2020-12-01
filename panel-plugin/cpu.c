@@ -307,7 +307,7 @@ update_cb (CPUGraph *base)
     else if (base->tracked_core != 0)
         base->cpu_data[0].load = base->cpu_data[base->tracked_core].load;
 
-    if (base->mode != -1)
+    if (base->mode != MODE_DISABLED)
     {
         /* Update the history and draw the graph */
         if (base->non_linear)
@@ -371,16 +371,18 @@ draw_area_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
 
     switch (base->mode)
     {
-        case 0:
+        case MODE_DISABLED:
+            break;
+        case MODE_NORMAL:
             draw_graph_normal (base, cr, w, h);
             break;
-        case 1:
+        case MODE_LED:
             draw_graph_LED (base, cr, w, h);
             break;
-        case 2:
+        case MODE_NO_HISTORY:
             draw_graph_no_history (base, cr, w, h);
             break;
-        case 3:
+        case MODE_GRID:
             draw_graph_grid (base, cr, w, h);
             break;
     }
@@ -599,13 +601,13 @@ set_color_mode (CPUGraph *base, guint color_mode)
 }
 
 void
-set_mode (CPUGraph *base, gint mode)
+set_mode (CPUGraph *base, CPUGraphMode mode)
 {
     base->mode = mode;
 
-    if (mode == -1)
+    if (mode == MODE_DISABLED)
     {
-        /* 'Disabled' mode, hide graph and clear history */
+        /* Hide graph and clear history */
         gtk_widget_hide (base->frame_widget);
         for (gint i = 0; i < base->history_size; i++)
             base->history[i] = 0;
