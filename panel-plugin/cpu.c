@@ -405,7 +405,10 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
     size = (horizontal ? alloc.height : alloc.width);
     if (base->tracked_core != 0 || base->nr_cores == 1)
     {
-        gfloat usage = size * base->cpu_data[0].load;
+        gfloat usage = base->cpu_data[0].load;
+        if (usage < base->load_threshold)
+            usage = 0;
+        usage *= size;
         if (horizontal)
             cairo_rectangle (cr, 0, size-usage, 4, usage);
         else
@@ -417,7 +420,10 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
         guint i;
         for (i = 0; i < base->nr_cores; i++)
         {
-            gfloat usage = size * base->cpu_data[i+1].load;
+            gfloat usage = base->cpu_data[i+1].load;
+            if (usage < base->load_threshold)
+                usage = 0;
+            usage *= size;
             if (horizontal)
                 cairo_rectangle (cr, 6*i, size-usage, 4, usage);
             else
@@ -634,4 +640,14 @@ set_tracked_core (CPUGraph *base, guint core)
     base->tracked_core = core;
     if (has_bars)
         set_bars (base, TRUE);
+}
+
+void
+set_load_threshold (CPUGraph *base, gfloat threshold)
+{
+    if (threshold < 0)
+        threshold = 0;
+    if (threshold > MAX_LOAD_THRESHOLD)
+        threshold = MAX_LOAD_THRESHOLD;
+    base->load_threshold = threshold;
 }

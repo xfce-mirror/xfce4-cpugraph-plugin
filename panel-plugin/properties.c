@@ -27,6 +27,7 @@
 
 #include <glib/gprintf.h>
 #include <libxfce4ui/libxfce4ui.h>
+#include <math.h>
 
 #ifndef _
 # include <libintl.h>
@@ -85,6 +86,9 @@ static void    setup_mode_option             (GtkBox          *vbox,
 static void    setup_color_mode_option       (GtkBox          *vbox,
                                               GtkSizeGroup    *sg,
                                               CPUGraph        *base);
+static void    setup_load_threshold_option   (GtkBox          *vbox,
+                                              GtkSizeGroup    *sg,
+                                              CPUGraph        *base);
 
 static void    change_in_terminal            (GtkToggleButton *button,
                                               CPUGraph        *base);
@@ -125,6 +129,8 @@ static void    change_update                 (GtkComboBox     *om,
                                               CPUGraph        *base);
 static void    change_core                   (GtkComboBox     *combo,
                                               CPUGraph        *base);
+static void    change_load_threshold         (GtkSpinButton   *sb,
+                                              CPUGraph        *base);
 
 void
 create_options (XfcePanelPlugin *plugin, CPUGraph *base)
@@ -158,6 +164,7 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     setup_update_interval_option (vbox, sg, base);
     setup_tracked_core_option (vbox, sg, base);
     setup_size_option (vbox, sg, plugin, base);
+    setup_load_threshold_option (vbox, sg, base);
     create_check_box (vbox, sg, _("Use non-linear time-scale"), base->non_linear, change_time_scale, base);
     create_check_box (vbox, sg, _("Show frame"), base->has_frame, change_frame, base);
     create_check_box (vbox, sg, _("Show border"), base->has_border, change_border, base);
@@ -328,6 +335,20 @@ setup_size_option (GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, CPUG
     gtk_widget_show (size);
     gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (size), FALSE, FALSE, 0);
     g_signal_connect (size, "value-changed", G_CALLBACK (change_size), base);
+}
+
+static void
+setup_load_threshold_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base)
+{
+    GtkBox *hbox;
+    GtkWidget *threshold;
+
+    hbox = create_option_line (vbox, sg, _("Threshold (%):"));
+    threshold = gtk_spin_button_new_with_range (0, (gint) roundf (100 * MAX_LOAD_THRESHOLD), 1);
+    gtk_spin_button_set_value (GTK_SPIN_BUTTON (threshold), (gint) roundf (100 * base->load_threshold));
+    gtk_widget_show (threshold);
+    gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (threshold), FALSE, FALSE, 0);
+    g_signal_connect (threshold, "value-changed", G_CALLBACK (change_load_threshold), base);
 }
 
 static void
@@ -530,6 +551,12 @@ static void
 change_size (GtkSpinButton *sb, CPUGraph *base)
 {
     set_size (base, gtk_spin_button_get_value_as_int (sb));
+}
+
+static void
+change_load_threshold (GtkSpinButton *sb, CPUGraph *base)
+{
+    set_load_threshold (base, gtk_spin_button_get_value (sb) / 100);
 }
 
 static void change_time_scale (GtkToggleButton *button, CPUGraph *base)
