@@ -196,12 +196,11 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     gtk_notebook_append_page (GTK_NOTEBOOK (notebook), GTK_WIDGET (vbox2), GTK_WIDGET (label));
     label = gtk_label_new (_("Advanced"));
     gtk_notebook_append_page (GTK_NOTEBOOK (notebook), GTK_WIDGET (vbox), GTK_WIDGET (label));
-    gtk_widget_show (notebook);
 
     content = gtk_dialog_get_content_area (GTK_DIALOG (dlg));
     gtk_container_add (GTK_CONTAINER (content), notebook);
 
-    gtk_widget_show (dlg);
+    gtk_widget_show_all (dlg);
 }
 
 static GtkBox *
@@ -210,7 +209,6 @@ create_tab (void)
     GtkBox *tab;
     tab = GTK_BOX (gtk_box_new (GTK_ORIENTATION_VERTICAL, BORDER));
     gtk_container_set_border_width (GTK_CONTAINER (tab), BORDER);
-    gtk_widget_show (GTK_WIDGET (tab));
     return tab;
 }
 
@@ -221,7 +219,6 @@ create_option_line (GtkBox *tab, GtkSizeGroup *sg, const gchar *name)
     GtkWidget *label;
 
     line = GTK_BOX (gtk_box_new (GTK_ORIENTATION_HORIZONTAL, BORDER));
-    gtk_widget_show (GTK_WIDGET (line));
     gtk_box_pack_start (GTK_BOX (tab), GTK_WIDGET (line), FALSE, FALSE, 0);
 
     if (name)
@@ -230,7 +227,6 @@ create_option_line (GtkBox *tab, GtkSizeGroup *sg, const gchar *name)
         gtk_label_set_xalign (GTK_LABEL (label), 0.0);
         gtk_label_set_yalign (GTK_LABEL (label), 0.5);
         gtk_size_group_add_widget (sg, label);
-        gtk_widget_show (label);
         gtk_box_pack_start (GTK_BOX (line), GTK_WIDGET (label), FALSE, FALSE, 0);
     }
 
@@ -248,7 +244,6 @@ create_check_box (GtkBox *tab, GtkSizeGroup *sg, const gchar *name, gboolean ini
 
     checkbox = gtk_check_button_new_with_mnemonic (name);
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbox), init);
-    gtk_widget_show (checkbox);
     gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (checkbox), FALSE, FALSE, 0);
     g_signal_connect (checkbox, "toggled", G_CALLBACK (callback), cb_data);
 
@@ -273,7 +268,6 @@ create_drop_down (GtkBox *tab, GtkSizeGroup *sg, const gchar *name,
     }
     gtk_combo_box_set_active (GTK_COMBO_BOX (combo), init);
     gtk_box_pack_start (GTK_BOX (hbox), combo, FALSE, FALSE, 0);
-    gtk_widget_show (combo);
 
     g_signal_connect (combo, "changed", G_CALLBACK (callback), cb_data);
 
@@ -331,7 +325,6 @@ setup_size_option (GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, CPUG
 
     size = gtk_spin_button_new_with_range (10, 128, 1);
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (size), base->size);
-    gtk_widget_show (size);
     gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (size), FALSE, FALSE, 0);
     g_signal_connect (size, "value-changed", G_CALLBACK (change_size), base);
 }
@@ -345,7 +338,6 @@ setup_load_threshold_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base)
     hbox = create_option_line (vbox, sg, _("Threshold (%):"));
     threshold = gtk_spin_button_new_with_range (0, (gint) roundf (100 * MAX_LOAD_THRESHOLD), 1);
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (threshold), (gint) roundf (100 * base->load_threshold));
-    gtk_widget_show (threshold);
     gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (threshold), FALSE, FALSE, 0);
     g_signal_connect (threshold, "value-changed", G_CALLBACK (change_load_threshold), base);
 }
@@ -366,7 +358,6 @@ setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraphOptions *data)
     gtk_entry_set_icon_tooltip_text (GTK_ENTRY (associatecommand),
                                      GTK_ENTRY_ICON_SECONDARY,
                                      _("Defaults to xfce4-taskmanager, htop or top."));
-    gtk_widget_show (associatecommand);
     gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (associatecommand), FALSE, FALSE, 0);
     g_signal_connect (associatecommand, "changed", G_CALLBACK (change_command), data);
 }
@@ -381,7 +372,6 @@ setup_color_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base,
 
     base->color_buttons[number] = gtk_color_button_new_with_rgba (&base->colors[number]);
     gtk_color_chooser_set_use_alpha (GTK_COLOR_CHOOSER (base->color_buttons[number]), TRUE);
-    gtk_widget_show (GTK_WIDGET (base->color_buttons[number]));
     gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (base->color_buttons[number]), FALSE, FALSE, 0);
 
     g_signal_connect (base->color_buttons[number], "color-set", cb, base);
