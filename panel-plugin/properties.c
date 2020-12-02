@@ -167,7 +167,6 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     create_check_box (vbox, sg, _("Use non-linear time-scale"), base->non_linear, change_time_scale, base);
     create_check_box (vbox, sg, _("Show frame"), base->has_frame, change_frame, base);
     create_check_box (vbox, sg, _("Show border"), base->has_border, change_border, base);
-    create_check_box (vbox, sg, ngettext ("Show current usage bar", "Show current usage bars", base->nr_cores), base->has_bars, change_bars, base);
 
     setup_command_option (vbox, sg, dlg_data);
     dlg_data->hbox_in_terminal = create_check_box (vbox, sg, _("Run in terminal"),
@@ -187,6 +186,8 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     setup_color_option (vbox2, sg, base, 0, _("Background:"), G_CALLBACK (change_color_0));
     setup_mode_option (vbox2, sg, base);
     setup_color_mode_option (vbox2, sg, base);
+    gtk_box_pack_start (vbox2, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 0);
+    create_check_box (vbox2, sg, ngettext ("Show current usage bar", "Show current usage bars", base->nr_cores), base->has_bars, change_bars, base);
     setup_color_option (vbox2, sg, base, 4, _("Bars color:"), G_CALLBACK (change_color_4));
     update_sensitivity (base);
 
