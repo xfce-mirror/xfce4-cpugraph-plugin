@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-25 12:48+0100\n"
-"PO-Revision-Date: 2020-11-25 23:53+0000\n"
+"POT-Creation-Date: 2020-12-01 12:47+0100\n"
+"PO-Revision-Date: 2020-12-02 23:44+0000\n"
 "Last-Translator: 玉堂白鹤 <yjwork@qq.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/xfce/xfce-panel-plugins/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -33,148 +33,152 @@ msgstr "版权所有 (c) 2003-2019\n"
 msgid "Usage: %u%%"
 msgstr "使用率：%u%%"
 
-#: ../panel-plugin/properties.c:140
+#: ../panel-plugin/properties.c:146
 msgid "CPU Graph Properties"
 msgstr "CPU 图像属性"
 
-#: ../panel-plugin/properties.c:161
+#: ../panel-plugin/properties.c:168
 msgid "Use non-linear time-scale"
 msgstr "使用非线性时间调整"
 
-#: ../panel-plugin/properties.c:162
+#: ../panel-plugin/properties.c:169
 msgid "Show frame"
 msgstr "显示帧数"
 
-#: ../panel-plugin/properties.c:163
+#: ../panel-plugin/properties.c:170
 msgid "Show border"
 msgstr "显示边框"
 
-#: ../panel-plugin/properties.c:164
+#: ../panel-plugin/properties.c:171
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "显示当前使用率栏"
 
-#: ../panel-plugin/properties.c:167
+#: ../panel-plugin/properties.c:174
 msgid "Run in terminal"
 msgstr "在终端中运行"
 
-#: ../panel-plugin/properties.c:169
+#: ../panel-plugin/properties.c:176
 msgid "Use startup notification"
 msgstr "使用启动通知"
 
-#: ../panel-plugin/properties.c:178
+#: ../panel-plugin/properties.c:185
 msgid "Color 1:"
 msgstr "颜色 1："
 
-#: ../panel-plugin/properties.c:179
+#: ../panel-plugin/properties.c:186
 msgid "Color 2:"
 msgstr "颜色 2："
 
-#: ../panel-plugin/properties.c:180
+#: ../panel-plugin/properties.c:187
 msgid "Color 3:"
 msgstr "颜色 3："
 
-#: ../panel-plugin/properties.c:181
+#: ../panel-plugin/properties.c:188
 msgid "Background:"
 msgstr "背景："
 
-#: ../panel-plugin/properties.c:185
+#: ../panel-plugin/properties.c:192
 msgid "Bars color:"
 msgstr "Bars 颜色:"
 
-#: ../panel-plugin/properties.c:190
+#: ../panel-plugin/properties.c:197
 msgid "Appearance"
 msgstr "外观"
 
-#: ../panel-plugin/properties.c:192
+#: ../panel-plugin/properties.c:199
 msgid "Advanced"
 msgstr "高级"
 
-#: ../panel-plugin/properties.c:286
+#: ../panel-plugin/properties.c:293
 msgid "Fastest (~250ms)"
 msgstr "最快 (约 250 毫秒)"
 
-#: ../panel-plugin/properties.c:287
+#: ../panel-plugin/properties.c:294
 msgid "Fast (~500ms)"
 msgstr "快 (约 500 毫秒)"
 
-#: ../panel-plugin/properties.c:288
+#: ../panel-plugin/properties.c:295
 msgid "Normal (~750ms)"
 msgstr "正常 (约 750 毫秒)"
 
-#: ../panel-plugin/properties.c:289
+#: ../panel-plugin/properties.c:296
 msgid "Slow (~1s)"
 msgstr "慢(约 1 秒)"
 
-#: ../panel-plugin/properties.c:290
+#: ../panel-plugin/properties.c:297
 msgid "Slowest (~3s)"
 msgstr "最慢 (约 3 秒)"
 
-#: ../panel-plugin/properties.c:294
+#: ../panel-plugin/properties.c:301
 msgid "Update Interval:"
 msgstr "更新间隔："
 
-#: ../panel-plugin/properties.c:303
+#: ../panel-plugin/properties.c:310
 msgid "All"
 msgstr "所有"
 
-#: ../panel-plugin/properties.c:310
+#: ../panel-plugin/properties.c:317
 msgid "Tracked Core:"
 msgstr "跟踪的核心："
 
-#: ../panel-plugin/properties.c:322
+#: ../panel-plugin/properties.c:329
 msgid "Width:"
 msgstr "宽度："
 
-#: ../panel-plugin/properties.c:324
+#: ../panel-plugin/properties.c:331
 msgid "Height:"
 msgstr "高度："
 
-#: ../panel-plugin/properties.c:339
+#: ../panel-plugin/properties.c:346
+msgid "Threshold (%):"
+msgstr "阈值 (%):"
+
+#: ../panel-plugin/properties.c:360
 msgid "Associated command:"
 msgstr "绑定的命令："
 
-#: ../panel-plugin/properties.c:348
+#: ../panel-plugin/properties.c:369
 msgid "Defaults to xfce4-taskmanager, htop or top."
 msgstr "默认为 xfce4-taskmanager，htop 或 top。"
 
-#: ../panel-plugin/properties.c:373
+#: ../panel-plugin/properties.c:394
 msgid "Disabled"
 msgstr "禁用"
 
-#: ../panel-plugin/properties.c:374
+#: ../panel-plugin/properties.c:395
 msgid "Normal"
 msgstr "正常"
 
-#: ../panel-plugin/properties.c:375
+#: ../panel-plugin/properties.c:396
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:376
+#: ../panel-plugin/properties.c:397
 msgid "No history"
 msgstr "无历史"
 
-#: ../panel-plugin/properties.c:377
+#: ../panel-plugin/properties.c:398
 msgid "Grid"
 msgstr "网格"
 
-#: ../panel-plugin/properties.c:385
+#: ../panel-plugin/properties.c:406
 msgid "Mode:"
 msgstr "模式："
 
-#: ../panel-plugin/properties.c:391
+#: ../panel-plugin/properties.c:412
 msgid "Solid"
 msgstr "固定"
 
-#: ../panel-plugin/properties.c:392
+#: ../panel-plugin/properties.c:413
 msgid "Gradient"
 msgstr "梯度"
 
-#: ../panel-plugin/properties.c:393
+#: ../panel-plugin/properties.c:414
 msgid "Fire"
 msgstr "火焰"
 
-#: ../panel-plugin/properties.c:397
+#: ../panel-plugin/properties.c:418
 msgid "Color mode: "
 msgstr "颜色模式："
 
