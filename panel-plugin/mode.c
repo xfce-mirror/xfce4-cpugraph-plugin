@@ -55,7 +55,7 @@ draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h)
     gint tmp;
 
     if (base->color_mode == 0)
-        gdk_cairo_set_source_rgba (cr, &base->colors[1]);
+        gdk_cairo_set_source_rgba (cr, &base->colors[FG_COLOR1]);
 
     for (x = 0; x < w; x++)
     {
@@ -87,7 +87,7 @@ draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h)
             for (y = h - 1; y >= h_usage; y--, tmp++)
             {
                 gfloat t = tmp / (base->color_mode == 1 ? (gfloat) h : usage);
-                mix_colors (t, &base->colors[1], &base->colors[2], cr);
+                mix_colors (t, &base->colors[FG_COLOR1], &base->colors[FG_COLOR2], cr);
                 /* draw point */
                 cairo_rectangle (cr, x, y, 1, 1);
                 cairo_fill (cr);
@@ -123,11 +123,11 @@ draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h)
             if (base->color_mode != 0 && y < limit)
             {
                 gfloat t = y / (gfloat) (base->color_mode == 1 ? nry : limit);
-                mix_colors (t, &base->colors[3], &base->colors[2], cr);
+                mix_colors (t, &base->colors[FG_COLOR3], &base->colors[FG_COLOR2], cr);
             }
             else
             {
-                gdk_cairo_set_source_rgba (cr, y >= limit ? &base->colors[1] : &base->colors[2]);
+                gdk_cairo_set_source_rgba (cr, y >= limit ? &base->colors[FG_COLOR1] : &base->colors[FG_COLOR2]);
             }
 
             /* draw rectangle */
@@ -150,7 +150,7 @@ draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h)
 
     if (base->color_mode == 0)
     {
-        gdk_cairo_set_source_rgba (cr, &base->colors[1]);
+        gdk_cairo_set_source_rgba (cr, &base->colors[FG_COLOR1]);
         cairo_rectangle (cr, 0, h - usage, w, usage);
         cairo_fill (cr);
     }
@@ -161,7 +161,7 @@ draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h)
         for (y = h - 1; y >= h_usage; y--, tmp++)
         {
             gfloat t = tmp / (base->color_mode == 1 ? (gfloat) h : usage);
-            mix_colors (t, &base->colors[1], &base->colors[2], cr);
+            mix_colors (t, &base->colors[FG_COLOR1], &base->colors[FG_COLOR2], cr);
             /* draw line */
             cairo_rectangle (cr, 0, y, w, 1);
             cairo_fill (cr);
@@ -178,7 +178,7 @@ draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h)
     last.x = 0;
     last.y = h;
 
-    gdk_cairo_set_source_rgba (cr, &base->colors[1]);
+    gdk_cairo_set_source_rgba (cr, &base->colors[FG_COLOR1]);
     cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
     cairo_set_line_width (cr, 1);
 

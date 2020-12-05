@@ -146,11 +146,11 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     set_border (base, border);
     set_tracked_core (base, tracked_core);
     set_bars (base, bars);
-    set_color (base, 1, foreground1);
-    set_color (base, 2, foreground2);
-    set_color (base, 3, foreground3);
-    set_color (base, 0, background);
-    set_color (base, 4, barscolor);
+    set_color (base, BG_COLOR, background);
+    set_color (base, FG_COLOR1, foreground1);
+    set_color (base, FG_COLOR2, foreground2);
+    set_color (base, FG_COLOR3, foreground3);
+    set_color (base, BARS_COLOR, barscolor);
     set_load_threshold (base, load_threshold * 0.01f);
     g_free (command);
 }
@@ -191,16 +191,16 @@ write_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     else
         xfce_rc_delete_entry (rc, "LoadThreshold", FALSE);
 
-    for (i = 0; i < 5; i++)
+    for (i = 0; i < NUM_COLORS; i++)
     {
         gchar *rgba = gdk_rgba_to_string (&(base->colors[i]));
         switch (i)
         {
-            case 0: xfce_rc_write_entry (rc, "Background", rgba); break;
-            case 1: xfce_rc_write_entry (rc, "Foreground1", rgba); break;
-            case 2: xfce_rc_write_entry (rc, "Foreground2", rgba); break;
-            case 3: xfce_rc_write_entry (rc, "Foreground3", rgba); break;
-            case 4:
+            case BG_COLOR: xfce_rc_write_entry (rc, "Background", rgba); break;
+            case FG_COLOR1: xfce_rc_write_entry (rc, "Foreground1", rgba); break;
+            case FG_COLOR2: xfce_rc_write_entry (rc, "Foreground2", rgba); break;
+            case FG_COLOR3: xfce_rc_write_entry (rc, "Foreground3", rgba); break;
+            case BARS_COLOR:
                 if (base->has_barcolor)
                     xfce_rc_write_entry (rc, "BarsColor", rgba);
                 break;
