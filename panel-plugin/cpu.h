@@ -43,6 +43,16 @@ typedef enum {
     MODE_GRID = 3,
 } CPUGraphMode;
 
+enum { NUM_COLORS = 5 };
+
+typedef enum {
+    BG_COLOR = 0,
+    FG_COLOR1 = 1,
+    FG_COLOR2 = 2,
+    FG_COLOR3 = 3,
+    BARS_COLOR = 4, /* NUM_COLORS-1 */
+} CPUGraphColorNumber;
+
 typedef struct
 {
     /* GUI components */
@@ -57,7 +67,7 @@ typedef struct
         GtkWidget *draw_area;
         GtkOrientation orientation;
     } bars;
-    GtkWidget *color_buttons[5];
+    GtkWidget *color_buttons[NUM_COLORS];
     GtkWidget *color_mode_combobox;
     GtkWidget *tooltip_text;
 
@@ -74,7 +84,7 @@ typedef struct
     gchar *command;
     gboolean in_terminal;
     gboolean startup_notification;
-    GdkRGBA colors[5]; /* [0]: background color */
+    GdkRGBA colors[NUM_COLORS];
     guint tracked_core;
     gfloat load_threshold; /* Range: from 0.0 to MAX_LOAD_THRESHOLD */
 
