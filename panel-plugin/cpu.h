@@ -67,8 +67,6 @@ typedef struct
         GtkWidget *draw_area;
         GtkOrientation orientation;
     } bars;
-    GtkWidget *color_buttons[NUM_COLORS];
-    GtkWidget *color_mode_combobox;
     GtkWidget *tooltip_text;
 
     /* Settings */
