@@ -365,7 +365,7 @@ draw_area_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
     w = alloc.width;
     h = alloc.height;
 
-    gdk_cairo_set_source_rgba (cr, &base->colors[0]);
+    gdk_cairo_set_source_rgba (cr, &base->colors[BG_COLOR]);
     cairo_rectangle (cr, 0, 0, w, h);
     cairo_fill (cr);
 
@@ -398,11 +398,11 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
 
     gtk_widget_get_allocation (base->bars.draw_area, &alloc);
 
-    gdk_cairo_set_source_rgba (cr, &base->colors[0]);
+    gdk_cairo_set_source_rgba (cr, &base->colors[BG_COLOR]);
     cairo_rectangle (cr, 0, 0, alloc.width, alloc.height);
     cairo_fill (cr);
 
-    gdk_cairo_set_source_rgba (cr, &base->colors[4]);
+    gdk_cairo_set_source_rgba (cr, &base->colors[BARS_COLOR]);
 
     size = (horizontal ? alloc.height : alloc.width);
     if (base->tracked_core != 0 || base->nr_cores == 1)
@@ -624,11 +624,11 @@ set_color (CPUGraph *base, guint number, GdkRGBA color)
 {
     base->colors[number] = color;
 
-    if (number == 0)
+    if (number == BG_COLOR)
     {
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-        gtk_widget_override_background_color (base->draw_area, GTK_STATE_FLAG_INSENSITIVE, &base->colors[0]);
-        gtk_widget_override_background_color (base->draw_area, GTK_STATE_FLAG_NORMAL, &base->colors[0]);
+        gtk_widget_override_background_color (base->draw_area, GTK_STATE_FLAG_INSENSITIVE, &base->colors[BG_COLOR]);
+        gtk_widget_override_background_color (base->draw_area, GTK_STATE_FLAG_NORMAL, &base->colors[BG_COLOR]);
 G_GNUC_END_IGNORE_DEPRECATIONS
     }
 }

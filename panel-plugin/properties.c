@@ -180,15 +180,15 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     }
 
     vbox2 = create_tab ();
-    setup_color_option (vbox2, sg, base, 1, _("Color 1:"), G_CALLBACK (change_color_1));
-    setup_color_option (vbox2, sg, base, 2, _("Color 2:"), G_CALLBACK (change_color_2));
-    setup_color_option (vbox2, sg, base, 3, _("Color 3:"), G_CALLBACK (change_color_3));
-    setup_color_option (vbox2, sg, base, 0, _("Background:"), G_CALLBACK (change_color_0));
+    setup_color_option (vbox2, sg, base, FG_COLOR1, _("Color 1:"), G_CALLBACK (change_color_1));
+    setup_color_option (vbox2, sg, base, FG_COLOR2, _("Color 2:"), G_CALLBACK (change_color_2));
+    setup_color_option (vbox2, sg, base, FG_COLOR3, _("Color 3:"), G_CALLBACK (change_color_3));
+    setup_color_option (vbox2, sg, base, BG_COLOR, _("Background:"), G_CALLBACK (change_color_0));
     setup_mode_option (vbox2, sg, base);
     setup_color_mode_option (vbox2, sg, base);
     gtk_box_pack_start (vbox2, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 0);
     create_check_box (vbox2, sg, ngettext ("Show current usage bar", "Show current usage bars", base->nr_cores), base->has_bars, change_bars, base);
-    setup_color_option (vbox2, sg, base, 4, _("Bars color:"), G_CALLBACK (change_color_4));
+    setup_color_option (vbox2, sg, base, BARS_COLOR, _("Bars color:"), G_CALLBACK (change_color_4));
     update_sensitivity (base);
 
     notebook = gtk_notebook_new ();
@@ -458,50 +458,50 @@ change_color (GtkColorButton *button, CPUGraph *base, guint number)
 }
 
 static void
+change_color_0 (GtkColorButton *button, CPUGraph *base)
+{
+    change_color (button, base, BG_COLOR);
+}
+
+static void
 change_color_1 (GtkColorButton *button, CPUGraph *base)
 {
-    change_color (button, base, 1);
+    change_color (button, base, FG_COLOR1);
 }
 
 static void
 change_color_2 (GtkColorButton *button, CPUGraph *base)
 {
-    change_color (button, base, 2);
+    change_color (button, base, FG_COLOR2);
 }
 
 static void
 change_color_3 (GtkColorButton *button, CPUGraph *base)
 {
-    change_color (button, base, 3);
-}
-
-static void
-change_color_0 (GtkColorButton *button, CPUGraph *base)
-{
-    change_color (button, base, 0);
+    change_color (button, base, FG_COLOR3);
 }
 
 static void
 change_color_4 (GtkColorButton *button, CPUGraph *base)
 {
     base->has_barcolor = TRUE;
-    change_color (button, base, 4);
+    change_color (button, base, BARS_COLOR);
 }
 
 static void
 update_sensitivity (CPUGraph *base)
 {
     if (base->color_mode != 0 || base->mode == MODE_LED || base->mode == MODE_GRID)
-        gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[2]), TRUE);
+        gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[FG_COLOR2]), TRUE);
     else
-        gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[2]), FALSE);
+        gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[FG_COLOR2]), FALSE);
 
     if (base->color_mode != 0 && base->mode == MODE_LED)
-        gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[3]), TRUE);
+        gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[FG_COLOR3]), TRUE);
     else
-        gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[3]), FALSE);
+        gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[FG_COLOR3]), FALSE);
 
-    gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[4]), base->has_bars);
+    gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_buttons[BARS_COLOR]), base->has_bars);
 
     gtk_widget_set_sensitive (gtk_widget_get_parent (base->color_mode_combobox), base->mode != MODE_GRID);
 }
