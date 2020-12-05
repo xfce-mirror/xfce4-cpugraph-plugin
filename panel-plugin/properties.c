@@ -175,11 +175,6 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
                                                    base->in_terminal, change_in_terminal, dlg_data);
     dlg_data->hbox_startup_notification = create_check_box (vbox, sg, _("Use startup notification"),
                                                             base->startup_notification, change_startup_notification, dlg_data);
-    if (!base->command)
-    {
-        gtk_widget_set_sensitive (GTK_WIDGET (dlg_data->hbox_in_terminal), FALSE);
-        gtk_widget_set_sensitive (GTK_WIDGET (dlg_data->hbox_startup_notification), FALSE);
-    }
 
     vbox2 = create_tab ();
     setup_color_option (vbox2, sg, dlg_data, FG_COLOR1, _("Color 1:"), change_color_1);
@@ -434,22 +429,21 @@ static void
 change_in_terminal (GtkToggleButton *button, CPUGraphOptions *data)
 {
     set_in_terminal (data->base, gtk_toggle_button_get_active (button));
+    update_sensitivity (data);
 }
 
 static void
 change_startup_notification (GtkToggleButton *button, CPUGraphOptions *data)
 {
     set_startup_notification (data->base, gtk_toggle_button_get_active (button));
+    update_sensitivity (data);
 }
 
 static void
 change_command (GtkEntry *entry, CPUGraphOptions *data)
 {
-    gboolean default_command;
     set_command (data->base, gtk_entry_get_text (entry));
-    default_command = (data->base->command == NULL);
-    gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_in_terminal), !default_command);
-    gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_startup_notification), !default_command);
+    update_sensitivity (data);
 }
 
 static void
@@ -495,16 +489,15 @@ static void
 update_sensitivity (const CPUGraphOptions *data)
 {
     const CPUGraph *base = data->base;
+    const gboolean default_command = (base->command == NULL);
 
-    if (base->color_mode != 0 || base->mode == MODE_LED || base->mode == MODE_GRID)
-        gtk_widget_set_sensitive (gtk_widget_get_parent (data->color_buttons[FG_COLOR2]), TRUE);
-    else
-        gtk_widget_set_sensitive (gtk_widget_get_parent (data->color_buttons[FG_COLOR2]), FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_in_terminal), !default_command);
+    gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_startup_notification), !default_command);
 
-    if (base->color_mode != 0 && base->mode == MODE_LED)
-        gtk_widget_set_sensitive (gtk_widget_get_parent (data->color_buttons[FG_COLOR3]), TRUE);
-    else
-        gtk_widget_set_sensitive (gtk_widget_get_parent (data->color_buttons[FG_COLOR3]), FALSE);
+    gtk_widget_set_sensitive (gtk_widget_get_parent (data->color_buttons[FG_COLOR2]),
+                              base->color_mode != 0 || base->mode == MODE_LED || base->mode == MODE_GRID);
+    gtk_widget_set_sensitive (gtk_widget_get_parent (data->color_buttons[FG_COLOR3]),
+                              base->color_mode != 0 && base->mode == MODE_LED);
 
     gtk_widget_set_sensitive (gtk_widget_get_parent (data->color_buttons[BARS_COLOR]), base->has_bars);
 
