@@ -34,6 +34,15 @@ static const GdkRGBA default_colors[NUM_COLORS] =
     [BARS_COLOR]       = {1.0, 0.73048, 0.0, 1.0},
 };
 
+static const gchar *const color_keys[NUM_COLORS] =
+{
+    [BG_COLOR]         = "Background",
+    [FG_COLOR1]        = "Foreground1",
+    [FG_COLOR2]        = "Foreground2",
+    [FG_COLOR3]        = "Foreground3",
+    [BARS_COLOR]       = "BarsColor",
+};
+
 void
 read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
 {
@@ -49,16 +58,15 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     gboolean bars = TRUE;
     guint tracked_core = 0;
 
-    GdkRGBA background = default_colors[BG_COLOR];
-    GdkRGBA foreground1 = default_colors[FG_COLOR1];
-    GdkRGBA foreground2 = default_colors[FG_COLOR2];
-    GdkRGBA foreground3 = default_colors[FG_COLOR3];
-    GdkRGBA barscolor = default_colors[BARS_COLOR];
+    GdkRGBA colors[NUM_COLORS];
     guint size;
     gchar *command = NULL;
     gboolean in_terminal = TRUE;
     gboolean startup_notification = FALSE;
-    guint load_threshold = 0;
+    guint i, load_threshold = 0;
+
+    for (i = 0; i < NUM_COLORS; i++)
+        colors[i] = default_colors[i];
 
     size = xfce_panel_plugin_get_size (plugin);
 
@@ -88,17 +96,14 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
                 command = g_strdup (value);
             }
 
-            if ((value = xfce_rc_read_entry (rc, "Foreground1", NULL)))
-                gdk_rgba_parse (&foreground1, value);
-            if ((value = xfce_rc_read_entry (rc, "Foreground2", NULL)))
-                gdk_rgba_parse (&foreground2, value);
-            if ((value = xfce_rc_read_entry (rc, "Foreground3", NULL)))
-                gdk_rgba_parse (&foreground3, value);
-            if ((value = xfce_rc_read_entry (rc, "Background", NULL)))
-                gdk_rgba_parse (&background, value);
-            if ((value = xfce_rc_read_entry (rc, "BarsColor", NULL))) {
-                gdk_rgba_parse (&barscolor, value);
-                base->has_barcolor = TRUE;
+            for (i = 0; i < NUM_COLORS; i++)
+            {
+                if ((value = xfce_rc_read_entry (rc, color_keys[i], NULL)))
+                {
+                    gdk_rgba_parse (&colors[i], value);
+                    if (i == BARS_COLOR)
+                        base->has_barcolor = TRUE;
+                }
             }
 
             switch (mode)
@@ -130,11 +135,8 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     set_border (base, border);
     set_tracked_core (base, tracked_core);
     set_bars (base, bars);
-    set_color (base, BG_COLOR, background);
-    set_color (base, FG_COLOR1, foreground1);
-    set_color (base, FG_COLOR2, foreground2);
-    set_color (base, FG_COLOR3, foreground3);
-    set_color (base, BARS_COLOR, barscolor);
+    for (i = 0; i < NUM_COLORS; i++)
+        set_color (base, i, colors[i]);
     set_load_threshold (base, load_threshold * 0.01f);
     g_free (command);
 }
@@ -177,19 +179,24 @@ write_settings (XfcePanelPlugin *plugin, CPUGraph *base)
 
     for (i = 0; i < NUM_COLORS; i++)
     {
-        gchar *rgba = gdk_rgba_to_string (&(base->colors[i]));
-        switch (i)
+        const gchar *key = color_keys[i];
+
+        if(i == BARS_COLOR && !base->has_barcolor)
+            key = NULL;
+
+        if (key)
         {
-            case BG_COLOR: xfce_rc_write_entry (rc, "Background", rgba); break;
-            case FG_COLOR1: xfce_rc_write_entry (rc, "Foreground1", rgba); break;
-            case FG_COLOR2: xfce_rc_write_entry (rc, "Foreground2", rgba); break;
-            case FG_COLOR3: xfce_rc_write_entry (rc, "Foreground3", rgba); break;
-            case BARS_COLOR:
-                if (base->has_barcolor)
-                    xfce_rc_write_entry (rc, "BarsColor", rgba);
-                break;
+            gchar *rgba = gdk_rgba_to_string (&base->colors[i]);
+            gchar *rgba_default = gdk_rgba_to_string (&default_colors[i]);
+
+            if (strcmp (rgba, rgba_default) != 0)
+                xfce_rc_write_entry (rc, key, rgba);
+            else
+                xfce_rc_delete_entry (rc, key, FALSE);
+
+            g_free (rgba);
+            g_free (rgba_default);
         }
-        g_free (rgba);
     }
 
     xfce_rc_close (rc);
