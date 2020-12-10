@@ -25,6 +25,15 @@
 #include <libxfce4ui/libxfce4ui.h>
 #include <math.h>
 
+static const GdkRGBA default_colors[NUM_COLORS] =
+{
+    [BG_COLOR]         = {1.0, 1.0, 1.0, 0.0},
+    [FG_COLOR1]        = {0.0, 1.0, 0.0, 1.0},
+    [FG_COLOR2]        = {1.0, 0.0, 0.0, 1.0},
+    [FG_COLOR3]        = {0.0, 0.0, 1.0, 1.0},
+    [BARS_COLOR]       = {1.0, 0.73048, 0.0, 1.0},
+};
+
 void
 read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
 {
@@ -40,41 +49,16 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     gboolean bars = TRUE;
     guint tracked_core = 0;
 
-    GdkRGBA foreground1;
-    GdkRGBA foreground2;
-    GdkRGBA foreground3;
-    GdkRGBA background;
-    GdkRGBA barscolor;
+    GdkRGBA background = default_colors[BG_COLOR];
+    GdkRGBA foreground1 = default_colors[FG_COLOR1];
+    GdkRGBA foreground2 = default_colors[FG_COLOR2];
+    GdkRGBA foreground3 = default_colors[FG_COLOR3];
+    GdkRGBA barscolor = default_colors[BARS_COLOR];
     guint size;
     gchar *command = NULL;
     gboolean in_terminal = TRUE;
     gboolean startup_notification = FALSE;
     guint load_threshold = 0;
-
-    foreground1.red = 0.0;
-    foreground1.green = 1.0;
-    foreground1.blue = 0.0;
-    foreground1.alpha = 1.0;
-
-    foreground2.red = 1.0;
-    foreground2.green = 0.0;
-    foreground2.blue = 0.0;
-    foreground2.alpha = 1.0;
-
-    foreground3.red = 0.0;
-    foreground3.green = 0.0;
-    foreground3.blue = 1.0;
-    foreground3.alpha = 1.0;
-
-    background.red = 1.0;
-    background.green = 1.0;
-    background.blue = 1.0;
-    background.alpha = 0.0;
-
-    barscolor.red = 1.0;
-    barscolor.green = 0.73048;
-    barscolor.blue = 0.0;
-    barscolor.alpha = 1.0;
 
     size = xfce_panel_plugin_get_size (plugin);
 
