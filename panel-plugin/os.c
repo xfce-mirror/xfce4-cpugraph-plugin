@@ -154,22 +154,19 @@ read_cpu_data (CpuData *data, guint nb_cpu)
         }
     }
 
+    fclose (fStat);
+
     for (cpu = 0; cpu < nb_cpu + 1; cpu++)
     {
-        if ((total[cpu] - data[cpu].previous_total) != 0)
-        {
+        if (used[cpu] >= data[cpu].previous_used && total[cpu] > data[cpu].previous_total)
             data[cpu].load = (gfloat) (used[cpu] - data[cpu].previous_used) /
                              (gfloat) (total[cpu] - data[cpu].previous_total);
-        }
         else
-        {
             data[cpu].load = 0;
-        }
+
         data[cpu].previous_used = used[cpu];
         data[cpu].previous_total = total[cpu];
     }
-
-    fclose (fStat);
 
     return TRUE;
 }
@@ -219,7 +216,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
         used = cp_time1[CP_USER] + cp_time1[CP_NICE] + cp_time1[CP_SYS] + cp_time1[CP_INTR];
         total = used + cp_time1[CP_IDLE];
 
-        if ((total - data[i].previous_total) != 0)
+        if (used >= data[i].previous_used && total > data[i].previous_total)
             data[i].load = (gfloat) (used - data[i].previous_used) /
                            (gfloat) (total - data[i].previous_total);
         else
@@ -269,7 +266,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
         used = cp_time1[CP_USER] + cp_time1[CP_NICE] + cp_time1[CP_SYS] + cp_time1[CP_INTR];
         total = used + cp_time1[CP_IDLE];
 
-        if (total - data[i].previous_total != 0)
+        if (used >= data[i].previous_used && total > data[i].previous_total)
             data[i].load = (gfloat) (used - data[i].previous_used) /
                            (gfloat) (total - data[i].previous_total);
         else
@@ -317,7 +314,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
         used = cp_time[CP_USER] + cp_time[CP_NICE] + cp_time[CP_SYS] + cp_time[CP_INTR];
         total = used + cp_time[CP_IDLE];
 
-        if (total - data[i].previous_total != 0)
+        if (used >= data[i].previous_used && total > data[i].previous_total)
             data[i].load = (gfloat) (used - data[i].previous_used) /
                            (gfloat) (total - data[i].previous_total);
         else
@@ -385,7 +382,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
             knp = kstat_data_lookup (ksp, "cpu_nsec_idle");
             total = used + knp->value.ul;
 
-            if (total - data[i].previous_total != 0)
+            if (used >= data[i].previous_used && total > data[i].previous_total)
                 data[i].load = (gfloat) (used - data[i].previous_used) /
                                (gfloat) (total - data[i].previous_total);
             else
