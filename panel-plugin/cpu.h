@@ -33,6 +33,7 @@
 #include "os.h"
 
 #define BORDER 8
+#define HIGHLIGHT_SMT_BY_DEFAULT TRUE
 #define MAX_LOAD_THRESHOLD 0.2
 
 typedef enum {
@@ -43,14 +44,15 @@ typedef enum {
     MODE_GRID = 3,
 } CPUGraphMode;
 
-enum { NUM_COLORS = 5 };
+enum { NUM_COLORS = 6 };
 
 typedef enum {
     BG_COLOR = 0,
     FG_COLOR1 = 1,
     FG_COLOR2 = 2,
     FG_COLOR3 = 3,
-    BARS_COLOR = 4, /* NUM_COLORS-1 */
+    BARS_COLOR = 4,
+    SMT_ISSUES_COLOR = 5, /* NUM_COLORS-1 */
 } CPUGraphColorNumber;
 
 typedef struct
@@ -79,6 +81,7 @@ typedef struct
     gboolean has_border;
     gboolean has_bars;
     gboolean has_barcolor;
+    gboolean highlight_smt;
     gchar *command;
     gboolean in_terminal;
     gboolean startup_notification;
@@ -92,6 +95,8 @@ typedef struct
     gfloat *history;
     gssize history_size;
     CpuData *cpu_data;
+    Topology *topology;
+    CpuStats stats;
 } CPUGraph;
 
 void set_bars (CPUGraph * base, gboolean bars);
@@ -105,6 +110,7 @@ void set_load_threshold (CPUGraph *base, gfloat threshold);
 void set_mode (CPUGraph *base, CPUGraphMode mode);
 void set_nonlinear_time (CPUGraph *base, gboolean nonlinear);
 void set_size (CPUGraph *base, guint width);
+void set_smt (CPUGraph * base, gboolean highlight_smt);
 void set_startup_notification (CPUGraph *base, gboolean startup_notification);
 void set_tracked_core (CPUGraph *base, guint core);
 void set_update_rate (CPUGraph *base, guint rate);
