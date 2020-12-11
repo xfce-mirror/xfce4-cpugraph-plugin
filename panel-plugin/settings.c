@@ -32,6 +32,7 @@ static const GdkRGBA default_colors[NUM_COLORS] =
     [FG_COLOR2]        = {1.0, 0.0, 0.0, 1.0},
     [FG_COLOR3]        = {0.0, 0.0, 1.0, 1.0},
     [BARS_COLOR]       = {1.0, 0.73048, 0.0, 1.0},
+    [SMT_ISSUES_COLOR] = {0.9, 0, 0, 1},
 };
 
 static const gchar *const color_keys[NUM_COLORS] =
@@ -41,6 +42,7 @@ static const gchar *const color_keys[NUM_COLORS] =
     [FG_COLOR2]        = "Foreground2",
     [FG_COLOR3]        = "Foreground3",
     [BARS_COLOR]       = "BarsColor",
+    [SMT_ISSUES_COLOR] = "SmtIssuesColor",
 };
 
 void
@@ -56,6 +58,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     gboolean frame = FALSE;
     gboolean border = TRUE;
     gboolean bars = TRUE;
+    gboolean highlight_smt = HIGHLIGHT_SMT_BY_DEFAULT;
     guint tracked_core = 0;
 
     GdkRGBA colors[NUM_COLORS];
@@ -89,6 +92,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
             startup_notification = xfce_rc_read_int_entry (rc, "StartupNotification", startup_notification);
             border = xfce_rc_read_int_entry (rc, "Border", border);
             bars = xfce_rc_read_int_entry (rc, "Bars", bars);
+            highlight_smt = xfce_rc_read_int_entry (rc, "SmtIssues", highlight_smt);
             tracked_core = xfce_rc_read_int_entry (rc, "TrackedCore", tracked_core);
             load_threshold = xfce_rc_read_int_entry (rc, "LoadThreshold", load_threshold);
 
@@ -135,6 +139,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     set_border (base, border);
     set_tracked_core (base, tracked_core);
     set_bars (base, bars);
+    set_smt (base, highlight_smt);
     for (i = 0; i < NUM_COLORS; i++)
         set_color (base, i, colors[i]);
     set_load_threshold (base, load_threshold * 0.01f);
@@ -198,6 +203,11 @@ write_settings (XfcePanelPlugin *plugin, CPUGraph *base)
             g_free (rgba_default);
         }
     }
+
+    if (base->highlight_smt != HIGHLIGHT_SMT_BY_DEFAULT)
+        xfce_rc_write_int_entry (rc, "SmtIssues", base->highlight_smt);
+    else
+        xfce_rc_delete_entry (rc, "SmtIssues", FALSE);
 
     xfce_rc_close (rc);
 }
