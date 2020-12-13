@@ -50,7 +50,6 @@ static void       set_bars_size        (CPUGraph           *base);
 static void       mode_cb              (XfcePanelPlugin    *plugin,
                                         XfcePanelPluginMode mode,
                                         CPUGraph           *base);
-static gboolean   update_cb            (CPUGraph           *base);
 static void       update_tooltip       (CPUGraph           *base);
 static gboolean   tooltip_cb           (GtkWidget          *widget,
                                         gint                x,
@@ -297,8 +296,10 @@ mode_cb (XfcePanelPlugin *plugin, XfcePanelPluginMode mode, CPUGraph *base)
 }
 
 static gboolean
-update_cb (CPUGraph *base)
+update_cb (gpointer user_data)
 {
+    CPUGraph *base = user_data;
+
     if (!read_cpu_data (base->cpu_data, base->nr_cores))
         return TRUE;
 
@@ -584,7 +585,7 @@ set_update_rate (CPUGraph *base, guint rate)
         default:
             update = 3000;
     }
-    base->timeout_id = g_timeout_add (update, (GSourceFunc) update_cb, base);
+    base->timeout_id = g_timeout_add (update, update_cb, base);
 }
 
 void
