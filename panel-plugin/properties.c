@@ -170,6 +170,7 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     create_check_box (vbox, sg, _("Show frame"), base->has_frame, change_frame, dlg_data);
     create_check_box (vbox, sg, _("Show border"), base->has_border, change_border, dlg_data);
 
+    gtk_box_pack_start (vbox, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, BORDER/2);
     setup_command_option (vbox, sg, dlg_data);
     dlg_data->hbox_in_terminal = create_check_box (vbox, sg, _("Run in terminal"),
                                                    base->in_terminal, change_in_terminal, dlg_data);
