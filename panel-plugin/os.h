@@ -33,7 +33,7 @@ typedef struct
     guint64 previous_total;
 } CpuData;
 
-guint detect_cpu_number ();
+guint detect_cpu_number (void);
 gboolean read_cpu_data (CpuData *data, guint nb_cpu);
 
 #endif /* !_XFCE_OS_H */

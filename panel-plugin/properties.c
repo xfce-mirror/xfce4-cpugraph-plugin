@@ -42,7 +42,7 @@ typedef struct
     GtkBox    *hbox_in_terminal, *hbox_startup_notification;
 } CPUGraphOptions;
 
-static GtkBox *create_tab                    ();
+static GtkBox *create_tab                    (void);
 static GtkBox *create_option_line            (GtkBox          *tab,
                                               GtkSizeGroup    *sg,
                                               const gchar     *name);
