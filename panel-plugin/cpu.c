@@ -101,6 +101,8 @@ create_gui (XfcePanelPlugin *plugin)
     if ((base->nr_cores = init_cpu_data (&base->cpu_data)) == 0)
         fprintf (stderr,"Cannot init cpu data !\n");
 
+    base->topology = read_topology ();
+
     base->plugin = plugin;
 
     base->ebox = ebox = gtk_event_box_new ();
@@ -125,6 +127,7 @@ create_gui (XfcePanelPlugin *plugin)
     base->has_bars = FALSE;
     base->has_barcolor = FALSE;
     base->bars.orientation = orientation;
+    base->highlight_smt = HIGHLIGHT_SMT_BY_DEFAULT;
 
     mode_cb (plugin, (XfcePanelPluginMode) orientation, base);
     gtk_widget_show_all (ebox);
@@ -203,6 +206,7 @@ static void
 shutdown (XfcePanelPlugin *plugin, CPUGraph *base)
 {
     g_free (base->cpu_data);
+    g_free (base->topology);
     delete_bars (base);
     gtk_widget_destroy (base->ebox);
     gtk_widget_destroy (base->tooltip_text);
@@ -295,6 +299,220 @@ mode_cb (XfcePanelPlugin *plugin, XfcePanelPluginMode mode, CPUGraph *base)
     size_cb (plugin, xfce_panel_plugin_get_size (base->plugin), base);
 }
 
+static void
+detect_smt_issues (CPUGraph *base)
+{
+    const gboolean debug = FALSE;
+    gfloat actual_load[base->nr_cores];
+    gboolean movement[base->nr_cores];
+    gboolean suboptimal[base->nr_cores];
+    guint i;
+
+    for (i = 0; i < base->nr_cores; i++)
+    {
+        actual_load[i] = base->cpu_data[i+1].load;
+        suboptimal[i] = FALSE;
+        movement[i] = FALSE;
+        if (debug)
+            g_info ("actual_load[%u] = %g", i, actual_load[i]);
+    }
+
+    if (base->topology && base->topology->smt)
+    {
+        Topology *const topo = base->topology;
+        gfloat optimal_load[base->nr_cores];
+        gfloat actual_num_instr_executed[base->nr_cores];
+        gfloat optimal_num_instr_executed[base->nr_cores];
+        gboolean smt_incident = FALSE;
+
+        /* Initialize CPU load arrays.
+         * The array optimal_load[] will be updated
+         * if a suboptimal SMT thread placement is detected. */
+        for (i = 0; i < base->nr_cores; i++)
+        {
+            const gfloat load = actual_load[i];
+            optimal_load[i] = load;
+            actual_num_instr_executed[i] = load;
+            optimal_num_instr_executed[i] = load;
+        }
+
+        for (i = 0; i < base->nr_cores; i++)
+        {
+            if (G_LIKELY (i < topo->num_all_logical_cpus))
+            {
+                const gint core = topo->logical_cpu_2_core[i];
+                if (G_LIKELY (core != -1) && topo->cores[core].num_logical_cpus >= 2)
+                {
+                    const gfloat THRESHOLD = 1.0 + 0.1;       /* A lower bound (this core) */
+                    const gfloat THRESHOLD_OTHER = 1.0 - 0.1; /* An upper bound (some other core) */
+
+                    /* _Approximate_ slowdown if two threads
+                     * are executed on the same physical core
+                     * instead of being executed on separate cores.
+                     * This number has been determined by measuring
+                     * the slowdown of running two instances of
+                     * "stress-ng --cpu=1" on a Ryzen 3700X CPU. */
+                    const gfloat SMT_SLOWDOWN = 0.25f;
+
+                    gfloat combined_usage;
+                    guint j;
+
+                retry:
+                    combined_usage = 0;
+                    for (j = 0; j < topo->cores[core].num_logical_cpus; j++)
+                    {
+                        guint cpu = topo->cores[core].logical_cpus[j];
+                        if (G_LIKELY (cpu < base->nr_cores))
+                            combined_usage += optimal_load[cpu];
+                    }
+                    if (combined_usage > THRESHOLD)
+                    {
+                        /* Attempt to find a free CPU *core* different from `core`
+                         * that might have had executed the workload
+                         * without resorting to SMT/hyperthreading */
+                        guint other_core;
+                        for (other_core = 0; other_core < topo->num_all_cores; other_core++)
+                        {
+                            if (other_core != (guint) core)
+                            {
+                                gfloat combined_usage_other = 0.0;
+                                for (j = 0; j < topo->cores[other_core].num_logical_cpus; j++)
+                                {
+                                    guint other_cpu = topo->cores[other_core].logical_cpus[j];
+                                    if (G_LIKELY (other_cpu < base->nr_cores))
+                                        combined_usage_other += optimal_load[other_cpu];
+                                }
+                                if (combined_usage_other < THRESHOLD_OTHER)
+                                {
+                                    /* The thread might have been executed on 'other_core',
+                                     * instead of on 'core', where it might have enjoyed
+                                     * a much higher IPC (instructions per clock) ratio */
+
+                                    smt_incident = TRUE;
+                                    for (j = 0; j < topo->cores[other_core].num_logical_cpus; j++)
+                                    {
+                                        guint cpu = topo->cores[core].logical_cpus[j];
+                                        if (G_LIKELY (cpu < base->nr_cores))
+                                            suboptimal[cpu] = TRUE;
+                                    }
+
+                                    /*
+                                     * 1.001 and 0.999 are used instead of 1.0 to make sure that:
+                                     *  - the algorithm always terminates
+                                     *  - the algorithm terminates quickly
+                                     *  - it skips unimportant differences such as 1e-5
+                                     */
+
+                                    if (G_LIKELY (combined_usage > 1.001f))
+                                    {
+                                        /* Move as much of excess load to the other core as possible */
+                                        const gfloat excess_load = combined_usage - 1.0f;
+                                        gint other_cpu_min = -1;
+                                        for (j = 0; j < topo->cores[other_core].num_logical_cpus; j++)
+                                        {
+                                            guint other_cpu = topo->cores[other_core].logical_cpus[j];
+                                            if (G_LIKELY (other_cpu < base->nr_cores))
+                                                if (optimal_load[other_cpu] < 0.999f)
+                                                    if (other_cpu_min == -1 || optimal_load[other_cpu_min] > optimal_load[other_cpu])
+                                                        other_cpu_min = other_cpu;
+                                        }
+                                        if (G_LIKELY (other_cpu_min != -1))
+                                        {
+                                            gfloat load_to_move;
+
+                                            load_to_move = excess_load;
+                                            if (load_to_move > 1.0f - optimal_load[other_cpu_min])
+                                                load_to_move = 1.0f - optimal_load[other_cpu_min];
+
+                                            if (debug)
+                                                g_info ("load_to_move = %g", load_to_move);
+
+                                            optimal_load[other_cpu_min] += load_to_move;
+
+                                            /* The move negates the SMT slowdown for the work moved onto the underutilized target CPU core */
+                                            movement[other_cpu_min] = TRUE;
+                                            optimal_num_instr_executed[other_cpu_min] += (1.0f + SMT_SLOWDOWN) * load_to_move;
+
+                                            /* Decrease combined_usage by load_to_move */
+                                            for (j = topo->cores[core].num_logical_cpus; load_to_move > 0 && j != 0;)
+                                            {
+                                                j--;
+                                                guint cpu = topo->cores[core].logical_cpus[j];
+                                                if (G_LIKELY (cpu < base->nr_cores))
+                                                {
+                                                    if (optimal_load[cpu] >= load_to_move)
+                                                    {
+                                                        const gfloat diff = load_to_move;
+
+                                                        optimal_load[cpu] -= diff;
+                                                        load_to_move = 0;
+
+                                                        /* The move negates the SMT slowdown for the work remaining on the original CPU core */
+                                                        optimal_num_instr_executed[cpu] -= 1.0f * diff;         /* Moved work */
+                                                        optimal_num_instr_executed[cpu] += SMT_SLOWDOWN * diff; /* Remaining work (speedup) */
+                                                        movement[cpu] = TRUE;
+                                                    }
+                                                    else
+                                                    {
+                                                        const gfloat diff = optimal_load[cpu];
+
+                                                        optimal_load[cpu] = 0;
+                                                        load_to_move -= diff;
+
+                                                        /* The move negates the SMT slowdown for the work remaining on the original CPU core */
+                                                        optimal_num_instr_executed[cpu] -= 1.0f * diff;         /* Moved work */
+                                                        optimal_num_instr_executed[cpu] += SMT_SLOWDOWN * diff; /* Remaining work (speedup) */
+                                                        movement[cpu] = TRUE;
+                                                    }
+                                                }
+                                            }
+
+                                            /* At this point: load_to_move should be zero or very close to zero */
+                                            g_warn_if_fail (load_to_move < 0.001f);
+
+                                            goto retry;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /* Update instruction counters */
+        for (i = 0; i < base->nr_cores; i++)
+        {
+            base->stats.num_instructions_executed.total.actual += actual_num_instr_executed[i];
+            base->stats.num_instructions_executed.total.optimal += optimal_num_instr_executed[i];
+        }
+
+        /* Suboptimal SMT scheduling cases are actually quite rare (at least in Linux):
+         * - They are impossible to happen if the CPU is under full load
+         * - They are rare if the CPU is running one single-threaded task
+         * - They tend to occur especially when the CPU is running about nr_cores/2 threads
+         */
+        if (G_UNLIKELY (smt_incident))
+        {
+            base->stats.num_smt_incidents++;
+
+            /* Update instruction counters */
+            for (i = 0; i < base->nr_cores; i++)
+            {
+                if (movement[i] || suboptimal[i])
+                {
+                    base->stats.num_instructions_executed.during_smt_incidents.actual += actual_num_instr_executed[i];
+                    base->stats.num_instructions_executed.during_smt_incidents.optimal += optimal_num_instr_executed[i];
+                }
+            }
+        }
+    }
+
+    for (i = 0; i < base->nr_cores; i++)
+        base->cpu_data[i+1].smt_highlight = suboptimal[i];
+}
+
 static gboolean
 update_cb (gpointer user_data)
 {
@@ -302,6 +520,8 @@ update_cb (gpointer user_data)
 
     if (!read_cpu_data (base->cpu_data, base->nr_cores))
         return TRUE;
+
+    detect_smt_issues (base);
 
     if (base->tracked_core > base->nr_cores)
         base->cpu_data[0].load = 0;
@@ -345,7 +565,8 @@ update_tooltip (CPUGraph *base)
 {
     gchar tooltip[32];
     g_snprintf (tooltip, 32, _("Usage: %u%%"), (guint) roundf (base->cpu_data[0].load * 100));
-    gtk_label_set_text (GTK_LABEL (base->tooltip_text), tooltip);
+    if (strcmp (gtk_label_get_text (GTK_LABEL (base->tooltip_text)), tooltip))
+        gtk_label_set_text (GTK_LABEL (base->tooltip_text), tooltip);
 }
 
 static gboolean
@@ -403,8 +624,6 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
     cairo_rectangle (cr, 0, 0, alloc.width, alloc.height);
     cairo_fill (cr);
 
-    gdk_cairo_set_source_rgba (cr, &base->colors[BARS_COLOR]);
-
     size = (horizontal ? alloc.height : alloc.width);
     if (base->tracked_core != 0 || base->nr_cores == 1)
     {
@@ -412,6 +631,8 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
         if (usage < base->load_threshold)
             usage = 0;
         usage *= size;
+
+        gdk_cairo_set_source_rgba (cr, &base->colors[BARS_COLOR]);
         if (horizontal)
             cairo_rectangle (cr, 0, size-usage, 4, usage);
         else
@@ -423,10 +644,17 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
         guint i;
         for (i = 0; i < base->nr_cores; i++)
         {
-            gfloat usage = base->cpu_data[i+1].load;
+            const gboolean highlight = base->highlight_smt && base->cpu_data[i+1].smt_highlight;
+            gfloat usage;
+
+            usage = base->cpu_data[i+1].load;
             if (usage < base->load_threshold)
                 usage = 0;
             usage *= size;
+
+            /* Suboptimally placed threads on SMT CPUs are optionally painted using a different color. */
+            gdk_cairo_set_source_rgba (cr, &base->colors[highlight ? SMT_ISSUES_COLOR : BARS_COLOR]);
+
             if (horizontal)
                 cairo_rectangle (cr, 6*i, size-usage, 4, usage);
             else
@@ -556,6 +784,12 @@ void
 set_nonlinear_time (CPUGraph *base, gboolean nonlinear)
 {
     base->non_linear = nonlinear;
+}
+
+void
+set_smt (CPUGraph *base, gboolean highlight_smt)
+{
+    base->highlight_smt = highlight_smt;
 }
 
 void

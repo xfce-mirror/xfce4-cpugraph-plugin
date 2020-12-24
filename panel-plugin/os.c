@@ -401,3 +401,154 @@ read_cpu_data (CpuData *data, guint nb_cpu)
 #else
 #error "Your OS is not supported."
 #endif
+
+
+
+#if defined (__linux__)
+
+#define SYSFS_BASE "/sys/devices/system/cpu"
+
+Topology*
+read_topology (void)
+{
+    GList *core_ids = NULL;
+    gint max_core_id = -1;
+    guint logical_cpu, num_all_logical_cpus, num_online_logical_cpus, num_all_cores;
+    Topology *t = NULL;
+
+    num_all_logical_cpus = 0;
+    num_online_logical_cpus = 0;
+    for (logical_cpu = 0; TRUE; logical_cpu++)
+    {
+        gchar path[128];
+        gchar *file_contents;
+        glong core_id;
+
+        /* See also: https://www.kernel.org/doc/html/latest/admin-guide/cputopology.html */
+
+        g_snprintf (path, sizeof (path), "%s/cpu%d", SYSFS_BASE, logical_cpu);
+        if (!g_file_test (path, G_FILE_TEST_IS_DIR))
+            break;
+
+        num_all_logical_cpus++;
+
+        g_snprintf (path, sizeof (path), "%s/cpu%d/topology/core_id", SYSFS_BASE, logical_cpu);
+        if (g_file_get_contents (path, &file_contents, NULL, NULL))
+        {
+            errno = 0;
+            core_id = strtol (file_contents, NULL, 10);
+            if (errno || core_id < 0 || core_id > G_MAXINT)
+            {
+                g_list_free (core_ids);
+                core_ids = NULL;
+                break;
+            }
+
+            num_online_logical_cpus++;
+            core_ids = g_list_append (core_ids, (gpointer) core_id);
+            if (max_core_id < core_id)
+                max_core_id = core_id;
+        }
+        else
+        {
+            /* The CPU is probably offline */
+            core_ids = g_list_append (core_ids, (gpointer) -1);
+        }
+    }
+
+    num_all_cores = (guint) max_core_id + 1;
+
+    /* Perform some sanity checks */
+    if (G_UNLIKELY (max_core_id < 0 || max_core_id > G_MAXINT-1 || !(num_all_cores <= num_all_logical_cpus)))
+    {
+        g_list_free (core_ids);
+        core_ids = NULL;
+    }
+
+    if (core_ids)
+    {
+        gsize memory_size;
+        guint i;
+        gpointer p; /* Pointer inside the region of allocated memory */
+        gpointer p_end;
+
+        /* Compute total size of memory to allocate */
+        memory_size = sizeof (Topology) + num_all_cores * sizeof (*t->cores) +
+                      num_all_logical_cpus * sizeof (*t->logical_cpu_2_core) +
+                      num_online_logical_cpus * sizeof (*t->cores[0].logical_cpus);
+
+        /* Allocate required memory via a single g_malloc() call */
+        p = g_malloc0 (memory_size);
+        p_end = p + memory_size;
+
+        /* Fill-in the topology data */
+        t = (Topology*) p; p += sizeof (*t);
+        t->num_all_logical_cpus = num_all_logical_cpus;
+        t->num_online_logical_cpus = num_online_logical_cpus;
+        t->num_all_cores = num_all_cores;
+        t->num_online_cores = 0;
+        t->logical_cpu_2_core = p; p += num_all_logical_cpus * sizeof (*t->logical_cpu_2_core);
+        t->cores = p; p += num_all_cores * sizeof (*t->cores);
+        t->smt = FALSE;
+        for (GList *l = core_ids; l; l = l->next)
+        {
+            gint core_id = (glong) l->data;
+            if (core_id != -1)
+            {
+                switch (++(t->cores[core_id].num_logical_cpus))
+                {
+                    case 1:
+                        t->num_online_cores++;
+                        break;
+                    case 2:
+                        t->smt = TRUE;
+                        break;
+                }
+            }
+        }
+        for (i = 0; i < num_all_cores; i++)
+        {
+            t->cores[i].logical_cpus = p;
+            p += t->cores[i].num_logical_cpus * sizeof (*t->cores[i].logical_cpus);
+            t->cores[i].num_logical_cpus = 0;
+            /* The zeroed num_logical_cpus will be restored in the for-loop below */
+        }
+        {
+            logical_cpu = 0;
+            for (GList *l = core_ids; l; l = l->next)
+            {
+                gint core_id = (glong) l->data;
+                if (core_id != -1)
+                {
+                    t->logical_cpu_2_core[logical_cpu] = core_id;
+                    t->cores[core_id].logical_cpus[t->cores[core_id].num_logical_cpus++] = logical_cpu;
+                }
+                else
+                {
+                    t->logical_cpu_2_core[logical_cpu] = -1;
+                }
+                g_info ("thread %u is in core %d", logical_cpu, t->logical_cpu_2_core[logical_cpu]);
+                logical_cpu++;
+            }
+            g_assert (logical_cpu == num_all_logical_cpus);
+        }
+        t->smt_ratio = t->num_online_logical_cpus / (gdouble) t->num_online_cores;
+        g_info ("smt: %s, ratio=%.3f", t->smt ? "active" : "inactive", t->smt_ratio);
+
+        /* Verify that exactly all of the allocated memory has been used */
+        g_assert (p == p_end);
+    }
+
+    g_list_free (core_ids);
+    return t;
+}
+
+#else
+
+Topology*
+read_topology (void)
+{
+    return NULL;
+}
+
+#endif
