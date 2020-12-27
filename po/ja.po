@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-01 12:47+0100\n"
-"PO-Revision-Date: 2020-12-02 05:59+0000\n"
+"POT-Creation-Date: 2020-12-25 00:47+0100\n"
+"PO-Revision-Date: 2020-12-27 17:53+0000\n"
 "Last-Translator: UTUMI Hirosi <utuhiro78@yahoo.co.jp>\n"
 "Language-Team: Japanese (http://www.transifex.com/xfce/xfce-panel-plugins/language/ja/)\n"
 "MIME-Version: 1.0\n"
@@ -19,167 +19,228 @@ msgstr ""
 "Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../panel-plugin/cpu.c:153 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.c:155 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "CPU 負荷のグラフを表示します"
 
-#: ../panel-plugin/cpu.c:155
+#: ../panel-plugin/cpu.c:157
 msgid "Copyright (c) 2003-2019\n"
 msgstr "Copyright (c) 2003-2019\n"
 
-#: ../panel-plugin/cpu.c:346
+#: ../panel-plugin/cpu.c:567
 #, c-format
 msgid "Usage: %u%%"
 msgstr "使用率: %u%%"
 
-#: ../panel-plugin/properties.c:146
+#: ../panel-plugin/properties.c:159
 msgid "CPU Graph Properties"
 msgstr "CPU グラフプロパティ"
 
-#: ../panel-plugin/properties.c:168
+#: ../panel-plugin/properties.c:181
 msgid "Use non-linear time-scale"
 msgstr "非線形の時間スケールにする"
 
-#: ../panel-plugin/properties.c:169
-msgid "Show frame"
-msgstr "フレームを表示する"
+#: ../panel-plugin/properties.c:185
+msgid "Run in terminal"
+msgstr "ターミナルで実行する"
 
-#: ../panel-plugin/properties.c:170
-msgid "Show border"
-msgstr "枠を表示する"
+#: ../panel-plugin/properties.c:187
+msgid "Use startup notification"
+msgstr "起動通知を行う"
 
-#: ../panel-plugin/properties.c:171
+#: ../panel-plugin/properties.c:190
+msgid ""
+"Color used to highlight potentially suboptimal\n"
+"placement of threads on CPUs with SMT"
+msgstr "SMT付きのCPUでスレッドの配置が最適ではない可能性が\nあることを強調するために使用する色"
+
+#: ../panel-plugin/properties.c:192
+msgid ""
+"'Overall' is showing the impact on the overall performance of the machine."
+msgstr "「全体」は、マシンの全体的なパフォーマンスへの影響を示しています。"
+
+#: ../panel-plugin/properties.c:193
+msgid ""
+"'Hotspots' is showing the momentary performance impact on just the threads "
+"involved in suboptimal SMT scheduling decisions."
+msgstr "「ホットスポット」は、準最適SMTスケジューリングの決定に関するスレッドのみに対する瞬間的なパフォーマンスの影響を示しています。"
+
+#: ../panel-plugin/properties.c:196
+msgid "Highlight suboptimal SMT scheduling"
+msgstr "準最適SMTスケジューリングを強調表示"
+
+#: ../panel-plugin/properties.c:198
+msgid "SMT issues color:"
+msgstr "SMT問題の色:"
+
+#: ../panel-plugin/properties.c:201
+msgid "Color 1:"
+msgstr "色 1:"
+
+#: ../panel-plugin/properties.c:202
+msgid "Color 2:"
+msgstr "色 2:"
+
+#: ../panel-plugin/properties.c:203
+msgid "Color 3:"
+msgstr "色 3:"
+
+#: ../panel-plugin/properties.c:204
+msgid "Background:"
+msgstr "背景:"
+
+#: ../panel-plugin/properties.c:208
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "使用率バーを表示する"
 
-#: ../panel-plugin/properties.c:174
-msgid "Run in terminal"
-msgstr "ターミナルで実行する"
-
-#: ../panel-plugin/properties.c:176
-msgid "Use startup notification"
-msgstr "起動通知を行う"
-
-#: ../panel-plugin/properties.c:185
-msgid "Color 1:"
-msgstr "色 1:"
-
-#: ../panel-plugin/properties.c:186
-msgid "Color 2:"
-msgstr "色 2:"
-
-#: ../panel-plugin/properties.c:187
-msgid "Color 3:"
-msgstr "色 3:"
-
-#: ../panel-plugin/properties.c:188
-msgid "Background:"
-msgstr "背景:"
-
-#: ../panel-plugin/properties.c:192
+#: ../panel-plugin/properties.c:210
 msgid "Bars color:"
 msgstr "バーの色:"
 
-#: ../panel-plugin/properties.c:197
+#: ../panel-plugin/properties.c:212
+msgid "Show frame"
+msgstr "フレームを表示する"
+
+#: ../panel-plugin/properties.c:213
+msgid "Show border"
+msgstr "枠を表示する"
+
+#: ../panel-plugin/properties.c:221
 msgid "Appearance"
 msgstr "外観"
 
-#: ../panel-plugin/properties.c:199
+#: ../panel-plugin/properties.c:223
 msgid "Advanced"
 msgstr "高度な設定"
 
-#: ../panel-plugin/properties.c:293
+#: ../panel-plugin/properties.c:225
+msgid "Stats"
+msgstr "統計"
+
+#: ../panel-plugin/properties.c:346
 msgid "Fastest (~250ms)"
 msgstr "最速 (約250ミリ秒)"
 
-#: ../panel-plugin/properties.c:294
+#: ../panel-plugin/properties.c:347
 msgid "Fast (~500ms)"
 msgstr "速い (約500ミリ秒)"
 
-#: ../panel-plugin/properties.c:295
+#: ../panel-plugin/properties.c:348
 msgid "Normal (~750ms)"
 msgstr "通常 (約750ミリ秒)"
 
-#: ../panel-plugin/properties.c:296
+#: ../panel-plugin/properties.c:349
 msgid "Slow (~1s)"
 msgstr "遅い (約1秒)"
 
-#: ../panel-plugin/properties.c:297
+#: ../panel-plugin/properties.c:350
 msgid "Slowest (~3s)"
 msgstr "最も遅い (約3秒)"
 
-#: ../panel-plugin/properties.c:301
+#: ../panel-plugin/properties.c:354
 msgid "Update Interval:"
 msgstr "更新間隔:"
 
-#: ../panel-plugin/properties.c:310
+#: ../panel-plugin/properties.c:365
 msgid "All"
 msgstr "すべて"
 
-#: ../panel-plugin/properties.c:317
+#: ../panel-plugin/properties.c:369
 msgid "Tracked Core:"
 msgstr "監視コア:"
 
-#: ../panel-plugin/properties.c:329
+#: ../panel-plugin/properties.c:383
 msgid "Width:"
 msgstr "幅:"
 
-#: ../panel-plugin/properties.c:331
+#: ../panel-plugin/properties.c:385
 msgid "Height:"
 msgstr "高さ:"
 
-#: ../panel-plugin/properties.c:346
+#: ../panel-plugin/properties.c:399
 msgid "Threshold (%):"
 msgstr "しきい値 (%):"
 
-#: ../panel-plugin/properties.c:360
+#: ../panel-plugin/properties.c:412
 msgid "Associated command:"
 msgstr "割当てコマンド:"
 
-#: ../panel-plugin/properties.c:369
+#: ../panel-plugin/properties.c:421
 msgid "Defaults to xfce4-taskmanager, htop or top."
 msgstr "デフォルトは xfce4-taskmanager、htop、または top です。"
 
-#: ../panel-plugin/properties.c:394
+#: ../panel-plugin/properties.c:443
 msgid "Disabled"
 msgstr "無効"
 
-#: ../panel-plugin/properties.c:395
+#: ../panel-plugin/properties.c:444
 msgid "Normal"
 msgstr "通常"
 
-#: ../panel-plugin/properties.c:396
+#: ../panel-plugin/properties.c:445
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:397
+#: ../panel-plugin/properties.c:446
 msgid "No history"
 msgstr "履歴なし"
 
-#: ../panel-plugin/properties.c:398
+#: ../panel-plugin/properties.c:447
 msgid "Grid"
 msgstr "グリッド"
 
-#: ../panel-plugin/properties.c:406
+#: ../panel-plugin/properties.c:473
 msgid "Mode:"
 msgstr "モード:"
 
-#: ../panel-plugin/properties.c:412
+#: ../panel-plugin/properties.c:479
 msgid "Solid"
 msgstr "単色"
 
-#: ../panel-plugin/properties.c:413
+#: ../panel-plugin/properties.c:480
 msgid "Gradient"
 msgstr "グラデーション"
 
-#: ../panel-plugin/properties.c:414
+#: ../panel-plugin/properties.c:481
 msgid "Fire"
 msgstr "炎"
 
-#: ../panel-plugin/properties.c:418
+#: ../panel-plugin/properties.c:485
 msgid "Color mode: "
 msgstr "カラーモード: "
+
+#: ../panel-plugin/properties.c:679
+msgid "SMT detected: Yes"
+msgstr "SMTの有無: あり"
+
+#: ../panel-plugin/properties.c:679
+msgid "SMT detected: No"
+msgstr "SMTの有無: なし"
+
+#: ../panel-plugin/properties.c:704
+#, c-format
+msgid "Number of SMT scheduling incidents: %u"
+msgstr "SMTスケジューリングインシデントの数: %u"
+
+#: ../panel-plugin/properties.c:713
+#, c-format
+msgid "Estimated performance impact:"
+msgstr "推定されるパフォーマンスへの影響:"
+
+#: ../panel-plugin/properties.c:714
+#, c-format
+msgid "Overall: %.3g%%"
+msgstr "全体: %.3g%%"
+
+#: ../panel-plugin/properties.c:715
+#, c-format
+msgid "Hotspots: %.3g%%"
+msgstr "ホットスポット: %.3g%%"
+
+#: ../panel-plugin/properties.c:728
+msgid "SMT detected: N/A"
+msgstr "SMTの有無: 利用不可"
 
 #: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
