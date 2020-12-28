@@ -793,9 +793,9 @@ set_smt (CPUGraph *base, gboolean highlight_smt)
 }
 
 void
-set_update_rate (CPUGraph *base, guint rate)
+set_update_rate (CPUGraph *base, CPUGraphUpdateRate rate)
 {
-    guint update;
+    guint interval;
 
     base->update_interval = rate;
 
@@ -804,22 +804,25 @@ set_update_rate (CPUGraph *base, guint rate)
 
     switch (base->update_interval)
     {
-        case 0:
-            update = 250;
+        case RATE_FASTEST:
+            interval = 250;
             break;
-        case 1:
-            update = 500;
+        case RATE_FAST:
+            interval = 500;
             break;
-        case 2:
-            update = 750;
+        case RATE_NORMAL:
+            interval = 750;
             break;
-        case 3:
-            update = 1000;
+        case RATE_SLOW:
+            interval = 1000;
+            break;
+        case RATE_SLOWEST:
+            interval = 3000;
             break;
         default:
-            update = 3000;
+            interval = 750;
     }
-    base->timeout_id = g_timeout_add (update, update_cb, base);
+    base->timeout_id = g_timeout_add (interval, update_cb, base);
 }
 
 void

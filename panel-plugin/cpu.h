@@ -44,6 +44,15 @@ typedef enum {
     MODE_GRID = 3,
 } CPUGraphMode;
 
+/* Number of milliseconds between updates */
+typedef enum {
+    RATE_FASTEST = 0,
+    RATE_FAST = 1,
+    RATE_NORMAL = 2,
+    RATE_SLOW = 3,
+    RATE_SLOWEST = 4,
+} CPUGraphUpdateRate;
+
 enum { NUM_COLORS = 6 };
 
 typedef enum {
@@ -72,7 +81,7 @@ typedef struct
     GtkWidget *tooltip_text;
 
     /* Settings */
-    guint update_interval; /* Number of ms between updates. */
+    CPUGraphUpdateRate update_interval;
     gboolean non_linear;
     guint size;
     CPUGraphMode mode;
@@ -113,6 +122,6 @@ void set_size (CPUGraph *base, guint width);
 void set_smt (CPUGraph * base, gboolean highlight_smt);
 void set_startup_notification (CPUGraph *base, gboolean startup_notification);
 void set_tracked_core (CPUGraph *base, guint core);
-void set_update_rate (CPUGraph *base, guint rate);
+void set_update_rate (CPUGraph *base, CPUGraphUpdateRate rate);
 
 #endif /* !_XFCE_CPU_H_ */
