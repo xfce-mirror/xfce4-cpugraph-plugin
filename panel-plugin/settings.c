@@ -51,7 +51,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     char *file;
     XfceRc *rc;
 
-    guint rate = 0;
+    CPUGraphUpdateRate rate = RATE_NORMAL;
     gboolean nonlinear = FALSE;
     CPUGraphMode mode = MODE_NORMAL;
     guint color_mode = 0;
@@ -120,6 +120,18 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
                     break;
                 default:
                     mode = MODE_NORMAL;
+            }
+
+            switch (rate)
+            {
+                case RATE_FASTEST:
+                case RATE_FAST:
+                case RATE_NORMAL:
+                case RATE_SLOW:
+                case RATE_SLOWEST:
+                    break;
+                default:
+                    rate = RATE_NORMAL;
             }
 
             xfce_rc_close (rc);
