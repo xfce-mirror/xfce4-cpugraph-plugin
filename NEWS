@@ -1,3 +1,47 @@
+1.2.0 (2020-12-28)
+=====
+
+- Highlighting of suboptimal thread placement on SMT CPUs
+- Separate the associated command from the rest of config options
+- Better resilience to inconsistent OS CPU utilization data
+- Display 'Show bars' in the same tab as 'Bars color'
+- Clamp CPU usage values to zero if they are below a threshold
+- Cleanup NEWS file
+- Use larger unscaled icon in about dialog
+- Add small explanation about default commands
+- Dynamic default command lookup
+- Fix RGBA string memory leak
+- Fix an invalid memory reference
+- Link sensitivity of labels to sensitivity of color buttons
+- Allow setting colors with alpha
+- Revalidate the event box after showing widgets
+- Use floating-point instead of fixed-point CPU load values
+- Paint CPU usage if it is 1 pixel tall
+- Lower CPU usage when rendering bars
+- Update URLs
+- Improve performance of CPU data parsing
+- Read CPU data correctly if some CPUs are offline (!7)
+- Paint CPU bars in left-to-right order
+- Separate the bars from the history frame
+- Fix old-style function warnings
+- Fix clang and gcc warnings
+- Also offer a 3 second update interval (#9)
+- Update URLs from goodies.x.o to docs.x.o (Bug #16157)
+- Allow compilation with panel 4.15
+- Fix typo breaking build on NetBSD (Bug #15794)
+- Disable frame and make background transparent by default
+- Translation Updates:
+  Albanian, Arabic, Armenian (Armenia), Basque, Belarusian, Bulgarian,
+  Catalan, Chinese (China), Chinese (Taiwan), Croatian, Czech, Danish,
+  Dutch, Eastern Armenian, English (Australia), English (United
+  Kingdom), Estonian, Finnish, French, Galician, German, Greek, Hebrew,
+  Hungarian, Icelandic, Indonesian, Interlingue, Italian, Japanese,
+  Kazakh, Korean, Latvian, Lithuanian, Malay, Norwegian Bokmål,
+  Occitan (post 1500), Panjabi (Punjabi), Polish, Portuguese,
+  Portuguese (Brazil), Romanian, Russian, Serbian, Slovak, Slovenian,
+  Spanish, Swedish, Thai, Turkish, Ukrainian, Urdu, Urdu (Pakistan),
+  Uyghur, Vietnamese
+
 1.1.0 (2019-07-02)
 =====
 - Updated translations
