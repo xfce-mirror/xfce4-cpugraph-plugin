@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-25 00:47+0100\n"
-"PO-Revision-Date: 2020-12-26 14:06+0000\n"
+"POT-Creation-Date: 2020-12-28 12:48+0100\n"
+"PO-Revision-Date: 2020-12-30 01:54+0000\n"
 "Last-Translator: Michal Várady <miko.vaji@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/xfce/xfce-panel-plugins/language/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -23,8 +23,8 @@ msgid "Graphical representation of the CPU load"
 msgstr "Grafická reprezentace zatížení procesoru"
 
 #: ../panel-plugin/cpu.c:157
-msgid "Copyright (c) 2003-2019\n"
-msgstr "Copyright (c) 2003-2019\n"
+msgid "Copyright (c) 2003-2020\n"
+msgstr "Copyright (c) 2003-2020\n"
 
 #: ../panel-plugin/cpu.c:567
 #, c-format
@@ -91,9 +91,9 @@ msgstr "Pozadí:"
 #: ../panel-plugin/properties.c:208
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
-msgstr[0] "Zobrazit sloupec současného využití"
-msgstr[1] "Zobrazit sloupce současného využití"
-msgstr[2] "Zobrazit sloupce současného využití"
+msgstr[0] "Zobrazit sloupec aktuálního využití"
+msgstr[1] "Zobrazit sloupce aktuálního využití"
+msgstr[2] "Zobrazit sloupce aktuálního využití"
 msgstr[3] "Zobrazit sloupce aktuálního využití"
 
 #: ../panel-plugin/properties.c:210
@@ -228,7 +228,7 @@ msgstr "Počet incidentů v plánování SMT: %u"
 #: ../panel-plugin/properties.c:713
 #, c-format
 msgid "Estimated performance impact:"
-msgstr "Odhadovaná vliv na výkon:"
+msgstr "Odhadovaný vliv na výkon:"
 
 #: ../panel-plugin/properties.c:714
 #, c-format
