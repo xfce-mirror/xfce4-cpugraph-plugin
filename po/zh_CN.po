@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-28 12:48+0100\n"
-"PO-Revision-Date: 2021-01-01 14:25+0000\n"
+"PO-Revision-Date: 2021-01-05 02:43+0000\n"
 "Last-Translator: 玉堂白鹤 <yjwork@qq.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/xfce/xfce-panel-plugins/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -58,7 +58,7 @@ msgstr ""
 #: ../panel-plugin/properties.c:192
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
-msgstr ""
+msgstr "“总计”表示对机器整体性能的影响。"
 
 #: ../panel-plugin/properties.c:193
 msgid ""
