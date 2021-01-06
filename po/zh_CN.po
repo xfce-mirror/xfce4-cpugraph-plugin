@@ -5,14 +5,15 @@
 # Translators:
 # Chipong Luo <chipong.luo@yahoo.com>, 2011-2012
 # Hunt Xu <huntxu@live.cn>, 2008-2010
+# No Body, 2021
 # 玉堂白鹤 <yjwork@qq.com>, 2019-2021
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-12-28 12:48+0100\n"
-"PO-Revision-Date: 2021-01-05 02:43+0000\n"
-"Last-Translator: 玉堂白鹤 <yjwork@qq.com>\n"
+"PO-Revision-Date: 2021-01-06 21:57+0000\n"
+"Last-Translator: No Body\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/xfce/xfce-panel-plugins/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -53,7 +54,7 @@ msgstr "使用启动通知"
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
-msgstr ""
+msgstr "用于突出显示有 SMT 的 CPU上线程\n潜在的次优位置的颜色"
 
 #: ../panel-plugin/properties.c:192
 msgid ""
@@ -64,15 +65,15 @@ msgstr "“总计”表示对机器整体性能的影响。"
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
-msgstr ""
+msgstr "'热点' 仅显示对次优 SMT 调度决策中涉及的线程的瞬时性能影响."
 
 #: ../panel-plugin/properties.c:196
 msgid "Highlight suboptimal SMT scheduling"
-msgstr ""
+msgstr "高亮次优 SMT 调度"
 
 #: ../panel-plugin/properties.c:198
 msgid "SMT issues color:"
-msgstr ""
+msgstr "SMT 问题的颜色:"
 
 #: ../panel-plugin/properties.c:201
 msgid "Color 1:"
@@ -117,7 +118,7 @@ msgstr "高级"
 
 #: ../panel-plugin/properties.c:225
 msgid "Stats"
-msgstr ""
+msgstr "统计数据"
 
 #: ../panel-plugin/properties.c:346
 msgid "Fastest (~250ms)"
