@@ -6,7 +6,7 @@ dnl 2004 Alexander Nordfelth <alex.nordfelth@telia.com>
 dnl
 
 dnl Version information
-AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIRS([m4])
 m4_define([cpugraph_version_major], [1])
 m4_define([cpugraph_version_minor], [2])
 m4_define([cpugraph_version_micro], [0])
