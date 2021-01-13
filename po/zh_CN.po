@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-28 12:48+0100\n"
-"PO-Revision-Date: 2021-01-06 21:57+0000\n"
-"Last-Translator: No Body\n"
+"POT-Creation-Date: 2021-01-13 00:48+0100\n"
+"PO-Revision-Date: 2021-01-13 03:04+0000\n"
+"Last-Translator: 玉堂白鹤 <yjwork@qq.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/xfce/xfce-panel-plugins/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,8 +26,8 @@ msgid "Graphical representation of the CPU load"
 msgstr "图形化呈现 CPU 负载"
 
 #: ../panel-plugin/cpu.c:157
-msgid "Copyright (c) 2003-2020\n"
-msgstr "版权所有 (c) 2003-2020\n"
+msgid "Copyright (c) 2003-2021\n"
+msgstr "版权所有 (c) 2003-2021\n"
 
 #: ../panel-plugin/cpu.c:567
 #, c-format
