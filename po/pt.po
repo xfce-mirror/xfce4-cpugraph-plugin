@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Hugo Carvalho <hugokarvalho@hotmail.com>, 2019-2020
+# Hugo Carvalho <hugokarvalho@hotmail.com>, 2019-2021
 # Nuno Miguel <nunis@netcabo.pt>, 2007
 # Nuno Miguel <nunomgue@gmail.com>, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-25 00:47+0100\n"
-"PO-Revision-Date: 2020-12-25 22:36+0000\n"
+"POT-Creation-Date: 2021-01-13 00:48+0100\n"
+"PO-Revision-Date: 2021-01-13 12:01+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese (http://www.transifex.com/xfce/xfce-panel-plugins/language/pt/)\n"
 "MIME-Version: 1.0\n"
@@ -25,8 +25,8 @@ msgid "Graphical representation of the CPU load"
 msgstr "Representação gráfica da carga da CPU"
 
 #: ../panel-plugin/cpu.c:157
-msgid "Copyright (c) 2003-2019\n"
-msgstr "Direitos de autor (c) 2003-2019\n"
+msgid "Copyright (c) 2003-2021\n"
+msgstr "Direitos de autor (c) 2003-2021\n"
 
 #: ../panel-plugin/cpu.c:567
 #, c-format
@@ -242,7 +242,7 @@ msgstr "Hotspots: %.3g%%"
 
 #: ../panel-plugin/properties.c:728
 msgid "SMT detected: N/A"
-msgstr "SMT detectado: N/A"
+msgstr "SMT detetado: N/A"
 
 #: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
