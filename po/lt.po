@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-28 12:48+0100\n"
-"PO-Revision-Date: 2021-01-08 11:58+0000\n"
+"POT-Creation-Date: 2021-01-13 00:48+0100\n"
+"PO-Revision-Date: 2021-01-16 19:12+0000\n"
 "Last-Translator: Moo\n"
 "Language-Team: Lithuanian (http://www.transifex.com/xfce/xfce-panel-plugins/language/lt/)\n"
 "MIME-Version: 1.0\n"
@@ -24,8 +24,8 @@ msgid "Graphical representation of the CPU load"
 msgstr "Grafinis procesoriaus apkrovos atvaizdavimas"
 
 #: ../panel-plugin/cpu.c:157
-msgid "Copyright (c) 2003-2020\n"
-msgstr "Autorių teisės (c) 2003-2020\n"
+msgid "Copyright (c) 2003-2021\n"
+msgstr "Autorių teisės (c) 2003-2021\n"
 
 #: ../panel-plugin/cpu.c:567
 #, c-format
