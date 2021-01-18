@@ -5,14 +5,14 @@
 # Translators:
 # Allan Nordhøy <epost@anotheragency.no>, 2014
 # Harald H. <haarektrans@gmail.com>, 2014
-# Kjell Cato Heskjestad <cato@heskjestad.xyz>, 2019-2020
+# Kjell Cato Heskjestad <cato@heskjestad.xyz>, 2019-2021
 # Terje Uriansrud <ter@operamail.com>, 2007
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-25 00:47+0100\n"
-"PO-Revision-Date: 2020-12-28 07:05+0000\n"
+"POT-Creation-Date: 2021-01-13 00:48+0100\n"
+"PO-Revision-Date: 2021-01-18 16:15+0000\n"
 "Last-Translator: Kjell Cato Heskjestad <cato@heskjestad.xyz>\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/xfce/xfce-panel-plugins/language/nb/)\n"
 "MIME-Version: 1.0\n"
@@ -26,8 +26,8 @@ msgid "Graphical representation of the CPU load"
 msgstr "Grafisk representasjon av prosessorlast"
 
 #: ../panel-plugin/cpu.c:157
-msgid "Copyright (c) 2003-2019\n"
-msgstr "Opphavsrett (c) 2003-2019\n"
+msgid "Copyright (c) 2003-2021\n"
+msgstr "Opphavsrett (c) 2003-2021\n"
 
 #: ../panel-plugin/cpu.c:567
 #, c-format
