@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-28 12:48+0100\n"
-"PO-Revision-Date: 2021-01-12 05:37+0000\n"
+"POT-Creation-Date: 2021-01-13 00:48+0100\n"
+"PO-Revision-Date: 2021-01-13 08:27+0000\n"
 "Last-Translator: scootergrisen\n"
 "Language-Team: Danish (http://www.transifex.com/xfce/xfce-panel-plugins/language/da/)\n"
 "MIME-Version: 1.0\n"
@@ -25,8 +25,8 @@ msgid "Graphical representation of the CPU load"
 msgstr "Grafisk visning af CPU-belastningen"
 
 #: ../panel-plugin/cpu.c:157
-msgid "Copyright (c) 2003-2020\n"
-msgstr "Ophavsret (c) 2003-2020\n"
+msgid "Copyright (c) 2003-2021\n"
+msgstr "Ophavsret (c) 2003-2021\n"
 
 #: ../panel-plugin/cpu.c:567
 #, c-format
