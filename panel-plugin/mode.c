@@ -63,7 +63,7 @@ draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h)
 
         if (G_LIKELY (w - 1 - x < base->history_size))
         {
-            gfloat load = base->history[w - 1 - x];
+            gfloat load = base->history[w - 1 - x].value;
             if (load < base->load_threshold)
                 load = 0;
             usage = h * load;
@@ -110,7 +110,7 @@ draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h)
 
         if (G_LIKELY (idx < base->history_size))
         {
-            gfloat load = base->history[idx];
+            gfloat load = base->history[idx].value;
             if (load < base->load_threshold)
                 load = 0;
             limit = nry - (gint) roundf (nry * load);
@@ -140,7 +140,7 @@ draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h)
 void
 draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h)
 {
-    gfloat usage = base->history[0];
+    gfloat usage = base->history[0].value;
     gint tmp = 0;
 
     if (usage < base->load_threshold)
@@ -208,7 +208,7 @@ draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h)
 
         if (G_LIKELY (w - 1 - x < base->history_size))
         {
-            gfloat load = base->history[w - 1 - x];
+            gfloat load = base->history[w - 1 - x].value;
             if (load < base->load_threshold)
                 load = 0;
             usage = h * load;
