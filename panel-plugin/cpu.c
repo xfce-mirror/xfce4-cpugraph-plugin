@@ -253,9 +253,9 @@ size_cb (XfcePanelPlugin *plugin, guint size, CPUGraph *base)
 
     gtk_widget_set_size_request (GTK_WIDGET (base->frame_widget), frame_h, frame_v);
 
-    base->history = (gfloat *) g_realloc (base->history, history * sizeof (gfloat));
+    base->history = (CpuLoad*) g_realloc (base->history, history * sizeof (CpuLoad));
     for (i = base->history_size; i < history; i++)
-        base->history[i] = 0;
+        base->history[i] = (CpuLoad) {};
     base->history_size = history;
 
     if (base->has_bars) {
@@ -525,7 +525,7 @@ update_cb (gpointer user_data)
 
     if (base->tracked_core > base->nr_cores)
         base->cpu_data[0].load = 0;
-    else if (base->tracked_core != 0)
+    else if (base->tracked_core != 0 && G_LIKELY (base->tracked_core < base->nr_cores + 1))
         base->cpu_data[0].load = base->cpu_data[base->tracked_core].load;
 
     if (base->mode != MODE_DISABLED)
@@ -533,21 +533,24 @@ update_cb (gpointer user_data)
         /* Update the history and draw the graph */
         if (base->non_linear)
         {
-            gssize i = base->history_size - 1;
-            while (i > 0)
+            gssize i;
+            for (i = base->history_size - 1; i > 0; i--)
             {
                 const gfloat scale = 256.0f;
                 gfloat a, b, factor;
-                a = base->history[i] * scale, b = base->history[i-1] * scale;
+                a = base->history[i].value * scale;
+                b = base->history[i-1].value * scale;
                 if (a < b) a++;
                 factor = (i * 2);
-                base->history[i--] = (a * (factor-1) + b) / factor / scale;
+                base->history[i].timestamp = 0;
+                base->history[i].value = (a * (factor-1) + b) / factor / scale;
             }
         }
         else {
             memmove (base->history + 1 , base->history, (base->history_size - 1) * sizeof (*base->history));
         }
-        base->history[0] = base->cpu_data[0].load;
+        base->history[0].timestamp = g_get_real_time ();
+        base->history[0].value = base->cpu_data[0].load;
 
         gtk_widget_queue_draw (base->draw_area);
     }
@@ -848,7 +851,7 @@ set_mode (CPUGraph *base, CPUGraphMode mode)
         /* Hide graph and clear history */
         gtk_widget_hide (base->frame_widget);
         for (gint i = 0; i < base->history_size; i++)
-            base->history[i] = 0;
+            base->history[i] = (CpuLoad) {};
     }
     else
     {

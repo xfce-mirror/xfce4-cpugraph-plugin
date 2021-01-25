@@ -69,6 +69,12 @@ typedef enum
 
 typedef struct
 {
+    gint64 timestamp; /* Microseconds since 1970-01-01 UTC, or zero */
+    gfloat value;     /* Range: from 0.0 to 1.0 */
+} CpuLoad;
+
+typedef struct
+{
     /* GUI components */
     XfcePanelPlugin *plugin;
     GtkWidget *frame_widget;
@@ -104,7 +110,7 @@ typedef struct
     /* Runtime data */
     guint nr_cores;
     guint timeout_id;
-    gfloat *history;
+    CpuLoad *history;
     gssize history_size;
     CpuData *cpu_data;
     Topology *topology;
