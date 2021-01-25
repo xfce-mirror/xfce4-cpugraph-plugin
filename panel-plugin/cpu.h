@@ -36,7 +36,8 @@
 #define HIGHLIGHT_SMT_BY_DEFAULT FALSE
 #define MAX_LOAD_THRESHOLD 0.2
 
-typedef enum {
+typedef enum
+{
     MODE_DISABLED = -1,
     MODE_NORMAL = 0,
     MODE_LED = 1,
@@ -45,7 +46,8 @@ typedef enum {
 } CPUGraphMode;
 
 /* Number of milliseconds between updates */
-typedef enum {
+typedef enum
+{
     RATE_FASTEST = 0,
     RATE_FAST = 1,
     RATE_NORMAL = 2,
@@ -55,7 +57,8 @@ typedef enum {
 
 enum { NUM_COLORS = 6 };
 
-typedef enum {
+typedef enum
+{
     BG_COLOR = 0,
     FG_COLOR1 = 1,
     FG_COLOR2 = 2,
