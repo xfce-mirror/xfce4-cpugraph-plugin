@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Jan Ziak <0xe2.0x9a.0x9b@gmail.com>, 2021
 # Slavko <linux@slavino.sk>, 2015,2019
 # 7dcd6f74323fe8d9c477949ff8fcbb1c_c427b63 <3fcd202e3dfab15fda15b8e88e54d449_7173>, 2011-2012
 msgid ""
@@ -10,8 +11,8 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-13 00:48+0100\n"
-"PO-Revision-Date: 2021-01-12 23:48+0000\n"
-"Last-Translator: Xfce Bot <transifex@xfce.org>\n"
+"PO-Revision-Date: 2021-01-26 12:52+0000\n"
+"Last-Translator: Jan Ziak <0xe2.0x9a.0x9b@gmail.com>\n"
 "Language-Team: Slovak (http://www.transifex.com/xfce/xfce-panel-plugins/language/sk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +26,7 @@ msgstr "Grafická prezentácia zaťaženia procesora"
 
 #: ../panel-plugin/cpu.c:157
 msgid "Copyright (c) 2003-2021\n"
-msgstr ""
+msgstr "Autorské práva (c) 2003-2021\n"
 
 #: ../panel-plugin/cpu.c:567
 #, c-format
@@ -67,11 +68,11 @@ msgstr ""
 
 #: ../panel-plugin/properties.c:196
 msgid "Highlight suboptimal SMT scheduling"
-msgstr ""
+msgstr "Zvýraznenie neoptimálneho SMT plánovania"
 
 #: ../panel-plugin/properties.c:198
 msgid "SMT issues color:"
-msgstr ""
+msgstr "Farba SMT problémov:"
 
 #: ../panel-plugin/properties.c:201
 msgid "Color 1:"
@@ -119,7 +120,7 @@ msgstr "Pokročilé"
 
 #: ../panel-plugin/properties.c:225
 msgid "Stats"
-msgstr ""
+msgstr "Štatistiky"
 
 #: ../panel-plugin/properties.c:346
 msgid "Fastest (~250ms)"
@@ -139,7 +140,7 @@ msgstr "Pomalý (~1s)"
 
 #: ../panel-plugin/properties.c:350
 msgid "Slowest (~3s)"
-msgstr ""
+msgstr "Najpomalší (~3s)"
 
 #: ../panel-plugin/properties.c:354
 msgid "Update Interval:"
@@ -163,7 +164,7 @@ msgstr "Výška:"
 
 #: ../panel-plugin/properties.c:399
 msgid "Threshold (%):"
-msgstr ""
+msgstr "Prah (%):"
 
 #: ../panel-plugin/properties.c:412
 msgid "Associated command:"
@@ -171,7 +172,7 @@ msgstr "Priradený príkaz:"
 
 #: ../panel-plugin/properties.c:421
 msgid "Defaults to xfce4-taskmanager, htop or top."
-msgstr ""
+msgstr "Predvolený je xfce4-taskmanager, htop alebo top"
 
 #: ../panel-plugin/properties.c:443
 msgid "Disabled"
@@ -215,35 +216,35 @@ msgstr "Farebný režim:"
 
 #: ../panel-plugin/properties.c:679
 msgid "SMT detected: Yes"
-msgstr ""
+msgstr "SMT zistené: Áno"
 
 #: ../panel-plugin/properties.c:679
 msgid "SMT detected: No"
-msgstr ""
+msgstr "SMT zistené: Nie"
 
 #: ../panel-plugin/properties.c:704
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
-msgstr ""
+msgstr "Počet SMT incidentov: %u"
 
 #: ../panel-plugin/properties.c:713
 #, c-format
 msgid "Estimated performance impact:"
-msgstr ""
+msgstr "Odhadovaný vplyv na výkon:"
 
 #: ../panel-plugin/properties.c:714
 #, c-format
 msgid "Overall: %.3g%%"
-msgstr ""
+msgstr "Celkovo: %.3g%%"
 
 #: ../panel-plugin/properties.c:715
 #, c-format
 msgid "Hotspots: %.3g%%"
-msgstr ""
+msgstr "Hotspoty: %.3g%%"
 
 #: ../panel-plugin/properties.c:728
 msgid "SMT detected: N/A"
-msgstr ""
+msgstr "SMT zistené: detekcia SMT nie je podporovaná"
 
 #: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
