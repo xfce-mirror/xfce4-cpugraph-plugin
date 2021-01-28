@@ -24,6 +24,7 @@
 
 #include <cairo/cairo.h>
 #include <math.h>
+#include <stdlib.h>
 #include "mode.h"
 
 typedef struct
@@ -48,31 +49,89 @@ mix_colors (gdouble ratio, GdkRGBA *color1, GdkRGBA *color2, cairo_t *target)
     gdk_cairo_set_source_rgba (target, &color);
 }
 
+/**
+ * nearest_loads:
+ * @start: microseconds since 1970-01-01 UTC
+ * @step: step in microseconds, has to be a negative value
+ * @count: number of steps
+ * @out: output of this function
+ *
+ * Get CPU loads near (close to) a specified range of timestamps.
+ * The timestampts range from 'timestamp' to timestamp+step*(count-1).
+ */
+static void
+nearest_loads (const CPUGraph *base, gint64 start, gint64 step, gssize count, gfloat *out)
+{
+    const gssize history_cap_pow2 = base->history.cap_pow2;
+    const CpuLoad *history_data = base->history.data;
+    const gssize history_mask = base->history.mask;
+    const gssize history_offset = base->history.offset;
+    gssize i, j;
+
+    for (i = 0, j = 0; i < count; i++)
+    {
+        const gint64 timestamp = start + i * step;
+        CpuLoad nearest = {};
+        for (; j < history_cap_pow2; j++)
+        {
+            CpuLoad load = history_data[(history_offset + j) & history_mask];
+
+            if (load.timestamp == 0)
+                goto end;
+
+            if (nearest.timestamp == 0)
+            {
+                nearest = load;
+            }
+            else
+            {
+                gint64 delta = load.timestamp - timestamp;
+                if (labs (delta) < labs (nearest.timestamp - timestamp))
+                {
+                    nearest = load;
+                }
+                else if (labs (delta) > labs (nearest.timestamp - timestamp))
+                {
+                    if (j > 0)
+                        j--;
+                    break;
+                }
+            }
+        }
+        out[i] = nearest.value;
+    }
+
+end:
+    for (; i < count; i++)
+        out[i] = 0;
+}
+
 void
 draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h)
 {
-    const gssize history_mask = base->history.mask;
-    const gssize history_offset = base->history.offset;
     gint x, y;
     gint tmp;
+    const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
+    gint64 t0;
+    gfloat nearest[w];
+
+    if (G_UNLIKELY (base->history.data == NULL))
+        return;
 
     if (base->color_mode == 0)
         gdk_cairo_set_source_rgba (cr, &base->colors[FG_COLOR1]);
 
+    t0 = base->history.data[base->history.offset].timestamp;
+    nearest_loads (base, t0, -step, w, nearest);
+
     for (x = 0; x < w; x++)
     {
-        gfloat usage;
+        gfloat load, usage;
 
-        if (G_LIKELY (w - 1 - x < base->history.size))
-        {
-            gint idx = w - 1 - x;
-            gfloat load = base->history.data[(history_offset + idx) & history_mask].value;
-            if (load < base->load_threshold)
-                load = 0;
-            usage = h * load;
-        }
-        else
-            usage = 0;
+        load = nearest[w - 1 - x];
+        if (load < base->load_threshold)
+            load = 0;
+        usage = h * load;
 
         if (usage == 0)
             continue;
@@ -102,20 +161,27 @@ draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h)
 void
 draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h)
 {
-    const gssize history_mask = base->history.mask;
-    const gssize history_offset = base->history.offset;
     gint nrx = (w + 1) / 3;
     gint nry = (h + 1) / 2;
     gint x, y;
+    const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
+    gint64 t0;
+    gfloat nearest[nrx];
+
+    if (G_UNLIKELY (base->history.data == NULL))
+        return;
+
+    t0 = base->history.data[base->history.offset].timestamp;
+    nearest_loads (base, t0, -step, nrx, nearest);
 
     for (x = 0; x * 3 < w; x++)
     {
         gint idx = nrx - x;
         gint limit;
 
-        if (G_LIKELY (idx < base->history.size))
+        if (G_LIKELY (idx >= 0 && idx < nrx))
         {
-            gfloat load = base->history.data[(history_offset + idx) & history_mask].value;
+            gfloat load = nearest[idx];
             if (load < base->load_threshold)
                 load = 0;
             limit = nry - (gint) roundf (nry * load);
@@ -177,13 +243,18 @@ draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h)
 void
 draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h)
 {
-    const gssize history_mask = base->history.mask;
-    const gssize history_offset = base->history.offset;
     const gfloat thickness = 1.75f;
     gint x, y;
-    point last, current;
-    last.x = 0;
-    last.y = h;
+    point last;
+    const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
+    gint64 t0;
+    gfloat nearest[w];
+
+    if (G_UNLIKELY (base->history.data == NULL))
+        return;
+
+    t0 = base->history.data[base->history.offset].timestamp;
+    nearest_loads (base, t0, -step, w, nearest);
 
     gdk_cairo_set_source_rgba (cr, &base->colors[FG_COLOR1]);
     cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
@@ -209,20 +280,16 @@ draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h)
 
     cairo_save (cr);
     cairo_set_line_width (cr, thickness);
+    last = (point) {0, h};
     for (x = 0; x < w; x++)
     {
-        gfloat usage;
+        gfloat load, usage;
+        point current;
 
-        if (G_LIKELY (w - 1 - x < base->history.size))
-        {
-            gint idx = w - 1 - x;
-            gfloat load = base->history.data[(history_offset + idx) & history_mask].value;
-            if (load < base->load_threshold)
-                load = 0;
-            usage = h * load;
-        }
-        else
-            usage = 0;
+        load = nearest[w - 1 - x];
+        if (load < base->load_threshold)
+            load = 0;
+        usage = h * load;
 
         current.x = x;
         current.y = h + (thickness-1)/2 - usage;
