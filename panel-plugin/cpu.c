@@ -239,6 +239,8 @@ clear_history (CPUGraph *base)
 static void
 resize_history (CPUGraph *base, gssize history_size)
 {
+    const guint fastest = get_update_interval_ms (RATE_FASTEST);
+    const guint slowest = get_update_interval_ms (RATE_SLOWEST);
     gssize cap_pow2, old_cap_pow2, old_mask, old_offset;
     CpuLoad *old_data;
 
@@ -247,8 +249,10 @@ resize_history (CPUGraph *base, gssize history_size)
     old_mask = base->history.mask;
     old_offset = base->history.offset;
 
-    cap_pow2 = 128;
-    while (cap_pow2 < history_size)
+    cap_pow2 = 1;
+    while (cap_pow2 < 128 * slowest / fastest)
+        cap_pow2 <<= 1;
+    while (cap_pow2 < history_size * slowest / fastest)
         cap_pow2 <<= 1;
 
     if (cap_pow2 != old_cap_pow2)
@@ -765,6 +769,31 @@ command_cb (GtkWidget *w, GdkEventButton *event, CPUGraph *base)
     return FALSE;
 }
 
+/**
+ * get_update_interval_ms:
+ *
+ * Returns: update interval in milliseconds.
+ */
+guint
+get_update_interval_ms (CPUGraphUpdateRate rate)
+{
+    switch (rate)
+    {
+        case RATE_FASTEST:
+            return 250;
+        case RATE_FAST:
+            return 500;
+        case RATE_NORMAL:
+            return 750;
+        case RATE_SLOW:
+            return 1000;
+        case RATE_SLOWEST:
+            return 3000;
+        default:
+            return 750;
+    }
+}
+
 void
 set_startup_notification (CPUGraph *base, gboolean startup_notification)
 {
@@ -852,26 +881,7 @@ set_update_rate (CPUGraph *base, CPUGraphUpdateRate rate)
     if (base->timeout_id)
         g_source_remove (base->timeout_id);
 
-    switch (base->update_interval)
-    {
-        case RATE_FASTEST:
-            interval = 250;
-            break;
-        case RATE_FAST:
-            interval = 500;
-            break;
-        case RATE_NORMAL:
-            interval = 750;
-            break;
-        case RATE_SLOW:
-            interval = 1000;
-            break;
-        case RATE_SLOWEST:
-            interval = 3000;
-            break;
-        default:
-            interval = 750;
-    }
+    interval = get_update_interval_ms (rate);
     base->timeout_id = g_timeout_add (interval, update_cb, base);
 }
 

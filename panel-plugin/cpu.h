@@ -122,6 +122,7 @@ typedef struct
     CpuStats stats;
 } CPUGraph;
 
+guint get_update_interval_ms (CPUGraphUpdateRate rate);
 void set_bars (CPUGraph * base, gboolean bars);
 void set_border (CPUGraph *base, gboolean border);
 void set_color (CPUGraph *base, guint number, GdkRGBA color);
