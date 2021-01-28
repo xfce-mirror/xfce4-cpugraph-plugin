@@ -5,13 +5,14 @@
 # Translators:
 # Dmitry Nikitin <luckas_fb@mail.ru>, 2007-2008
 # Yarema aka Knedlyk <yupadmin@gmail.com>, 2019
+# Андрій Мізик <andmizyk@gmail.com>, 2021
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-13 00:48+0100\n"
-"PO-Revision-Date: 2021-01-12 23:48+0000\n"
-"Last-Translator: Xfce Bot <transifex@xfce.org>\n"
+"PO-Revision-Date: 2021-01-28 22:05+0000\n"
+"Last-Translator: Андрій Мізик <andmizyk@gmail.com>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/xfce/xfce-panel-plugins/language/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +26,7 @@ msgstr "Графічне представлення завантаження п�
 
 #: ../panel-plugin/cpu.c:157
 msgid "Copyright (c) 2003-2021\n"
-msgstr ""
+msgstr "Авторські права (c) 2003-2021\n"
 
 #: ../panel-plugin/cpu.c:567
 #, c-format
@@ -34,7 +35,7 @@ msgstr "Використання: %u%%"
 
 #: ../panel-plugin/properties.c:159
 msgid "CPU Graph Properties"
-msgstr "Налаштування CPU Graph"
+msgstr "Налаштування шкали ЦП"
 
 #: ../panel-plugin/properties.c:181
 msgid "Use non-linear time-scale"
@@ -52,26 +53,26 @@ msgstr "Використовувати повідомлення при стар�
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
-msgstr ""
+msgstr "Колір для виділення потенційно неоптимальних\nрозміщень потоків у процесорах з SMT"
 
 #: ../panel-plugin/properties.c:192
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
-msgstr ""
+msgstr "'Загалом' показує вплив загальної продуктивності машини."
 
 #: ../panel-plugin/properties.c:193
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
-msgstr ""
+msgstr "'Гарячі точки' показує моментний вплив на продуктивність задіяних потоків у неоптимальних запланованих рішеннях SMT."
 
 #: ../panel-plugin/properties.c:196
 msgid "Highlight suboptimal SMT scheduling"
-msgstr ""
+msgstr "Виділення неоптимального планування SMT"
 
 #: ../panel-plugin/properties.c:198
 msgid "SMT issues color:"
-msgstr ""
+msgstr "Колір випадків SMT:"
 
 #: ../panel-plugin/properties.c:201
 msgid "Color 1:"
@@ -119,7 +120,7 @@ msgstr "Додатково"
 
 #: ../panel-plugin/properties.c:225
 msgid "Stats"
-msgstr ""
+msgstr "Статистика"
 
 #: ../panel-plugin/properties.c:346
 msgid "Fastest (~250ms)"
@@ -139,7 +140,7 @@ msgstr "Поволі (~1с)"
 
 #: ../panel-plugin/properties.c:350
 msgid "Slowest (~3s)"
-msgstr ""
+msgstr "Повільніше (~3с)"
 
 #: ../panel-plugin/properties.c:354
 msgid "Update Interval:"
@@ -147,11 +148,11 @@ msgstr "Інтервал поновлення:"
 
 #: ../panel-plugin/properties.c:365
 msgid "All"
-msgstr "Все"
+msgstr "Усе"
 
 #: ../panel-plugin/properties.c:369
 msgid "Tracked Core:"
-msgstr "Спостереження за ядром:"
+msgstr "Відстежуване ядро:"
 
 #: ../panel-plugin/properties.c:383
 msgid "Width:"
@@ -163,7 +164,7 @@ msgstr "Висота:"
 
 #: ../panel-plugin/properties.c:399
 msgid "Threshold (%):"
-msgstr ""
+msgstr "Поріг (%):"
 
 #: ../panel-plugin/properties.c:412
 msgid "Associated command:"
@@ -171,7 +172,7 @@ msgstr "Асоційовано з командою:"
 
 #: ../panel-plugin/properties.c:421
 msgid "Defaults to xfce4-taskmanager, htop or top."
-msgstr ""
+msgstr "Зазвичай xfce4-taskmanager, htop або top."
 
 #: ../panel-plugin/properties.c:443
 msgid "Disabled"
@@ -215,36 +216,36 @@ msgstr "Тип кольору: "
 
 #: ../panel-plugin/properties.c:679
 msgid "SMT detected: Yes"
-msgstr ""
+msgstr "SMT виявлено: Так"
 
 #: ../panel-plugin/properties.c:679
 msgid "SMT detected: No"
-msgstr ""
+msgstr "SMT виявлено: Ні"
 
 #: ../panel-plugin/properties.c:704
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
-msgstr ""
+msgstr "Кількість запланованих випадків SMT: %u"
 
 #: ../panel-plugin/properties.c:713
 #, c-format
 msgid "Estimated performance impact:"
-msgstr ""
+msgstr "Оцінений вплив на продуктивність:"
 
 #: ../panel-plugin/properties.c:714
 #, c-format
 msgid "Overall: %.3g%%"
-msgstr ""
+msgstr "Загалом: %.3g%%"
 
 #: ../panel-plugin/properties.c:715
 #, c-format
 msgid "Hotspots: %.3g%%"
-msgstr ""
+msgstr "Гарячі точки: %.3g%%"
 
 #: ../panel-plugin/properties.c:728
 msgid "SMT detected: N/A"
-msgstr ""
+msgstr "SMT виявлено: N/A"
 
 #: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
-msgstr "Статистика процесора"
+msgstr "Шкала ЦП"
