@@ -51,6 +51,8 @@ mix_colors (gdouble ratio, GdkRGBA *color1, GdkRGBA *color2, cairo_t *target)
 void
 draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h)
 {
+    const gssize history_mask = base->history.mask;
+    const gssize history_offset = base->history.offset;
     gint x, y;
     gint tmp;
 
@@ -61,9 +63,10 @@ draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h)
     {
         gfloat usage;
 
-        if (G_LIKELY (w - 1 - x < base->history_size))
+        if (G_LIKELY (w - 1 - x < base->history.size))
         {
-            gfloat load = base->history[w - 1 - x].value;
+            gint idx = w - 1 - x;
+            gfloat load = base->history.data[(history_offset + idx) & history_mask].value;
             if (load < base->load_threshold)
                 load = 0;
             usage = h * load;
@@ -99,6 +102,8 @@ draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h)
 void
 draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h)
 {
+    const gssize history_mask = base->history.mask;
+    const gssize history_offset = base->history.offset;
     gint nrx = (w + 1) / 3;
     gint nry = (h + 1) / 2;
     gint x, y;
@@ -108,9 +113,9 @@ draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h)
         gint idx = nrx - x;
         gint limit;
 
-        if (G_LIKELY (idx < base->history_size))
+        if (G_LIKELY (idx < base->history.size))
         {
-            gfloat load = base->history[idx].value;
+            gfloat load = base->history.data[(history_offset + idx) & history_mask].value;
             if (load < base->load_threshold)
                 load = 0;
             limit = nry - (gint) roundf (nry * load);
@@ -140,7 +145,7 @@ draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h)
 void
 draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h)
 {
-    gfloat usage = base->history[0].value;
+    gfloat usage = base->history.data[base->history.offset].value;
     gint tmp = 0;
 
     if (usage < base->load_threshold)
@@ -172,6 +177,8 @@ draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h)
 void
 draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h)
 {
+    const gssize history_mask = base->history.mask;
+    const gssize history_offset = base->history.offset;
     const gfloat thickness = 1.75f;
     gint x, y;
     point last, current;
@@ -206,9 +213,10 @@ draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h)
     {
         gfloat usage;
 
-        if (G_LIKELY (w - 1 - x < base->history_size))
+        if (G_LIKELY (w - 1 - x < base->history.size))
         {
-            gfloat load = base->history[w - 1 - x].value;
+            gint idx = w - 1 - x;
+            gfloat load = base->history.data[(history_offset + idx) & history_mask].value;
             if (load < base->load_threshold)
                 load = 0;
             usage = h * load;

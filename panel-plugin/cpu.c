@@ -212,7 +212,7 @@ shutdown (XfcePanelPlugin *plugin, CPUGraph *base)
     gtk_widget_destroy (base->tooltip_text);
     if (base->timeout_id)
         g_source_remove (base->timeout_id);
-    g_free (base->history);
+    g_free (base->history.data);
     g_free (base->command);
     g_free (base);
 }
@@ -228,13 +228,51 @@ delete_bars (CPUGraph *base)
     }
 }
 
+static void
+clear_history (CPUGraph *base)
+{
+    gssize i;
+    for (i = 0; i < base->history.cap_pow2; i++)
+        base->history.data[i] = (CpuLoad) {};
+}
+
+static void
+resize_history (CPUGraph *base, gssize history_size)
+{
+    gssize cap_pow2, old_cap_pow2, old_mask, old_offset;
+    CpuLoad *old_data;
+
+    old_cap_pow2 = base->history.cap_pow2;
+    old_data = base->history.data;
+    old_mask = base->history.mask;
+    old_offset = base->history.offset;
+
+    cap_pow2 = 128;
+    while (cap_pow2 < history_size)
+        cap_pow2 <<= 1;
+
+    if (cap_pow2 != old_cap_pow2)
+    {
+        gssize i;
+        base->history.cap_pow2 = cap_pow2;
+        base->history.data = (CpuLoad*) g_malloc0 (cap_pow2 * sizeof (CpuLoad));
+        base->history.mask = cap_pow2 - 1;
+        base->history.offset = 0;
+        for (i = 0; i < old_cap_pow2 && i < cap_pow2; i++)
+            base->history.data[i] = old_data[(old_offset + i) & old_mask];
+        g_free (old_data);
+    }
+
+    base->history.size = history_size;
+}
+
 static gboolean
 size_cb (XfcePanelPlugin *plugin, guint size, CPUGraph *base)
 {
-    gint frame_h, frame_v, history;
+    gint frame_h, frame_v;
+    gssize history;
     GtkOrientation orientation;
     gint shadow_width = base->has_frame ? 2*1 : 0;
-    gint i;
 
     orientation = xfce_panel_plugin_get_orientation (plugin);
 
@@ -251,18 +289,16 @@ size_cb (XfcePanelPlugin *plugin, guint size, CPUGraph *base)
         history = size;
     }
 
+    if (history > base->history.cap_pow2 || base->non_linear)
+        resize_history (base, history);
+    else
+        base->history.size = history;
+
     gtk_widget_set_size_request (GTK_WIDGET (base->frame_widget), frame_h, frame_v);
-
-    base->history = (CpuLoad*) g_realloc (base->history, history * sizeof (CpuLoad));
-    for (i = base->history_size; i < history; i++)
-        base->history[i] = (CpuLoad) {};
-    base->history_size = history;
-
     if (base->has_bars) {
         base->bars.orientation = orientation;
         set_bars_size (base);
     }
-
     set_border (base, base->has_border);
 
     return TRUE;
@@ -530,28 +566,35 @@ update_cb (gpointer user_data)
 
     if (base->mode != MODE_DISABLED)
     {
-        /* Update the history and draw the graph */
+        CpuLoad load;
+
+        /* Update the history */
         if (base->non_linear)
         {
+            const gssize mask = base->history.mask;
+            const gssize offset = base->history.offset;
             gssize i;
-            for (i = base->history_size - 1; i > 0; i--)
+            for (i = base->history.size - 1; i > 0; i--)
             {
                 const gfloat scale = 256.0f;
                 gfloat a, b, factor;
-                a = base->history[i].value * scale;
-                b = base->history[i-1].value * scale;
+                a = base->history.data[(offset+i) & mask].value * scale;
+                b = base->history.data[(offset+i-1) & mask].value * scale;
                 if (a < b) a++;
                 factor = (i * 2);
-                base->history[i].timestamp = 0;
-                base->history[i].value = (a * (factor-1) + b) / factor / scale;
+                base->history.data[(offset+i) & mask].timestamp = 0;
+                base->history.data[(offset+i) & mask].value = (a * (factor-1) + b) / factor / scale;
             }
         }
-        else {
-            memmove (base->history + 1 , base->history, (base->history_size - 1) * sizeof (*base->history));
+        else
+        {
+            base->history.offset = (base->history.offset - 1) & base->history.mask;
         }
-        base->history[0].timestamp = g_get_real_time ();
-        base->history[0].value = base->cpu_data[0].load;
+        load.timestamp = g_get_real_time ();
+        load.value = base->cpu_data[0].load;
+        base->history.data[base->history.offset] = load;
 
+        /* Draw the history graph */
         gtk_widget_queue_draw (base->draw_area);
     }
 
@@ -786,7 +829,11 @@ set_frame (CPUGraph *base, gboolean frame)
 void
 set_nonlinear_time (CPUGraph *base, gboolean nonlinear)
 {
-    base->non_linear = nonlinear;
+    if (base->non_linear != nonlinear)
+    {
+        base->non_linear = nonlinear;
+        clear_history (base);
+    }
 }
 
 void
@@ -850,8 +897,7 @@ set_mode (CPUGraph *base, CPUGraphMode mode)
     {
         /* Hide graph and clear history */
         gtk_widget_hide (base->frame_widget);
-        for (gint i = 0; i < base->history_size; i++)
-            base->history[i] = (CpuLoad) {};
+        clear_history (base);
     }
     else
     {

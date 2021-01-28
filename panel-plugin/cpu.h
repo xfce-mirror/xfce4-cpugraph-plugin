@@ -110,8 +110,13 @@ typedef struct
     /* Runtime data */
     guint nr_cores;
     guint timeout_id;
-    CpuLoad *history;
-    gssize history_size;
+    struct {
+        gssize cap_pow2;  /* Capacity. A power of 2. */
+        gssize size;      /* size <= cap_pow2 */
+        gssize mask;      /* Equals to (cap_pow2 - 1) */
+        gssize offset;    /* Circular buffer position. Range: from 0 to (cap_pow2 - 1) */
+        CpuLoad *data;    /* Circular buffer */
+    } history;
     CpuData *cpu_data;
     Topology *topology;
     CpuStats stats;
