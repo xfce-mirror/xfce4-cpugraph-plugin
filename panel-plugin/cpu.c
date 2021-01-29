@@ -482,8 +482,7 @@ detect_smt_issues (CPUGraph *base)
                                             /* Decrease combined_usage by load_to_move */
                                             for (j = topo->cores[core].num_logical_cpus; load_to_move > 0 && j != 0;)
                                             {
-                                                j--;
-                                                guint cpu = topo->cores[core].logical_cpus[j];
+                                                guint cpu = topo->cores[core].logical_cpus[j--];
                                                 if (G_LIKELY (cpu < base->nr_cores))
                                                 {
                                                     if (optimal_load[cpu] >= load_to_move)
