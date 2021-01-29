@@ -20,6 +20,7 @@ install-sh
 intltool-*
 libtool
 ltmain.sh
+m4/
 missing
 po/*.gmo
 po/.intltool-merge-cache*
