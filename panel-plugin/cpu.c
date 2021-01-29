@@ -101,6 +101,12 @@ create_gui (XfcePanelPlugin *plugin)
     if ((base->nr_cores = init_cpu_data (&base->cpu_data)) == 0)
         fprintf (stderr,"Cannot init cpu data !\n");
 
+    /* Read CPU data twice in order to initialize
+     * cpu_data[].previous_used and cpu_data[].previous_total
+     * with the current HWMs. HWM = High Water Mark. */
+    read_cpu_data (base->cpu_data, base->nr_cores);
+    read_cpu_data (base->cpu_data, base->nr_cores);
+
     base->topology = read_topology ();
 
     base->plugin = plugin;
