@@ -101,6 +101,12 @@ create_gui (XfcePanelPlugin *plugin)
     if ((base->nr_cores = init_cpu_data (&base->cpu_data)) == 0)
         fprintf (stderr,"Cannot init cpu data !\n");
 
+    /* Read CPU data twice in order to initialize
+     * cpu_data[].previous_used and cpu_data[].previous_total
+     * with the current HWMs. HWM = High Water Mark. */
+    read_cpu_data (base->cpu_data, base->nr_cores);
+    read_cpu_data (base->cpu_data, base->nr_cores);
+
     base->topology = read_topology ();
 
     base->plugin = plugin;
@@ -874,15 +880,24 @@ set_smt (CPUGraph *base, gboolean highlight_smt)
 void
 set_update_rate (CPUGraph *base, CPUGraphUpdateRate rate)
 {
-    guint interval;
+    gboolean change = (base->update_interval != rate);
+    gboolean init = (base->timeout_id == 0);
 
-    base->update_interval = rate;
+    if (change || init)
+    {
+        guint interval = get_update_interval_ms (rate);
 
-    if (base->timeout_id)
-        g_source_remove (base->timeout_id);
+        base->update_interval = rate;
+        if (base->timeout_id)
+            g_source_remove (base->timeout_id);
+        base->timeout_id = g_timeout_add (interval, update_cb, base);
 
-    interval = get_update_interval_ms (rate);
-    base->timeout_id = g_timeout_add (interval, update_cb, base);
+        if (change && !init)
+        {
+            if (base->mode != MODE_DISABLED)
+                gtk_widget_queue_draw (base->draw_area);
+        }
+    }
 }
 
 void
