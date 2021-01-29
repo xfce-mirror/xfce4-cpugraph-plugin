@@ -880,15 +880,24 @@ set_smt (CPUGraph *base, gboolean highlight_smt)
 void
 set_update_rate (CPUGraph *base, CPUGraphUpdateRate rate)
 {
-    guint interval;
+    gboolean change = (base->update_interval != rate);
+    gboolean init = (base->timeout_id == 0);
 
-    base->update_interval = rate;
+    if (change || init)
+    {
+        guint interval = get_update_interval_ms (rate);
 
-    if (base->timeout_id)
-        g_source_remove (base->timeout_id);
+        base->update_interval = rate;
+        if (base->timeout_id)
+            g_source_remove (base->timeout_id);
+        base->timeout_id = g_timeout_add (interval, update_cb, base);
 
-    interval = get_update_interval_ms (rate);
-    base->timeout_id = g_timeout_add (interval, update_cb, base);
+        if (change && !init)
+        {
+            if (base->mode != MODE_DISABLED)
+                gtk_widget_queue_draw (base->draw_area);
+        }
+    }
 }
 
 void
