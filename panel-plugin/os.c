@@ -470,8 +470,8 @@ read_topology (void)
     {
         gsize memory_size;
         guint i;
-        gpointer p; /* Pointer inside the region of allocated memory */
-        gpointer p_end;
+        gchar *p; /* Pointer inside the region of allocated memory */
+        G_GNUC_UNUSED gchar *p_end;
 
         /* Compute total size of memory to allocate */
         memory_size = sizeof (Topology) + num_all_cores * sizeof (*t->cores) +
@@ -488,8 +488,8 @@ read_topology (void)
         t->num_online_logical_cpus = num_online_logical_cpus;
         t->num_all_cores = num_all_cores;
         t->num_online_cores = 0;
-        t->logical_cpu_2_core = p; p += num_all_logical_cpus * sizeof (*t->logical_cpu_2_core);
-        t->cores = p; p += num_all_cores * sizeof (*t->cores);
+        t->logical_cpu_2_core = (gint *) p; p += num_all_logical_cpus * sizeof (*t->logical_cpu_2_core);
+        t->cores = (struct CpuCore *) p; p += num_all_cores * sizeof (*t->cores);
         t->smt = FALSE;
         for (GList *l = core_ids; l; l = l->next)
         {
@@ -509,7 +509,7 @@ read_topology (void)
         }
         for (i = 0; i < num_all_cores; i++)
         {
-            t->cores[i].logical_cpus = p;
+            t->cores[i].logical_cpus = (guint *) p;
             p += t->cores[i].num_logical_cpus * sizeof (*t->cores[i].logical_cpus);
             t->cores[i].num_logical_cpus = 0;
             /* The zeroed num_logical_cpus will be restored in the for-loop below */
