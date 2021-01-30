@@ -1,6 +1,24 @@
+1.2.1 (2021-01-30)
+=====
+- Repaint CPU load history after the user changes the update interval
+- Properly initialize current usage bars
+- Scale CPU load history chart according to the current update interval
+- Store history in a circular buffer
+- Add timestamps to CPU load history
+- Update copyright year
+- Update configuration files
+- Translation Updates:
+  Albanian, Arabic, Armenian (Armenia), Basque, Belarusian, Bulgarian,
+  Catalan, Chinese (China), Chinese (Taiwan), Croatian, Czech, Danish,
+  Dutch, Eastern Armenian, English (Australia), English (United
+  Kingdom), Estonian, Finnish, French, Galician, German, Greek, Hebrew,
+  Hungarian, Icelandic, Indonesian, Interlingue, Italian, Japanese,
+  Kazakh, Korean, Lithuanian, Malay, Norwegian Bokmål, Occitan (post
+  1500), Polish, Portuguese, Portuguese (Brazil), Russian, Serbian,
+  Slovak, Slovenian, Spanish, Swedish, Thai, Turkish, Ukrainian, Uyghur
+
 1.2.0 (2020-12-28)
 =====
-
 - Highlighting of suboptimal thread placement on SMT CPUs
 - Separate the associated command from the rest of config options
 - Better resilience to inconsistent OS CPU utilization data
