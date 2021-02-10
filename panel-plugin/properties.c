@@ -41,6 +41,7 @@ typedef struct
     GtkWidget *color_mode_combobox;
     GtkBox    *hbox_highlight_smt, *hbox_in_terminal, *hbox_startup_notification;
     GtkLabel  *smt_stats;
+    gchar     *smt_stats_tooltip;
     guint     timeout_id;
 } CPUGraphOptions;
 
@@ -152,7 +153,7 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     GtkWidget *label, *notebook;
     GtkSizeGroup *sg;
     CPUGraphOptions *dlg_data;
-    gchar *smt_issues_tooltip, *smt_stats_tooltip;
+    gchar *smt_issues_tooltip;
 
     xfce_panel_plugin_block_menu (plugin);
 
@@ -188,7 +189,7 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
                                                             base->startup_notification, change_startup_notification, dlg_data);
 
     smt_issues_tooltip = _("Color used to highlight potentially suboptimal\nplacement of threads on CPUs with SMT");
-    smt_stats_tooltip = g_strdup_printf("%s\n%s",
+    dlg_data->smt_stats_tooltip = g_strdup_printf("%s\n%s",
         _("'Overall' is showing the impact on the overall performance of the machine."),
         _("'Hotspots' is showing the momentary performance impact on just the threads involved in suboptimal SMT scheduling decisions."));
 
@@ -214,7 +215,6 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
 
     vbox3 = create_tab ();
     dlg_data->smt_stats = create_label_line (vbox3, "");
-    gtk_widget_set_tooltip_text (GTK_WIDGET (dlg_data->smt_stats), smt_stats_tooltip);
 
     notebook = gtk_notebook_new ();
     gtk_container_set_border_width (GTK_CONTAINER (notebook), BORDER - 2);
@@ -233,8 +233,6 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
 
     update_sensitivity (dlg_data);
     gtk_widget_show_all (dlg);
-
-    g_free (smt_stats_tooltip);
 }
 
 static GtkBox *
@@ -337,6 +335,7 @@ destroy_cb (GtkWidget *dlg, CPUGraphOptions *data)
 {
     if (data->timeout_id)
         g_source_remove (data->timeout_id);
+    g_free (data->smt_stats_tooltip);
     g_free (data);
 }
 
@@ -673,6 +672,7 @@ update_cb (CPUGraphOptions *data)
 {
     const CPUGraph *base = data->base;
     gchar *smt_text;
+    gboolean show_tooltip = FALSE;
 
     if (base->topology)
     {
@@ -716,6 +716,8 @@ update_cb (CPUGraphOptions *data)
 
                 smt_text = g_strdup_printf ("%s\n%s\n%s\n\t%s\n\t%s", smt_detected,
                                             lines[0], lines[1], lines[2], lines[3]);
+
+                show_tooltip = TRUE;
             }
         }
         else
@@ -729,7 +731,10 @@ update_cb (CPUGraphOptions *data)
     }
 
     if (strcmp (gtk_label_get_text (data->smt_stats), smt_text))
+    {
         gtk_label_set_text (data->smt_stats, smt_text);
+        gtk_widget_set_tooltip_text (GTK_WIDGET (data->smt_stats), show_tooltip ? data->smt_stats_tooltip : "");
+    }
 
     g_free (smt_text);
 
