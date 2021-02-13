@@ -161,8 +161,8 @@ draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h)
 void
 draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h)
 {
-    gint nrx = (w + 1) / 3;
-    gint nry = (h + 1) / 2;
+    const gint nrx = (w + 2) / 3;
+    const gint nry = (h + 1) / 2;
     gint x, y;
     const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
     gint64 t0;
@@ -176,7 +176,7 @@ draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h)
 
     for (x = 0; x * 3 < w; x++)
     {
-        gint idx = nrx - x;
+        const gint idx = nrx - x - 1;
         gint limit;
 
         if (G_LIKELY (idx >= 0 && idx < nrx))
@@ -260,19 +260,19 @@ draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h)
     cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
     cairo_set_line_width (cr, 1);
 
-    for (x = 0; x * 6 < w; x++)
+    for (x = 0; x < w; x += 6)
     {
-        /* draw line */
-        cairo_move_to (cr, x * 6 + 0.5, 0.5);
-        cairo_line_to (cr, x * 6 + 0.5, h - 1 + 0.5);
+        /* draw vertical line */
+        cairo_move_to (cr, x + 0.5, 0.5);
+        cairo_line_to (cr, x + 0.5, h - 1 + 0.5);
         cairo_stroke (cr);
     }
 
-    for (y = 0; y * 4 < h; y++)
+    for (y = 0; y < h; y += 4)
     {
-        /* draw line */
-        cairo_move_to (cr, 0.5, y * 4 + 0.5);
-        cairo_line_to (cr, w - 1  + 0.5, y * 4 + 0.5);
+        /* draw horizontal line */
+        cairo_move_to (cr, 0.5, y + 0.5);
+        cairo_line_to (cr, w - 1  + 0.5, y + 0.5);
         cairo_stroke (cr);
     }
 
@@ -280,7 +280,7 @@ draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h)
 
     cairo_save (cr);
     cairo_set_line_width (cr, thickness);
-    last = (point) {0, h};
+    last = (point) {};
     for (x = 0; x < w; x++)
     {
         gfloat load, usage;
@@ -293,10 +293,12 @@ draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h)
 
         current.x = x;
         current.y = h + (thickness-1)/2 - usage;
+        if (x == 0)
+            last = current;
 
         /* draw line */
-        cairo_move_to (cr, current.x + 0.5, current.y + 0.5);
-        cairo_line_to (cr, last.x + 0.5, last.y + 0.5);
+        cairo_move_to (cr, last.x + 0.5, last.y + 0.5);
+        cairo_line_to (cr, current.x + 0.5, current.y + 0.5);
         cairo_stroke (cr);
         last = current;
     }
