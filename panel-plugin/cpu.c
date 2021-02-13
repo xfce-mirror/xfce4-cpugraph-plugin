@@ -256,7 +256,7 @@ resize_history (CPUGraph *base, gssize history_size)
     old_offset = base->history.offset;
 
     cap_pow2 = 1;
-    while (cap_pow2 < 128 * slowest / fastest)
+    while (cap_pow2 < MAX_SIZE * slowest / fastest)
         cap_pow2 <<= 1;
     while (cap_pow2 < history_size * slowest / fastest)
         cap_pow2 <<= 1;
@@ -299,7 +299,15 @@ size_cb (XfcePanelPlugin *plugin, guint size, CPUGraph *base)
         history = size;
     }
 
-    if (history > base->history.cap_pow2 || base->non_linear)
+    /* Expand history size for the non-linear time-scale mode.
+     *   128 * pow(1.04, 128) = 19385.5175366781
+     *   163 * pow(1.04, 163) = 97414.11965601446
+     */
+    history = ceil (history * pow(NONLINEAR_MODE_BASE, history));
+    if (G_UNLIKELY (history < 0 || history > MAX_HISTORY_SIZE))
+        history = MAX_HISTORY_SIZE;
+
+    if (history > base->history.cap_pow2)
         resize_history (base, history);
     else
         base->history.size = history;
@@ -578,27 +586,7 @@ update_cb (gpointer user_data)
         CpuLoad load;
 
         /* Update the history */
-        if (base->non_linear)
-        {
-            const gssize mask = base->history.mask;
-            const gssize offset = base->history.offset;
-            gssize i;
-            for (i = base->history.size - 1; i > 0; i--)
-            {
-                const gfloat scale = 256.0f;
-                gfloat a, b, factor;
-                a = base->history.data[(offset+i) & mask].value * scale;
-                b = base->history.data[(offset+i-1) & mask].value * scale;
-                if (a < b) a++;
-                factor = (i * 2);
-                base->history.data[(offset+i) & mask].timestamp = 0;
-                base->history.data[(offset+i) & mask].value = (a * (factor-1) + b) / factor / scale;
-            }
-        }
-        else
-        {
-            base->history.offset = (base->history.offset - 1) & base->history.mask;
-        }
+        base->history.offset = (base->history.offset - 1) & base->history.mask;
         load.timestamp = g_get_real_time ();
         load.value = base->cpu_data[0].load;
         base->history.data[base->history.offset] = load;
@@ -866,7 +854,8 @@ set_nonlinear_time (CPUGraph *base, gboolean nonlinear)
     if (base->non_linear != nonlinear)
     {
         base->non_linear = nonlinear;
-        clear_history (base);
+        if (base->mode != MODE_DISABLED)
+            gtk_widget_queue_draw (base->draw_area);
     }
 }
 

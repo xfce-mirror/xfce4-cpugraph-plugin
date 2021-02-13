@@ -34,7 +34,10 @@
 
 #define BORDER 8
 #define HIGHLIGHT_SMT_BY_DEFAULT FALSE
+#define MAX_HISTORY_SIZE (100*1000)
 #define MAX_LOAD_THRESHOLD 0.2
+#define MAX_SIZE 128
+#define NONLINEAR_MODE_BASE 1.04
 
 typedef enum
 {
