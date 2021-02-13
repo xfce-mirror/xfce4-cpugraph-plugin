@@ -66,44 +66,112 @@ nearest_loads (const CPUGraph *base, gint64 start, gint64 step, gssize count, gf
     const CpuLoad *history_data = base->history.data;
     const gssize history_mask = base->history.mask;
     const gssize history_offset = base->history.offset;
-    gssize i, j;
 
-    for (i = 0, j = 0; i < count; i++)
+    if (!base->non_linear)
     {
-        const gint64 timestamp = start + i * step;
-        CpuLoad nearest = {};
-        for (; j < history_cap_pow2; j++)
+        gssize i, j;
+        for (i = 0, j = 0; i < count; i++)
         {
-            CpuLoad load = history_data[(history_offset + j) & history_mask];
-
-            if (load.timestamp == 0)
-                goto end;
-
-            if (nearest.timestamp == 0)
+            const gint64 timestamp = start + i * step;
+            CpuLoad nearest = {};
+            for (; j < history_cap_pow2; j++)
             {
-                nearest = load;
-            }
-            else
-            {
-                gint64 delta = load.timestamp - timestamp;
-                if (labs (delta) < labs (nearest.timestamp - timestamp))
+                CpuLoad load = history_data[(history_offset + j) & history_mask];
+
+                if (load.timestamp == 0)
+                    goto end;
+
+                if (nearest.timestamp == 0)
                 {
                     nearest = load;
                 }
-                else if (labs (delta) > labs (nearest.timestamp - timestamp))
+                else
                 {
-                    if (j > 0)
-                        j--;
-                    break;
+                    gint64 delta = labs (load.timestamp - timestamp);
+                    if (delta < labs (nearest.timestamp - timestamp))
+                    {
+                        nearest = load;
+                    }
+                    else if (delta > labs (nearest.timestamp - timestamp))
+                    {
+                        if (j > 0)
+                            j--;
+                        break;
+                    }
                 }
             }
+            out[i] = nearest.value;
         }
-        out[i] = nearest.value;
-    }
 
-end:
-    for (; i < count; i++)
-        out[i] = 0;
+    end:
+        for (; i < count; i++)
+            out[i] = 0;
+    }
+    else
+    {
+        gssize i;
+        for (i = 0; i < count; i++)
+        {
+            /* Note: step < 0, therefore: timestamp1 < timestamp0 */
+            const gint64 timestamp0 = start + (i+0) * pow (NONLINEAR_MODE_BASE, i+0) * step;
+            const gint64 timestamp1 = start + (i+1) * pow (NONLINEAR_MODE_BASE, i+1) * step;
+            gfloat sum = 0;
+            gint count = 0;
+            gssize j;
+
+            for (j = 0; j < history_cap_pow2; j++)
+            {
+                CpuLoad load = history_data[(history_offset + j) & history_mask];
+                if (load.timestamp > timestamp1 && load.timestamp <= timestamp0)
+                {
+                    sum += load.value;
+                    count++;
+                }
+                else if (load.timestamp < timestamp1)
+                    break;
+            }
+
+            /* count==0 in the following cases:
+             *  - Both timestamps are pointing to a time before the CPU load measurements have started
+             *  - Both timestamps are pointing to a time before the history has been cleared
+             *  - There has been a change in base->update_interval,
+             *    for example from RATE_SLOWEST to RATE_FASTEST
+             */
+
+            if (count != 0)
+                out[i] = sum / count;
+            else
+                out[i] = -1;
+        }
+
+        for (i = 0; i < count; i++)
+        {
+            if (out[i] == -1)
+            {
+                gfloat prev = -1, next = -1;
+                gssize j;
+
+                for (j = 0; j < i; j++)
+                    if (out[j] != -1)
+                    {
+                        prev = out[j];
+                        break;
+                    }
+
+                for (j = i+1; j < count; j++)
+                    if (out[j] != -1)
+                    {
+                        next = out[j];
+                        break;
+                    }
+
+                if (prev != -1 && next != -1)
+                    out[i] = (prev + next) / 2;
+                else
+                    out[i] = 0;
+            }
+        }
+    }
 }
 
 void
