@@ -335,17 +335,26 @@ draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h)
 
     for (x = 0; x < w; x += 6)
     {
+        gint x1 = x;
+
+        if (base->non_linear)
+        {
+            x1 *= pow (1.02, x1);
+            if (x1 >= w)
+                break;
+        }
+
         /* draw vertical line */
-        cairo_move_to (cr, x + 0.5, 0.5);
-        cairo_line_to (cr, x + 0.5, h - 1 + 0.5);
+        cairo_move_to (cr, w - 1 - x1 + 0.5, 0.5);
+        cairo_line_to (cr, w - 1 - x1 + 0.5, h - 1 + 0.5);
         cairo_stroke (cr);
     }
 
     for (y = 0; y < h; y += 4)
     {
         /* draw horizontal line */
-        cairo_move_to (cr, 0.5, y + 0.5);
-        cairo_line_to (cr, w - 1  + 0.5, y + 0.5);
+        cairo_move_to (cr, 0.5, h - 1 - y + 0.5);
+        cairo_line_to (cr, w - 1  + 0.5, h - 1 - y + 0.5);
         cairo_stroke (cr);
     }
 
