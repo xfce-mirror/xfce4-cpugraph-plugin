@@ -224,6 +224,15 @@ shutdown (XfcePanelPlugin *plugin, CPUGraph *base)
 }
 
 static void
+queue_draw (CPUGraph *base)
+{
+    if (base->mode != MODE_DISABLED)
+        gtk_widget_queue_draw (base->draw_area);
+    if (base->bars.draw_area)
+        gtk_widget_queue_draw (base->bars.draw_area);
+}
+
+static void
 delete_bars (CPUGraph *base)
 {
     if (base->bars.frame)
@@ -238,11 +247,11 @@ static void
 clear_history (CPUGraph *base)
 {
     gssize i;
+
     for (i = 0; i < base->history.cap_pow2; i++)
         base->history.data[i] = (CpuLoad) {};
 
-    if (base->mode != MODE_DISABLED)
-        gtk_widget_queue_draw (base->draw_area);
+    queue_draw (base);
 }
 
 static void
@@ -596,12 +605,8 @@ update_cb (gpointer user_data)
         base->history.data[base->history.offset] = load;
     }
 
+    queue_draw (base);
     update_tooltip (base);
-
-    if (base->mode != MODE_DISABLED)
-        gtk_widget_queue_draw (base->draw_area);
-    if (base->bars.draw_area)
-        gtk_widget_queue_draw (base->bars.draw_area);
 
     return TRUE;
 }
@@ -633,9 +638,12 @@ draw_area_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
     w = alloc.width;
     h = alloc.height;
 
-    gdk_cairo_set_source_rgba (cr, &base->colors[BG_COLOR]);
-    cairo_rectangle (cr, 0, 0, w, h);
-    cairo_fill (cr);
+    if (base->colors[BG_COLOR].alpha != 0)
+    {
+        gdk_cairo_set_source_rgba (cr, &base->colors[BG_COLOR]);
+        cairo_rectangle (cr, 0, 0, w, h);
+        cairo_fill (cr);
+    }
 
     switch (base->mode)
     {
@@ -666,9 +674,12 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
 
     gtk_widget_get_allocation (base->bars.draw_area, &alloc);
 
-    gdk_cairo_set_source_rgba (cr, &base->colors[BG_COLOR]);
-    cairo_rectangle (cr, 0, 0, alloc.width, alloc.height);
-    cairo_fill (cr);
+    if (base->colors[BG_COLOR].alpha != 0)
+    {
+        gdk_cairo_set_source_rgba (cr, &base->colors[BG_COLOR]);
+        cairo_rectangle (cr, 0, 0, alloc.width, alloc.height);
+        cairo_fill (cr);
+    }
 
     size = (horizontal ? alloc.height : alloc.width);
     if (base->tracked_core != 0 || base->nr_cores == 1)
@@ -857,8 +868,7 @@ set_nonlinear_time (CPUGraph *base, gboolean nonlinear)
     if (base->non_linear != nonlinear)
     {
         base->non_linear = nonlinear;
-        if (base->mode != MODE_DISABLED)
-            gtk_widget_queue_draw (base->draw_area);
+        queue_draw (base);
     }
 }
 
@@ -884,8 +894,7 @@ set_update_rate (CPUGraph *base, CPUGraphUpdateRate rate)
         base->timeout_id = g_timeout_add (interval, update_cb, base);
 
         if (change && !init)
-            if (base->mode != MODE_DISABLED)
-                gtk_widget_queue_draw (base->draw_area);
+            queue_draw (base);
     }
 }
 
@@ -904,7 +913,11 @@ set_size (CPUGraph *base, guint size)
 void
 set_color_mode (CPUGraph *base, guint color_mode)
 {
-    base->color_mode = color_mode;
+    if (base->color_mode != color_mode)
+    {
+        base->color_mode = color_mode;
+        queue_draw (base);
+    }
 }
 
 void
@@ -926,14 +939,10 @@ set_mode (CPUGraph *base, CPUGraphMode mode)
 void
 set_color (CPUGraph *base, guint number, GdkRGBA color)
 {
-    base->colors[number] = color;
-
-    if (number == BG_COLOR)
+    if (!gdk_rgba_equal (&base->colors[number], &color))
     {
-G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-        gtk_widget_override_background_color (base->draw_area, GTK_STATE_FLAG_INSENSITIVE, &base->colors[BG_COLOR]);
-        gtk_widget_override_background_color (base->draw_area, GTK_STATE_FLAG_NORMAL, &base->colors[BG_COLOR]);
-G_GNUC_END_IGNORE_DEPRECATIONS
+        base->colors[number] = color;
+        queue_draw (base);
     }
 }
 
