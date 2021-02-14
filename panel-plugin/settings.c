@@ -110,31 +110,34 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
                 }
             }
 
-            switch (mode)
-            {
-                case MODE_DISABLED:
-                case MODE_NORMAL:
-                case MODE_LED:
-                case MODE_NO_HISTORY:
-                case MODE_GRID:
-                    break;
-                default:
-                    mode = MODE_NORMAL;
-            }
-
-            switch (rate)
-            {
-                case RATE_FASTEST:
-                case RATE_FAST:
-                case RATE_NORMAL:
-                case RATE_SLOW:
-                case RATE_SLOWEST:
-                    break;
-                default:
-                    rate = RATE_NORMAL;
-            }
-
             xfce_rc_close (rc);
+        }
+    }
+
+    // Validate settings
+    {
+        switch (mode)
+        {
+            case MODE_DISABLED:
+            case MODE_NORMAL:
+            case MODE_LED:
+            case MODE_NO_HISTORY:
+            case MODE_GRID:
+                break;
+            default:
+                mode = MODE_NORMAL;
+        }
+
+        switch (rate)
+        {
+            case RATE_FASTEST:
+            case RATE_FAST:
+            case RATE_NORMAL:
+            case RATE_SLOW:
+            case RATE_SLOWEST:
+                break;
+            default:
+                rate = RATE_NORMAL;
         }
     }
 

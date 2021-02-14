@@ -891,6 +891,11 @@ set_update_rate (CPUGraph *base, CPUGraphUpdateRate rate)
 void
 set_size (CPUGraph *base, guint size)
 {
+    if (G_UNLIKELY (size < MIN_SIZE))
+        size = MIN_SIZE;
+    if (G_UNLIKELY (size > MAX_SIZE))
+        size = MAX_SIZE;
+
     base->size = size;
     size_cb (base->plugin, xfce_panel_plugin_get_size (base->plugin), base);
 }

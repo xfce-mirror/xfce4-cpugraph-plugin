@@ -37,6 +37,7 @@
 #define MAX_HISTORY_SIZE (100*1000)
 #define MAX_LOAD_THRESHOLD 0.2
 #define MAX_SIZE 128
+#define MIN_SIZE 10
 #define NONLINEAR_MODE_BASE 1.04
 
 typedef enum
