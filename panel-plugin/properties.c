@@ -36,13 +36,14 @@
 
 typedef struct
 {
-    CPUGraph  *base;
-    GtkWidget *color_buttons[NUM_COLORS];
-    GtkWidget *color_mode_combobox;
-    GtkBox    *hbox_highlight_smt, *hbox_in_terminal, *hbox_startup_notification;
-    GtkLabel  *smt_stats;
-    gchar     *smt_stats_tooltip;
-    guint     timeout_id;
+    CPUGraph        *base;
+    GtkWidget       *color_buttons[NUM_COLORS];
+    GtkWidget       *color_mode_combobox;
+    GtkBox          *hbox_highlight_smt, *hbox_in_terminal, *hbox_startup_notification;
+    GtkToggleButton *show_bars_checkbox;
+    GtkLabel        *smt_stats;
+    gchar           *smt_stats_tooltip;
+    guint           timeout_id;
 } CPUGraphOptions;
 
 static GtkBox *create_tab                    (void);
@@ -57,7 +58,8 @@ static GtkBox* create_check_box              (GtkBox          *tab,
                                               const gchar     *name,
                                               gboolean        init,
                                               void            (callback)(GtkToggleButton*, CPUGraphOptions*),
-                                              CPUGraphOptions *cb_data);
+                                              CPUGraphOptions *cb_data,
+                                              GtkToggleButton **out_checkbox);
 static GtkWidget* create_drop_down           (GtkBox          *tab,
                                               GtkSizeGroup    *sg,
                                               const gchar     *name,
@@ -179,14 +181,16 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     setup_tracked_core_option (vbox, sg, dlg_data);
     setup_size_option (vbox, sg, plugin, base);
     setup_load_threshold_option (vbox, sg, base);
-    create_check_box (vbox, sg, _("Use non-linear time-scale"), base->non_linear, change_time_scale, dlg_data);
+    create_check_box (vbox, sg, _("Use non-linear time-scale"), base->non_linear, change_time_scale, dlg_data, NULL);
 
     gtk_box_pack_start (vbox, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, BORDER/2);
     setup_command_option (vbox, sg, dlg_data);
     dlg_data->hbox_in_terminal = create_check_box (vbox, sg, _("Run in terminal"),
-                                                   base->in_terminal, change_in_terminal, dlg_data);
+                                                   base->in_terminal, change_in_terminal, dlg_data,
+                                                   NULL);
     dlg_data->hbox_startup_notification = create_check_box (vbox, sg, _("Use startup notification"),
-                                                            base->startup_notification, change_startup_notification, dlg_data);
+                                                            base->startup_notification, change_startup_notification, dlg_data,
+                                                            NULL);
 
     smt_issues_tooltip = _("Color used to highlight potentially suboptimal\nplacement of threads on CPUs with SMT");
     dlg_data->smt_stats_tooltip = g_strdup_printf("%s\n%s",
@@ -195,7 +199,8 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
 
     gtk_box_pack_start (vbox, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, BORDER/2);
     dlg_data->hbox_highlight_smt = create_check_box (vbox, sg, _("Highlight suboptimal SMT scheduling"),
-                                                     base->highlight_smt, change_smt, dlg_data);
+                                                     base->highlight_smt, change_smt, dlg_data,
+                                                     NULL);
     setup_color_option (vbox, sg, dlg_data, SMT_ISSUES_COLOR, _("SMT issues color:"), smt_issues_tooltip, change_color_5);
 
     vbox2 = create_tab ();
@@ -207,11 +212,12 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     setup_color_mode_option (vbox2, sg, dlg_data);
     gtk_box_pack_start (vbox2, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, BORDER/2);
     create_check_box (vbox2, sg, ngettext ("Show current usage bar", "Show current usage bars", base->nr_cores),
-                      base->has_bars, change_bars, dlg_data);
+                      base->has_bars, change_bars, dlg_data,
+                      &dlg_data->show_bars_checkbox);
     setup_color_option (vbox2, sg, dlg_data, BARS_COLOR, _("Bars color:"), NULL, change_color_4);
     gtk_box_pack_start (vbox2, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, BORDER/2);
-    create_check_box (vbox2, sg, _("Show frame"), base->has_frame, change_frame, dlg_data);
-    create_check_box (vbox2, sg, _("Show border"), base->has_border, change_border, dlg_data);
+    create_check_box (vbox2, sg, _("Show frame"), base->has_frame, change_frame, dlg_data, NULL);
+    create_check_box (vbox2, sg, _("Show border"), base->has_border, change_border, dlg_data, NULL);
 
     vbox3 = create_tab ();
     dlg_data->smt_stats = create_label_line (vbox3, "");
@@ -291,7 +297,8 @@ create_option_line (GtkBox *tab, GtkSizeGroup *sg, const gchar *name, const gcha
 
 static GtkBox*
 create_check_box (GtkBox *tab, GtkSizeGroup *sg, const gchar *name, gboolean init,
-                  void (callback)(GtkToggleButton*, CPUGraphOptions*), CPUGraphOptions *cb_data)
+                  void (callback)(GtkToggleButton*, CPUGraphOptions*), CPUGraphOptions *cb_data,
+                  GtkToggleButton **out_checkbox)
 {
     GtkBox *hbox;
     GtkWidget *checkbox;
@@ -302,6 +309,9 @@ create_check_box (GtkBox *tab, GtkSizeGroup *sg, const gchar *name, gboolean ini
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbox), init);
     gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (checkbox), FALSE, FALSE, 0);
     g_signal_connect (checkbox, "toggled", G_CALLBACK (callback), cb_data);
+
+    if (out_checkbox)
+        *out_checkbox = GTK_TOGGLE_BUTTON (checkbox);
 
     return hbox;
 }
@@ -572,6 +582,8 @@ update_sensitivity (const CPUGraphOptions *data)
                               base->has_bars && base->highlight_smt && base->topology && base->topology->smt);
 
     gtk_widget_set_sensitive (gtk_widget_get_parent (data->color_mode_combobox), base->mode != MODE_GRID);
+
+    gtk_widget_set_sensitive (GTK_WIDGET (data->show_bars_checkbox), base->mode != MODE_DISABLED);
 }
 
 static void
@@ -596,6 +608,8 @@ change_mode (GtkComboBox *combo, CPUGraphOptions *data)
     }
 
     set_mode (data->base, mode);
+    if (mode == MODE_DISABLED && !data->base->has_bars)
+        gtk_toggle_button_set_active (data->show_bars_checkbox, TRUE);
     update_sensitivity (data);
 }
 

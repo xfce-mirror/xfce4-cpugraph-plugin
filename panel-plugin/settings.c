@@ -128,6 +128,9 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
                 mode = MODE_NORMAL;
         }
 
+        if (mode == MODE_DISABLED && !bars)
+            mode = MODE_NORMAL;
+
         switch (rate)
         {
             case RATE_FASTEST:
