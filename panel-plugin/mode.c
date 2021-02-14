@@ -279,8 +279,12 @@ draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h)
 void
 draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h)
 {
-    gfloat usage = base->history.data[base->history.offset].value;
-    gint tmp = 0;
+    gfloat usage;
+
+    if (G_UNLIKELY (base->history.data == NULL))
+        return;
+
+    usage = base->history.data[base->history.offset].value;
 
     if (usage < base->load_threshold)
         usage = 0;
@@ -296,6 +300,7 @@ draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h)
     else
     {
         const gint h_usage = h - (gint) roundf (usage);
+        gint tmp = 0;
         gint y;
         for (y = h - 1; y >= h_usage; y--, tmp++)
         {

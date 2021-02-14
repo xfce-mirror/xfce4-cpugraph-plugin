@@ -240,6 +240,9 @@ clear_history (CPUGraph *base)
     gssize i;
     for (i = 0; i < base->history.cap_pow2; i++)
         base->history.data[i] = (CpuLoad) {};
+
+    if (base->mode != MODE_DISABLED)
+        gtk_widget_queue_draw (base->draw_area);
 }
 
 static void
@@ -268,8 +271,9 @@ resize_history (CPUGraph *base, gssize history_size)
         base->history.data = (CpuLoad*) g_malloc0 (cap_pow2 * sizeof (CpuLoad));
         base->history.mask = cap_pow2 - 1;
         base->history.offset = 0;
-        for (i = 0; i < old_cap_pow2 && i < cap_pow2; i++)
-            base->history.data[i] = old_data[(old_offset + i) & old_mask];
+        if (old_data != NULL)
+            for (i = 0; i < old_cap_pow2 && i < cap_pow2; i++)
+                base->history.data[i] = old_data[(old_offset + i) & old_mask];
         g_free (old_data);
     }
 
@@ -581,22 +585,21 @@ update_cb (gpointer user_data)
     else if (base->tracked_core != 0 && G_LIKELY (base->tracked_core < base->nr_cores + 1))
         base->cpu_data[0].load = base->cpu_data[base->tracked_core].load;
 
-    if (base->mode != MODE_DISABLED)
+    if (base->history.data != NULL)
     {
         CpuLoad load;
 
-        /* Update the history */
+        /* Prepend a datapoint to the history */
         base->history.offset = (base->history.offset - 1) & base->history.mask;
         load.timestamp = g_get_real_time ();
         load.value = base->cpu_data[0].load;
         base->history.data[base->history.offset] = load;
-
-        /* Draw the history graph */
-        gtk_widget_queue_draw (base->draw_area);
     }
 
     update_tooltip (base);
 
+    if (base->mode != MODE_DISABLED)
+        gtk_widget_queue_draw (base->draw_area);
     if (base->bars.draw_area)
         gtk_widget_queue_draw (base->bars.draw_area);
 
@@ -881,10 +884,8 @@ set_update_rate (CPUGraph *base, CPUGraphUpdateRate rate)
         base->timeout_id = g_timeout_add (interval, update_cb, base);
 
         if (change && !init)
-        {
             if (base->mode != MODE_DISABLED)
                 gtk_widget_queue_draw (base->draw_area);
-        }
     }
 }
 
@@ -913,9 +914,7 @@ set_mode (CPUGraph *base, CPUGraphMode mode)
 
     if (mode == MODE_DISABLED)
     {
-        /* Hide graph and clear history */
         gtk_widget_hide (base->frame_widget);
-        clear_history (base);
     }
     else
     {
@@ -941,12 +940,17 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 void
 set_tracked_core (CPUGraph *base, guint core)
 {
-    gboolean has_bars = base->has_bars;
-    if (has_bars)
-        set_bars (base, FALSE);
-    base->tracked_core = core;
-    if (has_bars)
-        set_bars (base, TRUE);
+    if (base->tracked_core != core)
+    {
+        gboolean has_bars = base->has_bars;
+        if (has_bars)
+            set_bars (base, FALSE);
+        base->tracked_core = core;
+        if (has_bars)
+            set_bars (base, TRUE);
+
+        clear_history (base);
+    }
 }
 
 void
