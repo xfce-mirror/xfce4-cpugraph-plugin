@@ -383,7 +383,7 @@ setup_size_option (GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, CPUG
     else
         hbox = create_option_line (vbox, sg, _("Height:"), NULL);
 
-    size = gtk_spin_button_new_with_range (10, 128, 1);
+    size = gtk_spin_button_new_with_range (10, MAX_SIZE, 1);
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (size), base->size);
     gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (size), FALSE, FALSE, 0);
     g_signal_connect (size, "value-changed", G_CALLBACK (change_size), base);
