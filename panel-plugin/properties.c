@@ -186,10 +186,10 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     gtk_box_pack_start (vbox, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, BORDER/2);
     setup_command_option (vbox, sg, dlg_data);
     dlg_data->hbox_in_terminal = create_check_box (vbox, sg, _("Run in terminal"),
-                                                   base->in_terminal, change_in_terminal, dlg_data,
+                                                   base->command_in_terminal, change_in_terminal, dlg_data,
                                                    NULL);
     dlg_data->hbox_startup_notification = create_check_box (vbox, sg, _("Use startup notification"),
-                                                            base->startup_notification, change_startup_notification, dlg_data,
+                                                            base->command_startup_notification, change_startup_notification, dlg_data,
                                                             NULL);
 
     smt_issues_tooltip = _("Color used to highlight potentially suboptimal\nplacement of threads on CPUs with SMT");

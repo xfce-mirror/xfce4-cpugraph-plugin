@@ -192,8 +192,8 @@ write_settings (XfcePanelPlugin *plugin, CPUGraph *base)
         xfce_rc_write_entry (rc, "Command", base->command);
     else
         xfce_rc_delete_entry (rc, "Command", FALSE);
-    xfce_rc_write_int_entry (rc, "InTerminal", base->in_terminal);
-    xfce_rc_write_int_entry (rc, "StartupNotification", base->startup_notification);
+    xfce_rc_write_int_entry (rc, "InTerminal", base->command_in_terminal);
+    xfce_rc_write_int_entry (rc, "StartupNotification", base->command_startup_notification);
     xfce_rc_write_int_entry (rc, "ColorMode", base->color_mode);
     if (base->load_threshold != 0)
         xfce_rc_write_int_entry (rc, "LoadThreshold", (gint) roundf (100 * base->load_threshold));
