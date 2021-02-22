@@ -761,8 +761,8 @@ command_cb (GtkWidget *w, GdkEventButton *event, CPUGraph *base)
         if (base->command)
         {
             command = base->command;
-            in_terminal = base->in_terminal;
-            startup_notification = base->startup_notification;
+            in_terminal = base->command_in_terminal;
+            startup_notification = base->command_startup_notification;
         }
         else
         {
@@ -804,13 +804,13 @@ get_update_interval_ms (CPUGraphUpdateRate rate)
 void
 set_startup_notification (CPUGraph *base, gboolean startup_notification)
 {
-    base->startup_notification = startup_notification;
+    base->command_startup_notification = startup_notification;
 }
 
 void
 set_in_terminal (CPUGraph *base, gboolean in_terminal)
 {
-    base->in_terminal = in_terminal;
+    base->command_in_terminal = in_terminal;
 }
 
 void

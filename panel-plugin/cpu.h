@@ -95,21 +95,23 @@ typedef struct
 
     /* Settings */
     CPUGraphUpdateRate update_interval;
-    gboolean non_linear;
     guint size;
     CPUGraphMode mode;
     guint color_mode;
-    gboolean has_frame;
-    gboolean has_border;
-    gboolean has_bars;
-    gboolean has_barcolor;
-    gboolean highlight_smt;
     gchar *command;
-    gboolean in_terminal;
-    gboolean startup_notification;
     GdkRGBA colors[NUM_COLORS];
     guint tracked_core;
     gfloat load_threshold; /* Range: from 0.0 to MAX_LOAD_THRESHOLD */
+
+    /* Boolean settings */
+    gboolean command_in_terminal:1;
+    gboolean command_startup_notification:1;
+    gboolean has_barcolor:1;
+    gboolean has_bars:1;
+    gboolean has_border:1;
+    gboolean has_frame:1;
+    gboolean highlight_smt:1;
+    gboolean non_linear:1;
 
     /* Runtime data */
     guint nr_cores;
