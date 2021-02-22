@@ -181,19 +181,19 @@ write_settings (XfcePanelPlugin *plugin, CPUGraph *base)
         return;
 
     xfce_rc_write_int_entry (rc, "UpdateInterval", base->update_interval);
-    xfce_rc_write_int_entry (rc, "TimeScale", base->non_linear);
+    xfce_rc_write_int_entry (rc, "TimeScale", base->non_linear ? 1 : 0);
     xfce_rc_write_int_entry (rc, "Size", base->size);
     xfce_rc_write_int_entry (rc, "Mode", base->mode);
-    xfce_rc_write_int_entry (rc, "Frame", base->has_frame);
-    xfce_rc_write_int_entry (rc, "Border", base->has_border);
-    xfce_rc_write_int_entry (rc, "Bars", base->has_bars);
+    xfce_rc_write_int_entry (rc, "Frame", base->has_frame ? 1 : 0);
+    xfce_rc_write_int_entry (rc, "Border", base->has_border ? 1 : 0);
+    xfce_rc_write_int_entry (rc, "Bars", base->has_bars ? 1 : 0);
     xfce_rc_write_int_entry (rc, "TrackedCore", base->tracked_core);
     if (base->command)
         xfce_rc_write_entry (rc, "Command", base->command);
     else
         xfce_rc_delete_entry (rc, "Command", FALSE);
-    xfce_rc_write_int_entry (rc, "InTerminal", base->command_in_terminal);
-    xfce_rc_write_int_entry (rc, "StartupNotification", base->command_startup_notification);
+    xfce_rc_write_int_entry (rc, "InTerminal", base->command_in_terminal ? 1 : 0);
+    xfce_rc_write_int_entry (rc, "StartupNotification", base->command_startup_notification ? 1 : 0);
     xfce_rc_write_int_entry (rc, "ColorMode", base->color_mode);
     if (base->load_threshold != 0)
         xfce_rc_write_int_entry (rc, "LoadThreshold", (gint) roundf (100 * base->load_threshold));
@@ -223,7 +223,7 @@ write_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     }
 
     if (base->highlight_smt != HIGHLIGHT_SMT_BY_DEFAULT)
-        xfce_rc_write_int_entry (rc, "SmtIssues", base->highlight_smt);
+        xfce_rc_write_int_entry (rc, "SmtIssues", base->highlight_smt ? 1 : 0);
     else
         xfce_rc_delete_entry (rc, "SmtIssues", FALSE);
 
