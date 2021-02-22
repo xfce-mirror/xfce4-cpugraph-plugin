@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Arnold Marko <arnold.marko@gmail.com>, 2019-2020
+# Arnold Marko <arnold.marko@gmail.com>, 2019-2021
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-13 00:48+0100\n"
-"PO-Revision-Date: 2021-01-12 23:48+0000\n"
-"Last-Translator: Xfce Bot <transifex@xfce.org>\n"
+"PO-Revision-Date: 2021-02-22 11:47+0000\n"
+"Last-Translator: Arnold Marko <arnold.marko@gmail.com>\n"
 "Language-Team: Slovenian (http://www.transifex.com/xfce/xfce-panel-plugins/language/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +24,7 @@ msgstr "Grafična predstavitev obremenitve procesorja"
 
 #: ../panel-plugin/cpu.c:157
 msgid "Copyright (c) 2003-2021\n"
-msgstr ""
+msgstr "Avtorstvo (c) 2003-2021\n"
 
 #: ../panel-plugin/cpu.c:567
 #, c-format
@@ -51,26 +51,26 @@ msgstr "Uporabi zagonsko obvestilo"
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
-msgstr ""
+msgstr "Barva, ki prikazuje možno neoptimalno\npostavitev niti na procesorjih s SMT"
 
 #: ../panel-plugin/properties.c:192
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
-msgstr ""
+msgstr "'Celota' prikazuje vpliv na celotno zmogljivost računalnika"
 
 #: ../panel-plugin/properties.c:193
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
-msgstr ""
+msgstr "'Žarišča' prikazujejo vplive niti, ki so udeležene v neoptimalno časovno razporejanje SMT, na trenutno zmanjšanje zmogljivosti."
 
 #: ../panel-plugin/properties.c:196
 msgid "Highlight suboptimal SMT scheduling"
-msgstr ""
+msgstr "Osvetli neoptimalno SMT časovno razporejanje"
 
 #: ../panel-plugin/properties.c:198
 msgid "SMT issues color:"
-msgstr ""
+msgstr "Barve za prikaz SMT težav:"
 
 #: ../panel-plugin/properties.c:201
 msgid "Color 1:"
@@ -118,7 +118,7 @@ msgstr "Napredno"
 
 #: ../panel-plugin/properties.c:225
 msgid "Stats"
-msgstr ""
+msgstr "Statistike"
 
 #: ../panel-plugin/properties.c:346
 msgid "Fastest (~250ms)"
@@ -214,35 +214,35 @@ msgstr "Barni način:"
 
 #: ../panel-plugin/properties.c:679
 msgid "SMT detected: Yes"
-msgstr ""
+msgstr "Zaznan SMT: da"
 
 #: ../panel-plugin/properties.c:679
 msgid "SMT detected: No"
-msgstr ""
+msgstr "Zaznan SMT: ne"
 
 #: ../panel-plugin/properties.c:704
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
-msgstr ""
+msgstr "Število incidentov pri časovnem razporejanju SMT: %u"
 
 #: ../panel-plugin/properties.c:713
 #, c-format
 msgid "Estimated performance impact:"
-msgstr ""
+msgstr "Predviden vpliv na zmogljivost:"
 
 #: ../panel-plugin/properties.c:714
 #, c-format
 msgid "Overall: %.3g%%"
-msgstr ""
+msgstr "V celoti: %.3g%%"
 
 #: ../panel-plugin/properties.c:715
 #, c-format
 msgid "Hotspots: %.3g%%"
-msgstr ""
+msgstr "Žarišča: %.3g%%"
 
 #: ../panel-plugin/properties.c:728
 msgid "SMT detected: N/A"
-msgstr ""
+msgstr "Zaznan SMT: ni na voljo"
 
 #: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
