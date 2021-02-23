@@ -5,6 +5,7 @@
 *.o
 .deps
 .libs
+/nbproject
 ChangeLog
 INSTALL
 Makefile
