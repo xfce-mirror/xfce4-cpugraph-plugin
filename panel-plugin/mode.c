@@ -232,6 +232,7 @@ draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
     const gint nrx = (w + 2) / 3;
     const gint nry = (h + 1) / 2;
     gint x, y;
+    const GdkRGBA *active_color = NULL;
     const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
     gint64 t0;
     gfloat nearest[nrx];
@@ -263,10 +264,16 @@ draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
             {
                 gfloat t = y / (gfloat) (base->color_mode == 1 ? nry : limit);
                 mix_colors (t, &base->colors[FG_COLOR3], &base->colors[FG_COLOR2], cr);
+                active_color = NULL;
             }
             else
             {
-                gdk_cairo_set_source_rgba (cr, y >= limit ? &base->colors[FG_COLOR1] : &base->colors[FG_COLOR2]);
+                const GdkRGBA *color = (y >= limit ? &base->colors[FG_COLOR1] : &base->colors[FG_COLOR2]);
+                if (active_color != color)
+                {
+                    gdk_cairo_set_source_rgba (cr, color);
+                    active_color = color;
+                }
             }
 
             /* draw rectangle */
