@@ -39,7 +39,10 @@ typedef struct
     CPUGraph        *base;
     GtkWidget       *color_buttons[NUM_COLORS];
     GtkWidget       *color_mode_combobox;
-    GtkBox          *hbox_highlight_smt, *hbox_in_terminal, *hbox_startup_notification;
+    GtkBox          *hbox_highlight_smt;
+    GtkBox          *hbox_in_terminal;
+    GtkBox          *hbox_per_core_spacing;
+    GtkBox          *hbox_startup_notification;
     GtkToggleButton *per_core, *show_bars_checkbox;
     GtkLabel        *smt_stats;
     gchar           *smt_stats_tooltip;
@@ -100,6 +103,9 @@ static void    setup_color_mode_option       (GtkBox          *vbox,
 static void    setup_load_threshold_option   (GtkBox          *vbox,
                                               GtkSizeGroup    *sg,
                                               CPUGraph        *base);
+static GtkBox* setup_per_core_spacing_option (GtkBox          *vbox,
+                                              GtkSizeGroup    *sg,
+                                              CPUGraph        *base);
 
 static void    change_in_terminal            (GtkToggleButton *button,
                                               CPUGraphOptions *data);
@@ -135,7 +141,9 @@ static void    change_bars                   (GtkToggleButton *button,
                                               CPUGraphOptions *data);
 static void    change_per_core               (GtkToggleButton *button,
                                               CPUGraphOptions *data);
-static void    change_size                   (GtkSpinButton   *sb,
+static void    change_per_core_spacing       (GtkSpinButton   *button,
+                                              CPUGraph        *base);
+static void    change_size                   (GtkSpinButton   *button,
                                               CPUGraph        *base);
 static void    change_smt                    (GtkToggleButton *button,
                                               CPUGraphOptions *data);
@@ -145,7 +153,7 @@ static void    change_update                 (GtkComboBox     *om,
                                               CPUGraphOptions *data);
 static void    change_core                   (GtkComboBox     *combo,
                                               CPUGraphOptions *data);
-static void    change_load_threshold         (GtkSpinButton   *sb,
+static void    change_load_threshold         (GtkSpinButton   *button,
                                               CPUGraph        *base);
 static gboolean update_cb                    (CPUGraphOptions *data);
 
@@ -183,7 +191,6 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     setup_tracked_core_option (vbox, sg, dlg_data);
     setup_size_option (vbox, sg, plugin, base);
     setup_load_threshold_option (vbox, sg, base);
-    create_check_box (vbox, sg, _("Use non-linear time-scale"), base->non_linear, change_time_scale, dlg_data, NULL);
 
     gtk_box_pack_start (vbox, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, BORDER/2);
     setup_command_option (vbox, sg, dlg_data);
@@ -205,6 +212,11 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
                                                      NULL);
     setup_color_option (vbox, sg, dlg_data, SMT_ISSUES_COLOR, _("SMT issues color:"), smt_issues_tooltip, change_color_5);
 
+    gtk_box_pack_start (vbox, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, BORDER/2);
+    create_check_box (vbox, sg, _("Use non-linear time-scale"), base->non_linear, change_time_scale, dlg_data, NULL);
+    create_check_box (vbox, sg, _("Per-core history graphs"), base->per_core, change_per_core, dlg_data, &dlg_data->per_core);
+    dlg_data->hbox_per_core_spacing  = setup_per_core_spacing_option (vbox, sg, base);
+
     vbox2 = create_tab ();
     setup_color_option (vbox2, sg, dlg_data, FG_COLOR1, _("Color 1:"), NULL, change_color_1);
     setup_color_option (vbox2, sg, dlg_data, FG_COLOR2, _("Color 2:"), NULL, change_color_2);
@@ -220,7 +232,6 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     gtk_box_pack_start (vbox2, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, BORDER/2);
     create_check_box (vbox2, sg, _("Show frame"), base->has_frame, change_frame, dlg_data, NULL);
     create_check_box (vbox2, sg, _("Show border"), base->has_border, change_border, dlg_data, NULL);
-    create_check_box (vbox2, sg, _("Per-core history graphs"), base->per_core, change_per_core, dlg_data, &dlg_data->per_core);
 
     vbox3 = create_tab ();
     dlg_data->smt_stats = create_label_line (vbox3, "");
@@ -415,6 +426,20 @@ setup_load_threshold_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base)
     g_signal_connect (threshold, "value-changed", G_CALLBACK (change_load_threshold), base);
 }
 
+static GtkBox*
+setup_per_core_spacing_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base)
+{
+    GtkBox *hbox;
+    GtkWidget *spacing;
+
+    hbox = create_option_line (vbox, sg, _("Spacing:"), NULL);
+    spacing = gtk_spin_button_new_with_range (PER_CORE_SPACING_MIN, PER_CORE_SPACING_MAX, 1);
+    gtk_spin_button_set_value (GTK_SPIN_BUTTON (spacing), base->per_core_spacing);
+    gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (spacing), FALSE, FALSE, 0);
+    g_signal_connect (spacing, "value-changed", G_CALLBACK (change_per_core_spacing), base);
+    return hbox;
+}
+
 static void
 setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraphOptions *data)
 {
@@ -569,13 +594,14 @@ update_sensitivity (const CPUGraphOptions *data)
 {
     const CPUGraph *base = data->base;
     const gboolean default_command = (base->command == NULL);
+    const gboolean per_core = base->nr_cores > 1 && base->tracked_core == 0 && base->mode != MODE_DISABLED;
 
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_highlight_smt),
                               base->has_bars && base->topology && base->topology->smt);
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_in_terminal), !default_command);
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_startup_notification), !default_command);
-    gtk_widget_set_sensitive (GTK_WIDGET (data->per_core),
-                              base->nr_cores > 1 && base->tracked_core == 0 && base->mode != MODE_DISABLED);
+    gtk_widget_set_sensitive (GTK_WIDGET (data->per_core), per_core);
+    gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_per_core_spacing), per_core && base->per_core);
 
     gtk_widget_set_sensitive (gtk_widget_get_parent (data->color_buttons[FG_COLOR2]),
                               base->color_mode != 0 || base->mode == MODE_LED || base->mode == MODE_GRID);
@@ -659,9 +685,15 @@ change_per_core (GtkToggleButton *button, CPUGraphOptions *data)
 }
 
 static void
-change_size (GtkSpinButton *sb, CPUGraph *base)
+change_per_core_spacing (GtkSpinButton *button, CPUGraph *base)
 {
-    set_size (base, gtk_spin_button_get_value_as_int (sb));
+    set_per_core_spacing (base, gtk_spin_button_get_value_as_int (button));
+}
+
+static void
+change_size (GtkSpinButton *button, CPUGraph *base)
+{
+    set_size (base, gtk_spin_button_get_value_as_int (button));
 }
 
 static void
@@ -672,9 +704,9 @@ change_smt (GtkToggleButton *button, CPUGraphOptions *data)
 }
 
 static void
-change_load_threshold (GtkSpinButton *sb, CPUGraph *base)
+change_load_threshold (GtkSpinButton *button, CPUGraph *base)
 {
-    set_load_threshold (base, gtk_spin_button_get_value (sb) / 100);
+    set_load_threshold (base, gtk_spin_button_get_value (button) / 100);
 }
 
 static void change_time_scale (GtkToggleButton *button, CPUGraphOptions *data)

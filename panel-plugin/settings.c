@@ -60,6 +60,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     gboolean highlight_smt = HIGHLIGHT_SMT_BY_DEFAULT;
     gboolean nonlinear = FALSE;
     gboolean per_core = FALSE;
+    guint per_core_spacing = PER_CORE_SPACING_DEFAULT;
     guint tracked_core = 0;
 
     GdkRGBA colors[NUM_COLORS];
@@ -95,6 +96,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
             bars = xfce_rc_read_int_entry (rc, "Bars", bars);
             highlight_smt = xfce_rc_read_int_entry (rc, "SmtIssues", highlight_smt);
             per_core = xfce_rc_read_int_entry (rc, "PerCore", per_core);
+            per_core_spacing = xfce_rc_read_int_entry (rc, "PerCoreSpacing", per_core_spacing);
             tracked_core = xfce_rc_read_int_entry (rc, "TrackedCore", tracked_core);
             load_threshold = xfce_rc_read_int_entry (rc, "LoadThreshold", load_threshold);
 
@@ -159,6 +161,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     set_mode (base, mode);
     set_nonlinear_time (base, nonlinear);
     set_per_core (base, per_core);
+    set_per_core_spacing (base, per_core_spacing);
     set_size (base, size);
     set_smt (base, highlight_smt);
     set_startup_notification (base, startup_notification);
@@ -230,6 +233,11 @@ write_settings (XfcePanelPlugin *plugin, CPUGraph *base)
         xfce_rc_write_int_entry (rc, "SmtIssues", base->highlight_smt ? 1 : 0);
     else
         xfce_rc_delete_entry (rc, "SmtIssues", FALSE);
+
+    if (base->per_core_spacing != PER_CORE_SPACING_DEFAULT)
+        xfce_rc_write_int_entry (rc, "PerCoreSpacing", base->per_core_spacing);
+    else
+        xfce_rc_delete_entry (rc, "PerCoreSpacing", FALSE);
 
     xfce_rc_close (rc);
 }
