@@ -373,7 +373,7 @@ setup_tracked_core_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraphOptions *data
 
     items[0] = _("All");
     for (i = 1; i < nb_items; i++)
-        items[i] = g_strdup_printf ("%u", i);
+        items[i] = g_strdup_printf ("%u", i-1);
 
     create_drop_down (vbox, sg, _("Tracked Core:"), (const gchar **) items, nb_items,
                       data->base->tracked_core, change_core, data);
