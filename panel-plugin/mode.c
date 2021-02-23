@@ -60,10 +60,10 @@ mix_colors (gdouble ratio, GdkRGBA *color1, GdkRGBA *color2, cairo_t *target)
  * The timestampts range from 'timestamp' to timestamp+step*(count-1).
  */
 static void
-nearest_loads (const CPUGraph *base, gint64 start, gint64 step, gssize count, gfloat *out)
+nearest_loads (const CPUGraph *base, guint core, gint64 start, gint64 step, gssize count, gfloat *out)
 {
     const gssize history_cap_pow2 = base->history.cap_pow2;
-    const CpuLoad *history_data = base->history.data;
+    const CpuLoad *history_data = base->history.data[core];
     const gssize history_mask = base->history.mask;
     const gssize history_offset = base->history.offset;
 
@@ -175,7 +175,7 @@ nearest_loads (const CPUGraph *base, gint64 start, gint64 step, gssize count, gf
 }
 
 void
-draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h)
+draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 {
     gint x, y;
     gint tmp;
@@ -189,8 +189,8 @@ draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h)
     if (base->color_mode == 0)
         gdk_cairo_set_source_rgba (cr, &base->colors[FG_COLOR1]);
 
-    t0 = base->history.data[base->history.offset].timestamp;
-    nearest_loads (base, t0, -step, w, nearest);
+    t0 = base->history.data[core][base->history.offset].timestamp;
+    nearest_loads (base, core, t0, -step, w, nearest);
 
     for (x = 0; x < w; x++)
     {
@@ -227,7 +227,7 @@ draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h)
 }
 
 void
-draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h)
+draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 {
     const gint nrx = (w + 2) / 3;
     const gint nry = (h + 1) / 2;
@@ -239,8 +239,8 @@ draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h)
     if (G_UNLIKELY (base->history.data == NULL))
         return;
 
-    t0 = base->history.data[base->history.offset].timestamp;
-    nearest_loads (base, t0, -step, nrx, nearest);
+    t0 = base->history.data[core][base->history.offset].timestamp;
+    nearest_loads (base, core, t0, -step, nrx, nearest);
 
     for (x = 0; x * 3 < w; x++)
     {
@@ -277,14 +277,14 @@ draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h)
 }
 
 void
-draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h)
+draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 {
     gfloat usage;
 
     if (G_UNLIKELY (base->history.data == NULL))
         return;
 
-    usage = base->history.data[base->history.offset].value;
+    usage = base->history.data[core][base->history.offset].value;
 
     if (usage < base->load_threshold)
         usage = 0;
@@ -314,7 +314,7 @@ draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h)
 }
 
 void
-draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h)
+draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 {
     const gfloat thickness = 1.75f;
     gint x, y;
@@ -326,8 +326,8 @@ draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h)
     if (G_UNLIKELY (base->history.data == NULL))
         return;
 
-    t0 = base->history.data[base->history.offset].timestamp;
-    nearest_loads (base, t0, -step, w, nearest);
+    t0 = base->history.data[core][base->history.offset].timestamp;
+    nearest_loads (base, core, t0, -step, w, nearest);
 
     gdk_cairo_set_source_rgba (cr, &base->colors[FG_COLOR1]);
     cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);

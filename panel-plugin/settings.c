@@ -52,13 +52,14 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     XfceRc *rc;
 
     CPUGraphUpdateRate rate = RATE_NORMAL;
-    gboolean nonlinear = FALSE;
     CPUGraphMode mode = MODE_NORMAL;
     guint color_mode = 0;
-    gboolean frame = FALSE;
-    gboolean border = TRUE;
     gboolean bars = TRUE;
+    gboolean border = TRUE;
+    gboolean frame = FALSE;
     gboolean highlight_smt = HIGHLIGHT_SMT_BY_DEFAULT;
+    gboolean nonlinear = FALSE;
+    gboolean per_core = FALSE;
     guint tracked_core = 0;
 
     GdkRGBA colors[NUM_COLORS];
@@ -93,6 +94,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
             border = xfce_rc_read_int_entry (rc, "Border", border);
             bars = xfce_rc_read_int_entry (rc, "Bars", bars);
             highlight_smt = xfce_rc_read_int_entry (rc, "SmtIssues", highlight_smt);
+            per_core = xfce_rc_read_int_entry (rc, "PerCore", per_core);
             tracked_core = xfce_rc_read_int_entry (rc, "TrackedCore", tracked_core);
             load_threshold = xfce_rc_read_int_entry (rc, "LoadThreshold", load_threshold);
 
@@ -144,23 +146,24 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
         }
     }
 
-    set_update_rate (base, rate);
-    set_nonlinear_time (base, nonlinear);
-    set_size (base, size);
-    set_mode (base, mode);
+    set_bars (base, bars);
+    set_border (base, border);
+    for (i = 0; i < NUM_COLORS; i++)
+        set_color (base, i, colors[i]);
     set_color_mode (base, color_mode);
-    set_frame (base, frame);
     if (command)
         set_command (base, command);
     set_in_terminal (base, in_terminal);
-    set_startup_notification (base, startup_notification);
-    set_border (base, border);
-    set_tracked_core (base, tracked_core);
-    set_bars (base, bars);
-    set_smt (base, highlight_smt);
-    for (i = 0; i < NUM_COLORS; i++)
-        set_color (base, i, colors[i]);
+    set_frame (base, frame);
     set_load_threshold (base, load_threshold * 0.01f);
+    set_mode (base, mode);
+    set_nonlinear_time (base, nonlinear);
+    set_per_core (base, per_core);
+    set_size (base, size);
+    set_smt (base, highlight_smt);
+    set_startup_notification (base, startup_notification);
+    set_tracked_core (base, tracked_core);
+    set_update_rate (base, rate);
     g_free (command);
 }
 
@@ -187,6 +190,7 @@ write_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     xfce_rc_write_int_entry (rc, "Frame", base->has_frame ? 1 : 0);
     xfce_rc_write_int_entry (rc, "Border", base->has_border ? 1 : 0);
     xfce_rc_write_int_entry (rc, "Bars", base->has_bars ? 1 : 0);
+    xfce_rc_write_int_entry (rc, "PerCore", base->per_core ? 1 : 0);
     xfce_rc_write_int_entry (rc, "TrackedCore", base->tracked_core);
     if (base->command)
         xfce_rc_write_entry (rc, "Command", base->command);

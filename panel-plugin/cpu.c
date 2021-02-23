@@ -218,7 +218,13 @@ shutdown (XfcePanelPlugin *plugin, CPUGraph *base)
     gtk_widget_destroy (base->tooltip_text);
     if (base->timeout_id)
         g_source_remove (base->timeout_id);
-    g_free (base->history.data);
+    if (base->history.data)
+    {
+        guint core;
+        for (core = 0; core < base->nr_cores+1; core++)
+            g_free (base->history.data[core]);
+        g_free (base->history.data);
+    }
     g_free (base->command);
     g_free (base);
 }
@@ -244,23 +250,12 @@ delete_bars (CPUGraph *base)
 }
 
 static void
-clear_history (CPUGraph *base)
-{
-    gssize i;
-
-    for (i = 0; i < base->history.cap_pow2; i++)
-        base->history.data[i] = (CpuLoad) {};
-
-    queue_draw (base);
-}
-
-static void
 resize_history (CPUGraph *base, gssize history_size)
 {
     const guint fastest = get_update_interval_ms (RATE_FASTEST);
     const guint slowest = get_update_interval_ms (RATE_SLOWEST);
     gssize cap_pow2, old_cap_pow2, old_mask, old_offset;
-    CpuLoad *old_data;
+    CpuLoad **old_data;
 
     old_cap_pow2 = base->history.cap_pow2;
     old_data = base->history.data;
@@ -275,41 +270,59 @@ resize_history (CPUGraph *base, gssize history_size)
 
     if (cap_pow2 != old_cap_pow2)
     {
+        guint core;
         gssize i;
         base->history.cap_pow2 = cap_pow2;
-        base->history.data = (CpuLoad*) g_malloc0 (cap_pow2 * sizeof (CpuLoad));
+        base->history.data = (CpuLoad**) g_malloc0 ((base->nr_cores + 1) * sizeof (CpuLoad*));
+        for (core = 0; core < base->nr_cores + 1; core++)
+            base->history.data[core] = (CpuLoad*) g_malloc0 (cap_pow2 * sizeof (CpuLoad));
         base->history.mask = cap_pow2 - 1;
         base->history.offset = 0;
         if (old_data != NULL)
-            for (i = 0; i < old_cap_pow2 && i < cap_pow2; i++)
-                base->history.data[i] = old_data[(old_offset + i) & old_mask];
-        g_free (old_data);
+        {
+            for (core = 0; core < base->nr_cores+1; core++)
+            {
+                for (i = 0; i < old_cap_pow2 && i < cap_pow2; i++)
+                    base->history.data[core][i] = old_data[core][(old_offset + i) & old_mask];
+                g_free (old_data[core]);
+            }
+            g_free (old_data);
+        }
     }
 
     base->history.size = history_size;
 }
 
 static gboolean
-size_cb (XfcePanelPlugin *plugin, guint size, CPUGraph *base)
+size_cb (XfcePanelPlugin *plugin, guint plugin_size, CPUGraph *base)
 {
-    gint frame_h, frame_v;
+    gint frame_h, frame_v, size;
     gssize history;
     GtkOrientation orientation;
-    gint shadow_width = base->has_frame ? 2*1 : 0;
+    guint border_width;
+    const gint shadow_width = base->has_frame ? 2*1 : 0;
+
+    size = base->size;
+    if (base->per_core && base->nr_cores >= 2)
+    {
+        size *= base->nr_cores;
+        if (base->has_border)
+            size += (base->nr_cores - 1) * 1;
+    }
 
     orientation = xfce_panel_plugin_get_orientation (plugin);
 
     if (orientation == GTK_ORIENTATION_HORIZONTAL)
     {
-        frame_h = base->size + shadow_width;
-        frame_v = size;
+        frame_h = size + shadow_width;
+        frame_v = plugin_size;
         history = base->size;
     }
     else
     {
-        frame_h = size;
-        frame_v = base->size + shadow_width;
-        history = size;
+        frame_h = plugin_size;
+        frame_v = size + shadow_width;
+        history = plugin_size;
     }
 
     /* Expand history size for the non-linear time-scale mode.
@@ -330,6 +343,13 @@ size_cb (XfcePanelPlugin *plugin, guint size, CPUGraph *base)
         base->bars.orientation = orientation;
         set_bars_size (base);
     }
+
+    if (base->has_border)
+        border_width = (xfce_panel_plugin_get_size (base->plugin) > 26 ? 2 : 1);
+    else
+        border_width = 0;
+    gtk_container_set_border_width (GTK_CONTAINER (base->box), border_width);
+
     set_border (base, base->has_border);
 
     return TRUE;
@@ -589,20 +609,20 @@ update_cb (gpointer user_data)
 
     detect_smt_issues (base);
 
-    if (base->tracked_core > base->nr_cores)
-        base->cpu_data[0].load = 0;
-    else if (base->tracked_core != 0 && G_LIKELY (base->tracked_core < base->nr_cores + 1))
-        base->cpu_data[0].load = base->cpu_data[base->tracked_core].load;
-
     if (base->history.data != NULL)
     {
-        CpuLoad load;
+        const gint64 timestamp = g_get_real_time ();
+        guint core;
 
-        /* Prepend a datapoint to the history */
+        /* Prepend the current CPU load to the history */
         base->history.offset = (base->history.offset - 1) & base->history.mask;
-        load.timestamp = g_get_real_time ();
-        load.value = base->cpu_data[0].load;
-        base->history.data[base->history.offset] = load;
+        for (core = 0; core < base->nr_cores+1; core++)
+        {
+            CpuLoad load;
+            load.timestamp = timestamp;
+            load.value = base->cpu_data[core].load;
+            base->history.data[core][base->history.offset] = load;
+        }
     }
 
     queue_draw (base);
@@ -633,34 +653,88 @@ draw_area_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
     CPUGraph *base = (CPUGraph *) data;
     GtkAllocation alloc;
     gint w, h;
+    void (*draw) (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core) = NULL;
 
     gtk_widget_get_allocation (base->draw_area, &alloc);
     w = alloc.width;
     h = alloc.height;
-
-    if (base->colors[BG_COLOR].alpha != 0)
-    {
-        gdk_cairo_set_source_rgba (cr, &base->colors[BG_COLOR]);
-        cairo_rectangle (cr, 0, 0, w, h);
-        cairo_fill (cr);
-    }
 
     switch (base->mode)
     {
         case MODE_DISABLED:
             break;
         case MODE_NORMAL:
-            draw_graph_normal (base, cr, w, h);
+            draw = draw_graph_normal;
             break;
         case MODE_LED:
-            draw_graph_LED (base, cr, w, h);
+            draw = draw_graph_LED;
             break;
         case MODE_NO_HISTORY:
-            draw_graph_no_history (base, cr, w, h);
+            draw = draw_graph_no_history;
             break;
         case MODE_GRID:
-            draw_graph_grid (base, cr, w, h);
+            draw = draw_graph_grid;
             break;
+    }
+
+    if (draw)
+    {
+        if (!base->per_core || base->nr_cores == 1)
+        {
+            guint core;
+
+            if (base->colors[BG_COLOR].alpha != 0)
+            {
+                gdk_cairo_set_source_rgba (cr, &base->colors[BG_COLOR]);
+                cairo_rectangle (cr, 0, 0, w, h);
+                cairo_fill (cr);
+            }
+
+            core = base->tracked_core;
+            if (G_UNLIKELY (core > base->nr_cores+1))
+                core = 0;
+            draw (base, cr, w, h, core);
+        }
+        else
+        {
+            guint core;
+            gboolean horizontal;
+            gint w1, h1;
+
+            horizontal = (xfce_panel_plugin_get_orientation (base->plugin) == GTK_ORIENTATION_HORIZONTAL);
+            if (horizontal)
+            {
+                w1 = base->size;
+                h1 = h;
+            }
+            else
+            {
+                w1 = w;
+                h1 = base->size;
+            }
+
+            for (core = 0; core < base->nr_cores; core++)
+            {
+                cairo_save (cr);
+                {
+                    cairo_rectangle_t translation = {};
+                    *(horizontal ? &translation.x : &translation.y) = core * (base->size + (base->has_border ? 1 : 0));
+                    cairo_translate (cr, translation.x, translation.y);
+
+                    if (base->colors[BG_COLOR].alpha != 0)
+                    {
+                        gdk_cairo_set_source_rgba (cr, &base->colors[BG_COLOR]);
+                        cairo_rectangle (cr, 0, 0, w1, h1);
+                        cairo_fill (cr);
+                    }
+
+                    cairo_rectangle (cr, 0, 0, w1, h1);
+                    cairo_clip (cr);
+                    draw (base, cr, w1, h1, core+1);
+                }
+                cairo_restore (cr);
+            }
+        }
     }
 }
 
@@ -845,11 +919,11 @@ set_bars (CPUGraph *base, gboolean bars)
 void
 set_border (CPUGraph *base, gboolean border)
 {
-    int border_width = (xfce_panel_plugin_get_size (base->plugin) > 26 ? 2 : 1);
-    base->has_border = border;
-    if (!base->has_border)
-        border_width = 0;
-    gtk_container_set_border_width (GTK_CONTAINER (base->box), border_width);
+    if (base->has_border != border)
+    {
+        base->has_border = border;
+        size_cb (base->plugin, xfce_panel_plugin_get_size (base->plugin), base);
+    }
 }
 
 void
@@ -869,6 +943,16 @@ set_nonlinear_time (CPUGraph *base, gboolean nonlinear)
     {
         base->non_linear = nonlinear;
         queue_draw (base);
+    }
+}
+
+void
+set_per_core (CPUGraph *base, gboolean per_core)
+{
+    if (base->per_core != per_core)
+    {
+        base->per_core = per_core;
+        size_cb (base->plugin, xfce_panel_plugin_get_size (base->plugin), base);
     }
 }
 
@@ -949,6 +1033,9 @@ set_color (CPUGraph *base, guint number, GdkRGBA color)
 void
 set_tracked_core (CPUGraph *base, guint core)
 {
+    if (G_UNLIKELY (core > base->nr_cores+1))
+        core = 0;
+
     if (base->tracked_core != core)
     {
         gboolean has_bars = base->has_bars;
@@ -957,8 +1044,6 @@ set_tracked_core (CPUGraph *base, guint core)
         base->tracked_core = core;
         if (has_bars)
             set_bars (base, TRUE);
-
-        clear_history (base);
     }
 }
 

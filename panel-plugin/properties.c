@@ -40,7 +40,7 @@ typedef struct
     GtkWidget       *color_buttons[NUM_COLORS];
     GtkWidget       *color_mode_combobox;
     GtkBox          *hbox_highlight_smt, *hbox_in_terminal, *hbox_startup_notification;
-    GtkToggleButton *show_bars_checkbox;
+    GtkToggleButton *per_core, *show_bars_checkbox;
     GtkLabel        *smt_stats;
     gchar           *smt_stats_tooltip;
     guint           timeout_id;
@@ -133,6 +133,8 @@ static void    change_border                 (GtkToggleButton *button,
                                               CPUGraphOptions *data);
 static void    change_bars                   (GtkToggleButton *button,
                                               CPUGraphOptions *data);
+static void    change_per_core               (GtkToggleButton *button,
+                                              CPUGraphOptions *data);
 static void    change_size                   (GtkSpinButton   *sb,
                                               CPUGraph        *base);
 static void    change_smt                    (GtkToggleButton *button,
@@ -218,6 +220,7 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     gtk_box_pack_start (vbox2, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, BORDER/2);
     create_check_box (vbox2, sg, _("Show frame"), base->has_frame, change_frame, dlg_data, NULL);
     create_check_box (vbox2, sg, _("Show border"), base->has_border, change_border, dlg_data, NULL);
+    create_check_box (vbox2, sg, _("Per-core history graphs"), base->per_core, change_per_core, dlg_data, &dlg_data->per_core);
 
     vbox3 = create_tab ();
     dlg_data->smt_stats = create_label_line (vbox3, "");
@@ -571,6 +574,8 @@ update_sensitivity (const CPUGraphOptions *data)
                               base->has_bars && base->topology && base->topology->smt);
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_in_terminal), !default_command);
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_startup_notification), !default_command);
+    gtk_widget_set_sensitive (GTK_WIDGET (data->per_core),
+                              base->nr_cores > 1 && base->tracked_core == 0 && base->mode != MODE_DISABLED);
 
     gtk_widget_set_sensitive (gtk_widget_get_parent (data->color_buttons[FG_COLOR2]),
                               base->color_mode != 0 || base->mode == MODE_LED || base->mode == MODE_GRID);
@@ -582,7 +587,6 @@ update_sensitivity (const CPUGraphOptions *data)
                               base->has_bars && base->highlight_smt && base->topology && base->topology->smt);
 
     gtk_widget_set_sensitive (gtk_widget_get_parent (data->color_mode_combobox), base->mode != MODE_GRID);
-
     gtk_widget_set_sensitive (GTK_WIDGET (data->show_bars_checkbox), base->mode != MODE_DISABLED);
 }
 
@@ -648,6 +652,13 @@ change_bars (GtkToggleButton *button, CPUGraphOptions *data)
 }
 
 static void
+change_per_core (GtkToggleButton *button, CPUGraphOptions *data)
+{
+    set_per_core (data->base, gtk_toggle_button_get_active (button));
+    update_sensitivity (data);
+}
+
+static void
 change_size (GtkSpinButton *sb, CPUGraph *base)
 {
     set_size (base, gtk_spin_button_get_value_as_int (sb));
@@ -679,6 +690,11 @@ static void change_update (GtkComboBox *combo, CPUGraphOptions *data)
 static void change_core (GtkComboBox *combo, CPUGraphOptions *data)
 {
     set_tracked_core (data->base, gtk_combo_box_get_active (combo));
+    if (data->base->tracked_core != 0)
+        set_per_core (data->base, FALSE);
+    else
+        set_per_core (data->base, gtk_toggle_button_get_active (data->per_core));
+    update_sensitivity (data);
 }
 
 static gboolean
