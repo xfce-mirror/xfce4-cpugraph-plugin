@@ -112,6 +112,7 @@ typedef struct
     gboolean has_frame:1;
     gboolean highlight_smt:1;
     gboolean non_linear:1;
+    gboolean per_core:1;
 
     /* Runtime data */
     guint nr_cores;
@@ -121,7 +122,7 @@ typedef struct
         gssize size;      /* size <= cap_pow2 */
         gssize mask;      /* Equals to (cap_pow2 - 1) */
         gssize offset;    /* Circular buffer position. Range: from 0 to (cap_pow2 - 1) */
-        CpuLoad *data;    /* Circular buffer */
+        CpuLoad **data;   /* Circular buffers */
     } history;
     CpuData *cpu_data;
     Topology *topology;
@@ -139,6 +140,7 @@ void set_in_terminal (CPUGraph *base, gboolean in_terminal);
 void set_load_threshold (CPUGraph *base, gfloat threshold);
 void set_mode (CPUGraph *base, CPUGraphMode mode);
 void set_nonlinear_time (CPUGraph *base, gboolean nonlinear);
+void set_per_core (CPUGraph *base, gboolean per_core);
 void set_size (CPUGraph *base, guint width);
 void set_smt (CPUGraph * base, gboolean highlight_smt);
 void set_startup_notification (CPUGraph *base, gboolean startup_notification);
