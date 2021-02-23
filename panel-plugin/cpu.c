@@ -772,9 +772,12 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
     }
     else
     {
+        const GdkRGBA *active_color = NULL;
+        gboolean fill = FALSE;
         guint i;
         for (i = 0; i < base->nr_cores; i++)
         {
+            const GdkRGBA *color;
             const gboolean highlight = base->highlight_smt && base->cpu_data[i+1].smt_highlight;
             gfloat usage;
 
@@ -784,14 +787,26 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
             usage *= size;
 
             /* Suboptimally placed threads on SMT CPUs are optionally painted using a different color. */
-            gdk_cairo_set_source_rgba (cr, &base->colors[highlight ? SMT_ISSUES_COLOR : BARS_COLOR]);
+            color = &base->colors[highlight ? SMT_ISSUES_COLOR : BARS_COLOR];
+            if (active_color != color)
+            {
+                if (fill)
+                {
+                    cairo_fill (cr);
+                    fill = FALSE;
+                }
+                gdk_cairo_set_source_rgba (cr, color);
+                active_color = color;
+            }
 
             if (horizontal)
                 cairo_rectangle (cr, 6*i, size-usage, 4, usage);
             else
                 cairo_rectangle (cr, 0, 6*i, usage, 4);
-            cairo_fill (cr);
+            fill = TRUE;
         }
+        if (fill)
+            cairo_fill (cr);
     }
 }
 
