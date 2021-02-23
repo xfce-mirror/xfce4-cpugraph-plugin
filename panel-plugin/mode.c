@@ -317,8 +317,6 @@ void
 draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 {
     const gfloat thickness = 1.75f;
-    gint x, y;
-    point last;
     const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
     gint64 t0;
     gfloat nearest[w];
@@ -329,60 +327,69 @@ draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
     t0 = base->history.data[core][base->history.offset].timestamp;
     nearest_loads (base, core, t0, -step, w, nearest);
 
-    gdk_cairo_set_source_rgba (cr, &base->colors[FG_COLOR1]);
     cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
-    cairo_set_line_width (cr, 1);
 
-    for (x = 0; x < w; x += 6)
-    {
-        gint x1 = x;
+    /* Paint the grid using a single call to cairo_stroke() */
+    if (G_LIKELY (base->colors[FG_COLOR1].alpha != 0.0)) {
+        gint x, y;
 
-        if (base->non_linear)
+        cairo_save (cr);
+        cairo_set_line_width (cr, 1);
+        gdk_cairo_set_source_rgba (cr, &base->colors[FG_COLOR1]);
+        for (x = 0; x < w; x += 6)
         {
-            x1 *= pow (1.02, x1);
-            if (x1 >= w)
-                break;
+            gint x1 = x;
+
+            if (base->non_linear)
+            {
+                x1 *= pow (1.02, x1);
+                if (x1 >= w)
+                    break;
+            }
+
+            /* draw vertical line */
+            cairo_move_to (cr, w - 1 - x1 + 0.5, 0.5);
+            cairo_line_to (cr, w - 1 - x1 + 0.5, h - 1 + 0.5);
         }
-
-        /* draw vertical line */
-        cairo_move_to (cr, w - 1 - x1 + 0.5, 0.5);
-        cairo_line_to (cr, w - 1 - x1 + 0.5, h - 1 + 0.5);
+        for (y = 0; y < h; y += 4)
+        {
+            /* draw horizontal line */
+            cairo_move_to (cr, 0.5, h - 1 - y + 0.5);
+            cairo_line_to (cr, w - 1  + 0.5, h - 1 - y + 0.5);
+        }
         cairo_stroke (cr);
+        cairo_restore (cr);
     }
 
-    for (y = 0; y < h; y += 4)
-    {
-        /* draw horizontal line */
-        cairo_move_to (cr, 0.5, h - 1 - y + 0.5);
-        cairo_line_to (cr, w - 1  + 0.5, h - 1 - y + 0.5);
-        cairo_stroke (cr);
-    }
+    /* Paint a line on top of the grid, using a single call to cairo_stroke() */
+    if (G_LIKELY (base->colors[2].alpha != 0.0)) {
+        point last = {};
+        gint x;
 
-    gdk_cairo_set_source_rgba (cr, &base->colors[2]);
+        cairo_save (cr);
+        cairo_set_line_width (cr, thickness);
+        gdk_cairo_set_source_rgba (cr, &base->colors[2]);
+        for (x = 0; x < w; x++)
+        {
+            gfloat load, usage;
+            point current;
 
-    cairo_save (cr);
-    cairo_set_line_width (cr, thickness);
-    last = (point) {};
-    for (x = 0; x < w; x++)
-    {
-        gfloat load, usage;
-        point current;
+            load = nearest[w - 1 - x];
+            if (load < base->load_threshold)
+                load = 0;
+            usage = h * load;
 
-        load = nearest[w - 1 - x];
-        if (load < base->load_threshold)
-            load = 0;
-        usage = h * load;
+            current.x = x;
+            current.y = h + (thickness-1)/2 - usage;
+            if (x == 0)
+                last = current;
 
-        current.x = x;
-        current.y = h + (thickness-1)/2 - usage;
-        if (x == 0)
+            /* draw line */
+            cairo_move_to (cr, last.x + 0.5, last.y + 0.5);
+            cairo_line_to (cr, current.x + 0.5, current.y + 0.5);
             last = current;
-
-        /* draw line */
-        cairo_move_to (cr, last.x + 0.5, last.y + 0.5);
-        cairo_line_to (cr, current.x + 0.5, current.y + 0.5);
+        }
         cairo_stroke (cr);
-        last = current;
+        cairo_restore (cr);
     }
-    cairo_restore (cr);
 }
