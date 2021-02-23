@@ -39,6 +39,9 @@
 #define MAX_SIZE 128
 #define MIN_SIZE 10
 #define NONLINEAR_MODE_BASE 1.04
+#define PER_CORE_SPACING_DEFAULT 1
+#define PER_CORE_SPACING_MAX 3
+#define PER_CORE_SPACING_MIN 0
 
 typedef enum
 {
@@ -102,6 +105,7 @@ typedef struct
     GdkRGBA colors[NUM_COLORS];
     guint tracked_core;    /* 0 means "all CPU cores", an x >= 1 means "CPU core x-1" */
     gfloat load_threshold; /* Range: from 0.0 to MAX_LOAD_THRESHOLD */
+    guint per_core_spacing;
 
     /* Boolean settings */
     gboolean command_in_terminal:1;
@@ -141,6 +145,7 @@ void set_load_threshold (CPUGraph *base, gfloat threshold);
 void set_mode (CPUGraph *base, CPUGraphMode mode);
 void set_nonlinear_time (CPUGraph *base, gboolean nonlinear);
 void set_per_core (CPUGraph *base, gboolean per_core);
+void set_per_core_spacing (CPUGraph *base, guint spacing);
 void set_size (CPUGraph *base, guint width);
 void set_smt (CPUGraph * base, gboolean highlight_smt);
 void set_startup_notification (CPUGraph *base, gboolean startup_notification);

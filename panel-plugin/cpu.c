@@ -134,6 +134,7 @@ create_gui (XfcePanelPlugin *plugin)
     base->has_barcolor = FALSE;
     base->bars.orientation = orientation;
     base->highlight_smt = HIGHLIGHT_SMT_BY_DEFAULT;
+    base->per_core_spacing = PER_CORE_SPACING_DEFAULT;
 
     mode_cb (plugin, (XfcePanelPluginMode) orientation, base);
     gtk_widget_show_all (ebox);
@@ -306,8 +307,7 @@ size_cb (XfcePanelPlugin *plugin, guint plugin_size, CPUGraph *base)
     if (base->per_core && base->nr_cores >= 2)
     {
         size *= base->nr_cores;
-        if (base->has_border)
-            size += (base->nr_cores - 1) * 1;
+        size += (base->nr_cores - 1) * base->per_core_spacing;
     }
 
     orientation = xfce_panel_plugin_get_orientation (plugin);
@@ -718,7 +718,7 @@ draw_area_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
                 cairo_save (cr);
                 {
                     cairo_rectangle_t translation = {};
-                    *(horizontal ? &translation.x : &translation.y) = core * (base->size + (base->has_border ? 1 : 0));
+                    *(horizontal ? &translation.x : &translation.y) = core * (base->size + base->per_core_spacing);
                     cairo_translate (cr, translation.x, translation.y);
 
                     if (base->colors[BG_COLOR].alpha != 0)
@@ -967,6 +967,21 @@ set_per_core (CPUGraph *base, gboolean per_core)
     if (base->per_core != per_core)
     {
         base->per_core = per_core;
+        size_cb (base->plugin, xfce_panel_plugin_get_size (base->plugin), base);
+    }
+}
+
+void
+set_per_core_spacing (CPUGraph *base, guint spacing)
+{
+    if (G_UNLIKELY (spacing < PER_CORE_SPACING_MIN))
+        spacing = PER_CORE_SPACING_MIN;
+    if (G_UNLIKELY (spacing > PER_CORE_SPACING_MAX))
+        spacing = PER_CORE_SPACING_MAX;
+
+    if (base->per_core_spacing != spacing)
+    {
+        base->per_core_spacing = spacing;
         size_cb (base->plugin, xfce_panel_plugin_get_size (base->plugin), base);
     }
 }
