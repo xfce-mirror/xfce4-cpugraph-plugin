@@ -100,7 +100,7 @@ typedef struct
     guint color_mode;
     gchar *command;
     GdkRGBA colors[NUM_COLORS];
-    guint tracked_core;
+    guint tracked_core;    /* 0 means "all CPU cores", an x >= 1 means "CPU core x-1" */
     gfloat load_threshold; /* Range: from 0.0 to MAX_LOAD_THRESHOLD */
 
     /* Boolean settings */
