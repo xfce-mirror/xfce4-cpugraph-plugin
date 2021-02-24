@@ -146,24 +146,20 @@ create_gui (XfcePanelPlugin *plugin)
 static void
 about_cb (XfcePanelPlugin *plugin, CPUGraph *base)
 {
-    GdkPixbuf *icon;
     const gchar *auth[] = {
         "Alexander Nordfelth <alex.nordfelth@telia.com>", "gatopeich <gatoguan-os@yahoo.com>",
         "lidiriel <lidiriel@coriolys.org>","Angelo Miguel Arrifano <miknix@gmail.com>",
         "Florian Rivoal <frivoal@gmail.com>","Peter Tribble <peter.tribble@gmail.com>", NULL};
-    icon = xfce_panel_pixbuf_from_source ("xfce4-cpugraph-plugin", NULL, 32);
+
     gtk_show_about_dialog (NULL,
-        "logo", icon,
+        "logo-icon-name", "org.xfce.panel.cpugraph",
         "license", xfce_get_license_text (XFCE_LICENSE_TEXT_GPL),
         "version", PACKAGE_VERSION,
         "program-name", PACKAGE_NAME,
         "comments", _("Graphical representation of the CPU load"),
         "website", "https://docs.xfce.org/panel-plugins/xfce4-cpugraph-plugin",
-        "copyright", _("Copyright (c) 2003-2019\n"),
+        "copyright", _("Copyright (c) 2003-2021\n"),
         "authors", auth, NULL);
-
-    if (icon)
-        g_object_unref (G_OBJECT (icon));
 }
 
 static guint
