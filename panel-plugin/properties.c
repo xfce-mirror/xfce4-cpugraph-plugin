@@ -182,7 +182,7 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     g_signal_connect (dlg, "destroy", G_CALLBACK (destroy_cb), dlg_data);
     g_signal_connect (dlg, "response", G_CALLBACK (response_cb), base);
 
-    gtk_window_set_icon_name (GTK_WINDOW (dlg), "xfce4-cpugraph-plugin");
+    gtk_window_set_icon_name (GTK_WINDOW (dlg), "org.xfce.panel.cpugraph");
 
     sg = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
