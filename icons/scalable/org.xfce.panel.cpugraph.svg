@@ -6,7 +6,6 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="128"
@@ -29,15 +28,15 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="2560"
-     inkscape:window-height="1387"
+     inkscape:window-width="1920"
+     inkscape:window-height="1056"
      id="namedview44"
      showgrid="true"
      inkscape:zoom="8.0000002"
-     inkscape:cx="61.988834"
-     inkscape:cy="67.058686"
-     inkscape:window-x="0"
-     inkscape:window-y="29"
+     inkscape:cx="37.863835"
+     inkscape:cy="65.558686"
+     inkscape:window-x="2560"
+     inkscape:window-y="360"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg11300"
      inkscape:lockguides="true"
@@ -61,132 +60,6 @@
   <defs
      id="defs3">
     <linearGradient
-       id="linearGradient864">
-      <stop
-         style="stop-color:#6acc0a;stop-opacity:1"
-         offset="0"
-         id="stop860" />
-      <stop
-         style="stop-color:#6acc0a;stop-opacity:0.02459016"
-         offset="1"
-         id="stop862" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient4587">
-      <stop
-         id="stop4575"
-         offset="0"
-         style="stop-color:#d5d3cf;stop-opacity:1" />
-      <stop
-         style="stop-color:#e4e1de;stop-opacity:1"
-         offset="0.03571428"
-         id="stop4577" />
-      <stop
-         id="stop4579"
-         offset="0.07142857"
-         style="stop-color:#d5d3cf;stop-opacity:1" />
-      <stop
-         style="stop-color:#d5d3cf;stop-opacity:1"
-         offset="0.9285714"
-         id="stop4581" />
-      <stop
-         id="stop4583"
-         offset="0.96428573"
-         style="stop-color:#e4e1de;stop-opacity:1" />
-      <stop
-         id="stop4585"
-         offset="1"
-         style="stop-color:#d2d8dc;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient4559">
-      <stop
-         id="stop4555"
-         offset="0"
-         style="stop-color:#00aad7;stop-opacity:1" />
-      <stop
-         id="stop4557"
-         offset="1"
-         style="stop-color:#00aad7;stop-opacity:0" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient4594">
-      <stop
-         style="stop-color:#6b96f9;stop-opacity:1"
-         offset="0"
-         id="stop4590" />
-      <stop
-         style="stop-color:#6b96f9;stop-opacity:0"
-         offset="1"
-         id="stop4592" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient1076">
-      <stop
-         style="stop-color:#d5d3cf;stop-opacity:1"
-         offset="0"
-         id="stop1064" />
-      <stop
-         id="stop1066"
-         offset="0.03571428"
-         style="stop-color:#e4e1de;stop-opacity:1" />
-      <stop
-         style="stop-color:#d5d3cf;stop-opacity:1"
-         offset="0.07142857"
-         id="stop1068" />
-      <stop
-         id="stop1070"
-         offset="0.9285714"
-         style="stop-color:#d5d3cf;stop-opacity:1" />
-      <stop
-         style="stop-color:#e4e1de;stop-opacity:1"
-         offset="0.96428573"
-         id="stop1072" />
-      <stop
-         style="stop-color:#d5d3cf;stop-opacity:1"
-         offset="1"
-         id="stop1074" />
-    </linearGradient>
-    <linearGradient
-       xlink:href="#linearGradient1076"
-       id="linearGradient1444-2-3-2"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.25,0,0,0.25,-22,109.00903)"
-       x1="120"
-       y1="619.96387"
-       x2="568"
-       y2="619.96387" />
-    <linearGradient
-       xlink:href="#linearGradient985"
-       id="linearGradient1106-8"
-       x1="335.86829"
-       y1="33.559235"
-       x2="112.13174"
-       y2="33.559235"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.25,0,0,0.25,-12,225)" />
-    <linearGradient
-       id="linearGradient985">
-      <stop
-         id="stop981"
-         offset="0"
-         style="stop-color:#f9f06b;stop-opacity:1" />
-      <stop
-         id="stop983"
-         offset="1"
-         style="stop-color:#f9f06b;stop-opacity:0" />
-    </linearGradient>
-    <radialGradient
-       xlink:href="#linearGradient1020"
-       id="radialGradient1030"
-       cx="64.846146"
-       cy="194.19048"
-       fx="64.846146"
-       fy="194.19048"
-       r="44"
-       gradientTransform="matrix(-4.7272726,1.1058296e-6,-3.0301491e-7,-1.2272727,250.54547,-21.6754)"
-       gradientUnits="userSpaceOnUse" />
-    <linearGradient
        id="linearGradient1020"
        osb:paint="gradient">
       <stop
@@ -198,70 +71,6 @@
          offset="1"
          id="stop1018" />
     </linearGradient>
-    <linearGradient
-       y2="619.96387"
-       x2="568"
-       y1="619.96387"
-       x1="120"
-       gradientTransform="matrix(0.25,0,0,0.25,-22.00001,-50.99097)"
-       gradientUnits="userSpaceOnUse"
-       id="linearGradient1444-2-3-3"
-       xlink:href="#linearGradient4587" />
-    <radialGradient
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(-4.1363634,1.2532736e-6,-2.6513804e-7,-1.3909091,325.22728,170.63455)"
-       r="44"
-       fy="194.19048"
-       fx="63.999996"
-       cy="194.19048"
-       cx="63.999996"
-       id="radialGradient1030-8"
-       xlink:href="#linearGradient1020" />
-    <linearGradient
-       gradientTransform="matrix(0.25,0,0,0.36538463,3.9999999,47.000002)"
-       gradientUnits="userSpaceOnUse"
-       y2="33.559235"
-       x2="104"
-       y1="33.559235"
-       x1="184"
-       id="linearGradient1106-2"
-       xlink:href="#linearGradient4559" />
-    <linearGradient
-       gradientTransform="matrix(0.25,0,0,0.36538463,4.000001,47.000004)"
-       gradientUnits="userSpaceOnUse"
-       y2="33.559235"
-       x2="104"
-       y1="33.559235"
-       x1="184"
-       id="linearGradient1106-2-3"
-       xlink:href="#linearGradient4594" />
-    <linearGradient
-       gradientTransform="matrix(0.25,0,0,0.36538463,4.000001,46.999997)"
-       gradientUnits="userSpaceOnUse"
-       y2="33.559235"
-       x2="104"
-       y1="33.559235"
-       x1="184"
-       id="linearGradient1106-2-35"
-       xlink:href="#linearGradient4594" />
-    <linearGradient
-       gradientTransform="matrix(0.25,0,0,0.36538463,55,59.000002)"
-       gradientUnits="userSpaceOnUse"
-       y2="33.559235"
-       x2="104"
-       y1="33.559235"
-       x1="184"
-       id="linearGradient1106-2-36"
-       xlink:href="#linearGradient4594" />
-    <linearGradient
-       gradientTransform="matrix(0.25,0,0,0.36538463,4,46.000002)"
-       gradientUnits="userSpaceOnUse"
-       y2="33.559235"
-       x2="104"
-       y1="33.559235"
-       x1="184"
-       id="linearGradient1106-2-6"
-       xlink:href="#linearGradient864" />
   </defs>
   <metadata
      id="metadata4">
@@ -332,7 +141,7 @@
      ry="8.0792074"
      rx="7.9999995" />
   <rect
-     style="display:inline;opacity:1;vector-effect:none;fill:#485e6b;fill-opacity:1;stroke:none;stroke-width:0.01173339px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal;enable-background:new"
+     style="display:inline;opacity:1;vector-effect:none;fill:#344958;fill-opacity:1;stroke:none;stroke-width:0.01173339px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;paint-order:normal;enable-background:new"
      id="rect946-0-7-4"
      width="96"
      height="92"
@@ -364,11 +173,11 @@
      id="rect860"
      width="4"
      height="4"
-     x="24"
-     y="92" />
+     x="26"
+     y="94" />
   <rect
-     y="84"
-     x="24"
+     y="86"
+     x="26"
      height="4"
      width="4"
      id="rect862"
@@ -378,11 +187,11 @@
      id="rect864"
      width="4"
      height="4"
-     x="32"
-     y="84" />
+     x="34"
+     y="86" />
   <rect
-     y="92"
-     x="32"
+     y="94"
+     x="34"
      height="4"
      width="4"
      id="rect866"
@@ -392,11 +201,11 @@
      id="rect868"
      width="4"
      height="4"
-     x="32"
-     y="76" />
+     x="34"
+     y="78" />
   <rect
-     y="76"
-     x="24"
+     y="78"
+     x="26"
      height="4"
      width="4"
      id="rect870"
@@ -406,11 +215,11 @@
      id="rect872"
      width="4"
      height="4"
-     x="24"
-     y="68" />
+     x="26"
+     y="70" />
   <rect
-     y="68"
-     x="32"
+     y="70"
+     x="34"
      height="4"
      width="4"
      id="rect874"
@@ -420,11 +229,11 @@
      id="rect876"
      width="4"
      height="4"
-     x="32"
-     y="60" />
+     x="34"
+     y="62" />
   <rect
-     y="52"
-     x="32"
+     y="54"
+     x="34"
      height="4"
      width="4"
      id="rect878"
@@ -434,11 +243,11 @@
      id="rect880"
      width="4"
      height="4"
-     x="40"
-     y="52" />
+     x="42"
+     y="54" />
   <rect
-     y="60"
-     x="40"
+     y="62"
+     x="42"
      height="4"
      width="4"
      id="rect882"
@@ -448,11 +257,11 @@
      id="rect884"
      width="4"
      height="4"
-     x="40"
-     y="68" />
+     x="42"
+     y="70" />
   <rect
-     y="76"
-     x="40"
+     y="78"
+     x="42"
      height="4"
      width="4"
      id="rect886"
@@ -462,11 +271,11 @@
      id="rect888"
      width="4"
      height="4"
-     x="40"
-     y="84" />
+     x="42"
+     y="86" />
   <rect
-     y="92"
-     x="40"
+     y="94"
+     x="42"
      height="4"
      width="4"
      id="rect890"
@@ -476,11 +285,11 @@
      id="rect892"
      width="4"
      height="4"
-     x="40"
-     y="44" />
+     x="42"
+     y="46" />
   <rect
-     y="92"
-     x="48"
+     y="94"
+     x="50"
      height="4"
      width="4"
      id="rect894"
@@ -490,11 +299,11 @@
      id="rect896"
      width="4"
      height="4"
-     x="48"
-     y="84" />
+     x="50"
+     y="86" />
   <rect
-     y="84"
-     x="56"
+     y="86"
+     x="58"
      height="4"
      width="4"
      id="rect898"
@@ -504,11 +313,11 @@
      id="rect900"
      width="4"
      height="4"
-     x="56"
-     y="92" />
+     x="58"
+     y="94" />
   <rect
-     y="76"
-     x="56"
+     y="78"
+     x="58"
      height="4"
      width="4"
      id="rect902"
@@ -518,11 +327,11 @@
      id="rect904"
      width="4"
      height="4"
-     x="48"
-     y="76" />
+     x="50"
+     y="78" />
   <rect
-     y="68"
-     x="48"
+     y="70"
+     x="50"
      height="4"
      width="4"
      id="rect906"
@@ -532,18 +341,18 @@
      id="rect908"
      width="4"
      height="4"
-     x="56"
-     y="68" />
+     x="58"
+     y="70" />
   <rect
      style="opacity:1;fill:#aef766;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.02459017"
      id="rect912"
      width="4"
      height="4"
-     x="64"
-     y="76" />
+     x="66"
+     y="78" />
   <rect
-     y="84"
-     x="64"
+     y="86"
+     x="66"
      height="4"
      width="4"
      id="rect914"
@@ -553,18 +362,18 @@
      id="rect916"
      width="4"
      height="4"
-     x="64"
-     y="92" />
+     x="66"
+     y="94" />
   <rect
      style="opacity:1;fill:#aef766;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.02459017"
      id="rect918"
      width="4"
      height="4"
-     x="72"
-     y="92" />
+     x="74"
+     y="94" />
   <rect
-     y="84"
-     x="72"
+     y="86"
+     x="74"
      height="4"
      width="4"
      id="rect920"
@@ -574,11 +383,11 @@
      id="rect922"
      width="4"
      height="4"
-     x="80"
-     y="84" />
+     x="82"
+     y="86" />
   <rect
-     y="92"
-     x="80"
+     y="94"
+     x="82"
      height="4"
      width="4"
      id="rect924"
@@ -588,18 +397,18 @@
      id="rect926"
      width="4"
      height="4"
-     x="80"
-     y="76" />
+     x="82"
+     y="78" />
   <rect
-     y="76"
-     x="72"
+     y="78"
+     x="74"
      height="4"
      width="4"
      id="rect928"
      style="opacity:1;fill:#aef766;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.02459017" />
   <rect
-     y="68"
-     x="80"
+     y="70"
+     x="82"
      height="4"
      width="4"
      id="rect932"
@@ -609,11 +418,11 @@
      id="rect934"
      width="4"
      height="4"
-     x="88"
-     y="68" />
+     x="90"
+     y="70" />
   <rect
-     y="76"
-     x="88"
+     y="78"
+     x="90"
      height="4"
      width="4"
      id="rect936"
@@ -623,18 +432,18 @@
      id="rect938"
      width="4"
      height="4"
-     x="88"
-     y="84" />
+     x="90"
+     y="86" />
   <rect
-     y="92"
-     x="88"
+     y="94"
+     x="90"
      height="4"
      width="4"
      id="rect940"
      style="opacity:1;fill:#aef766;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.02459017" />
   <rect
-     y="84"
-     x="96"
+     y="86"
+     x="98"
      height="4"
      width="4"
      id="rect942"
@@ -644,11 +453,11 @@
      id="rect944"
      width="4"
      height="4"
-     x="96"
-     y="92" />
+     x="98"
+     y="94" />
   <rect
-     y="76"
-     x="96"
+     y="78"
+     x="98"
      height="4"
      width="4"
      id="rect946"
@@ -658,18 +467,18 @@
      id="rect948"
      width="4"
      height="4"
-     x="96"
-     y="68" />
+     x="98"
+     y="70" />
   <rect
      style="opacity:1;fill:#f9da02;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.02459017"
      id="rect958"
      width="4"
      height="4"
-     x="48"
-     y="60" />
+     x="50"
+     y="62" />
   <rect
-     y="52"
-     x="48"
+     y="54"
+     x="50"
      height="4"
      width="4"
      id="rect960"
@@ -679,11 +488,11 @@
      id="rect962"
      width="4"
      height="4"
-     x="48"
-     y="44" />
+     x="50"
+     y="46" />
   <rect
-     y="36"
-     x="48"
+     y="38"
+     x="50"
      height="4"
      width="4"
      id="rect964"
@@ -693,11 +502,11 @@
      id="rect966"
      width="4"
      height="4"
-     x="48"
-     y="28" />
+     x="50"
+     y="30" />
   <rect
-     y="60"
-     x="96"
+     y="62"
+     x="98"
      height="4"
      width="4"
      id="rect968"
@@ -707,11 +516,11 @@
      id="rect970"
      width="4"
      height="4"
-     x="96"
-     y="52" />
+     x="98"
+     y="54" />
   <rect
-     y="60"
-     x="88"
+     y="62"
+     x="90"
      height="4"
      width="4"
      id="rect972"
