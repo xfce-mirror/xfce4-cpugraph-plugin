@@ -1,3 +1,3 @@
-iconsdir = $(datadir)/icons/hicolor/16x16/apps
+iconsdir = $(datadir)/icons/hicolor/128x128/apps
 icons_DATA = org.xfce.panel.cpugraph.png
 EXTRA_DIST = $(icons_DATA)
