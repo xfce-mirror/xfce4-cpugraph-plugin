@@ -36,7 +36,7 @@ dnl Check for standard headers
 AC_HEADER_STDC()
 
 dnl configure the panel plugin
-XDT_CHECK_PACKAGE([LIBXFCE4UI], [libxfce4ui-2], [4.12.0])
+XDT_CHECK_PACKAGE([LIBXFCE4UI], [libxfce4ui-2], [4.14.0])
 XDT_CHECK_PACKAGE([LIBXFCE4PANEL], [libxfce4panel-2.0], [4.12.0])
 XDT_CHECK_PACKAGE([GTK], [gtk+-3.0], [3.22.0])
 
