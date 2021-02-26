@@ -169,9 +169,10 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
 
     xfce_panel_plugin_block_menu (plugin);
 
-    dlg = xfce_titled_dialog_new_with_buttons (_("CPU Graph Properties"),
+    dlg = xfce_titled_dialog_new_with_mixed_buttons (_("CPU Graph Properties"),
                                        GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (plugin))),
                                        GTK_DIALOG_DESTROY_WITH_PARENT,
+                                       "window-close-symbolic",
                                        "_Close",
                                        GTK_RESPONSE_OK,
                                        NULL);
