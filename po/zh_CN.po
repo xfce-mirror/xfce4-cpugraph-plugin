@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 00:48+0100\n"
-"PO-Revision-Date: 2021-01-13 03:04+0000\n"
+"POT-Creation-Date: 2021-02-24 00:47+0100\n"
+"PO-Revision-Date: 2021-02-27 13:12+0000\n"
 "Last-Translator: 玉堂白鹤 <yjwork@qq.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/xfce/xfce-panel-plugins/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -21,226 +21,238 @@ msgstr ""
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../panel-plugin/cpu.c:155 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.c:162 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "图形化呈现 CPU 负载"
 
-#: ../panel-plugin/cpu.c:157
+#: ../panel-plugin/cpu.c:164
 msgid "Copyright (c) 2003-2021\n"
 msgstr "版权所有 (c) 2003-2021\n"
 
-#: ../panel-plugin/cpu.c:567
+#: ../panel-plugin/cpu.c:638
 #, c-format
 msgid "Usage: %u%%"
 msgstr "使用率：%u%%"
 
-#: ../panel-plugin/properties.c:159
+#: ../panel-plugin/properties.c:172
 msgid "CPU Graph Properties"
 msgstr "CPU 图像属性"
 
-#: ../panel-plugin/properties.c:181
-msgid "Use non-linear time-scale"
-msgstr "使用非线性时间调整"
-
-#: ../panel-plugin/properties.c:185
+#: ../panel-plugin/properties.c:197
 msgid "Run in terminal"
 msgstr "在终端中运行"
 
-#: ../panel-plugin/properties.c:187
+#: ../panel-plugin/properties.c:200
 msgid "Use startup notification"
 msgstr "使用启动通知"
 
-#: ../panel-plugin/properties.c:190
+#: ../panel-plugin/properties.c:204
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
 msgstr "用于突出显示有 SMT 的 CPU上线程\n潜在的次优位置的颜色"
 
-#: ../panel-plugin/properties.c:192
+#: ../panel-plugin/properties.c:206
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
 msgstr "“总计”表示对机器整体性能的影响。"
 
-#: ../panel-plugin/properties.c:193
+#: ../panel-plugin/properties.c:207
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
 msgstr "'热点' 仅显示对次优 SMT 调度决策中涉及的线程的瞬时性能影响."
 
-#: ../panel-plugin/properties.c:196
+#: ../panel-plugin/properties.c:210
 msgid "Highlight suboptimal SMT scheduling"
 msgstr "高亮次优 SMT 调度"
 
-#: ../panel-plugin/properties.c:198
+#: ../panel-plugin/properties.c:213
 msgid "SMT issues color:"
 msgstr "SMT 问题的颜色:"
 
-#: ../panel-plugin/properties.c:201
+#: ../panel-plugin/properties.c:216
+msgid "Use non-linear time-scale"
+msgstr "使用非线性时间调整"
+
+#: ../panel-plugin/properties.c:217
+msgid "Per-core history graphs"
+msgstr "每个核心的历史图"
+
+#: ../panel-plugin/properties.c:221
 msgid "Color 1:"
 msgstr "颜色 1："
 
-#: ../panel-plugin/properties.c:202
+#: ../panel-plugin/properties.c:222
 msgid "Color 2:"
 msgstr "颜色 2："
 
-#: ../panel-plugin/properties.c:203
+#: ../panel-plugin/properties.c:223
 msgid "Color 3:"
 msgstr "颜色 3："
 
-#: ../panel-plugin/properties.c:204
+#: ../panel-plugin/properties.c:224
 msgid "Background:"
 msgstr "背景："
 
-#: ../panel-plugin/properties.c:208
+#: ../panel-plugin/properties.c:228
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "显示当前使用率栏"
 
-#: ../panel-plugin/properties.c:210
+#: ../panel-plugin/properties.c:231
 msgid "Bars color:"
 msgstr "Bars 颜色:"
 
-#: ../panel-plugin/properties.c:212
+#: ../panel-plugin/properties.c:233
 msgid "Show frame"
 msgstr "显示帧数"
 
-#: ../panel-plugin/properties.c:213
+#: ../panel-plugin/properties.c:234
 msgid "Show border"
 msgstr "显示边框"
 
-#: ../panel-plugin/properties.c:221
+#: ../panel-plugin/properties.c:241
 msgid "Appearance"
 msgstr "外观"
 
-#: ../panel-plugin/properties.c:223
+#: ../panel-plugin/properties.c:243
 msgid "Advanced"
 msgstr "高级"
 
-#: ../panel-plugin/properties.c:225
+#: ../panel-plugin/properties.c:245
 msgid "Stats"
 msgstr "统计数据"
 
-#: ../panel-plugin/properties.c:346
+#: ../panel-plugin/properties.c:369
 msgid "Fastest (~250ms)"
 msgstr "最快 (约 250 毫秒)"
 
-#: ../panel-plugin/properties.c:347
+#: ../panel-plugin/properties.c:370
 msgid "Fast (~500ms)"
 msgstr "快 (约 500 毫秒)"
 
-#: ../panel-plugin/properties.c:348
+#: ../panel-plugin/properties.c:371
 msgid "Normal (~750ms)"
 msgstr "正常 (约 750 毫秒)"
 
-#: ../panel-plugin/properties.c:349
+#: ../panel-plugin/properties.c:372
 msgid "Slow (~1s)"
 msgstr "慢(约 1 秒)"
 
-#: ../panel-plugin/properties.c:350
+#: ../panel-plugin/properties.c:373
 msgid "Slowest (~3s)"
 msgstr "最慢 (约 3 秒)"
 
-#: ../panel-plugin/properties.c:354
+#: ../panel-plugin/properties.c:377
 msgid "Update Interval:"
 msgstr "更新间隔："
 
-#: ../panel-plugin/properties.c:365
+#: ../panel-plugin/properties.c:388
 msgid "All"
 msgstr "所有"
 
-#: ../panel-plugin/properties.c:369
+#: ../panel-plugin/properties.c:392
 msgid "Tracked Core:"
 msgstr "跟踪的核心："
 
-#: ../panel-plugin/properties.c:383
+#: ../panel-plugin/properties.c:406
 msgid "Width:"
 msgstr "宽度："
 
-#: ../panel-plugin/properties.c:385
+#: ../panel-plugin/properties.c:408
 msgid "Height:"
 msgstr "高度："
 
-#: ../panel-plugin/properties.c:399
+#: ../panel-plugin/properties.c:422
 msgid "Threshold (%):"
 msgstr "阈值 (%):"
 
-#: ../panel-plugin/properties.c:412
+#: ../panel-plugin/properties.c:435
+msgid "Spacing:"
+msgstr "间距:"
+
+#: ../panel-plugin/properties.c:438
+msgid "Spacing between per-core history graphs"
+msgstr "每核心历史记录图之间的间距"
+
+#: ../panel-plugin/properties.c:450
 msgid "Associated command:"
 msgstr "绑定的命令："
 
-#: ../panel-plugin/properties.c:421
+#: ../panel-plugin/properties.c:459
 msgid "Defaults to xfce4-taskmanager, htop or top."
 msgstr "默认为 xfce4-taskmanager，htop 或 top。"
 
-#: ../panel-plugin/properties.c:443
+#: ../panel-plugin/properties.c:481
 msgid "Disabled"
 msgstr "禁用"
 
-#: ../panel-plugin/properties.c:444
+#: ../panel-plugin/properties.c:482
 msgid "Normal"
 msgstr "正常"
 
-#: ../panel-plugin/properties.c:445
+#: ../panel-plugin/properties.c:483
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:446
+#: ../panel-plugin/properties.c:484
 msgid "No history"
 msgstr "无历史"
 
-#: ../panel-plugin/properties.c:447
+#: ../panel-plugin/properties.c:485
 msgid "Grid"
 msgstr "网格"
 
-#: ../panel-plugin/properties.c:473
+#: ../panel-plugin/properties.c:511
 msgid "Mode:"
 msgstr "模式："
 
-#: ../panel-plugin/properties.c:479
+#: ../panel-plugin/properties.c:517
 msgid "Solid"
 msgstr "固定"
 
-#: ../panel-plugin/properties.c:480
+#: ../panel-plugin/properties.c:518
 msgid "Gradient"
 msgstr "梯度"
 
-#: ../panel-plugin/properties.c:481
+#: ../panel-plugin/properties.c:519
 msgid "Fire"
 msgstr "火焰"
 
-#: ../panel-plugin/properties.c:485
+#: ../panel-plugin/properties.c:523
 msgid "Color mode: "
 msgstr "颜色模式："
 
-#: ../panel-plugin/properties.c:679
+#: ../panel-plugin/properties.c:742
 msgid "SMT detected: Yes"
 msgstr "检测到SMT：是"
 
-#: ../panel-plugin/properties.c:679
+#: ../panel-plugin/properties.c:742
 msgid "SMT detected: No"
 msgstr "检测到SMT：否"
 
-#: ../panel-plugin/properties.c:704
+#: ../panel-plugin/properties.c:767
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
 msgstr "SMT 调度事件数: %u"
 
-#: ../panel-plugin/properties.c:713
+#: ../panel-plugin/properties.c:776
 #, c-format
 msgid "Estimated performance impact:"
 msgstr "估计性能影响:"
 
-#: ../panel-plugin/properties.c:714
+#: ../panel-plugin/properties.c:777
 #, c-format
 msgid "Overall: %.3g%%"
 msgstr "总计: %.3g%%"
 
-#: ../panel-plugin/properties.c:715
+#: ../panel-plugin/properties.c:778
 #, c-format
 msgid "Hotspots: %.3g%%"
 msgstr "热点: %.3g%%"
 
-#: ../panel-plugin/properties.c:728
+#: ../panel-plugin/properties.c:793
 msgid "SMT detected: N/A"
 msgstr "检测到SMT：N/A"
 
