@@ -192,7 +192,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
     glong used, total;
     glong *cp_time;
     glong *cp_time1;
-    gint i;
+    guint i;
     unsigned int max_cpu;
     gsize len = sizeof (max_cpu);
 
@@ -217,7 +217,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
         used = cp_time1[CP_USER] + cp_time1[CP_NICE] + cp_time1[CP_SYS] + cp_time1[CP_INTR];
         total = used + cp_time1[CP_IDLE];
 
-        if (used >= data[i].previous_used && total > data[i].previous_total)
+        if (used >= (gint64) data[i].previous_used && total > (gint64) data[i].previous_total)
             data[i].load = (gfloat) (used - data[i].previous_used) /
                            (gfloat) (total - data[i].previous_total);
         else
@@ -332,7 +332,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
 
 #elif defined (__sun__)
 static void
-init_stats ()
+init_stats (void)
 {
     kc = kstat_open ();
 }
