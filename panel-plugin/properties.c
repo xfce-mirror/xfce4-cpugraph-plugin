@@ -173,7 +173,7 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
                                        GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (plugin))),
                                        GTK_DIALOG_DESTROY_WITH_PARENT,
                                        "window-close-symbolic",
-                                       "_Close",
+                                       _("_Close"),
                                        GTK_RESPONSE_OK,
                                        NULL);
 
