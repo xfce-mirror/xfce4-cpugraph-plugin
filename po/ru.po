@@ -6,13 +6,13 @@
 # AlexanderFilev <avfill@outlook.com>, 2020-2021
 # AlexanderFilev <avfill@outlook.com>, 2020
 # Igor <f2404@yandex.ru>, 2019
-# Sergey Alyoshin <alyoshin.s@gmail.com>, 2016
+# Sergey Alyoshin <alyoshin.s@gmail.com>, 2016,2021
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-14 00:48+0200\n"
-"PO-Revision-Date: 2021-04-15 16:36+0000\n"
+"PO-Revision-Date: 2021-04-16 08:26+0000\n"
 "Last-Translator: Sergey Alyoshin <alyoshin.s@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/xfce/xfce-panel-plugins/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -32,11 +32,11 @@ msgstr "Copyright © 2003—2021\n"
 #: ../panel-plugin/cpu.c:634
 #, c-format
 msgid "Usage: %u%%"
-msgstr "Использовано: %u%%"
+msgstr "Загрузка: %u%%"
 
 #: ../panel-plugin/properties.c:172
 msgid "CPU Graph Properties"
-msgstr "Параметры модуля CPU Graph"
+msgstr "Параметры модуля График процессора"
 
 #: ../panel-plugin/properties.c:176
 msgid "_Close"
@@ -48,7 +48,7 @@ msgstr "Запустить в терминале"
 
 #: ../panel-plugin/properties.c:201
 msgid "Use startup notification"
-msgstr "Использовать уведомление при запуске"
+msgstr "Уведомление при запуске"
 
 #: ../panel-plugin/properties.c:205
 msgid ""
@@ -117,7 +117,7 @@ msgstr "Показывать рамку"
 
 #: ../panel-plugin/properties.c:235
 msgid "Show border"
-msgstr "Показывать рамку"
+msgstr "Показывать отступы"
 
 #: ../panel-plugin/properties.c:242
 msgid "Appearance"
@@ -133,23 +133,23 @@ msgstr "Статистика"
 
 #: ../panel-plugin/properties.c:370
 msgid "Fastest (~250ms)"
-msgstr "Очень быстрый (~250ms)"
+msgstr "Очень быстрый (≈250мс)"
 
 #: ../panel-plugin/properties.c:371
 msgid "Fast (~500ms)"
-msgstr "Быстрый (~500ms)"
+msgstr "Быстрый (≈500мс)"
 
 #: ../panel-plugin/properties.c:372
 msgid "Normal (~750ms)"
-msgstr "Нормальный (~750ms)"
+msgstr "Нормальный (≈750мс)"
 
 #: ../panel-plugin/properties.c:373
 msgid "Slow (~1s)"
-msgstr "Медленный (~1s)"
+msgstr "Медленный (≈1с)"
 
 #: ../panel-plugin/properties.c:374
 msgid "Slowest (~3s)"
-msgstr "Самый медленный (~ 3s)"
+msgstr "Очень медленный (≈3c)"
 
 #: ../panel-plugin/properties.c:378
 msgid "Update Interval:"
@@ -189,7 +189,7 @@ msgstr "Связанная команда:"
 
 #: ../panel-plugin/properties.c:460
 msgid "Defaults to xfce4-taskmanager, htop or top."
-msgstr "По умолчанию для xfce4-taskmanager, htop или top."
+msgstr "По умолчанию: xfce4-taskmanager, htop или top."
 
 #: ../panel-plugin/properties.c:482
 msgid "Disabled"
@@ -197,7 +197,7 @@ msgstr "Отключено"
 
 #: ../panel-plugin/properties.c:483
 msgid "Normal"
-msgstr "Нормальный"
+msgstr "Обычный"
 
 #: ../panel-plugin/properties.c:484
 msgid "LED"
@@ -229,7 +229,7 @@ msgstr "Пламя"
 
 #: ../panel-plugin/properties.c:524
 msgid "Color mode: "
-msgstr "Цветовой режим:"
+msgstr "Стиль:"
 
 #: ../panel-plugin/properties.c:743
 msgid "SMT detected: Yes"
