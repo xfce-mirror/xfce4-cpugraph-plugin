@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-24 00:47+0100\n"
-"PO-Revision-Date: 2021-02-26 16:08+0000\n"
-"Last-Translator: beriain\n"
+"POT-Creation-Date: 2021-04-14 00:48+0200\n"
+"PO-Revision-Date: 2021-04-13 22:48+0000\n"
+"Last-Translator: Asier Iturralde Sarasola <asier.iturralde@gmail.com>\n"
 "Language-Team: Basque (http://www.transifex.com/xfce/xfce-panel-plugins/language/eu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,15 +20,15 @@ msgstr ""
 "Language: eu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../panel-plugin/cpu.c:162 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.c:161 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "CPU lan-kargaren errepresentazio grafikoa"
 
-#: ../panel-plugin/cpu.c:164
+#: ../panel-plugin/cpu.c:163
 msgid "Copyright (c) 2003-2021\n"
 msgstr "Copyright (c) 2003-2021\n"
 
-#: ../panel-plugin/cpu.c:638
+#: ../panel-plugin/cpu.c:634
 #, c-format
 msgid "Usage: %u%%"
 msgstr "Erabilera: %u%%"
@@ -37,222 +37,226 @@ msgstr "Erabilera: %u%%"
 msgid "CPU Graph Properties"
 msgstr "CPU grafiko propietateak"
 
-#: ../panel-plugin/properties.c:197
+#: ../panel-plugin/properties.c:176
+msgid "_Close"
+msgstr "_Itxi"
+
+#: ../panel-plugin/properties.c:198
 msgid "Run in terminal"
 msgstr "Exekutatu terminalean"
 
-#: ../panel-plugin/properties.c:200
+#: ../panel-plugin/properties.c:201
 msgid "Use startup notification"
 msgstr "Erabili abioan"
 
-#: ../panel-plugin/properties.c:204
+#: ../panel-plugin/properties.c:205
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
 msgstr "SMT duten PUZetan harien kokatze azpi-optimo\npotentzialak nabarmentzeko erabili beharreko kolorea"
 
-#: ../panel-plugin/properties.c:206
+#: ../panel-plugin/properties.c:207
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
 msgstr "'Orokorra' makinaren errendimendu orokorrean eragina erakusten ari da."
 
-#: ../panel-plugin/properties.c:207
+#: ../panel-plugin/properties.c:208
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
 msgstr "'Sartze-puntuak' une bateko errendimendu eragina erakusten ari da SMT programazio erabaki azpi-optimoetan sartutako harietan soilik."
 
-#: ../panel-plugin/properties.c:210
+#: ../panel-plugin/properties.c:211
 msgid "Highlight suboptimal SMT scheduling"
 msgstr "Nabarmendu SMT programazio azpi-optimoa"
 
-#: ../panel-plugin/properties.c:213
+#: ../panel-plugin/properties.c:214
 msgid "SMT issues color:"
 msgstr "SMT arazoen kolorea:"
 
-#: ../panel-plugin/properties.c:216
+#: ../panel-plugin/properties.c:217
 msgid "Use non-linear time-scale"
 msgstr "Erabili ez-linearra"
 
-#: ../panel-plugin/properties.c:217
+#: ../panel-plugin/properties.c:218
 msgid "Per-core history graphs"
 msgstr "Muin bakoitzeko historia grafikoak"
 
-#: ../panel-plugin/properties.c:221
+#: ../panel-plugin/properties.c:222
 msgid "Color 1:"
 msgstr "1 Kolorea"
 
-#: ../panel-plugin/properties.c:222
+#: ../panel-plugin/properties.c:223
 msgid "Color 2:"
 msgstr "2 Kolorea"
 
-#: ../panel-plugin/properties.c:223
+#: ../panel-plugin/properties.c:224
 msgid "Color 3:"
 msgstr "3 Kolorea:"
 
-#: ../panel-plugin/properties.c:224
+#: ../panel-plugin/properties.c:225
 msgid "Background:"
 msgstr "Atzealdea:"
 
-#: ../panel-plugin/properties.c:228
+#: ../panel-plugin/properties.c:229
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Ikusi uneko erabilera barra"
 msgstr[1] "Ikusi uneko erabilera barrak"
 
-#: ../panel-plugin/properties.c:231
+#: ../panel-plugin/properties.c:232
 msgid "Bars color:"
 msgstr "Barra kolorea:"
 
-#: ../panel-plugin/properties.c:233
+#: ../panel-plugin/properties.c:234
 msgid "Show frame"
 msgstr "Markoa ikusi"
 
-#: ../panel-plugin/properties.c:234
+#: ../panel-plugin/properties.c:235
 msgid "Show border"
 msgstr "Ikusi ertza"
 
-#: ../panel-plugin/properties.c:241
+#: ../panel-plugin/properties.c:242
 msgid "Appearance"
 msgstr "Itxura"
 
-#: ../panel-plugin/properties.c:243
+#: ../panel-plugin/properties.c:244
 msgid "Advanced"
 msgstr "Aurreratua"
 
-#: ../panel-plugin/properties.c:245
+#: ../panel-plugin/properties.c:246
 msgid "Stats"
 msgstr "Estatistikak"
 
-#: ../panel-plugin/properties.c:369
+#: ../panel-plugin/properties.c:370
 msgid "Fastest (~250ms)"
 msgstr "Azkarrena (~250ms)"
 
-#: ../panel-plugin/properties.c:370
+#: ../panel-plugin/properties.c:371
 msgid "Fast (~500ms)"
 msgstr "Azkarra (~500ms)"
 
-#: ../panel-plugin/properties.c:371
+#: ../panel-plugin/properties.c:372
 msgid "Normal (~750ms)"
 msgstr "Arrunta (~750ms)"
 
-#: ../panel-plugin/properties.c:372
+#: ../panel-plugin/properties.c:373
 msgid "Slow (~1s)"
 msgstr "Geldoa (~1s)"
 
-#: ../panel-plugin/properties.c:373
+#: ../panel-plugin/properties.c:374
 msgid "Slowest (~3s)"
 msgstr "Geldoena (~3s)"
 
-#: ../panel-plugin/properties.c:377
+#: ../panel-plugin/properties.c:378
 msgid "Update Interval:"
 msgstr "Eguneratze tartea: "
 
-#: ../panel-plugin/properties.c:388
+#: ../panel-plugin/properties.c:389
 msgid "All"
 msgstr "Denak"
 
-#: ../panel-plugin/properties.c:392
+#: ../panel-plugin/properties.c:393
 msgid "Tracked Core:"
 msgstr "Arakatutako muina:"
 
-#: ../panel-plugin/properties.c:406
+#: ../panel-plugin/properties.c:407
 msgid "Width:"
 msgstr "Zabalera"
 
-#: ../panel-plugin/properties.c:408
+#: ../panel-plugin/properties.c:409
 msgid "Height:"
 msgstr "Altuera"
 
-#: ../panel-plugin/properties.c:422
+#: ../panel-plugin/properties.c:423
 msgid "Threshold (%):"
 msgstr "Atalasea (%):"
 
-#: ../panel-plugin/properties.c:435
+#: ../panel-plugin/properties.c:436
 msgid "Spacing:"
 msgstr "Tartea:"
 
-#: ../panel-plugin/properties.c:438
+#: ../panel-plugin/properties.c:439
 msgid "Spacing between per-core history graphs"
 msgstr "Muin bakoitzeko historia grafikoen arteko tartea"
 
-#: ../panel-plugin/properties.c:450
+#: ../panel-plugin/properties.c:451
 msgid "Associated command:"
 msgstr "Loturiko komandoa:"
 
-#: ../panel-plugin/properties.c:459
+#: ../panel-plugin/properties.c:460
 msgid "Defaults to xfce4-taskmanager, htop or top."
 msgstr "xfce4-taskmanager, htop edo top komandoetara lotu."
 
-#: ../panel-plugin/properties.c:481
+#: ../panel-plugin/properties.c:482
 msgid "Disabled"
 msgstr "Ezgaituta"
 
-#: ../panel-plugin/properties.c:482
+#: ../panel-plugin/properties.c:483
 msgid "Normal"
 msgstr "Arrunta"
 
-#: ../panel-plugin/properties.c:483
+#: ../panel-plugin/properties.c:484
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:484
+#: ../panel-plugin/properties.c:485
 msgid "No history"
 msgstr "Historiarik ez"
 
-#: ../panel-plugin/properties.c:485
+#: ../panel-plugin/properties.c:486
 msgid "Grid"
 msgstr "Sareta"
 
-#: ../panel-plugin/properties.c:511
+#: ../panel-plugin/properties.c:512
 msgid "Mode:"
 msgstr "Modua:"
 
-#: ../panel-plugin/properties.c:517
+#: ../panel-plugin/properties.c:518
 msgid "Solid"
 msgstr "Solidoa"
 
-#: ../panel-plugin/properties.c:518
+#: ../panel-plugin/properties.c:519
 msgid "Gradient"
 msgstr "Gradiantea"
 
-#: ../panel-plugin/properties.c:519
+#: ../panel-plugin/properties.c:520
 msgid "Fire"
 msgstr "Sua"
 
-#: ../panel-plugin/properties.c:523
+#: ../panel-plugin/properties.c:524
 msgid "Color mode: "
 msgstr "Kolore modua: "
 
-#: ../panel-plugin/properties.c:742
+#: ../panel-plugin/properties.c:743
 msgid "SMT detected: Yes"
 msgstr "SMT antzemanda: Bai"
 
-#: ../panel-plugin/properties.c:742
+#: ../panel-plugin/properties.c:743
 msgid "SMT detected: No"
 msgstr "SMT antzemanda: Ez"
 
-#: ../panel-plugin/properties.c:767
+#: ../panel-plugin/properties.c:768
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
 msgstr "SMT programazio gertakarien kopurua: %u"
 
-#: ../panel-plugin/properties.c:776
+#: ../panel-plugin/properties.c:777
 #, c-format
 msgid "Estimated performance impact:"
 msgstr "Errendimenduaren inpaktu balioztatua:"
 
-#: ../panel-plugin/properties.c:777
+#: ../panel-plugin/properties.c:778
 #, c-format
 msgid "Overall: %.3g%%"
 msgstr "Orokorra: %.3g%%"
 
-#: ../panel-plugin/properties.c:778
+#: ../panel-plugin/properties.c:779
 #, c-format
 msgid "Hotspots: %.3g%%"
 msgstr "Sartze-puntuak: %.3g%%"
 
-#: ../panel-plugin/properties.c:793
+#: ../panel-plugin/properties.c:794
 msgid "SMT detected: N/A"
 msgstr "SMT antzemanda: E/E"
 
