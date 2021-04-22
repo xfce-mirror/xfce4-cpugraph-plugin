@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-24 00:47+0100\n"
-"PO-Revision-Date: 2021-02-24 18:05+0000\n"
+"POT-Creation-Date: 2021-04-14 00:48+0200\n"
+"PO-Revision-Date: 2021-04-13 22:48+0000\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: Albanian (http://www.transifex.com/xfce/xfce-panel-plugins/language/sq/)\n"
 "MIME-Version: 1.0\n"
@@ -20,15 +20,15 @@ msgstr ""
 "Language: sq\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../panel-plugin/cpu.c:162 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.c:161 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Paraqitje grafike e ngarkesës së CPU-së"
 
-#: ../panel-plugin/cpu.c:164
+#: ../panel-plugin/cpu.c:163
 msgid "Copyright (c) 2003-2021\n"
 msgstr "Të drejta kopjimi (c) 2003-2021\n"
 
-#: ../panel-plugin/cpu.c:638
+#: ../panel-plugin/cpu.c:634
 #, c-format
 msgid "Usage: %u%%"
 msgstr "Përdorim: %u%%"
@@ -37,222 +37,226 @@ msgstr "Përdorim: %u%%"
 msgid "CPU Graph Properties"
 msgstr "Veti grafiku CPU-je"
 
-#: ../panel-plugin/properties.c:197
+#: ../panel-plugin/properties.c:176
+msgid "_Close"
+msgstr "_Mbylle"
+
+#: ../panel-plugin/properties.c:198
 msgid "Run in terminal"
 msgstr "Xhiroje në terminal"
 
-#: ../panel-plugin/properties.c:200
+#: ../panel-plugin/properties.c:201
 msgid "Use startup notification"
 msgstr "Përdor njoftim nisjeje"
 
-#: ../panel-plugin/properties.c:204
+#: ../panel-plugin/properties.c:205
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
 msgstr "Ngjyrë e përdorur për theksim vendosjeje\npotencialisht nënoptimale rrjedhash në CPU-ra me SMT"
 
-#: ../panel-plugin/properties.c:206
+#: ../panel-plugin/properties.c:207
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
 msgstr "“Në përgjithësi” shfaq ndikimin në punimin e makinës në përgjithësi."
 
-#: ../panel-plugin/properties.c:207
+#: ../panel-plugin/properties.c:208
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
 msgstr "“Hotspots” tregon ndikimin atë çast mbi punimin thjesht te rrjedha të përfshira në vendime nënoptimale planifikimi SMT."
 
-#: ../panel-plugin/properties.c:210
+#: ../panel-plugin/properties.c:211
 msgid "Highlight suboptimal SMT scheduling"
 msgstr "Thekso planifikim SMT nënoptimal"
 
-#: ../panel-plugin/properties.c:213
+#: ../panel-plugin/properties.c:214
 msgid "SMT issues color:"
 msgstr "Ngjyrë problemesh SMT:"
 
-#: ../panel-plugin/properties.c:216
+#: ../panel-plugin/properties.c:217
 msgid "Use non-linear time-scale"
 msgstr "Shkallë kohore jolineare"
 
-#: ../panel-plugin/properties.c:217
+#: ../panel-plugin/properties.c:218
 msgid "Per-core history graphs"
 msgstr ""
 
-#: ../panel-plugin/properties.c:221
+#: ../panel-plugin/properties.c:222
 msgid "Color 1:"
 msgstr "Ngjyrë 1:"
 
-#: ../panel-plugin/properties.c:222
+#: ../panel-plugin/properties.c:223
 msgid "Color 2:"
 msgstr "Ngjyrë 2:"
 
-#: ../panel-plugin/properties.c:223
+#: ../panel-plugin/properties.c:224
 msgid "Color 3:"
 msgstr "Ngjyrë 3:"
 
-#: ../panel-plugin/properties.c:224
+#: ../panel-plugin/properties.c:225
 msgid "Background:"
 msgstr "Sfond:"
 
-#: ../panel-plugin/properties.c:228
+#: ../panel-plugin/properties.c:229
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Shfaq shtyllë përdorimi të tanishëm"
 msgstr[1] "Shfaq shtylla përdorimi të tanishëm"
 
-#: ../panel-plugin/properties.c:231
+#: ../panel-plugin/properties.c:232
 msgid "Bars color:"
 msgstr "Ngjyrë shtyllash:"
 
-#: ../panel-plugin/properties.c:233
+#: ../panel-plugin/properties.c:234
 msgid "Show frame"
 msgstr "Shfaq kornizë"
 
-#: ../panel-plugin/properties.c:234
+#: ../panel-plugin/properties.c:235
 msgid "Show border"
 msgstr "Shfaq anë"
 
-#: ../panel-plugin/properties.c:241
+#: ../panel-plugin/properties.c:242
 msgid "Appearance"
 msgstr "Dukje"
 
-#: ../panel-plugin/properties.c:243
+#: ../panel-plugin/properties.c:244
 msgid "Advanced"
 msgstr "Të mëtejshme"
 
-#: ../panel-plugin/properties.c:245
+#: ../panel-plugin/properties.c:246
 msgid "Stats"
 msgstr "Statistika"
 
-#: ../panel-plugin/properties.c:369
+#: ../panel-plugin/properties.c:370
 msgid "Fastest (~250ms)"
 msgstr "Më i shpejti (~250ms)"
 
-#: ../panel-plugin/properties.c:370
+#: ../panel-plugin/properties.c:371
 msgid "Fast (~500ms)"
 msgstr "I shpejtë (~500ms)"
 
-#: ../panel-plugin/properties.c:371
+#: ../panel-plugin/properties.c:372
 msgid "Normal (~750ms)"
 msgstr "Normal (~750ms)"
 
-#: ../panel-plugin/properties.c:372
+#: ../panel-plugin/properties.c:373
 msgid "Slow (~1s)"
 msgstr "I ngadaltë (~1s)"
 
-#: ../panel-plugin/properties.c:373
+#: ../panel-plugin/properties.c:374
 msgid "Slowest (~3s)"
 msgstr "Më i ngadalti (~3s)"
 
-#: ../panel-plugin/properties.c:377
+#: ../panel-plugin/properties.c:378
 msgid "Update Interval:"
 msgstr "Interval Përditësimi: "
 
-#: ../panel-plugin/properties.c:388
+#: ../panel-plugin/properties.c:389
 msgid "All"
 msgstr "Krejt"
 
-#: ../panel-plugin/properties.c:392
+#: ../panel-plugin/properties.c:393
 msgid "Tracked Core:"
 msgstr "Bërthamë e Ndjekur:"
 
-#: ../panel-plugin/properties.c:406
+#: ../panel-plugin/properties.c:407
 msgid "Width:"
 msgstr "Gjerësi:"
 
-#: ../panel-plugin/properties.c:408
+#: ../panel-plugin/properties.c:409
 msgid "Height:"
 msgstr "Lartësi:"
 
-#: ../panel-plugin/properties.c:422
+#: ../panel-plugin/properties.c:423
 msgid "Threshold (%):"
 msgstr "Prag (%):"
 
-#: ../panel-plugin/properties.c:435
+#: ../panel-plugin/properties.c:436
 msgid "Spacing:"
 msgstr ""
 
-#: ../panel-plugin/properties.c:438
+#: ../panel-plugin/properties.c:439
 msgid "Spacing between per-core history graphs"
 msgstr ""
 
-#: ../panel-plugin/properties.c:450
+#: ../panel-plugin/properties.c:451
 msgid "Associated command:"
 msgstr "Urdhër përshoqërues:"
 
-#: ../panel-plugin/properties.c:459
+#: ../panel-plugin/properties.c:460
 msgid "Defaults to xfce4-taskmanager, htop or top."
 msgstr "Si parazgjedhje, do të jetë xfce4-taskmanager, htop ose top."
 
-#: ../panel-plugin/properties.c:481
+#: ../panel-plugin/properties.c:482
 msgid "Disabled"
 msgstr "Çaktivizuar"
 
-#: ../panel-plugin/properties.c:482
+#: ../panel-plugin/properties.c:483
 msgid "Normal"
 msgstr "Normal"
 
-#: ../panel-plugin/properties.c:483
+#: ../panel-plugin/properties.c:484
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:484
+#: ../panel-plugin/properties.c:485
 msgid "No history"
 msgstr "Pa historik"
 
-#: ../panel-plugin/properties.c:485
+#: ../panel-plugin/properties.c:486
 msgid "Grid"
 msgstr "Rrjetë"
 
-#: ../panel-plugin/properties.c:511
+#: ../panel-plugin/properties.c:512
 msgid "Mode:"
 msgstr "Mënyrë:"
 
-#: ../panel-plugin/properties.c:517
+#: ../panel-plugin/properties.c:518
 msgid "Solid"
 msgstr "E plotë"
 
-#: ../panel-plugin/properties.c:518
+#: ../panel-plugin/properties.c:519
 msgid "Gradient"
 msgstr "Gradient"
 
-#: ../panel-plugin/properties.c:519
+#: ../panel-plugin/properties.c:520
 msgid "Fire"
 msgstr "Zjarr"
 
-#: ../panel-plugin/properties.c:523
+#: ../panel-plugin/properties.c:524
 msgid "Color mode: "
 msgstr "Mënyrë ngjyre: "
 
-#: ../panel-plugin/properties.c:742
+#: ../panel-plugin/properties.c:743
 msgid "SMT detected: Yes"
 msgstr "U pikas SMT: Po"
 
-#: ../panel-plugin/properties.c:742
+#: ../panel-plugin/properties.c:743
 msgid "SMT detected: No"
 msgstr "U pikas SMT: Jo"
 
-#: ../panel-plugin/properties.c:767
+#: ../panel-plugin/properties.c:768
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
 msgstr "Numër incidentesh planifikimi SMT: %u"
 
-#: ../panel-plugin/properties.c:776
+#: ../panel-plugin/properties.c:777
 #, c-format
 msgid "Estimated performance impact:"
 msgstr "Ndikim i hamendësuar mbi ndikimin:"
 
-#: ../panel-plugin/properties.c:777
+#: ../panel-plugin/properties.c:778
 #, c-format
 msgid "Overall: %.3g%%"
 msgstr "Në përgjithësi: %.3g%%"
 
-#: ../panel-plugin/properties.c:778
+#: ../panel-plugin/properties.c:779
 #, c-format
 msgid "Hotspots: %.3g%%"
 msgstr ""
 
-#: ../panel-plugin/properties.c:793
+#: ../panel-plugin/properties.c:794
 msgid "SMT detected: N/A"
 msgstr "U pikas SMT: N/A"
 
