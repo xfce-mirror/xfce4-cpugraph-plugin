@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-13 00:48+0100\n"
-"PO-Revision-Date: 2021-02-14 08:08+0000\n"
-"Last-Translator: Ioannis LM\n"
+"POT-Creation-Date: 2021-04-14 00:48+0200\n"
+"PO-Revision-Date: 2021-04-13 22:48+0000\n"
+"Last-Translator: Efstathios Iosifidis <iefstathios@gmail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/xfce/xfce-panel-plugins/language/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,227 +19,243 @@ msgstr ""
 "Language: el\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../panel-plugin/cpu.c:155 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.c:161 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Γραφική αναπαράσταση του φόρτου της CPU"
 
-#: ../panel-plugin/cpu.c:157
+#: ../panel-plugin/cpu.c:163
 msgid "Copyright (c) 2003-2021\n"
 msgstr "Πνευματικά δικαιώματα (c) 2003-2021\n"
 
-#: ../panel-plugin/cpu.c:567
+#: ../panel-plugin/cpu.c:634
 #, c-format
 msgid "Usage: %u%%"
 msgstr "Χρήση: %u%%"
 
-#: ../panel-plugin/properties.c:159
+#: ../panel-plugin/properties.c:172
 msgid "CPU Graph Properties"
 msgstr "Ιδιότητες Γραφήματος CPU"
 
-#: ../panel-plugin/properties.c:181
-msgid "Use non-linear time-scale"
-msgstr "Χρήση μη γραμμικής χρονικής κλίμακας"
+#: ../panel-plugin/properties.c:176
+msgid "_Close"
+msgstr "_Κλείσιμο"
 
-#: ../panel-plugin/properties.c:185
+#: ../panel-plugin/properties.c:198
 msgid "Run in terminal"
 msgstr "Εκτέλεση σε τερματικό"
 
-#: ../panel-plugin/properties.c:187
+#: ../panel-plugin/properties.c:201
 msgid "Use startup notification"
 msgstr "Χρήση γνωστοποίησης εκκίνησης"
 
-#: ../panel-plugin/properties.c:190
+#: ../panel-plugin/properties.c:205
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
 msgstr ""
 
-#: ../panel-plugin/properties.c:192
+#: ../panel-plugin/properties.c:207
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
 msgstr ""
 
-#: ../panel-plugin/properties.c:193
+#: ../panel-plugin/properties.c:208
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
 msgstr ""
 
-#: ../panel-plugin/properties.c:196
+#: ../panel-plugin/properties.c:211
 msgid "Highlight suboptimal SMT scheduling"
 msgstr ""
 
-#: ../panel-plugin/properties.c:198
+#: ../panel-plugin/properties.c:214
 msgid "SMT issues color:"
 msgstr ""
 
-#: ../panel-plugin/properties.c:201
+#: ../panel-plugin/properties.c:217
+msgid "Use non-linear time-scale"
+msgstr "Χρήση μη γραμμικής χρονικής κλίμακας"
+
+#: ../panel-plugin/properties.c:218
+msgid "Per-core history graphs"
+msgstr ""
+
+#: ../panel-plugin/properties.c:222
 msgid "Color 1:"
 msgstr "Χρώμα 1:"
 
-#: ../panel-plugin/properties.c:202
+#: ../panel-plugin/properties.c:223
 msgid "Color 2:"
 msgstr "Χρώμα 2:"
 
-#: ../panel-plugin/properties.c:203
+#: ../panel-plugin/properties.c:224
 msgid "Color 3:"
 msgstr "Χρώμα 3:"
 
-#: ../panel-plugin/properties.c:204
+#: ../panel-plugin/properties.c:225
 msgid "Background:"
 msgstr "Παρασκήνιο:"
 
-#: ../panel-plugin/properties.c:208
+#: ../panel-plugin/properties.c:229
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Προβολή μπάρας με την τρέχουσα χρήση"
 msgstr[1] "Προβολή μπαρών με την τρέχουσα χρήση"
 
-#: ../panel-plugin/properties.c:210
+#: ../panel-plugin/properties.c:232
 msgid "Bars color:"
 msgstr "Χρώμα μπάρας:"
 
-#: ../panel-plugin/properties.c:212
+#: ../panel-plugin/properties.c:234
 msgid "Show frame"
 msgstr "Εμφάνιση πλαισίου"
 
-#: ../panel-plugin/properties.c:213
+#: ../panel-plugin/properties.c:235
 msgid "Show border"
 msgstr "Εμφάνιση περιγράμματος"
 
-#: ../panel-plugin/properties.c:221
+#: ../panel-plugin/properties.c:242
 msgid "Appearance"
 msgstr "Εμφάνιση"
 
-#: ../panel-plugin/properties.c:223
+#: ../panel-plugin/properties.c:244
 msgid "Advanced"
 msgstr "Για προχωρημένους"
 
-#: ../panel-plugin/properties.c:225
+#: ../panel-plugin/properties.c:246
 msgid "Stats"
 msgstr ""
 
-#: ../panel-plugin/properties.c:346
+#: ../panel-plugin/properties.c:370
 msgid "Fastest (~250ms)"
 msgstr "Γρηγορότερα (~250ms)"
 
-#: ../panel-plugin/properties.c:347
+#: ../panel-plugin/properties.c:371
 msgid "Fast (~500ms)"
 msgstr "Γρήγορα (~500ms)"
 
-#: ../panel-plugin/properties.c:348
+#: ../panel-plugin/properties.c:372
 msgid "Normal (~750ms)"
 msgstr "Κανονικά (~750ms)"
 
-#: ../panel-plugin/properties.c:349
+#: ../panel-plugin/properties.c:373
 msgid "Slow (~1s)"
 msgstr "Αργά (~1s)"
 
-#: ../panel-plugin/properties.c:350
+#: ../panel-plugin/properties.c:374
 msgid "Slowest (~3s)"
 msgstr ""
 
-#: ../panel-plugin/properties.c:354
+#: ../panel-plugin/properties.c:378
 msgid "Update Interval:"
 msgstr "Μεσοδιάστημα ενημέρωσης:"
 
-#: ../panel-plugin/properties.c:365
+#: ../panel-plugin/properties.c:389
 msgid "All"
 msgstr "Όλα"
 
-#: ../panel-plugin/properties.c:369
+#: ../panel-plugin/properties.c:393
 msgid "Tracked Core:"
 msgstr "Ανιχνεύσιμος πυρήνας:"
 
-#: ../panel-plugin/properties.c:383
+#: ../panel-plugin/properties.c:407
 msgid "Width:"
 msgstr "Πλάτος:"
 
-#: ../panel-plugin/properties.c:385
+#: ../panel-plugin/properties.c:409
 msgid "Height:"
 msgstr "Ύψος"
 
-#: ../panel-plugin/properties.c:399
+#: ../panel-plugin/properties.c:423
 msgid "Threshold (%):"
 msgstr ""
 
-#: ../panel-plugin/properties.c:412
+#: ../panel-plugin/properties.c:436
+msgid "Spacing:"
+msgstr ""
+
+#: ../panel-plugin/properties.c:439
+msgid "Spacing between per-core history graphs"
+msgstr ""
+
+#: ../panel-plugin/properties.c:451
 msgid "Associated command:"
 msgstr "Συσχετισμένη εντολή:"
 
-#: ../panel-plugin/properties.c:421
+#: ../panel-plugin/properties.c:460
 msgid "Defaults to xfce4-taskmanager, htop or top."
 msgstr ""
 
-#: ../panel-plugin/properties.c:443
+#: ../panel-plugin/properties.c:482
 msgid "Disabled"
 msgstr "Απενεργοποιημένο"
 
-#: ../panel-plugin/properties.c:444
+#: ../panel-plugin/properties.c:483
 msgid "Normal"
 msgstr "Κανονικά"
 
-#: ../panel-plugin/properties.c:445
+#: ../panel-plugin/properties.c:484
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:446
+#: ../panel-plugin/properties.c:485
 msgid "No history"
 msgstr "Χωρίς ιστορικό"
 
-#: ../panel-plugin/properties.c:447
+#: ../panel-plugin/properties.c:486
 msgid "Grid"
 msgstr "Πλέγμα"
 
-#: ../panel-plugin/properties.c:473
+#: ../panel-plugin/properties.c:512
 msgid "Mode:"
 msgstr "Τρόπος:"
 
-#: ../panel-plugin/properties.c:479
+#: ../panel-plugin/properties.c:518
 msgid "Solid"
 msgstr "Συμπαγές"
 
-#: ../panel-plugin/properties.c:480
+#: ../panel-plugin/properties.c:519
 msgid "Gradient"
 msgstr "Διαβάθμιση"
 
-#: ../panel-plugin/properties.c:481
+#: ../panel-plugin/properties.c:520
 msgid "Fire"
 msgstr "Φωτιά"
 
-#: ../panel-plugin/properties.c:485
+#: ../panel-plugin/properties.c:524
 msgid "Color mode: "
 msgstr "Λειτουργία χρώματος:"
 
-#: ../panel-plugin/properties.c:679
+#: ../panel-plugin/properties.c:743
 msgid "SMT detected: Yes"
 msgstr ""
 
-#: ../panel-plugin/properties.c:679
+#: ../panel-plugin/properties.c:743
 msgid "SMT detected: No"
 msgstr ""
 
-#: ../panel-plugin/properties.c:704
+#: ../panel-plugin/properties.c:768
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
 msgstr ""
 
-#: ../panel-plugin/properties.c:713
+#: ../panel-plugin/properties.c:777
 #, c-format
 msgid "Estimated performance impact:"
 msgstr ""
 
-#: ../panel-plugin/properties.c:714
+#: ../panel-plugin/properties.c:778
 #, c-format
 msgid "Overall: %.3g%%"
 msgstr ""
 
-#: ../panel-plugin/properties.c:715
+#: ../panel-plugin/properties.c:779
 #, c-format
 msgid "Hotspots: %.3g%%"
 msgstr ""
 
-#: ../panel-plugin/properties.c:728
+#: ../panel-plugin/properties.c:794
 msgid "SMT detected: N/A"
 msgstr ""
 
