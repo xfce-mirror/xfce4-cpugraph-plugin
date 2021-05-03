@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-14 00:48+0200\n"
-"PO-Revision-Date: 2021-04-17 06:09+0000\n"
+"PO-Revision-Date: 2021-05-03 06:36+0000\n"
 "Last-Translator: Luna Jernberg <bittin@cafe8bitar.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/xfce/xfce-panel-plugins/language/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -64,7 +64,7 @@ msgstr ""
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
-msgstr ""
+msgstr "\"Hotspots\" visar den tillfälliga påverkan på tjänsten endast för de trådar som är involverade i suboptimala SMT-planeringsbeslut"
 
 #: ../panel-plugin/properties.c:211
 msgid "Highlight suboptimal SMT scheduling"
@@ -72,7 +72,7 @@ msgstr "Markera suboptimal SMT-schemaläggning"
 
 #: ../panel-plugin/properties.c:214
 msgid "SMT issues color:"
-msgstr ""
+msgstr "Färg för SMT-problem:"
 
 #: ../panel-plugin/properties.c:217
 msgid "Use non-linear time-scale"
@@ -254,7 +254,7 @@ msgstr "Övergripande: %.3g %%"
 #: ../panel-plugin/properties.c:779
 #, c-format
 msgid "Hotspots: %.3g%%"
-msgstr ""
+msgstr "Hotspots: %.3g%%"
 
 #: ../panel-plugin/properties.c:794
 msgid "SMT detected: N/A"
