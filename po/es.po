@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-14 00:48+0200\n"
-"PO-Revision-Date: 2021-05-06 23:24+0000\n"
+"PO-Revision-Date: 2021-05-07 12:43+0000\n"
 "Last-Translator: Toni Estévez <toni.estevez@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/xfce/xfce-panel-plugins/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -56,34 +56,34 @@ msgstr "Usar la notificación de inicio"
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
-msgstr "Color utilizado para resaltar la ubicación potencialmente subóptima\n de subprocesos en CPUs con SMT"
+msgstr "Color usado para resaltar la ubicación potencialmente\nsubóptima de los subprocesos en procesadores con SMT"
 
 #: ../panel-plugin/properties.c:207
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
-msgstr "'En Total' muestra el impacto en el rendimiento general de la máquina."
+msgstr "«General» muestra el impacto en el rendimiento general de la máquina."
 
 #: ../panel-plugin/properties.c:208
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
-msgstr "'Puntos Calientes' muestra el impacto momentáneo del rendimiento solo en los subprocesos involucrados en decisiones de programación SMT subóptimas."
+msgstr "«Puntos calientes» muestra solo el impacto momentáneo en el rendimiento de los subprocesos implicados en las decisiones de la programación SMT subóptimas. "
 
 #: ../panel-plugin/properties.c:211
 msgid "Highlight suboptimal SMT scheduling"
-msgstr "Resalte la programación SMT subóptima"
+msgstr "Resaltar la programación SMT subóptima"
 
 #: ../panel-plugin/properties.c:214
 msgid "SMT issues color:"
-msgstr "Problema de color SMT:"
+msgstr "Color de los problemas SMT:"
 
 #: ../panel-plugin/properties.c:217
 msgid "Use non-linear time-scale"
-msgstr "Usar escala de tiempo no lineal"
+msgstr "Usar una escala de tiempo no lineal"
 
 #: ../panel-plugin/properties.c:218
 msgid "Per-core history graphs"
-msgstr "Historial gráfico por núcleo"
+msgstr "Gráficos del historial por núcleo"
 
 #: ../panel-plugin/properties.c:222
 msgid "Color 1:"
@@ -105,19 +105,19 @@ msgstr "Fondo:"
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Mostrar barra de uso actual"
-msgstr[1] "Mostrar barras de uso actuales"
+msgstr[1] "Mostrar las barras de uso actuales"
 
 #: ../panel-plugin/properties.c:232
 msgid "Bars color:"
-msgstr "Color de barras:"
+msgstr "Color de las barras:"
 
 #: ../panel-plugin/properties.c:234
 msgid "Show frame"
-msgstr "Mostrar marco"
+msgstr "Mostrar el marco"
 
 #: ../panel-plugin/properties.c:235
 msgid "Show border"
-msgstr "Mostrar borde"
+msgstr "Mostrar el borde"
 
 #: ../panel-plugin/properties.c:242
 msgid "Appearance"
@@ -125,7 +125,7 @@ msgstr "Apariencia"
 
 #: ../panel-plugin/properties.c:244
 msgid "Advanced"
-msgstr "Avanzado"
+msgstr "Ajustes avanzados"
 
 #: ../panel-plugin/properties.c:246
 msgid "Stats"
@@ -133,23 +133,23 @@ msgstr "Estadísticas"
 
 #: ../panel-plugin/properties.c:370
 msgid "Fastest (~250ms)"
-msgstr "Muy rápido (~250ms)"
+msgstr "Muy rápido (~ 250 ms)"
 
 #: ../panel-plugin/properties.c:371
 msgid "Fast (~500ms)"
-msgstr "Rápido (~500ms)"
+msgstr "Rápido (~ 500 ms)"
 
 #: ../panel-plugin/properties.c:372
 msgid "Normal (~750ms)"
-msgstr "Normal (~750ms)"
+msgstr "Normal (~750 ms)"
 
 #: ../panel-plugin/properties.c:373
 msgid "Slow (~1s)"
-msgstr "Lento (~1s)"
+msgstr "Lento (~ 1 s)"
 
 #: ../panel-plugin/properties.c:374
 msgid "Slowest (~3s)"
-msgstr "Más lento (~3s)"
+msgstr "Más lento (~3 s)"
 
 #: ../panel-plugin/properties.c:378
 msgid "Update Interval:"
@@ -161,15 +161,15 @@ msgstr "Todos"
 
 #: ../panel-plugin/properties.c:393
 msgid "Tracked Core:"
-msgstr "Núcleo monitorizado:"
+msgstr "Núcleo en seguimiento:"
 
 #: ../panel-plugin/properties.c:407
 msgid "Width:"
-msgstr "Ancho:"
+msgstr "Anchura:"
 
 #: ../panel-plugin/properties.c:409
 msgid "Height:"
-msgstr "Alto:"
+msgstr "Altura:"
 
 #: ../panel-plugin/properties.c:423
 msgid "Threshold (%):"
@@ -181,7 +181,7 @@ msgstr "Espaciado:"
 
 #: ../panel-plugin/properties.c:439
 msgid "Spacing between per-core history graphs"
-msgstr "Espaciado entre historiales gráficos por núcleo"
+msgstr "Espaciado entre los gráficos del historial por núcleo"
 
 #: ../panel-plugin/properties.c:451
 msgid "Associated command:"
@@ -193,7 +193,7 @@ msgstr "El valor predeterminado es xfce4-taskmanager, htop o top."
 
 #: ../panel-plugin/properties.c:482
 msgid "Disabled"
-msgstr "Deshabilitado"
+msgstr "Desactivar"
 
 #: ../panel-plugin/properties.c:483
 msgid "Normal"
@@ -205,7 +205,7 @@ msgstr "Led"
 
 #: ../panel-plugin/properties.c:485
 msgid "No history"
-msgstr "Sin histórico"
+msgstr "Sin historial"
 
 #: ../panel-plugin/properties.c:486
 msgid "Grid"
@@ -247,21 +247,21 @@ msgstr "Número de incidentes de programación SMT: %u"
 #: ../panel-plugin/properties.c:777
 #, c-format
 msgid "Estimated performance impact:"
-msgstr "Impacto de rendimiento estimado:"
+msgstr "Impacto en el rendimiento estimado:"
 
 #: ../panel-plugin/properties.c:778
 #, c-format
 msgid "Overall: %.3g%%"
-msgstr "En Total: %.3g%%"
+msgstr "General: %.3g%%"
 
 #: ../panel-plugin/properties.c:779
 #, c-format
 msgid "Hotspots: %.3g%%"
-msgstr "Puntos Calientes: %.3g%%"
+msgstr "Puntos calientes: %.3g%%"
 
 #: ../panel-plugin/properties.c:794
 msgid "SMT detected: N/A"
-msgstr "SMT detectado: N/A"
+msgstr "SMT detectado: N/D"
 
 #: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
