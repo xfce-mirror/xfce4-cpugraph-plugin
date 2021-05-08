@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Arve Eriksson <031299870@telia.com>, 2021
 # Daniel Nylander <po@danielnylander.se>, 2008
 # Luna Jernberg <bittin@cafe8bitar.se>, 2020-2021
 # Påvel Nicklasson <pavel2@frimix.se>, 2014
@@ -11,8 +12,8 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-14 00:48+0200\n"
-"PO-Revision-Date: 2021-05-03 06:36+0000\n"
-"Last-Translator: Luna Jernberg <bittin@cafe8bitar.se>\n"
+"PO-Revision-Date: 2021-05-08 18:49+0000\n"
+"Last-Translator: Arve Eriksson <031299870@telia.com>\n"
 "Language-Team: Swedish (http://www.transifex.com/xfce/xfce-panel-plugins/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -58,7 +59,7 @@ msgstr "Färg som används för att markera potentiellt suboptimal\nplacering av
 #: ../panel-plugin/properties.c:207
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
-msgstr ""
+msgstr "'Översikt' visar påverkan på maskinens övergripande prestanda."
 
 #: ../panel-plugin/properties.c:208
 msgid ""
