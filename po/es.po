@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-14 00:48+0200\n"
-"PO-Revision-Date: 2021-05-07 12:43+0000\n"
+"PO-Revision-Date: 2021-05-15 07:32+0000\n"
 "Last-Translator: Toni Estévez <toni.estevez@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/xfce/xfce-panel-plugins/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -38,7 +38,7 @@ msgstr "Uso: %u %%"
 
 #: ../panel-plugin/properties.c:172
 msgid "CPU Graph Properties"
-msgstr "Propiedades del gráfico del procesador"
+msgstr "Propiedades de la gráfica del procesador"
 
 #: ../panel-plugin/properties.c:176
 msgid "_Close"
@@ -83,7 +83,7 @@ msgstr "Usar una escala de tiempo no lineal"
 
 #: ../panel-plugin/properties.c:218
 msgid "Per-core history graphs"
-msgstr "Gráficos del historial por núcleo"
+msgstr "Gráficas del historial por núcleo"
 
 #: ../panel-plugin/properties.c:222
 msgid "Color 1:"
@@ -181,7 +181,7 @@ msgstr "Espaciado:"
 
 #: ../panel-plugin/properties.c:439
 msgid "Spacing between per-core history graphs"
-msgstr "Espaciado entre los gráficos del historial por núcleo"
+msgstr "Espaciado entre las gráficas del historial por núcleo"
 
 #: ../panel-plugin/properties.c:451
 msgid "Associated command:"
@@ -265,4 +265,4 @@ msgstr "SMT detectado: N/D"
 
 #: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
-msgstr "Gráfico del procesador"
+msgstr "Gráfica del procesador"
