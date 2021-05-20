@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-14 00:48+0200\n"
-"PO-Revision-Date: 2021-05-15 07:32+0000\n"
+"PO-Revision-Date: 2021-05-20 20:49+0000\n"
 "Last-Translator: Toni Estévez <toni.estevez@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/xfce/xfce-panel-plugins/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgstr ""
 
 #: ../panel-plugin/cpu.c:161 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
-msgstr "Representación gráfica de la carga del procesador"
+msgstr "Gráfico de la carga del procesador"
 
 #: ../panel-plugin/cpu.c:163
 msgid "Copyright (c) 2003-2021\n"
@@ -34,11 +34,11 @@ msgstr "Copyright (c) 2003-2021\n"
 #: ../panel-plugin/cpu.c:634
 #, c-format
 msgid "Usage: %u%%"
-msgstr "Uso: %u %%"
+msgstr "Uso: %u%%"
 
 #: ../panel-plugin/properties.c:172
 msgid "CPU Graph Properties"
-msgstr "Propiedades de la gráfica del procesador"
+msgstr "Propiedades del gráfico del procesador"
 
 #: ../panel-plugin/properties.c:176
 msgid "_Close"
@@ -83,7 +83,7 @@ msgstr "Usar una escala de tiempo no lineal"
 
 #: ../panel-plugin/properties.c:218
 msgid "Per-core history graphs"
-msgstr "Gráficas del historial por núcleo"
+msgstr "Gráficos del historial por núcleo"
 
 #: ../panel-plugin/properties.c:222
 msgid "Color 1:"
@@ -181,7 +181,7 @@ msgstr "Espaciado:"
 
 #: ../panel-plugin/properties.c:439
 msgid "Spacing between per-core history graphs"
-msgstr "Espaciado entre las gráficas del historial por núcleo"
+msgstr "Espaciado entre los gráficos del historial por núcleo"
 
 #: ../panel-plugin/properties.c:451
 msgid "Associated command:"
