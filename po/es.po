@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-14 00:48+0200\n"
-"PO-Revision-Date: 2021-05-20 20:49+0000\n"
+"PO-Revision-Date: 2021-05-21 18:08+0000\n"
 "Last-Translator: Toni Estévez <toni.estevez@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/xfce/xfce-panel-plugins/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -67,11 +67,11 @@ msgstr "«General» muestra el impacto en el rendimiento general de la máquina.
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
-msgstr "«Puntos calientes» muestra solo el impacto momentáneo en el rendimiento de los subprocesos implicados en las decisiones de la programación SMT subóptimas. "
+msgstr "«Puntos calientes» muestra solo el impacto momentáneo en el rendimiento de los subprocesos implicados en las decisiones de planificación SMT subóptimas."
 
 #: ../panel-plugin/properties.c:211
 msgid "Highlight suboptimal SMT scheduling"
-msgstr "Resaltar la programación SMT subóptima"
+msgstr "Resaltar la planificación SMT subóptima"
 
 #: ../panel-plugin/properties.c:214
 msgid "SMT issues color:"
@@ -105,7 +105,7 @@ msgstr "Fondo:"
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Mostrar barra de uso actual"
-msgstr[1] "Mostrar las barras de uso actuales"
+msgstr[1] "Mostrar las barras de uso actual"
 
 #: ../panel-plugin/properties.c:232
 msgid "Bars color:"
@@ -125,7 +125,7 @@ msgstr "Apariencia"
 
 #: ../panel-plugin/properties.c:244
 msgid "Advanced"
-msgstr "Ajustes avanzados"
+msgstr "Opciones avanzadas"
 
 #: ../panel-plugin/properties.c:246
 msgid "Stats"
@@ -149,7 +149,7 @@ msgstr "Lento (~ 1 s)"
 
 #: ../panel-plugin/properties.c:374
 msgid "Slowest (~3s)"
-msgstr "Más lento (~3 s)"
+msgstr "Muy lento (~3 s)"
 
 #: ../panel-plugin/properties.c:378
 msgid "Update Interval:"
@@ -242,7 +242,7 @@ msgstr "SMT detectado: No"
 #: ../panel-plugin/properties.c:768
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
-msgstr "Número de incidentes de programación SMT: %u"
+msgstr "Número de incidentes de planificación SMT: %u"
 
 #: ../panel-plugin/properties.c:777
 #, c-format
@@ -265,4 +265,4 @@ msgstr "SMT detectado: N/D"
 
 #: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
-msgstr "Gráfica del procesador"
+msgstr "Gráfico del procesador"
