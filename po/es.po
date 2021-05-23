@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-14 00:48+0200\n"
-"PO-Revision-Date: 2021-05-22 18:53+0000\n"
+"PO-Revision-Date: 2021-05-23 13:18+0000\n"
 "Last-Translator: Toni Estévez <toni.estevez@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/xfce/xfce-panel-plugins/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -229,7 +229,7 @@ msgstr "Fuego"
 
 #: ../panel-plugin/properties.c:524
 msgid "Color mode: "
-msgstr "Modo de color:"
+msgstr "Modo de color: "
 
 #: ../panel-plugin/properties.c:743
 msgid "SMT detected: Yes"
