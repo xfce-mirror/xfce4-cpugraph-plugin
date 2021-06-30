@@ -4,13 +4,13 @@
 # 
 # Translators:
 # Theppitak Karoonboonyanan <thep@linux.thai.net>, 2014
-# Theppitak Karoonboonyanan <theppitak@gmail.com>, 2014,2019
+# Theppitak Karoonboonyanan <theppitak@gmail.com>, 2014,2019,2021
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-14 00:48+0200\n"
-"PO-Revision-Date: 2021-06-29 08:46+0000\n"
+"PO-Revision-Date: 2021-06-30 07:48+0000\n"
 "Last-Translator: Theppitak Karoonboonyanan <theppitak@gmail.com>\n"
 "Language-Team: Thai (http://www.transifex.com/xfce/xfce-panel-plugins/language/th/)\n"
 "MIME-Version: 1.0\n"
@@ -52,26 +52,26 @@ msgstr "ใช้การแจ้งเหตุขณะเริ่ม"
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
-msgstr ""
+msgstr "สีที่ใช้เน้นการจัดเธรดที่อาจด้อยประสิทธิภาพ\nในซีพียูเมื่อใช้ SMT"
 
 #: ../panel-plugin/properties.c:207
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
-msgstr ""
+msgstr "'ภาพรวม' แสดงผลกระทบต่อสมรรถนะโดยรวมของเครื่อง"
 
 #: ../panel-plugin/properties.c:208
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
-msgstr ""
+msgstr "'เฉพาะจุด' แสดงผลกระทบด้านสมรรถนะชั่วคราวที่มีผลต่อเธรดที่เกี่ยวข้องเท่านั้น จากการเลือกจัดเวลาที่ด้อยประสิทธิภาพของ SMT"
 
 #: ../panel-plugin/properties.c:211
 msgid "Highlight suboptimal SMT scheduling"
-msgstr ""
+msgstr "เน้นการจัดเวลางานด้วย SMT ที่ด้อยประสิทธิภาพ"
 
 #: ../panel-plugin/properties.c:214
 msgid "SMT issues color:"
-msgstr ""
+msgstr "สีของปัญหา SMT:"
 
 #: ../panel-plugin/properties.c:217
 msgid "Use non-linear time-scale"
@@ -79,7 +79,7 @@ msgstr "ใช้มาตราส่วนเวลาแบบไม่เช
 
 #: ../panel-plugin/properties.c:218
 msgid "Per-core history graphs"
-msgstr ""
+msgstr "แสดงกราฟประวัติของแต่ละคอร์แยกกัน"
 
 #: ../panel-plugin/properties.c:222
 msgid "Color 1:"
@@ -124,7 +124,7 @@ msgstr "ขั้นสูง"
 
 #: ../panel-plugin/properties.c:246
 msgid "Stats"
-msgstr ""
+msgstr "สถิติ"
 
 #: ../panel-plugin/properties.c:370
 msgid "Fastest (~250ms)"
@@ -144,7 +144,7 @@ msgstr "ช้า (~1s)"
 
 #: ../panel-plugin/properties.c:374
 msgid "Slowest (~3s)"
-msgstr ""
+msgstr "ช้าที่สุด (~3s)"
 
 #: ../panel-plugin/properties.c:378
 msgid "Update Interval:"
@@ -156,7 +156,7 @@ msgstr "ทั้งหมด"
 
 #: ../panel-plugin/properties.c:393
 msgid "Tracked Core:"
-msgstr "แกนที่ติดตาม:"
+msgstr "คอร์ที่ติดตาม:"
 
 #: ../panel-plugin/properties.c:407
 msgid "Width:"
@@ -168,15 +168,15 @@ msgstr "ความสูง:"
 
 #: ../panel-plugin/properties.c:423
 msgid "Threshold (%):"
-msgstr ""
+msgstr "ขีดเริ่ม (%):"
 
 #: ../panel-plugin/properties.c:436
 msgid "Spacing:"
-msgstr ""
+msgstr "ช่องไฟ:"
 
 #: ../panel-plugin/properties.c:439
 msgid "Spacing between per-core history graphs"
-msgstr ""
+msgstr "ช่องไฟระหว่างกราฟประวัติของแต่ละคอร์"
 
 #: ../panel-plugin/properties.c:451
 msgid "Associated command:"
@@ -184,7 +184,7 @@ msgstr "คำสั่งที่เชื่อมโยง:"
 
 #: ../panel-plugin/properties.c:460
 msgid "Defaults to xfce4-taskmanager, htop or top."
-msgstr ""
+msgstr "ค่าปริยายคือ xfce4-taskmanager, htop หรือ top"
 
 #: ../panel-plugin/properties.c:482
 msgid "Disabled"
@@ -228,35 +228,35 @@ msgstr "รูปแบบสี:"
 
 #: ../panel-plugin/properties.c:743
 msgid "SMT detected: Yes"
-msgstr ""
+msgstr "ตรวจพบ SMT: พบ"
 
 #: ../panel-plugin/properties.c:743
 msgid "SMT detected: No"
-msgstr ""
+msgstr "ตรวจพบ SMT: ไม่พบ"
 
 #: ../panel-plugin/properties.c:768
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
-msgstr ""
+msgstr "จำนวนเหตุผิดปกติของการจัดเวลาของ SMT: %u"
 
 #: ../panel-plugin/properties.c:777
 #, c-format
 msgid "Estimated performance impact:"
-msgstr ""
+msgstr "ผลกระทบต่อสมรรถนะโดยประมาณ:"
 
 #: ../panel-plugin/properties.c:778
 #, c-format
 msgid "Overall: %.3g%%"
-msgstr ""
+msgstr "ภาพรวม: %.3g%%"
 
 #: ../panel-plugin/properties.c:779
 #, c-format
 msgid "Hotspots: %.3g%%"
-msgstr ""
+msgstr "เฉพาะจุด: %.3g%%"
 
 #: ../panel-plugin/properties.c:794
 msgid "SMT detected: N/A"
-msgstr ""
+msgstr "ตรวจพบ SMT: ไม่ทราบ"
 
 #: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
