@@ -1,11 +1,16 @@
 @SET_MAKE@
 
-SUBDIRS = panel-plugin po icons
+# Note: The order of directories in this list isn't arbitrary
+SUBDIRS = \
+	xfce4++/util \
+	panel-plugin \
+	po \
+	icons
 
 distclean-local:
 	rm -rf *.cache *~
 
-distuninstallcheck_listfiles = 						\
+distuninstallcheck_listfiles = \
 	find . -type f -print | grep -v ./share/icons/hicolor/icon-theme.cache
 
 AUTOMAKE_OPTIONS = 1.8 dist-bzip2
@@ -19,14 +24,14 @@ ChangeLog: Makefile
 
 dist-hook: ChangeLog
 
-EXTRA_DIST = 								\
-	README									\
-	intltool-extract.in						\
-	intltool-merge.in						\
+EXTRA_DIST = \
+	README \
+	intltool-extract.in \
+	intltool-merge.in \
 	intltool-update.in
 
-DISTCLEANFILES =							\
-	intltool-extract						\
-	intltool-merge							\
+DISTCLEANFILES = \
+	intltool-extract \
+	intltool-merge \
 	intltool-update
 

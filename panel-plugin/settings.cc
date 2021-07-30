@@ -1,4 +1,4 @@
-/*  settings.c
+/*  settings.cc
  *  Part of xfce4-cpugraph-plugin
  *
  *  Copyright (c) Alexander Nordfelth <alex.nordfelth@telia.com>
@@ -6,6 +6,7 @@
  *  Copyright (c) 2007-2008 Angelo Arrifano <miknix@gmail.com>
  *  Copyright (c) 2007-2008 Lidiriel <lidiriel@coriolys.org>
  *  Copyright (c) 2010 Florian Rivoal <frivoal@gmail.com>
+ *  Copyright (c) 2021 Jan Ziak <0xe2.0x9a.0x9b@xfce.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,7 +22,9 @@
  *  with this program; if not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
+
 #include "settings.h"
+#include "xfce4++/util/rc.h"
 #include <libxfce4ui/libxfce4ui.h>
 #include <math.h>
 
@@ -48,65 +51,62 @@ static const gchar *const color_keys[NUM_COLORS] =
 void
 read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
 {
-    char *file;
-    XfceRc *rc;
-
     CPUGraphUpdateRate rate = RATE_NORMAL;
     CPUGraphMode mode = MODE_NORMAL;
     guint color_mode = 0;
-    gboolean bars = TRUE;
-    gboolean border = TRUE;
-    gboolean frame = FALSE;
-    gboolean highlight_smt = HIGHLIGHT_SMT_BY_DEFAULT;
-    gboolean nonlinear = FALSE;
-    gboolean per_core = FALSE;
+    bool bars = true;
+    bool border = true;
+    bool frame = false;
+    bool highlight_smt = HIGHLIGHT_SMT_BY_DEFAULT;
+    bool nonlinear = false;
+    bool per_core = false;
     guint per_core_spacing = PER_CORE_SPACING_DEFAULT;
     guint tracked_core = 0;
 
     GdkRGBA colors[NUM_COLORS];
-    guint size;
     gchar *command = NULL;
-    gboolean in_terminal = TRUE;
-    gboolean startup_notification = FALSE;
-    guint i, load_threshold = 0;
+    bool in_terminal = true;
+    bool startup_notification = false;
+    guint load_threshold = 0;
 
-    for (i = 0; i < NUM_COLORS; i++)
+    for (guint i = 0; i < NUM_COLORS; i++)
         colors[i] = default_colors[i];
 
-    size = xfce_panel_plugin_get_size (plugin);
+    gint size = xfce_panel_plugin_get_size (plugin);
 
+    char *file;
     if ((file = xfce_panel_plugin_lookup_rc_file (plugin)) != NULL)
     {
-        rc = xfce_rc_simple_open (file, TRUE);
+        const auto rc = xfce4::Rc::simple_open (file, TRUE);
         g_free (file);
 
         if (rc)
         {
             const gchar *value;
 
-            rate =  xfce_rc_read_int_entry (rc, "UpdateInterval", rate);
-            nonlinear = xfce_rc_read_int_entry (rc, "TimeScale", nonlinear);
-            size = xfce_rc_read_int_entry (rc, "Size", size);
-            mode = xfce_rc_read_int_entry (rc, "Mode", mode);
-            color_mode = xfce_rc_read_int_entry (rc, "ColorMode", color_mode);
-            frame = xfce_rc_read_int_entry (rc, "Frame", frame);
-            in_terminal = xfce_rc_read_int_entry (rc, "InTerminal", in_terminal);
-            startup_notification = xfce_rc_read_int_entry (rc, "StartupNotification", startup_notification);
-            border = xfce_rc_read_int_entry (rc, "Border", border);
-            bars = xfce_rc_read_int_entry (rc, "Bars", bars);
-            highlight_smt = xfce_rc_read_int_entry (rc, "SmtIssues", highlight_smt);
-            per_core = xfce_rc_read_int_entry (rc, "PerCore", per_core);
-            per_core_spacing = xfce_rc_read_int_entry (rc, "PerCoreSpacing", per_core_spacing);
-            tracked_core = xfce_rc_read_int_entry (rc, "TrackedCore", tracked_core);
-            load_threshold = xfce_rc_read_int_entry (rc, "LoadThreshold", load_threshold);
+            rate = (CPUGraphUpdateRate) rc->read_int_entry ("UpdateInterval", rate);
+            nonlinear = rc->read_int_entry ("TimeScale", nonlinear);
+            size = rc->read_int_entry ("Size", size);
+            mode = (CPUGraphMode) rc->read_int_entry ("Mode", mode);
+            color_mode = rc->read_int_entry ("ColorMode", color_mode);
+            frame = rc->read_int_entry ("Frame", frame);
+            in_terminal = rc->read_int_entry ("InTerminal", in_terminal);
+            startup_notification = rc->read_int_entry ("StartupNotification", startup_notification);
+            border = rc->read_int_entry ("Border", border);
+            bars = rc->read_int_entry ("Bars", bars);
+            highlight_smt = rc->read_int_entry ("SmtIssues", highlight_smt);
+            per_core = rc->read_int_entry ("PerCore", per_core);
+            per_core_spacing = rc->read_int_entry ("PerCoreSpacing", per_core_spacing);
+            tracked_core = rc->read_int_entry ("TrackedCore", tracked_core);
+            load_threshold = rc->read_int_entry ("LoadThreshold", load_threshold);
 
-            if ((value = xfce_rc_read_entry (rc, "Command", NULL))) {
+            if ((value = rc->read_entry ("Command", NULL))) {
                 command = g_strdup (value);
             }
 
-            for (i = 0; i < NUM_COLORS; i++)
+            for (guint i = 0; i < NUM_COLORS; i++)
             {
-                if ((value = xfce_rc_read_entry (rc, color_keys[i], NULL)))
+                if ((value = rc->read_entry (color_keys[i], NULL)))
                 {
                     gdk_rgba_parse (&colors[i], value);
                     if (i == BARS_COLOR)
@@ -114,7 +114,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
                 }
             }
 
-            xfce_rc_close (rc);
+            rc->close ();
         }
     }
 
@@ -146,11 +146,14 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
             default:
                 rate = RATE_NORMAL;
         }
+
+        if (G_UNLIKELY (size <= 0))
+            size = 10;
     }
 
     set_bars (base, bars);
     set_border (base, border);
-    for (i = 0; i < NUM_COLORS; i++)
+    for (guint i = 0; i < NUM_COLORS; i++)
         set_color (base, i, colors[i]);
     set_color_mode (base, color_mode);
     if (command)
@@ -173,41 +176,40 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
 void
 write_settings (XfcePanelPlugin *plugin, CPUGraph *base)
 {
-    XfceRc *rc;
     char *file;
-    guint i;
 
     if (!(file = xfce_panel_plugin_save_location (plugin, TRUE)))
         return;
 
-    rc = xfce_rc_simple_open (file, FALSE);
+    const auto rc = xfce4::Rc::simple_open (file, FALSE);
     g_free (file);
+    file = NULL;
 
     if (!rc)
         return;
 
-    xfce_rc_write_int_entry (rc, "UpdateInterval", base->update_interval);
-    xfce_rc_write_int_entry (rc, "TimeScale", base->non_linear ? 1 : 0);
-    xfce_rc_write_int_entry (rc, "Size", base->size);
-    xfce_rc_write_int_entry (rc, "Mode", base->mode);
-    xfce_rc_write_int_entry (rc, "Frame", base->has_frame ? 1 : 0);
-    xfce_rc_write_int_entry (rc, "Border", base->has_border ? 1 : 0);
-    xfce_rc_write_int_entry (rc, "Bars", base->has_bars ? 1 : 0);
-    xfce_rc_write_int_entry (rc, "PerCore", base->per_core ? 1 : 0);
-    xfce_rc_write_int_entry (rc, "TrackedCore", base->tracked_core);
+    rc->write_int_entry ("UpdateInterval", base->update_interval);
+    rc->write_int_entry ("TimeScale", base->non_linear ? 1 : 0);
+    rc->write_int_entry ("Size", base->size);
+    rc->write_int_entry ("Mode", base->mode);
+    rc->write_int_entry ("Frame", base->has_frame ? 1 : 0);
+    rc->write_int_entry ("Border", base->has_border ? 1 : 0);
+    rc->write_int_entry ("Bars", base->has_bars ? 1 : 0);
+    rc->write_int_entry ("PerCore", base->per_core ? 1 : 0);
+    rc->write_int_entry ("TrackedCore", base->tracked_core);
     if (base->command)
-        xfce_rc_write_entry (rc, "Command", base->command);
+        rc->write_entry ("Command", base->command);
     else
-        xfce_rc_delete_entry (rc, "Command", FALSE);
-    xfce_rc_write_int_entry (rc, "InTerminal", base->command_in_terminal ? 1 : 0);
-    xfce_rc_write_int_entry (rc, "StartupNotification", base->command_startup_notification ? 1 : 0);
-    xfce_rc_write_int_entry (rc, "ColorMode", base->color_mode);
+        rc->delete_entry ("Command", FALSE);
+    rc->write_int_entry ("InTerminal", base->command_in_terminal ? 1 : 0);
+    rc->write_int_entry ("StartupNotification", base->command_startup_notification ? 1 : 0);
+    rc->write_int_entry ("ColorMode", base->color_mode);
     if (base->load_threshold != 0)
-        xfce_rc_write_int_entry (rc, "LoadThreshold", (gint) roundf (100 * base->load_threshold));
+        rc->write_int_entry ("LoadThreshold", gint (roundf (100 * base->load_threshold)));
     else
-        xfce_rc_delete_entry (rc, "LoadThreshold", FALSE);
+        rc->delete_entry ("LoadThreshold", FALSE);
 
-    for (i = 0; i < NUM_COLORS; i++)
+    for (guint i = 0; i < NUM_COLORS; i++)
     {
         const gchar *key = color_keys[i];
 
@@ -220,9 +222,9 @@ write_settings (XfcePanelPlugin *plugin, CPUGraph *base)
             gchar *rgba_default = gdk_rgba_to_string (&default_colors[i]);
 
             if (strcmp (rgba, rgba_default) != 0)
-                xfce_rc_write_entry (rc, key, rgba);
+                rc->write_entry (key, rgba);
             else
-                xfce_rc_delete_entry (rc, key, FALSE);
+                rc->delete_entry (key, FALSE);
 
             g_free (rgba);
             g_free (rgba_default);
@@ -230,14 +232,14 @@ write_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     }
 
     if (base->highlight_smt != HIGHLIGHT_SMT_BY_DEFAULT)
-        xfce_rc_write_int_entry (rc, "SmtIssues", base->highlight_smt ? 1 : 0);
+        rc->write_int_entry ("SmtIssues", base->highlight_smt ? 1 : 0);
     else
-        xfce_rc_delete_entry (rc, "SmtIssues", FALSE);
+        rc->delete_entry ( "SmtIssues", FALSE);
 
     if (base->per_core_spacing != PER_CORE_SPACING_DEFAULT)
-        xfce_rc_write_int_entry (rc, "PerCoreSpacing", base->per_core_spacing);
+        rc->write_int_entry ("PerCoreSpacing", base->per_core_spacing);
     else
-        xfce_rc_delete_entry (rc, "PerCoreSpacing", FALSE);
+        rc->delete_entry ("PerCoreSpacing", FALSE);
 
-    xfce_rc_close (rc);
+    rc->close ();
 }

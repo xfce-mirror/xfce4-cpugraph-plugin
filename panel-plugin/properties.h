@@ -26,6 +26,14 @@
 
 #include "cpu.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void create_options (XfcePanelPlugin *plugin, CPUGraph *base);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* !_XFCE_PROPERTIES_H_ */
