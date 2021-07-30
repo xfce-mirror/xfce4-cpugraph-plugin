@@ -60,7 +60,7 @@ mix_colors (gdouble ratio, GdkRGBA *color1, GdkRGBA *color2, cairo_t *target)
  * The timestampts range from 'timestamp' to timestamp+step*(count-1).
  */
 static void
-nearest_loads (const CPUGraph *base, guint core, gint64 start, gint64 step, gssize count, gfloat *out)
+nearest_loads (const CPUGraph *base, const guint core, const gint64 start, const gint64 step, const gssize count, gfloat *out)
 {
     const gssize history_cap_pow2 = base->history.cap_pow2;
     const CpuLoad *history_data = base->history.data[core];
@@ -116,7 +116,7 @@ nearest_loads (const CPUGraph *base, guint core, gint64 start, gint64 step, gssi
             const gint64 timestamp0 = start + (i+0) * pow (NONLINEAR_MODE_BASE, i+0) * step;
             const gint64 timestamp1 = start + (i+1) * pow (NONLINEAR_MODE_BASE, i+1) * step;
             gfloat sum = 0;
-            gint count = 0;
+            gint num_loads = 0;
             gssize j;
 
             for (j = 0; j < history_cap_pow2; j++)
@@ -125,7 +125,7 @@ nearest_loads (const CPUGraph *base, guint core, gint64 start, gint64 step, gssi
                 if (load.timestamp > timestamp1 && load.timestamp <= timestamp0)
                 {
                     sum += load.value;
-                    count++;
+                    num_loads++;
                 }
                 else if (load.timestamp < timestamp1)
                     break;
@@ -138,8 +138,8 @@ nearest_loads (const CPUGraph *base, guint core, gint64 start, gint64 step, gssi
              *    for example from RATE_SLOWEST to RATE_FASTEST
              */
 
-            if (count != 0)
-                out[i] = sum / count;
+            if (num_loads != 0)
+                out[i] = sum / num_loads;
             else
                 out[i] = -1;
         }

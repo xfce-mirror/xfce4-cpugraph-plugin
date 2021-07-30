@@ -970,7 +970,8 @@ set_per_core (CPUGraph *base, gboolean per_core)
 void
 set_per_core_spacing (CPUGraph *base, guint spacing)
 {
-    if (G_UNLIKELY (spacing < PER_CORE_SPACING_MIN))
+    /* Use <=, instead of <, supresses a compiler warning */
+    if (G_UNLIKELY (spacing <= PER_CORE_SPACING_MIN))
         spacing = PER_CORE_SPACING_MIN;
     if (G_UNLIKELY (spacing > PER_CORE_SPACING_MAX))
         spacing = PER_CORE_SPACING_MAX;
