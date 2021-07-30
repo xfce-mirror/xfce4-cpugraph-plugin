@@ -70,29 +70,6 @@ static kstat_ctl_t *kc;
 #endif
 
 #if defined (__linux__) || defined (__FreeBSD_kernel__)
-guint
-detect_cpu_number (void)
-{
-    guint nb_lines= 0;
-    FILE *fstat = NULL;
-    gchar cpuStr[PROCMAXLNLEN];
-
-    if (!(fstat = fopen (PROC_STAT, "r")))
-        return 0;
-
-    while (fgets (cpuStr, PROCMAXLNLEN, fstat))
-    {
-        if (strncmp (cpuStr, "cpu", 3) == 0)
-            nb_lines++;
-        else
-            break;
-    }
-
-    fclose (fstat);
-
-    return nb_lines > 1 ? nb_lines - 1 : 0;
-}
-
 static gulong
 parse_ulong (gchar **s)
 {
@@ -104,6 +81,38 @@ parse_ulong (gchar **s)
         v = 0;
 
     return v;
+}
+
+guint
+detect_cpu_number (void)
+{
+    FILE *fstat = NULL;
+    gchar cpuStr[PROCMAXLNLEN];
+    guint nb_cpu;
+
+    if (!(fstat = fopen (PROC_STAT, "r")))
+        return 0;
+
+    nb_cpu = 0;
+    while (fgets (cpuStr, PROCMAXLNLEN, fstat))
+    {
+        gchar *s;
+
+        if (strncmp (cpuStr, "cpu", 3) != 0)
+            break;
+
+        s = cpuStr + 3;
+
+        if (!g_ascii_isspace (*s))
+        {
+            gulong cpu = parse_ulong(&s);
+            nb_cpu = MAX(nb_cpu, cpu + 1);
+        }
+    }
+
+    fclose (fstat);
+
+    return nb_cpu;
 }
 
 gboolean
