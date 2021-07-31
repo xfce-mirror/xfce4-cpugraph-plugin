@@ -21,7 +21,7 @@ libcpugraph_la_SOURCES = \
 	mode.h \
 	cpu.c \
 	cpu.h \
-	os.c \
+	os.cc \
 	os.h \
 	properties.c \
 	properties.h \
