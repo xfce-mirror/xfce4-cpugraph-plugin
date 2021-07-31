@@ -1,4 +1,4 @@
-/*  os.c
+/*  os.cc
  *  Part of xfce4-cpugraph-plugin
  *
  *  Copyright (c) Alexander Nordfelth <alex.nordfelth@telia.com>
@@ -7,6 +7,7 @@
  *  Copyright (c) 2007-2008 Lidiriel <lidiriel@coriolys.org>
  *  Copyright (c) 2010 Florian Rivoal <frivoal@gmail.com>
  *  Copyright (c) 2010 Peter Tribble <peter.tribble@gmail.com>
+ *  Copyright (c) 2021 Jan Ziak <0xe2.0x9a.0x9b@xfce.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -262,7 +263,6 @@ read_cpu_data (CpuData *data, guint nb_cpu)
     guint64 used, total;
     guint64 cp_time[CPUSTATES * nb_cpu];
     guint64 *cp_time1;
-    gint i;
     gsize len = nb_cpu * CPUSTATES * sizeof (guint64);
     gint mib[] = {CTL_KERN, KERN_CP_TIME};
 
@@ -270,7 +270,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
         return FALSE;
 
     data[0].load = 0;
-    for (i = 1; i <= nb_cpu; i++)
+    for (guint i = 1; i <= nb_cpu; i++)
     {
         cp_time1 = cp_time + CPUSTATES * (i - 1);
         used = cp_time1[CP_USER] + cp_time1[CP_NICE] + cp_time1[CP_SYS] + cp_time1[CP_INTR];
@@ -310,10 +310,9 @@ read_cpu_data (CpuData *data, guint nb_cpu)
 {
     guint64 used, total;
     guint64 cp_time[CPUSTATES];
-    gint i;
     data[0].load = 0;
 
-    for (i = 1; i <= nb_cpu; i++)
+    for (guint i = 1; i <= nb_cpu; i++)
     {
         gsize len = CPUSTATES * sizeof (guint64);
         gint mib[] = {CTL_KERN, KERN_CPTIME2, i - 1};
@@ -488,7 +487,7 @@ read_topology (void)
                       num_online_logical_cpus * sizeof (*t->cores[0].logical_cpus);
 
         /* Allocate required memory via a single g_malloc() call */
-        p = g_malloc0 (memory_size);
+        p = (gchar*) g_malloc0 (memory_size);
         p_end = p + memory_size;
 
         /* Fill-in the topology data */
@@ -498,7 +497,7 @@ read_topology (void)
         t->num_all_cores = num_all_cores;
         t->num_online_cores = 0;
         t->logical_cpu_2_core = (gint *) p; p += num_all_logical_cpus * sizeof (*t->logical_cpu_2_core);
-        t->cores = (struct CpuCore *) p; p += num_all_cores * sizeof (*t->cores);
+        t->cores = (Topology::CpuCore *) p; p += num_all_cores * sizeof (*t->cores);
         t->smt = FALSE;
         for (GList *l = core_ids; l; l = l->next)
         {
