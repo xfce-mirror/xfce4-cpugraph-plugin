@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <vector>
 
 #if defined (__linux__) || defined (__FreeBSD_kernel__)
 #define PROC_STAT "/proc/stat"
@@ -88,22 +89,17 @@ guint
 detect_cpu_number (void)
 {
     FILE *fstat = NULL;
-    gchar cpuStr[PROCMAXLNLEN];
-    guint nb_cpu;
-
     if (!(fstat = fopen (PROC_STAT, "r")))
         return 0;
 
-    nb_cpu = 0;
+    guint nb_cpu = 0;
+    gchar cpuStr[PROCMAXLNLEN];
     while (fgets (cpuStr, PROCMAXLNLEN, fstat))
     {
-        gchar *s;
-
         if (strncmp (cpuStr, "cpu", 3) != 0)
             break;
 
-        s = cpuStr + 3;
-
+        gchar *s = cpuStr + 3;
         if (!g_ascii_isspace (*s))
         {
             gulong cpu = parse_ulong(&s);
@@ -112,7 +108,6 @@ detect_cpu_number (void)
     }
 
     fclose (fstat);
-
     return nb_cpu;
 }
 
@@ -120,20 +115,17 @@ gboolean
 read_cpu_data (CpuData *data, guint nb_cpu)
 {
     FILE *fStat;
-    gchar cpuStr[PROCMAXLNLEN];
-    gulong cpu, used[nb_cpu+1], total[nb_cpu+1];
+    gulong used[nb_cpu+1], total[nb_cpu+1];
 
     if (!(fStat = fopen (PROC_STAT, "r")))
         return FALSE;
 
-    for (cpu = 0; cpu < nb_cpu+1; cpu++)
+    for (guint cpu = 0; cpu < nb_cpu+1; cpu++)
         used[cpu] = total[cpu] = 0;
 
     while (TRUE)
     {
-        gchar *s;
-        gulong user, nice, system, idle, iowait, irq, softirq;
-
+        gchar cpuStr[PROCMAXLNLEN];
         if (!fgets (cpuStr, PROCMAXLNLEN, fStat))
         {
             fclose (fStat);
@@ -143,20 +135,21 @@ read_cpu_data (CpuData *data, guint nb_cpu)
         if (strncmp (cpuStr, "cpu", 3) != 0)
             break;
 
-        s = cpuStr + 3;
+        gchar *s = cpuStr + 3;
 
+        guint cpu;
         if (g_ascii_isspace (*s))
             cpu = 0;
         else
             cpu = 1 + parse_ulong (&s);
 
-        user = parse_ulong (&s);
-        nice = parse_ulong (&s);
-        system = parse_ulong (&s);
-        idle = parse_ulong (&s);
-        iowait = parse_ulong (&s);
-        irq = parse_ulong (&s);
-        softirq = parse_ulong (&s);
+        gulong user = parse_ulong (&s);
+        gulong nice = parse_ulong (&s);
+        gulong system = parse_ulong (&s);
+        gulong idle = parse_ulong (&s);
+        gulong iowait = parse_ulong (&s);
+        gulong irq = parse_ulong (&s);
+        gulong softirq = parse_ulong (&s);
 
         if (cpu < nb_cpu + 1)
         {
@@ -167,7 +160,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
 
     fclose (fStat);
 
-    for (cpu = 0; cpu < nb_cpu + 1; cpu++)
+    for (guint cpu = 0; cpu < nb_cpu + 1; cpu++)
     {
         if (used[cpu] >= data[cpu].previous_used && total[cpu] > data[cpu].previous_total)
             data[cpu].load = (gfloat) (used[cpu] - data[cpu].previous_used) /
@@ -260,9 +253,7 @@ detect_cpu_number (void)
 gboolean
 read_cpu_data (CpuData *data, guint nb_cpu)
 {
-    guint64 used, total;
     guint64 cp_time[CPUSTATES * nb_cpu];
-    guint64 *cp_time1;
     gsize len = nb_cpu * CPUSTATES * sizeof (guint64);
     gint mib[] = {CTL_KERN, KERN_CP_TIME};
 
@@ -272,9 +263,9 @@ read_cpu_data (CpuData *data, guint nb_cpu)
     data[0].load = 0;
     for (guint i = 1; i <= nb_cpu; i++)
     {
-        cp_time1 = cp_time + CPUSTATES * (i - 1);
-        used = cp_time1[CP_USER] + cp_time1[CP_NICE] + cp_time1[CP_SYS] + cp_time1[CP_INTR];
-        total = used + cp_time1[CP_IDLE];
+        guint64 *cp_time1 = cp_time + CPUSTATES * (i - 1);
+        guint64 used = cp_time1[CP_USER] + cp_time1[CP_NICE] + cp_time1[CP_SYS] + cp_time1[CP_INTR];
+        guint64 total = used + cp_time1[CP_IDLE];
 
         if (used >= data[i].previous_used && total > data[i].previous_total)
             data[i].load = (gfloat) (used - data[i].previous_used) /
@@ -308,7 +299,6 @@ detect_cpu_number (void)
 gboolean
 read_cpu_data (CpuData *data, guint nb_cpu)
 {
-    guint64 used, total;
     guint64 cp_time[CPUSTATES];
     data[0].load = 0;
 
@@ -320,8 +310,8 @@ read_cpu_data (CpuData *data, guint nb_cpu)
         if (sysctl (mib, 3, &cp_time, &len, NULL, 0) < 0)
             return FALSE;
 
-        used = cp_time[CP_USER] + cp_time[CP_NICE] + cp_time[CP_SYS] + cp_time[CP_INTR];
-        total = used + cp_time[CP_IDLE];
+        guint64 used = cp_time[CP_USER] + cp_time[CP_NICE] + cp_time[CP_SYS] + cp_time[CP_INTR];
+        guint64 total = used + cp_time[CP_IDLE];
 
         if (used >= data[i].previous_used && total > data[i].previous_total)
             data[i].load = (gfloat) (used - data[i].previous_used) /
@@ -368,14 +358,12 @@ read_cpu_data (CpuData *data, guint nb_cpu)
 {
     kstat_t *ksp;
     kstat_named_t *knp;
-    guint64 used, total;
-    gint i;
     data[0].load = 0;
 
     if (!kc)
         init_stats ();
 
-    i = 1;
+    gint i = 1;
 
     for (ksp = kc->kc_chain; ksp != NULL; ksp = ksp->ks_next)
     {
@@ -383,13 +371,13 @@ read_cpu_data (CpuData *data, guint nb_cpu)
         {
             kstat_read (kc, ksp, NULL);
             knp = kstat_data_lookup (ksp, "cpu_nsec_user");
-            used = knp->value.ul;
+            guint64 used = knp->value.ul;
             knp = kstat_data_lookup (ksp, "cpu_nsec_intr");
             used += knp->value.ul;
             knp = kstat_data_lookup (ksp, "cpu_nsec_kernel");
             used += knp->value.ul;
             knp = kstat_data_lookup (ksp, "cpu_nsec_idle");
-            total = used + knp->value.ul;
+            guint64 total = used + knp->value.ul;
 
             if (used >= data[i].previous_used && total > data[i].previous_total)
                 data[i].load = (gfloat) (used - data[i].previous_used) /
@@ -420,18 +408,17 @@ read_cpu_data (CpuData *data, guint nb_cpu)
 Topology*
 read_topology (void)
 {
-    GList *core_ids = NULL;
+    std::vector<gint> core_ids;
     gint max_core_id = -1;
-    guint logical_cpu, num_all_logical_cpus, num_online_logical_cpus, num_all_cores;
+    guint num_all_logical_cpus, num_online_logical_cpus, num_all_cores;
     Topology *t = NULL;
 
     num_all_logical_cpus = 0;
     num_online_logical_cpus = 0;
-    for (logical_cpu = 0; TRUE; logical_cpu++)
+    for (guint logical_cpu = 0; TRUE; logical_cpu++)
     {
         gchar path[128];
         gchar *file_contents;
-        glong core_id;
 
         /* See also: https://www.kernel.org/doc/html/latest/admin-guide/cputopology.html */
 
@@ -445,23 +432,22 @@ read_topology (void)
         if (g_file_get_contents (path, &file_contents, NULL, NULL))
         {
             errno = 0;
-            core_id = strtol (file_contents, NULL, 10);
+            glong core_id = strtol (file_contents, NULL, 10);
             if (errno || core_id < 0 || core_id > G_MAXINT)
             {
-                g_list_free (core_ids);
-                core_ids = NULL;
+                core_ids.clear();
                 break;
             }
 
             num_online_logical_cpus++;
-            core_ids = g_list_append (core_ids, (gpointer) core_id);
+            core_ids.push_back(core_id);
             if (max_core_id < core_id)
                 max_core_id = core_id;
         }
         else
         {
             /* The CPU is probably offline */
-            core_ids = g_list_append (core_ids, (gpointer) -1);
+            core_ids.push_back(-1);
         }
     }
 
@@ -469,15 +455,11 @@ read_topology (void)
 
     /* Perform some sanity checks */
     if (G_UNLIKELY (max_core_id < 0 || max_core_id > G_MAXINT-1 || !(num_all_cores <= num_all_logical_cpus)))
-    {
-        g_list_free (core_ids);
-        core_ids = NULL;
-    }
+        core_ids.clear();
 
-    if (core_ids)
+    if (!core_ids.empty())
     {
         gsize memory_size;
-        guint i;
         gchar *p; /* Pointer inside the region of allocated memory */
         G_GNUC_UNUSED gchar *p_end;
 
@@ -499,9 +481,8 @@ read_topology (void)
         t->logical_cpu_2_core = (gint *) p; p += num_all_logical_cpus * sizeof (*t->logical_cpu_2_core);
         t->cores = (Topology::CpuCore *) p; p += num_all_cores * sizeof (*t->cores);
         t->smt = FALSE;
-        for (GList *l = core_ids; l; l = l->next)
+        for (gint core_id : core_ids)
         {
-            gint core_id = (glong) l->data;
             if (core_id != -1)
             {
                 switch (++(t->cores[core_id].num_logical_cpus))
@@ -515,7 +496,7 @@ read_topology (void)
                 }
             }
         }
-        for (i = 0; i < num_all_cores; i++)
+        for (guint i = 0; i < num_all_cores; i++)
         {
             t->cores[i].logical_cpus = (guint *) p;
             p += t->cores[i].num_logical_cpus * sizeof (*t->cores[i].logical_cpus);
@@ -523,10 +504,9 @@ read_topology (void)
             /* The zeroed num_logical_cpus will be restored in the for-loop below */
         }
         {
-            logical_cpu = 0;
-            for (GList *l = core_ids; l; l = l->next)
+            guint logical_cpu = 0;
+            for (gint core_id : core_ids)
             {
-                gint core_id = (glong) l->data;
                 if (core_id != -1)
                 {
                     t->logical_cpu_2_core[logical_cpu] = core_id;
@@ -548,7 +528,6 @@ read_topology (void)
         g_assert (p == p_end);
     }
 
-    g_list_free (core_ids);
     return t;
 }
 
