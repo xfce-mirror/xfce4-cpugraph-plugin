@@ -19,10 +19,11 @@ libcpugraph_la_LIBADD = \
 libcpugraph_la_SOURCES = \
 	mode.c \
 	mode.h \
-	cpu.c \
+	cpu.cc \
 	cpu.h \
 	os.cc \
 	os.h \
+	plugin.c \
 	properties.c \
 	properties.h \
 	settings.cc \

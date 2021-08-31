@@ -1,4 +1,4 @@
-panel-plugin/cpu.c
+panel-plugin/cpu.cc
 panel-plugin/mode.c
 panel-plugin/os.cc
 panel-plugin/properties.c
