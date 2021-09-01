@@ -23,9 +23,11 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+/* The fixes file has to be included before any other #include directives */
+#include "xfce4++/util/fixes.h"
+
 #include "settings.h"
 #include "xfce4++/util/rc.h"
-#include <libxfce4ui/libxfce4ui.h>
 #include <math.h>
 
 static const GdkRGBA default_colors[NUM_COLORS] =

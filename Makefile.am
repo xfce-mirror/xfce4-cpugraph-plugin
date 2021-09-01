@@ -2,6 +2,7 @@
 
 # Note: The order of directories in this list isn't arbitrary
 SUBDIRS = \
+	xfce4++ \
 	xfce4++/util \
 	panel-plugin \
 	po \

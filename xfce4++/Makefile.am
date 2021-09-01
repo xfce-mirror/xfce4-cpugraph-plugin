@@ -18,13 +18,13 @@
 
 AM_CPPFLAGS = -I${top_srcdir}
 
-noinst_LTLIBRARIES = libxfce4util_pp.la
+noinst_LTLIBRARIES = libxfce4_pp.la
 
-libxfce4util_pp_la_CXXFLAGS = \
+libxfce4_pp_la_CXXFLAGS = \
+	@LIBXFCE4PANEL_CFLAGS@ \
+	@LIBXFCE4UI_CFLAGS@ \
 	@LIBXFCE4UTIL_CFLAGS@
 
-libxfce4util_pp_la_SOURCES = \
-	fixes.h \
-	memory.h \
-	rc.h \
-	rc.cc
+libxfce4_pp_la_SOURCES = \
+	dummy.cc \
+	util.h

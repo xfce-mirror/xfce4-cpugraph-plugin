@@ -1,4 +1,4 @@
-/*  cpu.c
+/*  cpu.cc
  *  Part of xfce4-cpugraph-plugin
  *
  *  Copyright (c) Alexander Nordfelth <alex.nordfelth@telia.com>
@@ -6,6 +6,7 @@
  *  Copyright (c) 2007-2008 Angelo Arrifano <miknix@gmail.com>
  *  Copyright (c) 2007-2008 Lidiriel <lidiriel@coriolys.org>
  *  Copyright (c) 2010 Florian Rivoal <frivoal@gmail.com>
+ *  Copyright (c) 2021 Jan Ziak <0xe2.0x9a.0x9b@xfce.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,6 +22,10 @@
  *  with this program; if not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
+
+/* The fixes file has to be included before any other #include directives */
+#include "xfce4++/util/fixes.h"
+
 #include "cpu.h"
 #include "settings.h"
 #include "mode.h"
@@ -28,12 +33,12 @@
 
 #include <libxfce4ui/libxfce4ui.h>
 #include <math.h>
+#include "xfce4++/util.h"
 #ifndef _
 # include <libintl.h>
 # define _(String) gettext (String)
 #endif
 
-static void       cpugraph_construct   (XfcePanelPlugin    *plugin);
 static CPUGraph  *create_gui           (XfcePanelPlugin    *plugin);
 static void       create_bars          (CPUGraph           *base,
                                         GtkOrientation      orientation);
@@ -67,9 +72,7 @@ static gboolean   command_cb           (GtkWidget          *w,
                                         GdkEventButton     *event,
                                         CPUGraph           *base);
 
-XFCE_PANEL_PLUGIN_REGISTER (cpugraph_construct);
-
-static void
+void
 cpugraph_construct (XfcePanelPlugin *plugin)
 {
     CPUGraph *base;
@@ -217,8 +220,7 @@ shutdown (XfcePanelPlugin *plugin, CPUGraph *base)
         g_source_remove (base->timeout_id);
     if (base->history.data)
     {
-        guint core;
-        for (core = 0; core < base->nr_cores+1; core++)
+        for (guint core = 0; core < base->nr_cores + 1; core++)
             g_free (base->history.data[core]);
         g_free (base->history.data);
     }
@@ -267,19 +269,17 @@ resize_history (CPUGraph *base, gssize history_size)
 
     if (cap_pow2 != old_cap_pow2)
     {
-        guint core;
-        gssize i;
         base->history.cap_pow2 = cap_pow2;
         base->history.data = (CpuLoad**) g_malloc0 ((base->nr_cores + 1) * sizeof (CpuLoad*));
-        for (core = 0; core < base->nr_cores + 1; core++)
+        for (guint core = 0; core < base->nr_cores + 1; core++)
             base->history.data[core] = (CpuLoad*) g_malloc0 (cap_pow2 * sizeof (CpuLoad));
         base->history.mask = cap_pow2 - 1;
         base->history.offset = 0;
         if (old_data != NULL)
         {
-            for (core = 0; core < base->nr_cores+1; core++)
+            for (guint core = 0; core < base->nr_cores + 1; core++)
             {
-                for (i = 0; i < old_cap_pow2 && i < cap_pow2; i++)
+                for (gssize i = 0; i < old_cap_pow2 && i < cap_pow2; i++)
                     base->history.data[core][i] = old_data[core][(old_offset + i) & old_mask];
                 g_free (old_data[core]);
             }
@@ -389,9 +389,8 @@ detect_smt_issues (CPUGraph *base)
     gfloat actual_load[base->nr_cores];
     gboolean movement[base->nr_cores];
     gboolean suboptimal[base->nr_cores];
-    guint i;
 
-    for (i = 0; i < base->nr_cores; i++)
+    for (guint i = 0; i < base->nr_cores; i++)
     {
         actual_load[i] = base->cpu_data[i+1].load;
         suboptimal[i] = FALSE;
@@ -411,7 +410,7 @@ detect_smt_issues (CPUGraph *base)
         /* Initialize CPU load arrays.
          * The array optimal_load[] will be updated
          * if a suboptimal SMT thread placement is detected. */
-        for (i = 0; i < base->nr_cores; i++)
+        for (guint i = 0; i < base->nr_cores; i++)
         {
             const gfloat load = actual_load[i];
             optimal_load[i] = load;
@@ -419,7 +418,7 @@ detect_smt_issues (CPUGraph *base)
             optimal_num_instr_executed[i] = load;
         }
 
-        for (i = 0; i < base->nr_cores; i++)
+        for (guint i = 0; i < base->nr_cores; i++)
         {
             if (G_LIKELY (i < topo->num_all_logical_cpus))
             {
@@ -438,11 +437,10 @@ detect_smt_issues (CPUGraph *base)
                     const gfloat SMT_SLOWDOWN = 0.25f;
 
                     gfloat combined_usage;
-                    guint j;
 
                 retry:
                     combined_usage = 0;
-                    for (j = 0; j < topo->cores[core].num_logical_cpus; j++)
+                    for (guint j = 0; j < topo->cores[core].num_logical_cpus; j++)
                     {
                         guint cpu = topo->cores[core].logical_cpus[j];
                         if (G_LIKELY (cpu < base->nr_cores))
@@ -453,13 +451,12 @@ detect_smt_issues (CPUGraph *base)
                         /* Attempt to find a free CPU *core* different from `core`
                          * that might have had executed the workload
                          * without resorting to SMT/hyperthreading */
-                        guint other_core;
-                        for (other_core = 0; other_core < topo->num_all_cores; other_core++)
+                        for (guint other_core = 0; other_core < topo->num_all_cores; other_core++)
                         {
                             if (other_core != (guint) core)
                             {
                                 gfloat combined_usage_other = 0.0;
-                                for (j = 0; j < topo->cores[other_core].num_logical_cpus; j++)
+                                for (guint j = 0; j < topo->cores[other_core].num_logical_cpus; j++)
                                 {
                                     guint other_cpu = topo->cores[other_core].logical_cpus[j];
                                     if (G_LIKELY (other_cpu < base->nr_cores))
@@ -472,7 +469,7 @@ detect_smt_issues (CPUGraph *base)
                                      * a much higher IPC (instructions per clock) ratio */
 
                                     smt_incident = TRUE;
-                                    for (j = 0; j < topo->cores[other_core].num_logical_cpus; j++)
+                                    for (guint j = 0; j < topo->cores[other_core].num_logical_cpus; j++)
                                     {
                                         guint cpu = topo->cores[core].logical_cpus[j];
                                         if (G_LIKELY (cpu < base->nr_cores))
@@ -491,7 +488,7 @@ detect_smt_issues (CPUGraph *base)
                                         /* Move as much of excess load to the other core as possible */
                                         const gfloat excess_load = combined_usage - 1.0f;
                                         gint other_cpu_min = -1;
-                                        for (j = 0; j < topo->cores[other_core].num_logical_cpus; j++)
+                                        for (guint j = 0; j < topo->cores[other_core].num_logical_cpus; j++)
                                         {
                                             guint other_cpu = topo->cores[other_core].logical_cpus[j];
                                             if (G_LIKELY (other_cpu < base->nr_cores))
@@ -517,7 +514,7 @@ detect_smt_issues (CPUGraph *base)
                                             optimal_num_instr_executed[other_cpu_min] += (1.0f + SMT_SLOWDOWN) * load_to_move;
 
                                             /* Decrease combined_usage by load_to_move */
-                                            for (j = topo->cores[core].num_logical_cpus; load_to_move > 0 && j != 0;)
+                                            for (guint j = topo->cores[core].num_logical_cpus; load_to_move > 0 && j != 0;)
                                             {
                                                 guint cpu = topo->cores[core].logical_cpus[--j];
                                                 if (G_LIKELY (cpu < base->nr_cores))
@@ -564,7 +561,7 @@ detect_smt_issues (CPUGraph *base)
         }
 
         /* Update instruction counters */
-        for (i = 0; i < base->nr_cores; i++)
+        for (guint i = 0; i < base->nr_cores; i++)
         {
             base->stats.num_instructions_executed.total.actual += actual_num_instr_executed[i];
             base->stats.num_instructions_executed.total.optimal += optimal_num_instr_executed[i];
@@ -580,7 +577,7 @@ detect_smt_issues (CPUGraph *base)
             base->stats.num_smt_incidents++;
 
             /* Update instruction counters */
-            for (i = 0; i < base->nr_cores; i++)
+            for (guint i = 0; i < base->nr_cores; i++)
             {
                 if (movement[i] || suboptimal[i])
                 {
@@ -591,14 +588,14 @@ detect_smt_issues (CPUGraph *base)
         }
     }
 
-    for (i = 0; i < base->nr_cores; i++)
+    for (guint i = 0; i < base->nr_cores; i++)
         base->cpu_data[i+1].smt_highlight = suboptimal[i];
 }
 
 static gboolean
 update_cb (gpointer user_data)
 {
-    CPUGraph *base = user_data;
+    CPUGraph *base = (CPUGraph*) user_data;
 
     if (!read_cpu_data (base->cpu_data, base->nr_cores))
         return TRUE;
@@ -608,11 +605,10 @@ update_cb (gpointer user_data)
     if (base->history.data != NULL)
     {
         const gint64 timestamp = g_get_real_time ();
-        guint core;
 
         /* Prepend the current CPU load to the history */
         base->history.offset = (base->history.offset - 1) & base->history.mask;
-        for (core = 0; core < base->nr_cores+1; core++)
+        for (guint core = 0; core < base->nr_cores + 1; core++)
         {
             CpuLoad load;
             load.timestamp = timestamp;
@@ -687,13 +683,12 @@ draw_area_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
             }
 
             core = base->tracked_core;
-            if (G_UNLIKELY (core > base->nr_cores+1))
+            if (G_UNLIKELY (core > base->nr_cores + 1))
                 core = 0;
             draw (base, cr, w, h, core);
         }
         else
         {
-            guint core;
             gboolean horizontal;
             gint w1, h1;
 
@@ -709,7 +704,7 @@ draw_area_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
                 h1 = base->size;
             }
 
-            for (core = 0; core < base->nr_cores; core++)
+            for (guint core = 0; core < base->nr_cores; core++)
             {
                 cairo_save (cr);
                 {
@@ -770,8 +765,7 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
     {
         const GdkRGBA *active_color = NULL;
         gboolean fill = FALSE;
-        guint i;
-        for (i = 0; i < base->nr_cores; i++)
+        for (guint i = 0; i < base->nr_cores; i++)
         {
             const GdkRGBA *color;
             const gboolean highlight = base->highlight_smt && base->cpu_data[i+1].smt_highlight;
@@ -1060,7 +1054,7 @@ set_color (CPUGraph *base, guint number, GdkRGBA color)
 void
 set_tracked_core (CPUGraph *base, guint core)
 {
-    if (G_UNLIKELY (core > base->nr_cores+1))
+    if (G_UNLIKELY (core > base->nr_cores + 1))
         core = 0;
 
     if (base->tracked_core != core)

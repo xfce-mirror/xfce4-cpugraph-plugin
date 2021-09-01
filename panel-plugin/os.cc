@@ -410,8 +410,7 @@ read_topology (void)
 {
     std::vector<gint> core_ids;
     gint max_core_id = -1;
-    guint num_all_logical_cpus, num_online_logical_cpus, num_all_cores;
-    Topology *t = NULL;
+    guint num_all_logical_cpus, num_online_logical_cpus;
 
     num_all_logical_cpus = 0;
     num_online_logical_cpus = 0;
@@ -433,11 +432,8 @@ read_topology (void)
         {
             errno = 0;
             glong core_id = strtol (file_contents, NULL, 10);
-            if (errno || core_id < 0 || core_id > G_MAXINT)
-            {
-                core_ids.clear();
-                break;
-            }
+            if (G_UNLIKELY (errno || core_id < 0 || core_id > G_MAXINT))
+                return NULL;
 
             num_online_logical_cpus++;
             core_ids.push_back(core_id);
@@ -451,26 +447,25 @@ read_topology (void)
         }
     }
 
-    num_all_cores = (guint) max_core_id + 1;
+    const guint num_all_cores = guint(max_core_id + 1);
 
     /* Perform some sanity checks */
     if (G_UNLIKELY (max_core_id < 0 || max_core_id > G_MAXINT-1 || !(num_all_cores <= num_all_logical_cpus)))
-        core_ids.clear();
+        return NULL;
 
     if (!core_ids.empty())
     {
-        gsize memory_size;
+        Topology *t;
         gchar *p; /* Pointer inside the region of allocated memory */
-        G_GNUC_UNUSED gchar *p_end;
 
         /* Compute total size of memory to allocate */
-        memory_size = sizeof (Topology) + num_all_cores * sizeof (*t->cores) +
-                      num_all_logical_cpus * sizeof (*t->logical_cpu_2_core) +
-                      num_online_logical_cpus * sizeof (*t->cores[0].logical_cpus);
+        gsize memory_size = sizeof (Topology) + num_all_cores * sizeof (*t->cores) +
+                            num_all_logical_cpus * sizeof (*t->logical_cpu_2_core) +
+                            num_online_logical_cpus * sizeof (*t->cores[0].logical_cpus);
 
         /* Allocate required memory via a single g_malloc() call */
         p = (gchar*) g_malloc0 (memory_size);
-        p_end = p + memory_size;
+        G_GNUC_UNUSED gchar *const p_end = p + memory_size;
 
         /* Fill-in the topology data */
         t = (Topology*) p; p += sizeof (*t);
@@ -526,9 +521,11 @@ read_topology (void)
 
         /* Verify that exactly all of the allocated memory has been used */
         g_assert (p == p_end);
-    }
 
-    return t;
+        return t;
+    }
+    else
+        return NULL;
 }
 
 #else
