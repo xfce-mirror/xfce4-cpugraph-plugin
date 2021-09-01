@@ -42,8 +42,12 @@ void Rc::delete_entry(const std::string &key, bool global) {
     xfce_rc_delete_entry(rc, key.c_str(), global);
 }
 
-const gchar* Rc::read_entry(const std::string &key, const char *fallback_orNull) const {
-    return xfce_rc_read_entry(rc, key.c_str(), fallback_orNull);
+Ptr0<std::string> Rc::read_entry(const std::string &key, const char *fallback_orNull) const {
+    const gchar *e = xfce_rc_read_entry(rc, key.c_str(), fallback_orNull);
+    if(e)
+        return make<std::string>(e);
+    else
+        return nullptr;
 }
 
 gint Rc::read_int_entry(const std::string &key, gint fallback) const {
