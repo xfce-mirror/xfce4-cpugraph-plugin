@@ -26,8 +26,9 @@
 
 namespace xfce4 {
 
+/* A pointer that cannot be null */
 template<typename T>
-struct Ptr {
+struct Ptr final {
     std::shared_ptr<T> ptr;
 
     template<typename... Args>
@@ -43,8 +44,9 @@ private:
     Ptr() {}
 };
 
+/* A pointer that can be null */
 template<typename T>
-struct Ptr0 : std::shared_ptr<T> {
+struct Ptr0 final : std::shared_ptr<T> {
     Ptr0() : std::shared_ptr<T>(nullptr) {}
     Ptr0(std::nullptr_t) : std::shared_ptr<T>(nullptr) {}
     Ptr0(const std::shared_ptr<T> &p) : std::shared_ptr<T>(p) {}
@@ -52,6 +54,7 @@ struct Ptr0 : std::shared_ptr<T> {
     Ptr0(const Ptr<T> &p) : std::shared_ptr<T>(p.ptr) {}
 };
 
+/* Allocates a new instance of T on the heap, passing args to T's constructor */
 template<typename T, typename... Args>
 inline Ptr<T> make(Args&&... args) {
     return Ptr<T>::template make<Args...>(std::forward<Args>(args)...);

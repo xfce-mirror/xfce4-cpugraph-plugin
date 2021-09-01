@@ -42,7 +42,7 @@ struct Rc final {
 
     void close();
     void delete_entry(const std::string &key, bool global);
-    const gchar* read_entry(const std::string &key, const char *fallback_orNull) const G_GNUC_WARN_UNUSED_RESULT;
+    Ptr0<std::string> read_entry(const std::string &key, const char *fallback_orNull) const G_GNUC_WARN_UNUSED_RESULT;
     gint read_int_entry(const std::string &key, gint fallback) const G_GNUC_WARN_UNUSED_RESULT;
     void write_entry(const std::string &key, const std::string &value);
     void write_int_entry(const std::string &key, gint value);

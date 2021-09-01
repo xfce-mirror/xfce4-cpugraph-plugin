@@ -84,7 +84,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
 
         if (rc)
         {
-            const gchar *value;
+            xfce4::Ptr0<std::string> value;
 
             rate = (CPUGraphUpdateRate) rc->read_int_entry ("UpdateInterval", rate);
             nonlinear = rc->read_int_entry ("TimeScale", nonlinear);
@@ -103,14 +103,14 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
             load_threshold = rc->read_int_entry ("LoadThreshold", load_threshold);
 
             if ((value = rc->read_entry ("Command", NULL))) {
-                command = g_strdup (value);
+                command = g_strdup (value->c_str());
             }
 
             for (guint i = 0; i < NUM_COLORS; i++)
             {
                 if ((value = rc->read_entry (color_keys[i], NULL)))
                 {
-                    gdk_rgba_parse (&colors[i], value);
+                    gdk_rgba_parse (&colors[i], value->c_str());
                     if (i == BARS_COLOR)
                         base->has_barcolor = TRUE;
                 }
