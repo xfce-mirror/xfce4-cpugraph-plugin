@@ -137,6 +137,8 @@ typedef struct
     CpuStats stats;
 } CPUGraph;
 
+void cpugraph_construct (XfcePanelPlugin *plugin);
+
 guint get_update_interval_ms (CPUGraphUpdateRate rate);
 void set_bars (CPUGraph * base, gboolean bars);
 void set_border (CPUGraph *base, gboolean border);

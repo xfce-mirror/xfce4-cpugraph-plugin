@@ -18,36 +18,14 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _XFCE4PP_UTIL_RC_H_
-#define _XFCE4PP_UTIL_RC_H_
+#ifndef _XFCE4PP_UTIL_H_
+#define _XFCE4PP_UTIL_H_
 
 #ifndef _XFCE4PP_UTIL_FIXES_H_
 #error "Please include xfce4++/util/fixes.h before any other include directives"
 #endif
 
-#include <glib.h>
 #include <libxfce4util/libxfce4util.h>
-#include <string>
-#include "memory.h"
+#include "xfce4++/util/rc.h"
 
-namespace xfce4 {
-
-struct Rc final {
-    XfceRc *rc;
-
-    static Ptr0<Rc> simple_open(const std::string &filename, bool readonly);
-
-    Rc(XfceRc *rc);
-    ~Rc();
-
-    void close();
-    void delete_entry(const std::string &key, bool global);
-    const gchar* read_entry(const std::string &key, const char *fallback_orNull) const G_GNUC_WARN_UNUSED_RESULT;
-    gint read_int_entry(const std::string &key, gint fallback) const G_GNUC_WARN_UNUSED_RESULT;
-    void write_entry(const std::string &key, const std::string &value);
-    void write_int_entry(const std::string &key, gint value);
-};
-
-} /* namespace xfce4 */
-
-#endif /* _XFCE4PP_UTIL_RC_H_ */
+#endif /* _XFCE4PP_UTIL_H_ */
