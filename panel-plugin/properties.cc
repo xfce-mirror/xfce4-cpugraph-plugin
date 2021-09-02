@@ -23,6 +23,9 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+/* The fixes file has to be included before any other #include directives */
+#include "xfce4++/util/fixes.h"
+
 #include "cpu.h"
 #include "properties.h"
 #include "settings.h"
@@ -30,6 +33,7 @@
 #include <glib/gprintf.h>
 #include <libxfce4ui/libxfce4ui.h>
 #include <math.h>
+#include "xfce4++/util.h"
 
 #ifndef _
 # include <libintl.h>
@@ -197,7 +201,7 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
                                                             base->command_startup_notification, change_startup_notification, dlg_data,
                                                             NULL);
 
-    gchar *smt_issues_tooltip = _("Color used to highlight potentially suboptimal\nplacement of threads on CPUs with SMT");
+    const gchar *smt_issues_tooltip = _("Color used to highlight potentially suboptimal\nplacement of threads on CPUs with SMT");
     dlg_data->smt_stats_tooltip = g_strdup_printf("%s\n%s",
         _("'Overall' is showing the impact on the overall performance of the machine."),
         _("'Hotspots' is showing the momentary performance impact on just the threads involved in suboptimal SMT scheduling decisions."));
@@ -364,14 +368,14 @@ setup_tracked_core_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraphOptions *data
     const gsize nb_items = data->base->nr_cores + 1;
     gchar *items[nb_items];
 
-    items[0] = _("All");
+    items[0] = g_strdup (_("All"));
     for (gsize i = 1; i < nb_items; i++)
         items[i] = g_strdup_printf ("%zu", i-1);
 
     create_drop_down (vbox, sg, _("Tracked Core:"), (const gchar **) items, nb_items,
                       data->base->tracked_core, change_core, data);
 
-    for (gsize i = 1; i < nb_items; i++)
+    for (gsize i = 0; i < nb_items; i++)
         g_free (items[i]);
 }
 
@@ -702,8 +706,8 @@ static gboolean
 update_cb (CPUGraphOptions *data)
 {
     const CPUGraph *base = data->base;
-    gchar *smt_text;
-    gboolean show_tooltip = FALSE;
+    std::string smt_text;
+    bool show_tooltip = false;
 
     if (base->topology)
     {
@@ -713,7 +717,6 @@ update_cb (CPUGraphOptions *data)
         {
             gdouble slowdown_overall = 0;
             gdouble slowdown_hotspots = 0;
-            gchar lines[4][128];
 
             gdouble actual = base->stats.num_instructions_executed.total.actual;
             gdouble optimal = base->stats.num_instructions_executed.total.optimal;
@@ -731,42 +734,35 @@ update_cb (CPUGraphOptions *data)
                 slowdown_hotspots = round (slowdown_hotspots * 100) / 100;
             }
 
-            g_snprintf (lines[0], sizeof (lines[0]), _("Number of SMT scheduling incidents: %u"),
-                        base->stats.num_smt_incidents);
+            smt_text = std::string() +
+                smt_detected + "\n" +
+                xfce4::sprintf (_("Number of SMT scheduling incidents: %u"), base->stats.num_smt_incidents) + "\n";
 
-            if (base->stats.num_smt_incidents == 0)
+            if (base->stats.num_smt_incidents != 0)
             {
-                smt_text = g_strdup_printf ("%s\n%s", smt_detected, lines[0]);
-            }
-            else
-            {
-                g_snprintf (lines[1], sizeof (lines[1]), _("Estimated performance impact:"));
-                g_snprintf (lines[2], sizeof (lines[2]), _("Overall: %.3g%%"), slowdown_overall);
-                g_snprintf (lines[3], sizeof (lines[3]), _("Hotspots: %.3g%%"), slowdown_hotspots);
+                smt_text += std::string() +
+                    _("Estimated performance impact:") + "\n" +
+                    "\t" + xfce4::sprintf (_("Overall: %.3g%%"), slowdown_overall) + "\n" +
+                    "\t" + xfce4::sprintf (_("Hotspots: %.3g%%"), slowdown_hotspots) + "\n";
 
-                smt_text = g_strdup_printf ("%s\n%s\n%s\n\t%s\n\t%s", smt_detected,
-                                            lines[0], lines[1], lines[2], lines[3]);
-
-                show_tooltip = TRUE;
+                show_tooltip = true;
             }
         }
         else
         {
-            smt_text = g_strdup (smt_detected);
+            smt_text = smt_detected;
         }
     }
     else
     {
-        smt_text = g_strdup (_("SMT detected: N/A"));
+        smt_text = _("SMT detected: N/A");
     }
 
-    if (strcmp (gtk_label_get_text (data->smt_stats), smt_text))
+    if (gtk_label_get_text (data->smt_stats) != smt_text)
     {
-        gtk_label_set_text (data->smt_stats, smt_text);
+        gtk_label_set_text (data->smt_stats, smt_text.c_str());
         gtk_widget_set_tooltip_text (GTK_WIDGET (data->smt_stats), show_tooltip ? data->smt_stats_tooltip : "");
     }
-
-    g_free (smt_text);
 
     return TRUE;
 }
