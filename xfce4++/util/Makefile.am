@@ -27,4 +27,6 @@ libxfce4util_pp_la_SOURCES = \
 	fixes.h \
 	memory.h \
 	rc.h \
-	rc.cc
+	rc.cc \
+	string.h \
+	string.cc

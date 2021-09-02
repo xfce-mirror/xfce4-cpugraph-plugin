@@ -18,15 +18,42 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _XFCE4PP_UTIL_H_
-#define _XFCE4PP_UTIL_H_
+#include "string.h"
 
-#ifndef _XFCE4PP_UTIL_FIXES_H_
-#error "Please include xfce4++/util/fixes.h before any other include directives"
-#endif
+#include <cstdarg>
+#include <cstdio>
 
-#include <libxfce4util/libxfce4util.h>
-#include "xfce4++/util/rc.h"
-#include "xfce4++/util/string.h"
+namespace xfce4 {
 
-#endif /* _XFCE4PP_UTIL_H_ */
+std::string sprintf(const char *fmt, ...) {
+    char buf[1024];
+
+    va_list ap;
+    va_start(ap, fmt);
+    int n = std::vsnprintf(buf, G_N_ELEMENTS(buf), fmt, ap);
+    va_end(ap);
+
+    if(G_LIKELY(n >= 0)) {
+        size_t n1 = size_t(n);
+        if(G_LIKELY(n1 < sizeof(buf))) {
+            return std::string(buf, n1);
+        }
+        else {
+            auto heap_buf = (char*) g_malloc(n1+1);
+
+            va_start(ap, fmt);
+            n = std::vsnprintf(heap_buf, n1+1, fmt, ap);
+            va_end(ap);
+
+            if(G_LIKELY(n >= 0 && size_t(n) == n1)) {
+                std::string s(heap_buf, n1);
+                g_free(heap_buf);
+                return s;
+            }
+        }
+    }
+
+    return "<xfce4::sprintf() failure>";
+}
+
+} /* namespace xfce4 */
