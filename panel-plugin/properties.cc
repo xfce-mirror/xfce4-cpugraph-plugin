@@ -1,4 +1,4 @@
-/*  properties.c
+/*  properties.cc
  *  Part of xfce4-cpugraph-plugin
  *
  *  Copyright (c) Alexander Nordfelth <alex.nordfelth@telia.com>
@@ -6,6 +6,7 @@
  *  Copyright (c) 2007-2008 Angelo Arrifano <miknix@gmail.com>
  *  Copyright (c) 2007-2008 Lidiriel <lidiriel@coriolys.org>
  *  Copyright (c) 2010 Florian Rivoal <frivoal@gmail.com>
+ *  Copyright (c) 2021 Jan Ziak <0xe2.0x9a.0x9b@xfce.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,6 +22,7 @@
  *  with this program; if not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
+
 #include "cpu.h"
 #include "properties.h"
 #include "settings.h"
@@ -160,16 +162,9 @@ static gboolean update_cb                    (CPUGraphOptions *data);
 void
 create_options (XfcePanelPlugin *plugin, CPUGraph *base)
 {
-    GtkWidget *dlg, *content;
-    GtkBox *vbox, *vbox2, *vbox3;
-    GtkWidget *label, *notebook;
-    GtkSizeGroup *sg;
-    CPUGraphOptions *dlg_data;
-    gchar *smt_issues_tooltip;
-
     xfce_panel_plugin_block_menu (plugin);
 
-    dlg = xfce_titled_dialog_new_with_mixed_buttons (_("CPU Graph Properties"),
+    GtkWidget *dlg = xfce_titled_dialog_new_with_mixed_buttons (_("CPU Graph Properties"),
                                        GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (plugin))),
                                        GTK_DIALOG_DESTROY_WITH_PARENT,
                                        "window-close-symbolic",
@@ -177,7 +172,7 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
                                        GTK_RESPONSE_OK,
                                        NULL);
 
-    dlg_data = g_new0 (CPUGraphOptions, 1);
+    CPUGraphOptions *dlg_data = g_new0 (CPUGraphOptions, 1);
     dlg_data->base = base;
 
     g_signal_connect (dlg, "destroy", G_CALLBACK (destroy_cb), dlg_data);
@@ -185,9 +180,9 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
 
     gtk_window_set_icon_name (GTK_WINDOW (dlg), "org.xfce.panel.cpugraph");
 
-    sg = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
+    GtkSizeGroup *sg = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
-    vbox = create_tab ();
+    GtkBox *vbox = create_tab ();
     setup_update_interval_option (vbox, sg, dlg_data);
     setup_tracked_core_option (vbox, sg, dlg_data);
     setup_size_option (vbox, sg, plugin, base);
@@ -202,7 +197,7 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
                                                             base->command_startup_notification, change_startup_notification, dlg_data,
                                                             NULL);
 
-    smt_issues_tooltip = _("Color used to highlight potentially suboptimal\nplacement of threads on CPUs with SMT");
+    gchar *smt_issues_tooltip = _("Color used to highlight potentially suboptimal\nplacement of threads on CPUs with SMT");
     dlg_data->smt_stats_tooltip = g_strdup_printf("%s\n%s",
         _("'Overall' is showing the impact on the overall performance of the machine."),
         _("'Hotspots' is showing the momentary performance impact on just the threads involved in suboptimal SMT scheduling decisions."));
@@ -218,7 +213,7 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     create_check_box (vbox, sg, _("Per-core history graphs"), base->per_core, change_per_core, dlg_data, &dlg_data->per_core);
     dlg_data->hbox_per_core_spacing  = setup_per_core_spacing_option (vbox, sg, base);
 
-    vbox2 = create_tab ();
+    GtkBox *vbox2 = create_tab ();
     setup_color_option (vbox2, sg, dlg_data, FG_COLOR1, _("Color 1:"), NULL, change_color_1);
     setup_color_option (vbox2, sg, dlg_data, FG_COLOR2, _("Color 2:"), NULL, change_color_2);
     setup_color_option (vbox2, sg, dlg_data, FG_COLOR3, _("Color 3:"), NULL, change_color_3);
@@ -234,19 +229,16 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     create_check_box (vbox2, sg, _("Show frame"), base->has_frame, change_frame, dlg_data, NULL);
     create_check_box (vbox2, sg, _("Show border"), base->has_border, change_border, dlg_data, NULL);
 
-    vbox3 = create_tab ();
+    GtkBox *vbox3 = create_tab ();
     dlg_data->smt_stats = create_label_line (vbox3, "");
 
-    notebook = gtk_notebook_new ();
+    GtkWidget *notebook = gtk_notebook_new ();
     gtk_container_set_border_width (GTK_CONTAINER (notebook), BORDER - 2);
-    label = gtk_label_new (_("Appearance"));
-    gtk_notebook_append_page (GTK_NOTEBOOK (notebook), GTK_WIDGET (vbox2), GTK_WIDGET (label));
-    label = gtk_label_new (_("Advanced"));
-    gtk_notebook_append_page (GTK_NOTEBOOK (notebook), GTK_WIDGET (vbox), GTK_WIDGET (label));
-    label = gtk_label_new (_("Stats"));
-    gtk_notebook_append_page (GTK_NOTEBOOK (notebook), GTK_WIDGET (vbox3), GTK_WIDGET (label));
+    gtk_notebook_append_page (GTK_NOTEBOOK (notebook), GTK_WIDGET (vbox2), gtk_label_new (_("Appearance")));
+    gtk_notebook_append_page (GTK_NOTEBOOK (notebook), GTK_WIDGET (vbox), gtk_label_new (_("Advanced")));
+    gtk_notebook_append_page (GTK_NOTEBOOK (notebook), GTK_WIDGET (vbox3), gtk_label_new (_("Stats")));
 
-    content = gtk_dialog_get_content_area (GTK_DIALOG (dlg));
+    GtkWidget *content = gtk_dialog_get_content_area (GTK_DIALOG (dlg));
     gtk_container_add (GTK_CONTAINER (content), notebook);
 
     update_cb (dlg_data);
@@ -259,8 +251,7 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
 static GtkBox *
 create_tab (void)
 {
-    GtkBox *tab;
-    tab = GTK_BOX (gtk_box_new (GTK_ORIENTATION_VERTICAL, BORDER));
+    GtkBox *tab = GTK_BOX (gtk_box_new (GTK_ORIENTATION_VERTICAL, BORDER));
     gtk_container_set_border_width (GTK_CONTAINER (tab), BORDER);
     return tab;
 }
@@ -268,13 +259,10 @@ create_tab (void)
 static GtkLabel *
 create_label_line (GtkBox *tab, const gchar *text)
 {
-    GtkLabel *label;
-    GtkBox *line;
-
-    line = GTK_BOX (gtk_box_new (GTK_ORIENTATION_HORIZONTAL, BORDER));
+    GtkBox *line = GTK_BOX (gtk_box_new (GTK_ORIENTATION_HORIZONTAL, BORDER));
     gtk_box_pack_start (tab, GTK_WIDGET (line), FALSE, FALSE, 0);
 
-    label = GTK_LABEL (gtk_label_new (text));
+    GtkLabel *label = GTK_LABEL (gtk_label_new (text));
     gtk_box_pack_start (line, GTK_WIDGET (label), FALSE, FALSE, 0);
     gtk_label_set_xalign (label, 0.0);
     gtk_label_set_yalign (label, 0.5);
@@ -285,9 +273,7 @@ create_label_line (GtkBox *tab, const gchar *text)
 static GtkBox *
 create_option_line (GtkBox *tab, GtkSizeGroup *sg, const gchar *name, const gchar *tooltip)
 {
-    GtkBox *line;
-
-    line = GTK_BOX (gtk_box_new (GTK_ORIENTATION_HORIZONTAL, BORDER));
+    GtkBox *line = GTK_BOX (gtk_box_new (GTK_ORIENTATION_HORIZONTAL, BORDER));
     gtk_box_pack_start (tab, GTK_WIDGET (line), FALSE, FALSE, 0);
 
     if (name)
@@ -315,12 +301,9 @@ create_check_box (GtkBox *tab, GtkSizeGroup *sg, const gchar *name, gboolean ini
                   void (callback)(GtkToggleButton*, CPUGraphOptions*), CPUGraphOptions *cb_data,
                   GtkToggleButton **out_checkbox)
 {
-    GtkBox *hbox;
-    GtkWidget *checkbox;
+    GtkBox *hbox = create_option_line (tab, sg, NULL, NULL);
 
-    hbox = create_option_line (tab, sg, NULL, NULL);
-
-    checkbox = gtk_check_button_new_with_mnemonic (name);
+    GtkWidget *checkbox = gtk_check_button_new_with_mnemonic (name);
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbox), init);
     gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (checkbox), FALSE, FALSE, 0);
     g_signal_connect (checkbox, "toggled", G_CALLBACK (callback), cb_data);
@@ -336,14 +319,10 @@ create_drop_down (GtkBox *tab, GtkSizeGroup *sg, const gchar *name,
                   const gchar **items, gsize nb_items, guint init,
                   void (callback)(GtkComboBox*, CPUGraphOptions*), CPUGraphOptions *cb_data)
 {
-    GtkBox *hbox;
-    GtkWidget *combo;
-    gsize i;
+    GtkBox *hbox = create_option_line (tab, sg, name, NULL);
 
-    hbox = create_option_line (tab, sg, name, NULL);
-
-    combo = gtk_combo_box_text_new ();
-    for (i = 0; i < nb_items; i++)
+    GtkWidget *combo = gtk_combo_box_text_new ();
+    for (gsize i = 0; i < nb_items; i++)
     {
         gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (combo), NULL, items[i]);
     }
@@ -384,16 +363,15 @@ setup_tracked_core_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraphOptions *data
 {
     const gsize nb_items = data->base->nr_cores + 1;
     gchar *items[nb_items];
-    guint i;
 
     items[0] = _("All");
-    for (i = 1; i < nb_items; i++)
-        items[i] = g_strdup_printf ("%u", i-1);
+    for (gsize i = 1; i < nb_items; i++)
+        items[i] = g_strdup_printf ("%zu", i-1);
 
     create_drop_down (vbox, sg, _("Tracked Core:"), (const gchar **) items, nb_items,
                       data->base->tracked_core, change_core, data);
 
-    for (i = 1; i < nb_items; i++)
+    for (gsize i = 1; i < nb_items; i++)
         g_free (items[i]);
 }
 
@@ -401,14 +379,12 @@ static void
 setup_size_option (GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, CPUGraph *base)
 {
     GtkBox *hbox;
-    GtkWidget *size;
-
     if (xfce_panel_plugin_get_orientation (plugin) == GTK_ORIENTATION_HORIZONTAL)
         hbox = create_option_line (vbox, sg, _("Width:"), NULL);
     else
         hbox = create_option_line (vbox, sg, _("Height:"), NULL);
 
-    size = gtk_spin_button_new_with_range (MIN_SIZE, MAX_SIZE, 1);
+    GtkWidget *size = gtk_spin_button_new_with_range (MIN_SIZE, MAX_SIZE, 1);
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (size), base->size);
     gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (size), FALSE, FALSE, 0);
     g_signal_connect (size, "value-changed", G_CALLBACK (change_size), base);
@@ -417,11 +393,8 @@ setup_size_option (GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, CPUG
 static void
 setup_load_threshold_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base)
 {
-    GtkBox *hbox;
-    GtkWidget *threshold;
-
-    hbox = create_option_line (vbox, sg, _("Threshold (%):"), NULL);
-    threshold = gtk_spin_button_new_with_range (0, (gint) roundf (100 * MAX_LOAD_THRESHOLD), 1);
+    GtkBox *hbox = create_option_line (vbox, sg, _("Threshold (%):"), NULL);
+    GtkWidget *threshold = gtk_spin_button_new_with_range (0, (gint) roundf (100 * MAX_LOAD_THRESHOLD), 1);
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (threshold), (gint) roundf (100 * base->load_threshold));
     gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (threshold), FALSE, FALSE, 0);
     g_signal_connect (threshold, "value-changed", G_CALLBACK (change_load_threshold), base);
@@ -430,11 +403,8 @@ setup_load_threshold_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base)
 static GtkBox*
 setup_per_core_spacing_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base)
 {
-    GtkBox *hbox;
-    GtkWidget *spacing;
-
-    hbox = create_option_line (vbox, sg, _("Spacing:"), NULL);
-    spacing = gtk_spin_button_new_with_range (PER_CORE_SPACING_MIN, PER_CORE_SPACING_MAX, 1);
+    GtkBox *hbox = create_option_line (vbox, sg, _("Spacing:"), NULL);
+    GtkWidget *spacing = gtk_spin_button_new_with_range (PER_CORE_SPACING_MIN, PER_CORE_SPACING_MAX, 1);
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (spacing), base->per_core_spacing);
     gtk_widget_set_tooltip_text (GTK_WIDGET (hbox), _("Spacing between per-core history graphs"));
     gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (spacing), FALSE, FALSE, 0);
@@ -445,12 +415,9 @@ setup_per_core_spacing_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base)
 static void
 setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraphOptions *data)
 {
-    GtkBox *hbox;
-    GtkWidget *associatecommand;
+    GtkBox *hbox = create_option_line (vbox, sg, _("Associated command:"), NULL);
 
-    hbox = create_option_line (vbox, sg, _("Associated command:"), NULL);
-
-    associatecommand = gtk_entry_new ();
+    GtkWidget *associatecommand = gtk_entry_new ();
     gtk_entry_set_text (GTK_ENTRY (associatecommand), data->base->command ? data->base->command : "");
     gtk_entry_set_icon_from_icon_name (GTK_ENTRY (associatecommand),
                                        GTK_ENTRY_ICON_SECONDARY,
@@ -633,7 +600,7 @@ change_mode (GtkComboBox *combo, CPUGraphOptions *data)
         case MODE_LED:
         case MODE_NO_HISTORY:
         case MODE_GRID:
-            mode = selected;
+            mode = (CPUGraphMode) selected;
             break;
         default:
             mode = MODE_NORMAL;
@@ -718,7 +685,7 @@ static void change_time_scale (GtkToggleButton *button, CPUGraphOptions *data)
 
 static void change_update (GtkComboBox *combo, CPUGraphOptions *data)
 {
-    set_update_rate (data->base, gtk_combo_box_get_active (combo));
+    set_update_rate (data->base, (CPUGraphUpdateRate) gtk_combo_box_get_active (combo));
 }
 
 static void change_core (GtkComboBox *combo, CPUGraphOptions *data)
@@ -744,13 +711,12 @@ update_cb (CPUGraphOptions *data)
 
         if (base->topology->smt || base->stats.num_smt_incidents != 0)
         {
-            gdouble actual, optimal;
             gdouble slowdown_overall = 0;
             gdouble slowdown_hotspots = 0;
             gchar lines[4][128];
 
-            actual = base->stats.num_instructions_executed.total.actual;
-            optimal = base->stats.num_instructions_executed.total.optimal;
+            gdouble actual = base->stats.num_instructions_executed.total.actual;
+            gdouble optimal = base->stats.num_instructions_executed.total.optimal;
             if (actual != 0)
             {
                 slowdown_overall = 100.0 * (optimal - actual) / actual;
