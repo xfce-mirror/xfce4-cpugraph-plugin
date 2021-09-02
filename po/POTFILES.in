@@ -1,5 +1,5 @@
 panel-plugin/cpu.cc
-panel-plugin/mode.c
+panel-plugin/mode.cc
 panel-plugin/os.cc
 panel-plugin/properties.c
 panel-plugin/settings.cc

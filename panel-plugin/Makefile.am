@@ -17,7 +17,7 @@ libcpugraph_la_LIBADD = \
 	-lm
 
 libcpugraph_la_SOURCES = \
-	mode.c \
+	mode.cc \
 	mode.h \
 	cpu.cc \
 	cpu.h \

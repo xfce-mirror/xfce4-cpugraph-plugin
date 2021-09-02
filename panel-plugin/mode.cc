@@ -1,4 +1,4 @@
-/*  mode.c
+/*  mode.cc
  *  Part of xfce4-cpugraph-plugin
  *
  *  Copyright (c) Alexander Nordfelth <alex.nordfelth@telia.com>
@@ -6,6 +6,7 @@
  *  Copyright (c) 2007-2008 Angelo Arrifano <miknix@gmail.com>
  *  Copyright (c) 2007-2008 Lidiriel <lidiriel@coriolys.org>
  *  Copyright (c) 2010 Florian Rivoal <frivoal@gmail.com>
+ *  Copyright (c) 2021 Jan Ziak <0xe2.0x9a.0x9b@xfce.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,10 +28,12 @@
 #include <stdlib.h>
 #include "mode.h"
 
-typedef struct
+struct Point
 {
     gfloat x, y;
-} point;
+    Point() : x(0), y(0) {}
+    Point(gfloat _x, gfloat _y) : x(_x), y(_y) {}
+};
 
 static gdouble
 _lerp (gdouble t, gdouble a, gdouble b)
@@ -109,17 +112,15 @@ nearest_loads (const CPUGraph *base, const guint core, const gint64 start, const
     }
     else
     {
-        gssize i;
-        for (i = 0; i < count; i++)
+        for (gssize i = 0; i < count; i++)
         {
             /* Note: step < 0, therefore: timestamp1 < timestamp0 */
             const gint64 timestamp0 = start + (i+0) * pow (NONLINEAR_MODE_BASE, i+0) * step;
             const gint64 timestamp1 = start + (i+1) * pow (NONLINEAR_MODE_BASE, i+1) * step;
             gfloat sum = 0;
             gint num_loads = 0;
-            gssize j;
 
-            for (j = 0; j < history_cap_pow2; j++)
+            for (gssize j = 0; j < history_cap_pow2; j++)
             {
                 CpuLoad load = history_data[(history_offset + j) & history_mask];
                 if (load.timestamp > timestamp1 && load.timestamp <= timestamp0)
@@ -144,21 +145,20 @@ nearest_loads (const CPUGraph *base, const guint core, const gint64 start, const
                 out[i] = -1;
         }
 
-        for (i = 0; i < count; i++)
+        for (gssize i = 0; i < count; i++)
         {
             if (out[i] == -1)
             {
                 gfloat prev = -1, next = -1;
-                gssize j;
 
-                for (j = 0; j < i; j++)
+                for (gssize j = 0; j < i; j++)
                     if (out[j] != -1)
                     {
                         prev = out[j];
                         break;
                     }
 
-                for (j = i+1; j < count; j++)
+                for (gssize j = i+1; j < count; j++)
                     if (out[j] != -1)
                     {
                         next = out[j];
@@ -177,29 +177,24 @@ nearest_loads (const CPUGraph *base, const guint core, const gint64 start, const
 void
 draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 {
-    gint x, y;
-    gint tmp;
-    const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
-    gint64 t0;
-    gfloat nearest[w];
-
     if (G_UNLIKELY (base->history.data == NULL))
         return;
+
+    const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
+    gfloat nearest[w];
 
     if (base->color_mode == 0)
         gdk_cairo_set_source_rgba (cr, &base->colors[FG_COLOR1]);
 
-    t0 = base->history.data[core][base->history.offset].timestamp;
+    gint64 t0 = base->history.data[core][base->history.offset].timestamp;
     nearest_loads (base, core, t0, -step, w, nearest);
 
-    for (x = 0; x < w; x++)
+    for (gint x = 0; x < w; x++)
     {
-        gfloat load, usage;
-
-        load = nearest[w - 1 - x];
+        gfloat load = nearest[w - 1 - x];
         if (load < base->load_threshold)
             load = 0;
-        usage = h * load;
+        gfloat usage = h * load;
 
         if (usage == 0)
             continue;
@@ -213,8 +208,8 @@ draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
         else
         {
             const gint h_usage = h - (gint) roundf (usage);
-            tmp = 0;
-            for (y = h - 1; y >= h_usage; y--, tmp++)
+            gint tmp = 0;
+            for (gint y = h - 1; y >= h_usage; y--, tmp++)
             {
                 gfloat t = tmp / (base->color_mode == 1 ? (gfloat) h : usage);
                 mix_colors (t, &base->colors[FG_COLOR1], &base->colors[FG_COLOR2], cr);
@@ -229,21 +224,19 @@ draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 void
 draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 {
-    const gint nrx = (w + 2) / 3;
-    const gint nry = (h + 1) / 2;
-    gint x, y;
-    const GdkRGBA *active_color = NULL;
-    const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
-    gint64 t0;
-    gfloat nearest[nrx];
-
     if (G_UNLIKELY (base->history.data == NULL))
         return;
 
-    t0 = base->history.data[core][base->history.offset].timestamp;
+    const gint nrx = (w + 2) / 3;
+    const gint nry = (h + 1) / 2;
+    const GdkRGBA *active_color = NULL;
+    const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
+    gfloat nearest[nrx];
+
+    gint64 t0 = base->history.data[core][base->history.offset].timestamp;
     nearest_loads (base, core, t0, -step, nrx, nearest);
 
-    for (x = 0; x * 3 < w; x++)
+    for (gint x = 0; x * 3 < w; x++)
     {
         const gint idx = nrx - x - 1;
         gint limit;
@@ -258,7 +251,7 @@ draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
         else
             limit = nry - 0;
 
-        for (y = 0; y * 2 < h; y++)
+        for (gint y = 0; y * 2 < h; y++)
         {
             if (base->color_mode != 0 && y < limit)
             {
@@ -286,12 +279,10 @@ draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 void
 draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 {
-    gfloat usage;
-
     if (G_UNLIKELY (base->history.data == NULL))
         return;
 
-    usage = base->history.data[core][base->history.offset].value;
+    gfloat usage = base->history.data[core][base->history.offset].value;
 
     if (usage < base->load_threshold)
         usage = 0;
@@ -308,8 +299,7 @@ draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
     {
         const gint h_usage = h - (gint) roundf (usage);
         gint tmp = 0;
-        gint y;
-        for (y = h - 1; y >= h_usage; y--, tmp++)
+        for (gint y = h - 1; y >= h_usage; y--, tmp++)
         {
             gfloat t = tmp / (base->color_mode == 1 ? (gfloat) h : usage);
             mix_colors (t, &base->colors[FG_COLOR1], &base->colors[FG_COLOR2], cr);
@@ -323,27 +313,24 @@ draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 void
 draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 {
-    const gfloat thickness = 1.75f;
-    const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
-    gint64 t0;
-    gfloat nearest[w];
-
     if (G_UNLIKELY (base->history.data == NULL))
         return;
 
-    t0 = base->history.data[core][base->history.offset].timestamp;
+    const gfloat thickness = 1.75f;
+    const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
+    gfloat nearest[w];
+
+    gint64 t0 = base->history.data[core][base->history.offset].timestamp;
     nearest_loads (base, core, t0, -step, w, nearest);
 
     cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
 
     /* Paint the grid using a single call to cairo_stroke() */
     if (G_LIKELY (base->colors[FG_COLOR1].alpha != 0.0)) {
-        gint x, y;
-
         cairo_save (cr);
         cairo_set_line_width (cr, 1);
         gdk_cairo_set_source_rgba (cr, &base->colors[FG_COLOR1]);
-        for (x = 0; x < w; x += 6)
+        for (gint x = 0; x < w; x += 6)
         {
             gint x1 = x;
 
@@ -358,7 +345,7 @@ draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
             cairo_move_to (cr, w - 1 - x1 + 0.5, 0.5);
             cairo_line_to (cr, w - 1 - x1 + 0.5, h - 1 + 0.5);
         }
-        for (y = 0; y < h; y += 4)
+        for (gint y = 0; y < h; y += 4)
         {
             /* draw horizontal line */
             cairo_move_to (cr, 0.5, h - 1 - y + 0.5);
@@ -370,24 +357,19 @@ draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 
     /* Paint a line on top of the grid, using a single call to cairo_stroke() */
     if (G_LIKELY (base->colors[2].alpha != 0.0)) {
-        point last = {};
-        gint x;
+        Point last;
 
         cairo_save (cr);
         cairo_set_line_width (cr, thickness);
         gdk_cairo_set_source_rgba (cr, &base->colors[2]);
-        for (x = 0; x < w; x++)
+        for (gint x = 0; x < w; x++)
         {
-            gfloat load, usage;
-            point current;
-
-            load = nearest[w - 1 - x];
+            gfloat load = nearest[w - 1 - x];
             if (load < base->load_threshold)
                 load = 0;
-            usage = h * load;
+            gfloat usage = h * load;
 
-            current.x = x;
-            current.y = h + (thickness-1)/2 - usage;
+            Point current(x, h + (thickness-1)/2 - usage);
             if (x == 0)
                 last = current;
 
