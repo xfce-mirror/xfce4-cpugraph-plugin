@@ -24,7 +24,7 @@ libcpugraph_la_SOURCES = \
 	os.cc \
 	os.h \
 	plugin.c \
-	properties.c \
+	properties.cc \
 	properties.h \
 	settings.cc \
 	settings.h
