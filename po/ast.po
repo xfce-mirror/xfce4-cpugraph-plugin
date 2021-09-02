@@ -18,150 +18,150 @@ msgstr ""
 "Language: ast\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../panel-plugin/cpu.c:153 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.cc:153 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Representación gráfica de la carga de CPU"
 
-#: ../panel-plugin/cpu.c:155
+#: ../panel-plugin/cpu.cc:155
 msgid "Copyright (c) 2003-2012\n"
 msgstr "Copyright (c) 2003-2012\n"
 
-#: ../panel-plugin/cpu.c:368
+#: ../panel-plugin/cpu.cc:368
 #, c-format
 msgid "Usage: %u%%"
 msgstr "Usu: %u%%"
 
-#: ../panel-plugin/properties.c:80
+#: ../panel-plugin/properties.cc:80
 msgid "CPU Graph Properties"
 msgstr "Propiedaes del gráficu CPU"
 
-#: ../panel-plugin/properties.c:98
+#: ../panel-plugin/properties.cc:98
 msgid "Use non-linear time-scale"
 msgstr "Escala de tiempu non llinial"
 
-#: ../panel-plugin/properties.c:99
+#: ../panel-plugin/properties.cc:99
 msgid "Show frame"
 msgstr "Amosar marcu"
 
-#: ../panel-plugin/properties.c:100
+#: ../panel-plugin/properties.cc:100
 msgid "Show border"
 msgstr "Amosar bervesu"
 
-#: ../panel-plugin/properties.c:101
+#: ../panel-plugin/properties.cc:101
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Amosar barra d'usu d'anguaño"
 msgstr[1] "Amosar barres d'usu d'anguaño"
 
-#: ../panel-plugin/properties.c:103
+#: ../panel-plugin/properties.cc:103
 msgid "Run in terminal"
 msgstr "Executar na terminal"
 
-#: ../panel-plugin/properties.c:104
+#: ../panel-plugin/properties.cc:104
 msgid "Use startup notification"
 msgstr "Usar notificación nel aniciu"
 
-#: ../panel-plugin/properties.c:107
+#: ../panel-plugin/properties.cc:107
 msgid "Color 1:"
 msgstr "Color 1:"
 
-#: ../panel-plugin/properties.c:108
+#: ../panel-plugin/properties.cc:108
 msgid "Color 2:"
 msgstr "Color 2:"
 
-#: ../panel-plugin/properties.c:109
+#: ../panel-plugin/properties.cc:109
 msgid "Color 3:"
 msgstr "Color 3:"
 
-#: ../panel-plugin/properties.c:110
+#: ../panel-plugin/properties.cc:110
 msgid "Background:"
 msgstr "Fondu:"
 
-#: ../panel-plugin/properties.c:114
+#: ../panel-plugin/properties.cc:114
 msgid "Bars color:"
 msgstr "Barres de colores:"
 
-#: ../panel-plugin/properties.c:119
+#: ../panel-plugin/properties.cc:119
 msgid "Appearance"
 msgstr "Aspeutu"
 
-#: ../panel-plugin/properties.c:121
+#: ../panel-plugin/properties.cc:121
 msgid "Advanced"
 msgstr "Avanzáu"
 
-#: ../panel-plugin/properties.c:197
+#: ../panel-plugin/properties.cc:197
 msgid "Fastest (~250ms)"
 msgstr "El más rápidu (~250ms)"
 
-#: ../panel-plugin/properties.c:198
+#: ../panel-plugin/properties.cc:198
 msgid "Fast (~500ms)"
 msgstr "Rápidu (~500ms)"
 
-#: ../panel-plugin/properties.c:199
+#: ../panel-plugin/properties.cc:199
 msgid "Normal (~750ms)"
 msgstr "Normal (~750ms)"
 
-#: ../panel-plugin/properties.c:200
+#: ../panel-plugin/properties.cc:200
 msgid "Slow (~1s)"
 msgstr "Lentu (~1s)"
 
-#: ../panel-plugin/properties.c:204
+#: ../panel-plugin/properties.cc:204
 msgid "Update Interval:"
 msgstr "Intervalu d'anovamientu:"
 
-#: ../panel-plugin/properties.c:212
+#: ../panel-plugin/properties.cc:212
 msgid "All"
 msgstr "Too"
 
-#: ../panel-plugin/properties.c:217
+#: ../panel-plugin/properties.cc:217
 msgid "Tracked Core:"
 msgstr "Nucleu rastexáu:"
 
-#: ../panel-plugin/properties.c:228
+#: ../panel-plugin/properties.cc:228
 msgid "Width:"
 msgstr "Anchor:"
 
-#: ../panel-plugin/properties.c:230
+#: ../panel-plugin/properties.cc:230
 msgid "Height:"
 msgstr "Altor:"
 
-#: ../panel-plugin/properties.c:244
+#: ../panel-plugin/properties.cc:244
 msgid "Associated command:"
 msgstr "Comandu asociáu:"
 
-#: ../panel-plugin/properties.c:268
+#: ../panel-plugin/properties.cc:268
 msgid "Normal"
 msgstr "Normal"
 
-#: ../panel-plugin/properties.c:269
+#: ../panel-plugin/properties.cc:269
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:270
+#: ../panel-plugin/properties.cc:270
 msgid "No history"
 msgstr "Ensin historia"
 
-#: ../panel-plugin/properties.c:271
+#: ../panel-plugin/properties.cc:271
 msgid "Grid"
 msgstr "Rexella"
 
-#: ../panel-plugin/properties.c:275
+#: ../panel-plugin/properties.cc:275
 msgid "Mode:"
 msgstr "Mou:"
 
-#: ../panel-plugin/properties.c:280
+#: ../panel-plugin/properties.cc:280
 msgid "Solid"
 msgstr "Sólidu"
 
-#: ../panel-plugin/properties.c:281
+#: ../panel-plugin/properties.cc:281
 msgid "Gradient"
 msgstr "Gradiente"
 
-#: ../panel-plugin/properties.c:282
+#: ../panel-plugin/properties.cc:282
 msgid "Fire"
 msgstr "Fueu"
 
-#: ../panel-plugin/properties.c:286
+#: ../panel-plugin/properties.cc:286
 msgid "Color mode: "
 msgstr "Mou de color:"
 

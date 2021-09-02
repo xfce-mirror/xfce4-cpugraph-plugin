@@ -19,159 +19,159 @@ msgstr ""
 "Language: lv\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);\n"
 
-#: ../panel-plugin/cpu.c:160 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.cc:160 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Grafiska CPU noslodzes attēlošana"
 
-#: ../panel-plugin/cpu.c:162
+#: ../panel-plugin/cpu.cc:162
 msgid "Copyright (c) 2003-2019\n"
 msgstr ""
 
-#: ../panel-plugin/cpu.c:407
+#: ../panel-plugin/cpu.cc:407
 #, c-format
 msgid "Usage: %u%%"
 msgstr ""
 
-#: ../panel-plugin/properties.c:132
+#: ../panel-plugin/properties.cc:132
 msgid "CPU Graph Properties"
 msgstr ""
 
-#: ../panel-plugin/properties.c:149
+#: ../panel-plugin/properties.cc:149
 msgid "Use non-linear time-scale"
 msgstr "Ne lineārs laika mērogs"
 
-#: ../panel-plugin/properties.c:150
+#: ../panel-plugin/properties.cc:150
 msgid "Show frame"
 msgstr "Rādīt kadrus:"
 
-#: ../panel-plugin/properties.c:151
+#: ../panel-plugin/properties.cc:151
 msgid "Show border"
 msgstr ""
 
-#: ../panel-plugin/properties.c:152
+#: ../panel-plugin/properties.cc:152
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: ../panel-plugin/properties.c:154
+#: ../panel-plugin/properties.cc:154
 msgid "Run in terminal"
 msgstr ""
 
-#: ../panel-plugin/properties.c:155
+#: ../panel-plugin/properties.cc:155
 msgid "Use startup notification"
 msgstr ""
 
-#: ../panel-plugin/properties.c:158
+#: ../panel-plugin/properties.cc:158
 msgid "Color 1:"
 msgstr "Krāsa 1:"
 
-#: ../panel-plugin/properties.c:159
+#: ../panel-plugin/properties.cc:159
 msgid "Color 2:"
 msgstr "Krāsa 2:"
 
-#: ../panel-plugin/properties.c:160
+#: ../panel-plugin/properties.cc:160
 msgid "Color 3:"
 msgstr "Krāsa 3:"
 
-#: ../panel-plugin/properties.c:161
+#: ../panel-plugin/properties.cc:161
 msgid "Background:"
 msgstr "Fons:"
 
-#: ../panel-plugin/properties.c:165
+#: ../panel-plugin/properties.cc:165
 msgid "Bars color:"
 msgstr ""
 
-#: ../panel-plugin/properties.c:170
+#: ../panel-plugin/properties.cc:170
 msgid "Appearance"
 msgstr "Izskats"
 
-#: ../panel-plugin/properties.c:172
+#: ../panel-plugin/properties.cc:172
 msgid "Advanced"
 msgstr "Paplašināti"
 
-#: ../panel-plugin/properties.c:258
+#: ../panel-plugin/properties.cc:258
 msgid "Fastest (~250ms)"
 msgstr "Ātrākais (~250ms)"
 
-#: ../panel-plugin/properties.c:259
+#: ../panel-plugin/properties.cc:259
 msgid "Fast (~500ms)"
 msgstr "Ātrs (~500ms)"
 
-#: ../panel-plugin/properties.c:260
+#: ../panel-plugin/properties.cc:260
 msgid "Normal (~750ms)"
 msgstr "Parasts (~750ms)"
 
-#: ../panel-plugin/properties.c:261
+#: ../panel-plugin/properties.cc:261
 msgid "Slow (~1s)"
 msgstr "Lēns (~1s)"
 
-#: ../panel-plugin/properties.c:262
+#: ../panel-plugin/properties.cc:262
 msgid "Slowest (~3s)"
 msgstr ""
 
-#: ../panel-plugin/properties.c:266
+#: ../panel-plugin/properties.cc:266
 msgid "Update Interval:"
 msgstr "Atjaunināšanas intervāls: "
 
-#: ../panel-plugin/properties.c:275
+#: ../panel-plugin/properties.cc:275
 msgid "All"
 msgstr ""
 
-#: ../panel-plugin/properties.c:282
+#: ../panel-plugin/properties.cc:282
 msgid "Tracked Core:"
 msgstr ""
 
-#: ../panel-plugin/properties.c:294
+#: ../panel-plugin/properties.cc:294
 msgid "Width:"
 msgstr "Platums:"
 
-#: ../panel-plugin/properties.c:296
+#: ../panel-plugin/properties.cc:296
 msgid "Height:"
 msgstr "Augstums:"
 
-#: ../panel-plugin/properties.c:311
+#: ../panel-plugin/properties.cc:311
 msgid "Associated command:"
 msgstr "Saistītās komandas:"
 
-#: ../panel-plugin/properties.c:338
+#: ../panel-plugin/properties.cc:338
 msgid "Disabled"
 msgstr ""
 
-#: ../panel-plugin/properties.c:339
+#: ../panel-plugin/properties.cc:339
 msgid "Normal"
 msgstr "Parasts"
 
-#: ../panel-plugin/properties.c:340
+#: ../panel-plugin/properties.cc:340
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:341
+#: ../panel-plugin/properties.cc:341
 msgid "No history"
 msgstr "Nav vēstures"
 
-#: ../panel-plugin/properties.c:342
+#: ../panel-plugin/properties.cc:342
 msgid "Grid"
 msgstr ""
 
-#: ../panel-plugin/properties.c:350
+#: ../panel-plugin/properties.cc:350
 msgid "Mode:"
 msgstr "Režīms:"
 
-#: ../panel-plugin/properties.c:356
+#: ../panel-plugin/properties.cc:356
 msgid "Solid"
 msgstr ""
 
-#: ../panel-plugin/properties.c:357
+#: ../panel-plugin/properties.cc:357
 msgid "Gradient"
 msgstr "Gradients"
 
-#: ../panel-plugin/properties.c:358
+#: ../panel-plugin/properties.cc:358
 msgid "Fire"
 msgstr "Uguns"
 
-#: ../panel-plugin/properties.c:362
+#: ../panel-plugin/properties.cc:362
 msgid "Color mode: "
 msgstr "Krāsu režīms: "
 

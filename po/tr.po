@@ -24,243 +24,243 @@ msgstr ""
 "Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: ../panel-plugin/cpu.c:161 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.cc:161 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "İşlemci yükünü görsel olarak gösterir"
 
-#: ../panel-plugin/cpu.c:163
+#: ../panel-plugin/cpu.cc:163
 msgid "Copyright (c) 2003-2021\n"
 msgstr "Telif Hakkı (c) 2003-2021\n"
 
-#: ../panel-plugin/cpu.c:634
+#: ../panel-plugin/cpu.cc:634
 #, c-format
 msgid "Usage: %u%%"
 msgstr "Kullanım: %%%u"
 
-#: ../panel-plugin/properties.c:172
+#: ../panel-plugin/properties.cc:172
 msgid "CPU Graph Properties"
 msgstr "CPU Graph Özellikleri"
 
-#: ../panel-plugin/properties.c:176
+#: ../panel-plugin/properties.cc:176
 msgid "_Close"
 msgstr "_Kapat"
 
-#: ../panel-plugin/properties.c:198
+#: ../panel-plugin/properties.cc:198
 msgid "Run in terminal"
 msgstr "Komut satırında çalıştır"
 
-#: ../panel-plugin/properties.c:201
+#: ../panel-plugin/properties.cc:201
 msgid "Use startup notification"
 msgstr "Başlangıç bildirimi kullan"
 
-#: ../panel-plugin/properties.c:205
+#: ../panel-plugin/properties.cc:205
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
 msgstr "SMT destekli MİB'lere olası standart altı iş\nparçacığı yerleşimini vurgulayacak renk"
 
-#: ../panel-plugin/properties.c:207
+#: ../panel-plugin/properties.cc:207
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
 msgstr "Makinenin genel performansına etkisini 'Genel' gösterir."
 
-#: ../panel-plugin/properties.c:208
+#: ../panel-plugin/properties.cc:208
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
 msgstr "'Sıcak noktalar', yalnızca standart altı SMT zamanlama kararları veren iş parçacıklarının anlık performans etkisini gösterir."
 
-#: ../panel-plugin/properties.c:211
+#: ../panel-plugin/properties.cc:211
 msgid "Highlight suboptimal SMT scheduling"
 msgstr "Standart altı SMT zamanlamasını vurgula"
 
-#: ../panel-plugin/properties.c:214
+#: ../panel-plugin/properties.cc:214
 msgid "SMT issues color:"
 msgstr "SMT sorunları rengi:"
 
-#: ../panel-plugin/properties.c:217
+#: ../panel-plugin/properties.cc:217
 msgid "Use non-linear time-scale"
 msgstr "Doğrusal olmayan zaman ölçeği"
 
-#: ../panel-plugin/properties.c:218
+#: ../panel-plugin/properties.cc:218
 msgid "Per-core history graphs"
 msgstr "Çekirdek başına geçmiş grafikleri"
 
-#: ../panel-plugin/properties.c:222
+#: ../panel-plugin/properties.cc:222
 msgid "Color 1:"
 msgstr "Renk 1:"
 
-#: ../panel-plugin/properties.c:223
+#: ../panel-plugin/properties.cc:223
 msgid "Color 2:"
 msgstr "Renk 2:"
 
-#: ../panel-plugin/properties.c:224
+#: ../panel-plugin/properties.cc:224
 msgid "Color 3:"
 msgstr "Renk 3:"
 
-#: ../panel-plugin/properties.c:225
+#: ../panel-plugin/properties.cc:225
 msgid "Background:"
 msgstr "Arka plan: "
 
-#: ../panel-plugin/properties.c:229
+#: ../panel-plugin/properties.cc:229
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Geçerli kullanım çubuğunu göster"
 msgstr[1] "Geçerli kullanım çubuklarını göster"
 
-#: ../panel-plugin/properties.c:232
+#: ../panel-plugin/properties.cc:232
 msgid "Bars color:"
 msgstr "Çubukların rengi:"
 
-#: ../panel-plugin/properties.c:234
+#: ../panel-plugin/properties.cc:234
 msgid "Show frame"
 msgstr "Çerçeve göster"
 
-#: ../panel-plugin/properties.c:235
+#: ../panel-plugin/properties.cc:235
 msgid "Show border"
 msgstr "Sınırı göster"
 
-#: ../panel-plugin/properties.c:242
+#: ../panel-plugin/properties.cc:242
 msgid "Appearance"
 msgstr "Görünüm"
 
-#: ../panel-plugin/properties.c:244
+#: ../panel-plugin/properties.cc:244
 msgid "Advanced"
 msgstr "Gelişmiş"
 
-#: ../panel-plugin/properties.c:246
+#: ../panel-plugin/properties.cc:246
 msgid "Stats"
 msgstr "İstatistikler"
 
-#: ../panel-plugin/properties.c:370
+#: ../panel-plugin/properties.cc:370
 msgid "Fastest (~250ms)"
 msgstr "En hızlı (~250ms)"
 
-#: ../panel-plugin/properties.c:371
+#: ../panel-plugin/properties.cc:371
 msgid "Fast (~500ms)"
 msgstr "Hızlı (~500ms)"
 
-#: ../panel-plugin/properties.c:372
+#: ../panel-plugin/properties.cc:372
 msgid "Normal (~750ms)"
 msgstr "Olağan (~750ms)"
 
-#: ../panel-plugin/properties.c:373
+#: ../panel-plugin/properties.cc:373
 msgid "Slow (~1s)"
 msgstr "Yavaş (~1s)"
 
-#: ../panel-plugin/properties.c:374
+#: ../panel-plugin/properties.cc:374
 msgid "Slowest (~3s)"
 msgstr "En yavaş (~3s)"
 
-#: ../panel-plugin/properties.c:378
+#: ../panel-plugin/properties.cc:378
 msgid "Update Interval:"
 msgstr "Güncelleme Aralığı:"
 
-#: ../panel-plugin/properties.c:389
+#: ../panel-plugin/properties.cc:389
 msgid "All"
 msgstr "Tümü"
 
-#: ../panel-plugin/properties.c:393
+#: ../panel-plugin/properties.cc:393
 msgid "Tracked Core:"
 msgstr "Takip Edilen Çekirdek:"
 
-#: ../panel-plugin/properties.c:407
+#: ../panel-plugin/properties.cc:407
 msgid "Width:"
 msgstr "Genişlik:"
 
-#: ../panel-plugin/properties.c:409
+#: ../panel-plugin/properties.cc:409
 msgid "Height:"
 msgstr "Yükseklik:"
 
-#: ../panel-plugin/properties.c:423
+#: ../panel-plugin/properties.cc:423
 msgid "Threshold (%):"
 msgstr "Eşik (%):"
 
-#: ../panel-plugin/properties.c:436
+#: ../panel-plugin/properties.cc:436
 msgid "Spacing:"
 msgstr "Boşluk:"
 
-#: ../panel-plugin/properties.c:439
+#: ../panel-plugin/properties.cc:439
 msgid "Spacing between per-core history graphs"
 msgstr "Çekirdek geçmiş grafikleri arası boşluk"
 
-#: ../panel-plugin/properties.c:451
+#: ../panel-plugin/properties.cc:451
 msgid "Associated command:"
 msgstr "İlişkilendirilmiş komut:"
 
-#: ../panel-plugin/properties.c:460
+#: ../panel-plugin/properties.cc:460
 msgid "Defaults to xfce4-taskmanager, htop or top."
 msgstr "xfce4-taskmanager için öntanımlılar, htop veya top."
 
-#: ../panel-plugin/properties.c:482
+#: ../panel-plugin/properties.cc:482
 msgid "Disabled"
 msgstr "Devre dışı"
 
-#: ../panel-plugin/properties.c:483
+#: ../panel-plugin/properties.cc:483
 msgid "Normal"
 msgstr "Olağan"
 
-#: ../panel-plugin/properties.c:484
+#: ../panel-plugin/properties.cc:484
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:485
+#: ../panel-plugin/properties.cc:485
 msgid "No history"
 msgstr "Geçmiş yok"
 
-#: ../panel-plugin/properties.c:486
+#: ../panel-plugin/properties.cc:486
 msgid "Grid"
 msgstr "Izgara"
 
-#: ../panel-plugin/properties.c:512
+#: ../panel-plugin/properties.cc:512
 msgid "Mode:"
 msgstr "Kip:"
 
-#: ../panel-plugin/properties.c:518
+#: ../panel-plugin/properties.cc:518
 msgid "Solid"
 msgstr "Katı"
 
-#: ../panel-plugin/properties.c:519
+#: ../panel-plugin/properties.cc:519
 msgid "Gradient"
 msgstr "Gradyan"
 
-#: ../panel-plugin/properties.c:520
+#: ../panel-plugin/properties.cc:520
 msgid "Fire"
 msgstr "Alev"
 
-#: ../panel-plugin/properties.c:524
+#: ../panel-plugin/properties.cc:524
 msgid "Color mode: "
 msgstr "Renk kipi:"
 
-#: ../panel-plugin/properties.c:743
+#: ../panel-plugin/properties.cc:743
 msgid "SMT detected: Yes"
 msgstr "SMT saptandı: Evet"
 
-#: ../panel-plugin/properties.c:743
+#: ../panel-plugin/properties.cc:743
 msgid "SMT detected: No"
 msgstr "SMT saptandı: Hayır"
 
-#: ../panel-plugin/properties.c:768
+#: ../panel-plugin/properties.cc:768
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
 msgstr "SMT zamanlama olayları sayısı: %u"
 
-#: ../panel-plugin/properties.c:777
+#: ../panel-plugin/properties.cc:777
 #, c-format
 msgid "Estimated performance impact:"
 msgstr "Öngörülen performans etkisi:"
 
-#: ../panel-plugin/properties.c:778
+#: ../panel-plugin/properties.cc:778
 #, c-format
 msgid "Overall: %.3g%%"
 msgstr "Genel: %%%.3g"
 
-#: ../panel-plugin/properties.c:779
+#: ../panel-plugin/properties.cc:779
 #, c-format
 msgid "Hotspots: %.3g%%"
 msgstr "Sıcak noktalar: %%%.3g"
 
-#: ../panel-plugin/properties.c:794
+#: ../panel-plugin/properties.cc:794
 msgid "SMT detected: N/A"
 msgstr "SMT saptandı: Uygulanamaz"
 

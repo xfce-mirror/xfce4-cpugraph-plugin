@@ -18,85 +18,85 @@ msgstr ""
 "Language: cs\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
-#: ../panel-plugin/cpu.c:161 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.cc:161 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Grafická reprezentace zatížení procesoru"
 
-#: ../panel-plugin/cpu.c:163
+#: ../panel-plugin/cpu.cc:163
 msgid "Copyright (c) 2003-2021\n"
 msgstr "Copyright (c) 2003-2021\n"
 
-#: ../panel-plugin/cpu.c:634
+#: ../panel-plugin/cpu.cc:634
 #, c-format
 msgid "Usage: %u%%"
 msgstr "Použití: %u%%"
 
-#: ../panel-plugin/properties.c:172
+#: ../panel-plugin/properties.cc:172
 msgid "CPU Graph Properties"
 msgstr "Vlastnosti Grafu procesoru"
 
-#: ../panel-plugin/properties.c:176
+#: ../panel-plugin/properties.cc:176
 msgid "_Close"
 msgstr "_Zavřít"
 
-#: ../panel-plugin/properties.c:198
+#: ../panel-plugin/properties.cc:198
 msgid "Run in terminal"
 msgstr "Spustit v terminálu"
 
-#: ../panel-plugin/properties.c:201
+#: ../panel-plugin/properties.cc:201
 msgid "Use startup notification"
 msgstr "Použít oznámení o spuštění"
 
-#: ../panel-plugin/properties.c:205
+#: ../panel-plugin/properties.cc:205
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
 msgstr "Barva pro zvýraznění potenciálně neoptimálního\nrozmístění vláken na procesorech s funkcí SMT"
 
-#: ../panel-plugin/properties.c:207
+#: ../panel-plugin/properties.cc:207
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
 msgstr "Sekce „Celkový“ zobrazuje vliv na celkový výkon stroje."
 
-#: ../panel-plugin/properties.c:208
+#: ../panel-plugin/properties.cc:208
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
 msgstr "Sekce „Aktivní oblasti“ zobrazuje aktuální vliv na výkon pouze ve vláknech využívajících neoptimální rozhodnutí v plánování SMT."
 
-#: ../panel-plugin/properties.c:211
+#: ../panel-plugin/properties.cc:211
 msgid "Highlight suboptimal SMT scheduling"
 msgstr "Zvýraznit neoptimální plánování SMT"
 
-#: ../panel-plugin/properties.c:214
+#: ../panel-plugin/properties.cc:214
 msgid "SMT issues color:"
 msgstr "Barva potíží se SMT:"
 
-#: ../panel-plugin/properties.c:217
+#: ../panel-plugin/properties.cc:217
 msgid "Use non-linear time-scale"
 msgstr "Nelineární časová osa"
 
-#: ../panel-plugin/properties.c:218
+#: ../panel-plugin/properties.cc:218
 msgid "Per-core history graphs"
 msgstr "Grafy historie pro jednotlivá jádra"
 
-#: ../panel-plugin/properties.c:222
+#: ../panel-plugin/properties.cc:222
 msgid "Color 1:"
 msgstr "Barva 1:"
 
-#: ../panel-plugin/properties.c:223
+#: ../panel-plugin/properties.cc:223
 msgid "Color 2:"
 msgstr "Barva 2:"
 
-#: ../panel-plugin/properties.c:224
+#: ../panel-plugin/properties.cc:224
 msgid "Color 3:"
 msgstr "Barva 3:"
 
-#: ../panel-plugin/properties.c:225
+#: ../panel-plugin/properties.cc:225
 msgid "Background:"
 msgstr "Pozadí:"
 
-#: ../panel-plugin/properties.c:229
+#: ../panel-plugin/properties.cc:229
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Zobrazit sloupec aktuálního využití"
@@ -104,159 +104,159 @@ msgstr[1] "Zobrazit sloupce aktuálního využití"
 msgstr[2] "Zobrazit sloupce aktuálního využití"
 msgstr[3] "Zobrazit sloupce aktuálního využití"
 
-#: ../panel-plugin/properties.c:232
+#: ../panel-plugin/properties.cc:232
 msgid "Bars color:"
 msgstr "Barva sloupců:"
 
-#: ../panel-plugin/properties.c:234
+#: ../panel-plugin/properties.cc:234
 msgid "Show frame"
 msgstr "Zobrazovat rámeček"
 
-#: ../panel-plugin/properties.c:235
+#: ../panel-plugin/properties.cc:235
 msgid "Show border"
 msgstr "Zobrazit okraje"
 
-#: ../panel-plugin/properties.c:242
+#: ../panel-plugin/properties.cc:242
 msgid "Appearance"
 msgstr "Vzhled"
 
-#: ../panel-plugin/properties.c:244
+#: ../panel-plugin/properties.cc:244
 msgid "Advanced"
 msgstr "Pokročilé"
 
-#: ../panel-plugin/properties.c:246
+#: ../panel-plugin/properties.cc:246
 msgid "Stats"
 msgstr "Statistiky"
 
-#: ../panel-plugin/properties.c:370
+#: ../panel-plugin/properties.cc:370
 msgid "Fastest (~250ms)"
 msgstr "Nejrychlejší (~250 ms)"
 
-#: ../panel-plugin/properties.c:371
+#: ../panel-plugin/properties.cc:371
 msgid "Fast (~500ms)"
 msgstr "Rychlý (~500 ms)"
 
-#: ../panel-plugin/properties.c:372
+#: ../panel-plugin/properties.cc:372
 msgid "Normal (~750ms)"
 msgstr "Standardní (~750 ms)"
 
-#: ../panel-plugin/properties.c:373
+#: ../panel-plugin/properties.cc:373
 msgid "Slow (~1s)"
 msgstr "Pomalý (~1 s)"
 
-#: ../panel-plugin/properties.c:374
+#: ../panel-plugin/properties.cc:374
 msgid "Slowest (~3s)"
 msgstr "Nejpomalejší (~3 s)"
 
-#: ../panel-plugin/properties.c:378
+#: ../panel-plugin/properties.cc:378
 msgid "Update Interval:"
 msgstr "Interval obnovení:"
 
-#: ../panel-plugin/properties.c:389
+#: ../panel-plugin/properties.cc:389
 msgid "All"
 msgstr "Vše"
 
-#: ../panel-plugin/properties.c:393
+#: ../panel-plugin/properties.cc:393
 msgid "Tracked Core:"
 msgstr "Sledované jádro:"
 
-#: ../panel-plugin/properties.c:407
+#: ../panel-plugin/properties.cc:407
 msgid "Width:"
 msgstr "Šířka:"
 
-#: ../panel-plugin/properties.c:409
+#: ../panel-plugin/properties.cc:409
 msgid "Height:"
 msgstr "Výška:"
 
-#: ../panel-plugin/properties.c:423
+#: ../panel-plugin/properties.cc:423
 msgid "Threshold (%):"
 msgstr "Práh (%):"
 
-#: ../panel-plugin/properties.c:436
+#: ../panel-plugin/properties.cc:436
 msgid "Spacing:"
 msgstr "Mezery:"
 
-#: ../panel-plugin/properties.c:439
+#: ../panel-plugin/properties.cc:439
 msgid "Spacing between per-core history graphs"
 msgstr "Mezery mezi grafy historie pro jednotlivá jádra"
 
-#: ../panel-plugin/properties.c:451
+#: ../panel-plugin/properties.cc:451
 msgid "Associated command:"
 msgstr "Přiřazený příkaz:"
 
-#: ../panel-plugin/properties.c:460
+#: ../panel-plugin/properties.cc:460
 msgid "Defaults to xfce4-taskmanager, htop or top."
 msgstr "Výchozí nastavení aplikace xfce4-taskmanager, htop nebo top."
 
-#: ../panel-plugin/properties.c:482
+#: ../panel-plugin/properties.cc:482
 msgid "Disabled"
 msgstr "Zakázáno"
 
-#: ../panel-plugin/properties.c:483
+#: ../panel-plugin/properties.cc:483
 msgid "Normal"
 msgstr "Běžný"
 
-#: ../panel-plugin/properties.c:484
+#: ../panel-plugin/properties.cc:484
 msgid "LED"
 msgstr "LED diody"
 
-#: ../panel-plugin/properties.c:485
+#: ../panel-plugin/properties.cc:485
 msgid "No history"
 msgstr "Bez historie"
 
-#: ../panel-plugin/properties.c:486
+#: ../panel-plugin/properties.cc:486
 msgid "Grid"
 msgstr "Mřížka"
 
-#: ../panel-plugin/properties.c:512
+#: ../panel-plugin/properties.cc:512
 msgid "Mode:"
 msgstr "Režim:"
 
-#: ../panel-plugin/properties.c:518
+#: ../panel-plugin/properties.cc:518
 msgid "Solid"
 msgstr "Jednobarevný"
 
-#: ../panel-plugin/properties.c:519
+#: ../panel-plugin/properties.cc:519
 msgid "Gradient"
 msgstr "Stupňovaný"
 
-#: ../panel-plugin/properties.c:520
+#: ../panel-plugin/properties.cc:520
 msgid "Fire"
 msgstr "Oheň"
 
-#: ../panel-plugin/properties.c:524
+#: ../panel-plugin/properties.cc:524
 msgid "Color mode: "
 msgstr "Barvený režim:"
 
-#: ../panel-plugin/properties.c:743
+#: ../panel-plugin/properties.cc:743
 msgid "SMT detected: Yes"
 msgstr "SMT rozpoznáno: Ano"
 
-#: ../panel-plugin/properties.c:743
+#: ../panel-plugin/properties.cc:743
 msgid "SMT detected: No"
 msgstr "SMT rozpoznáno: Ne"
 
-#: ../panel-plugin/properties.c:768
+#: ../panel-plugin/properties.cc:768
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
 msgstr "Počet incidentů v plánování SMT: %u"
 
-#: ../panel-plugin/properties.c:777
+#: ../panel-plugin/properties.cc:777
 #, c-format
 msgid "Estimated performance impact:"
 msgstr "Odhadovaný vliv na výkon:"
 
-#: ../panel-plugin/properties.c:778
+#: ../panel-plugin/properties.cc:778
 #, c-format
 msgid "Overall: %.3g%%"
 msgstr "Celkový: %.3g%%"
 
-#: ../panel-plugin/properties.c:779
+#: ../panel-plugin/properties.cc:779
 #, c-format
 msgid "Hotspots: %.3g%%"
 msgstr "Aktivní oblasti: %.3g%%"
 
-#: ../panel-plugin/properties.c:794
+#: ../panel-plugin/properties.cc:794
 msgid "SMT detected: N/A"
 msgstr "SMT rozpoznáno: Výsledek není k dispozici"
 
