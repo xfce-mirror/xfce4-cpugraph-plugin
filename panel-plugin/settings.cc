@@ -79,7 +79,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     char *file;
     if ((file = xfce_panel_plugin_lookup_rc_file (plugin)) != NULL)
     {
-        const auto rc = xfce4::Rc::simple_open (file, TRUE);
+        const auto rc = xfce4::Rc::simple_open (file, true);
         g_free (file);
 
         if (rc)
@@ -112,7 +112,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
                 {
                     gdk_rgba_parse (&colors[i], value->c_str());
                     if (i == BARS_COLOR)
-                        base->has_barcolor = TRUE;
+                        base->has_barcolor = true;
                 }
             }
 
@@ -156,7 +156,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     set_bars (base, bars);
     set_border (base, border);
     for (guint i = 0; i < NUM_COLORS; i++)
-        set_color (base, i, colors[i]);
+        set_color (base, (CPUGraphColorNumber) i, colors[i]);
     set_color_mode (base, color_mode);
     if (command)
         set_command (base, command);
@@ -183,7 +183,7 @@ write_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     if (!(file = xfce_panel_plugin_save_location (plugin, TRUE)))
         return;
 
-    const auto rc = xfce4::Rc::simple_open (file, FALSE);
+    const auto rc = xfce4::Rc::simple_open (file, false);
     g_free (file);
     file = NULL;
 
@@ -202,14 +202,14 @@ write_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     if (base->command)
         rc->write_entry ("Command", base->command);
     else
-        rc->delete_entry ("Command", FALSE);
+        rc->delete_entry ("Command", false);
     rc->write_int_entry ("InTerminal", base->command_in_terminal ? 1 : 0);
     rc->write_int_entry ("StartupNotification", base->command_startup_notification ? 1 : 0);
     rc->write_int_entry ("ColorMode", base->color_mode);
     if (base->load_threshold != 0)
         rc->write_int_entry ("LoadThreshold", gint (roundf (100 * base->load_threshold)));
     else
-        rc->delete_entry ("LoadThreshold", FALSE);
+        rc->delete_entry ("LoadThreshold", false);
 
     for (guint i = 0; i < NUM_COLORS; i++)
     {
@@ -226,7 +226,7 @@ write_settings (XfcePanelPlugin *plugin, CPUGraph *base)
             if (strcmp (rgba, rgba_default) != 0)
                 rc->write_entry (key, rgba);
             else
-                rc->delete_entry (key, FALSE);
+                rc->delete_entry (key, false);
 
             g_free (rgba);
             g_free (rgba_default);
@@ -236,12 +236,12 @@ write_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     if (base->highlight_smt != HIGHLIGHT_SMT_BY_DEFAULT)
         rc->write_int_entry ("SmtIssues", base->highlight_smt ? 1 : 0);
     else
-        rc->delete_entry ( "SmtIssues", FALSE);
+        rc->delete_entry ("SmtIssues", false);
 
     if (base->per_core_spacing != PER_CORE_SPACING_DEFAULT)
         rc->write_int_entry ("PerCoreSpacing", base->per_core_spacing);
     else
-        rc->delete_entry ("PerCoreSpacing", FALSE);
+        rc->delete_entry ("PerCoreSpacing", false);
 
     rc->close ();
 }
