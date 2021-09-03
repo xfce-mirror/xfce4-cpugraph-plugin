@@ -37,7 +37,7 @@ extern "C" {
 #endif
 
 #define BORDER 8
-#define HIGHLIGHT_SMT_BY_DEFAULT FALSE
+#define HIGHLIGHT_SMT_BY_DEFAULT false
 #define MAX_HISTORY_SIZE (100*1000)
 #define MAX_LOAD_THRESHOLD 0.2
 #define MAX_SIZE 128
@@ -112,15 +112,15 @@ typedef struct
     guint per_core_spacing;
 
     /* Boolean settings */
-    gboolean command_in_terminal:1;
-    gboolean command_startup_notification:1;
-    gboolean has_barcolor:1;
-    gboolean has_bars:1;
-    gboolean has_border:1;
-    gboolean has_frame:1;
-    gboolean highlight_smt:1;
-    gboolean non_linear:1;
-    gboolean per_core:1;
+    bool command_in_terminal:1;
+    bool command_startup_notification:1;
+    bool has_barcolor:1;
+    bool has_bars:1;
+    bool has_border:1;
+    bool has_frame:1;
+    bool highlight_smt:1;
+    bool non_linear:1;
+    bool per_core:1;
 
     /* Runtime data */
     guint nr_cores;
@@ -137,24 +137,22 @@ typedef struct
     CpuStats stats;
 } CPUGraph;
 
-void cpugraph_construct (XfcePanelPlugin *plugin);
-
 guint get_update_interval_ms (CPUGraphUpdateRate rate);
-void set_bars (CPUGraph * base, gboolean bars);
-void set_border (CPUGraph *base, gboolean border);
-void set_color (CPUGraph *base, guint number, GdkRGBA color);
+void set_bars (CPUGraph * base, bool bars);
+void set_border (CPUGraph *base, bool border);
+void set_color (CPUGraph *base, CPUGraphColorNumber number, GdkRGBA color);
 void set_color_mode (CPUGraph *base, guint color_mode);
 void set_command (CPUGraph *base, const gchar *command);
-void set_frame (CPUGraph *base, gboolean frame);
-void set_in_terminal (CPUGraph *base, gboolean in_terminal);
+void set_frame (CPUGraph *base, bool frame);
+void set_in_terminal (CPUGraph *base, bool in_terminal);
 void set_load_threshold (CPUGraph *base, gfloat threshold);
 void set_mode (CPUGraph *base, CPUGraphMode mode);
-void set_nonlinear_time (CPUGraph *base, gboolean nonlinear);
-void set_per_core (CPUGraph *base, gboolean per_core);
+void set_nonlinear_time (CPUGraph *base, bool nonlinear);
+void set_per_core (CPUGraph *base, bool per_core);
 void set_per_core_spacing (CPUGraph *base, guint spacing);
 void set_size (CPUGraph *base, guint width);
-void set_smt (CPUGraph * base, gboolean highlight_smt);
-void set_startup_notification (CPUGraph *base, gboolean startup_notification);
+void set_smt (CPUGraph * base, bool highlight_smt);
+void set_startup_notification (CPUGraph *base, bool startup_notification);
 void set_tracked_core (CPUGraph *base, guint core);
 void set_update_rate (CPUGraph *base, CPUGraphUpdateRate rate);
 

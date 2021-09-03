@@ -29,6 +29,7 @@
 #include "cpu.h"
 #include "settings.h"
 #include "mode.h"
+#include "plugin.h"
 #include "properties.h"
 
 #include <libxfce4ui/libxfce4ui.h>
@@ -133,8 +134,8 @@ create_gui (XfcePanelPlugin *plugin)
     gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (base->draw_area));
     g_signal_connect_after (base->draw_area, "draw", G_CALLBACK (draw_area_cb), base);
 
-    base->has_bars = FALSE;
-    base->has_barcolor = FALSE;
+    base->has_bars = false;
+    base->has_barcolor = false;
     base->bars.orientation = orientation;
     base->highlight_smt = HIGHLIGHT_SMT_BY_DEFAULT;
     base->per_core_spacing = PER_CORE_SPACING_DEFAULT;
@@ -385,16 +386,16 @@ mode_cb (XfcePanelPlugin *plugin, XfcePanelPluginMode mode, CPUGraph *base)
 static void
 detect_smt_issues (CPUGraph *base)
 {
-    const gboolean debug = FALSE;
+    const bool debug = false;
     gfloat actual_load[base->nr_cores];
-    gboolean movement[base->nr_cores];
-    gboolean suboptimal[base->nr_cores];
+    bool movement[base->nr_cores];
+    bool suboptimal[base->nr_cores];
 
     for (guint i = 0; i < base->nr_cores; i++)
     {
         actual_load[i] = base->cpu_data[i+1].load;
-        suboptimal[i] = FALSE;
-        movement[i] = FALSE;
+        suboptimal[i] = false;
+        movement[i] = false;
         if (debug)
             g_info ("actual_load[%u] = %g", i, actual_load[i]);
     }
@@ -405,7 +406,7 @@ detect_smt_issues (CPUGraph *base)
         gfloat optimal_load[base->nr_cores];
         gfloat actual_num_instr_executed[base->nr_cores];
         gfloat optimal_num_instr_executed[base->nr_cores];
-        gboolean smt_incident = FALSE;
+        bool smt_incident = false;
 
         /* Initialize CPU load arrays.
          * The array optimal_load[] will be updated
@@ -468,12 +469,12 @@ detect_smt_issues (CPUGraph *base)
                                      * instead of on 'core', where it might have enjoyed
                                      * a much higher IPC (instructions per clock) ratio */
 
-                                    smt_incident = TRUE;
+                                    smt_incident = true;
                                     for (guint j = 0; j < topo->cores[other_core].num_logical_cpus; j++)
                                     {
                                         guint cpu = topo->cores[core].logical_cpus[j];
                                         if (G_LIKELY (cpu < base->nr_cores))
-                                            suboptimal[cpu] = TRUE;
+                                            suboptimal[cpu] = true;
                                     }
 
                                     /*
@@ -510,7 +511,7 @@ detect_smt_issues (CPUGraph *base)
                                             optimal_load[other_cpu_min] += load_to_move;
 
                                             /* The move negates the SMT slowdown for the work moved onto the underutilized target CPU core */
-                                            movement[other_cpu_min] = TRUE;
+                                            movement[other_cpu_min] = true;
                                             optimal_num_instr_executed[other_cpu_min] += (1.0f + SMT_SLOWDOWN) * load_to_move;
 
                                             /* Decrease combined_usage by load_to_move */
@@ -529,7 +530,7 @@ detect_smt_issues (CPUGraph *base)
                                                         /* The move negates the SMT slowdown for the work remaining on the original CPU core */
                                                         optimal_num_instr_executed[cpu] -= 1.0f * diff;         /* Moved work */
                                                         optimal_num_instr_executed[cpu] += SMT_SLOWDOWN * diff; /* Remaining work (speedup) */
-                                                        movement[cpu] = TRUE;
+                                                        movement[cpu] = true;
                                                     }
                                                     else
                                                     {
@@ -541,7 +542,7 @@ detect_smt_issues (CPUGraph *base)
                                                         /* The move negates the SMT slowdown for the work remaining on the original CPU core */
                                                         optimal_num_instr_executed[cpu] -= 1.0f * diff;         /* Moved work */
                                                         optimal_num_instr_executed[cpu] += SMT_SLOWDOWN * diff; /* Remaining work (speedup) */
-                                                        movement[cpu] = TRUE;
+                                                        movement[cpu] = true;
                                                     }
                                                 }
                                             }
@@ -689,7 +690,7 @@ draw_area_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
         }
         else
         {
-            gboolean horizontal;
+            bool horizontal;
             gint w1, h1;
 
             horizontal = (xfce_panel_plugin_get_orientation (base->plugin) == GTK_ORIENTATION_HORIZONTAL);
@@ -735,7 +736,7 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
     CPUGraph *const base = (CPUGraph *) data;
     GtkAllocation alloc;
     gfloat size;
-    const gboolean horizontal = (base->bars.orientation == GTK_ORIENTATION_HORIZONTAL);
+    const bool horizontal = (base->bars.orientation == GTK_ORIENTATION_HORIZONTAL);
 
     gtk_widget_get_allocation (base->bars.draw_area, &alloc);
 
@@ -764,11 +765,11 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
     else
     {
         const GdkRGBA *active_color = NULL;
-        gboolean fill = FALSE;
+        bool fill = false;
         for (guint i = 0; i < base->nr_cores; i++)
         {
             const GdkRGBA *color;
-            const gboolean highlight = base->highlight_smt && base->cpu_data[i+1].smt_highlight;
+            const bool highlight = base->highlight_smt && base->cpu_data[i+1].smt_highlight;
             gfloat usage;
 
             usage = base->cpu_data[i+1].load;
@@ -783,7 +784,7 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
                 if (fill)
                 {
                     cairo_fill (cr);
-                    fill = FALSE;
+                    fill = false;
                 }
                 gdk_cairo_set_source_rgba (cr, color);
                 active_color = color;
@@ -793,7 +794,7 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
                 cairo_rectangle (cr, 6*i, size-usage, 4, usage);
             else
                 cairo_rectangle (cr, 0, 6*i, usage, 4);
-            fill = TRUE;
+            fill = true;
         }
         if (fill)
             cairo_fill (cr);
@@ -801,20 +802,20 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
 }
 
 static const gchar*
-default_command (gboolean *in_terminal, gboolean *startup_notification)
+default_command (bool *in_terminal, bool *startup_notification)
 {
     gchar *s = g_find_program_in_path ("xfce4-taskmanager");
     if (s)
     {
         g_free (s);
-        *in_terminal = FALSE;
-        *startup_notification = TRUE;
+        *in_terminal = false;
+        *startup_notification = true;
         return "xfce4-taskmanager";
     }
     else
     {
-        *in_terminal = TRUE;
-        *startup_notification = FALSE;
+        *in_terminal = true;
+        *startup_notification = false;
 
         s = g_find_program_in_path ("htop");
         if (s)
@@ -835,7 +836,7 @@ command_cb (GtkWidget *w, GdkEventButton *event, CPUGraph *base)
     if (event->button == 1)
     {
         const gchar *command;
-        gboolean in_terminal, startup_notification;
+        bool in_terminal, startup_notification;
 
         if (base->command)
         {
@@ -881,13 +882,13 @@ get_update_interval_ms (CPUGraphUpdateRate rate)
 }
 
 void
-set_startup_notification (CPUGraph *base, gboolean startup_notification)
+set_startup_notification (CPUGraph *base, bool startup_notification)
 {
     base->command_startup_notification = startup_notification;
 }
 
 void
-set_in_terminal (CPUGraph *base, gboolean in_terminal)
+set_in_terminal (CPUGraph *base, bool in_terminal)
 {
     base->command_in_terminal = in_terminal;
 }
@@ -906,7 +907,7 @@ set_command (CPUGraph *base, const gchar *command)
 }
 
 void
-set_bars (CPUGraph *base, gboolean bars)
+set_bars (CPUGraph *base, bool bars)
 {
     if (base->has_bars != bars)
     {
@@ -922,7 +923,7 @@ set_bars (CPUGraph *base, gboolean bars)
 }
 
 void
-set_border (CPUGraph *base, gboolean border)
+set_border (CPUGraph *base, bool border)
 {
     if (base->has_border != border)
     {
@@ -932,7 +933,7 @@ set_border (CPUGraph *base, gboolean border)
 }
 
 void
-set_frame (CPUGraph *base, gboolean frame)
+set_frame (CPUGraph *base, bool frame)
 {
     base->has_frame = frame;
     gtk_frame_set_shadow_type (GTK_FRAME (base->frame_widget), base->has_frame ? GTK_SHADOW_IN : GTK_SHADOW_NONE);
@@ -942,7 +943,7 @@ set_frame (CPUGraph *base, gboolean frame)
 }
 
 void
-set_nonlinear_time (CPUGraph *base, gboolean nonlinear)
+set_nonlinear_time (CPUGraph *base, bool nonlinear)
 {
     if (base->non_linear != nonlinear)
     {
@@ -952,7 +953,7 @@ set_nonlinear_time (CPUGraph *base, gboolean nonlinear)
 }
 
 void
-set_per_core (CPUGraph *base, gboolean per_core)
+set_per_core (CPUGraph *base, bool per_core)
 {
     if (base->per_core != per_core)
     {
@@ -978,7 +979,7 @@ set_per_core_spacing (CPUGraph *base, guint spacing)
 }
 
 void
-set_smt (CPUGraph *base, gboolean highlight_smt)
+set_smt (CPUGraph *base, bool highlight_smt)
 {
     base->highlight_smt = highlight_smt;
 }
@@ -986,8 +987,8 @@ set_smt (CPUGraph *base, gboolean highlight_smt)
 void
 set_update_rate (CPUGraph *base, CPUGraphUpdateRate rate)
 {
-    gboolean change = (base->update_interval != rate);
-    gboolean init = (base->timeout_id == 0);
+    bool change = (base->update_interval != rate);
+    bool init = (base->timeout_id == 0);
 
     if (change || init)
     {
@@ -1042,7 +1043,7 @@ set_mode (CPUGraph *base, CPUGraphMode mode)
 }
 
 void
-set_color (CPUGraph *base, guint number, GdkRGBA color)
+set_color (CPUGraph *base, CPUGraphColorNumber number, GdkRGBA color)
 {
     if (!gdk_rgba_equal (&base->colors[number], &color))
     {
@@ -1059,12 +1060,12 @@ set_tracked_core (CPUGraph *base, guint core)
 
     if (base->tracked_core != core)
     {
-        gboolean has_bars = base->has_bars;
+        bool has_bars = base->has_bars;
         if (has_bars)
-            set_bars (base, FALSE);
+            set_bars (base, false);
         base->tracked_core = core;
         if (has_bars)
-            set_bars (base, TRUE);
+            set_bars (base, true);
     }
 }
 

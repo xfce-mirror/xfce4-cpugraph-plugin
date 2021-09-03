@@ -1,4 +1,4 @@
-/*  plugin.c
+/*  plugin.h
  *  Part of xfce4-cpugraph-plugin
  *
  *  Copyright (c) 2021 Jan Ziak <0xe2.0x9a.0x9b@xfce.org>
@@ -18,6 +18,15 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "plugin.h"
+#ifndef _XFCE_PLUGIN_H_
+#define _XFCE_PLUGIN_H_
 
-XFCE_PANEL_PLUGIN_REGISTER (cpugraph_construct);
+#include <libxfce4panel/libxfce4panel.h>
+
+G_BEGIN_DECLS
+
+void cpugraph_construct (XfcePanelPlugin *plugin);
+
+G_END_DECLS
+
+#endif /* _XFCE_PLUGIN_H_ */

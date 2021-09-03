@@ -111,25 +111,25 @@ detect_cpu_number (void)
     return nb_cpu;
 }
 
-gboolean
+bool
 read_cpu_data (CpuData *data, guint nb_cpu)
 {
     FILE *fStat;
     gulong used[nb_cpu+1], total[nb_cpu+1];
 
     if (!(fStat = fopen (PROC_STAT, "r")))
-        return FALSE;
+        return false;
 
     for (guint cpu = 0; cpu < nb_cpu+1; cpu++)
         used[cpu] = total[cpu] = 0;
 
-    while (TRUE)
+    while (true)
     {
         gchar cpuStr[PROCMAXLNLEN];
         if (!fgets (cpuStr, PROCMAXLNLEN, fStat))
         {
             fclose (fStat);
-            return FALSE;
+            return false;
         }
 
         if (strncmp (cpuStr, "cpu", 3) != 0)
@@ -172,7 +172,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
         data[cpu].previous_total = total[cpu];
     }
 
-    return TRUE;
+    return true;
 }
 
 #elif defined (__FreeBSD__)
@@ -189,7 +189,7 @@ detect_cpu_number (void)
         return ncpu;
 }
 
-gboolean
+bool
 read_cpu_data (CpuData *data, guint nb_cpu)
 {
     glong used, total;
@@ -201,17 +201,17 @@ read_cpu_data (CpuData *data, guint nb_cpu)
 
     data[0].load = 0;
     if (sysctlbyname ("kern.smp.maxid", &max_cpu, &len, NULL, 0) < 0)
-        return FALSE;
+        return false;
 
     max_cpu++; /* max_cpu is 0-based */
     if (max_cpu < nb_cpu)
-        return FALSE; /* should not happen */
+        return false; /* should not happen */
     len = sizeof (glong) * max_cpu * CPUSTATES;
     cp_time = (glong *) g_malloc (len);
 
     if (sysctlbyname ("kern.cp_times", cp_time, &len, NULL, 0) < 0) {
         g_free (cp_time);
-        return FALSE;
+        return false;
     }
 
     for (i = 1; i <= nb_cpu; i++)
@@ -233,7 +233,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
 
     data[0].load /= nb_cpu;
     g_free (cp_time);
-    return TRUE;
+    return true;
 }
 
 #elif defined (__NetBSD__)
@@ -250,7 +250,7 @@ detect_cpu_number (void)
         return ncpu;
 }
 
-gboolean
+bool
 read_cpu_data (CpuData *data, guint nb_cpu)
 {
     guint64 cp_time[CPUSTATES * nb_cpu];
@@ -258,7 +258,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
     gint mib[] = {CTL_KERN, KERN_CP_TIME};
 
     if (sysctl (mib, 2, &cp_time, &len, NULL, 0) < 0)
-        return FALSE;
+        return false;
 
     data[0].load = 0;
     for (guint i = 1; i <= nb_cpu; i++)
@@ -279,7 +279,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
     }
 
     data[0].load /= nb_cpu;
-    return TRUE;
+    return true;
 }
 
 #elif defined (__OpenBSD__)
@@ -296,7 +296,7 @@ detect_cpu_number (void)
         return ncpu;
 }
 
-gboolean
+bool
 read_cpu_data (CpuData *data, guint nb_cpu)
 {
     guint64 cp_time[CPUSTATES];
@@ -308,7 +308,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
         gint mib[] = {CTL_KERN, KERN_CPTIME2, i - 1};
 
         if (sysctl (mib, 3, &cp_time, &len, NULL, 0) < 0)
-            return FALSE;
+            return false;
 
         guint64 used = cp_time[CP_USER] + cp_time[CP_NICE] + cp_time[CP_SYS] + cp_time[CP_INTR];
         guint64 total = used + cp_time[CP_IDLE];
@@ -325,7 +325,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
     }
 
     data[0].load /= nb_cpu;
-    return TRUE;
+    return true;
 }
 
 #elif defined (__sun__)
@@ -353,7 +353,7 @@ detect_cpu_number (void)
     return knp->value.ui32;
 }
 
-gboolean
+bool
 read_cpu_data (CpuData *data, guint nb_cpu)
 {
     kstat_t *ksp;
@@ -393,7 +393,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
     }
 
     data[0].load /= nb_cpu;
-    return TRUE;
+    return true;
 }
 #else
 #error "Your OS is not supported."
@@ -414,7 +414,7 @@ read_topology (void)
 
     num_all_logical_cpus = 0;
     num_online_logical_cpus = 0;
-    for (guint logical_cpu = 0; TRUE; logical_cpu++)
+    for (guint logical_cpu = 0; true; logical_cpu++)
     {
         gchar path[128];
         gchar *file_contents;
@@ -475,7 +475,7 @@ read_topology (void)
         t->num_online_cores = 0;
         t->logical_cpu_2_core = (gint *) p; p += num_all_logical_cpus * sizeof (*t->logical_cpu_2_core);
         t->cores = (Topology::CpuCore *) p; p += num_all_cores * sizeof (*t->cores);
-        t->smt = FALSE;
+        t->smt = false;
         for (gint core_id : core_ids)
         {
             if (core_id != -1)
@@ -486,7 +486,7 @@ read_topology (void)
                         t->num_online_cores++;
                         break;
                     case 2:
-                        t->smt = TRUE;
+                        t->smt = true;
                         break;
                 }
             }

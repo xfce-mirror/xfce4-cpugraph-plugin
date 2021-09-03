@@ -65,7 +65,7 @@ static GtkBox *create_option_line            (GtkBox          *tab,
 static GtkBox* create_check_box              (GtkBox          *tab,
                                               GtkSizeGroup    *sg,
                                               const gchar     *name,
-                                              gboolean        init,
+                                              bool            init,
                                               void            (callback)(GtkToggleButton*, CPUGraphOptions*),
                                               CPUGraphOptions *cb_data,
                                               GtkToggleButton **out_checkbox);
@@ -301,7 +301,7 @@ create_option_line (GtkBox *tab, GtkSizeGroup *sg, const gchar *name, const gcha
 }
 
 static GtkBox*
-create_check_box (GtkBox *tab, GtkSizeGroup *sg, const gchar *name, gboolean init,
+create_check_box (GtkBox *tab, GtkSizeGroup *sg, const gchar *name, bool init,
                   void (callback)(GtkToggleButton*, CPUGraphOptions*), CPUGraphOptions *cb_data,
                   GtkToggleButton **out_checkbox)
 {
@@ -518,7 +518,7 @@ change_command (GtkEntry *entry, CPUGraphOptions *data)
 }
 
 static void
-change_color (GtkColorButton *button, CPUGraph *base, guint number)
+change_color (GtkColorButton *button, CPUGraph *base, CPUGraphColorNumber number)
 {
     GdkRGBA color;
     gtk_color_chooser_get_rgba (GTK_COLOR_CHOOSER (button), &color);
@@ -552,7 +552,7 @@ change_color_3 (GtkColorButton *button, CPUGraph *base)
 static void
 change_color_4 (GtkColorButton *button, CPUGraph *base)
 {
-    base->has_barcolor = TRUE;
+    base->has_barcolor = true;
     change_color (button, base, BARS_COLOR);
 }
 
@@ -566,8 +566,8 @@ static void
 update_sensitivity (const CPUGraphOptions *data)
 {
     const CPUGraph *base = data->base;
-    const gboolean default_command = (base->command == NULL);
-    const gboolean per_core = base->nr_cores > 1 && base->tracked_core == 0 && base->mode != MODE_DISABLED;
+    const bool default_command = (base->command == NULL);
+    const bool per_core = base->nr_cores > 1 && base->tracked_core == 0 && base->mode != MODE_DISABLED;
 
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_highlight_smt),
                               base->has_bars && base->topology && base->topology->smt);
@@ -696,7 +696,7 @@ static void change_core (GtkComboBox *combo, CPUGraphOptions *data)
 {
     set_tracked_core (data->base, gtk_combo_box_get_active (combo));
     if (data->base->tracked_core != 0)
-        set_per_core (data->base, FALSE);
+        set_per_core (data->base, false);
     else
         set_per_core (data->base, gtk_toggle_button_get_active (data->per_core));
     update_sensitivity (data);

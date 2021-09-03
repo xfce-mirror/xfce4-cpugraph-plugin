@@ -35,7 +35,7 @@ typedef struct
     gfloat load; /* Range: from 0.0 to 1.0 */
     guint64 previous_used;
     guint64 previous_total;
-    gboolean smt_highlight;
+    bool smt_highlight;
 } CpuData;
 
 typedef struct
@@ -66,12 +66,12 @@ typedef struct
         guint num_logical_cpus; /* Number of logical CPUs in this core. Might be zero. */
         guint *logical_cpus;    /* logical_cpus[i] range: <0, num_all_logical_cpus> */
     } *cores;
-    gboolean smt;       /* Simultaneous multi-threading (hyper-threading) */
+    bool smt;           /* Simultaneous multi-threading (hyper-threading) */
     gdouble smt_ratio;  /* Equals to (num_online_logical_cpus / num_online_cores), >= 1.0 */
 } Topology;
 
 guint detect_cpu_number (void);
-gboolean read_cpu_data (CpuData *data, guint nb_cpu);
+bool read_cpu_data (CpuData *data, guint nb_cpu);
 Topology* read_topology (void);
 
 #ifdef __cplusplus
