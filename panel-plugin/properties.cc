@@ -30,9 +30,9 @@
 #include "properties.h"
 #include "settings.h"
 
-#include <glib/gprintf.h>
 #include <libxfce4ui/libxfce4ui.h>
 #include <math.h>
+#include <vector>
 #include "xfce4++/util.h"
 
 #ifndef _
@@ -40,147 +40,89 @@
 # define _(String) gettext (String)
 #endif
 
-typedef struct
+struct CPUGraphOptions
 {
-    CPUGraph        *base;
-    GtkWidget       *color_buttons[NUM_COLORS];
-    GtkWidget       *color_mode_combobox;
-    GtkBox          *hbox_highlight_smt;
-    GtkBox          *hbox_in_terminal;
-    GtkBox          *hbox_per_core_spacing;
-    GtkBox          *hbox_startup_notification;
-    GtkToggleButton *per_core, *show_bars_checkbox;
-    GtkLabel        *smt_stats;
-    gchar           *smt_stats_tooltip;
-    guint           timeout_id;
-} CPUGraphOptions;
+    CPUGraph        *const base;
+    GtkColorButton  *color_buttons[NUM_COLORS] = {};
+    GtkWidget       *color_mode_combobox = NULL;
+    GtkBox          *hbox_highlight_smt = NULL;
+    GtkBox          *hbox_in_terminal = NULL;
+    GtkBox          *hbox_per_core_spacing = NULL;
+    GtkBox          *hbox_startup_notification = NULL;
+    GtkToggleButton *per_core = NULL, *show_bars_checkbox = NULL;
+    GtkLabel        *smt_stats = NULL;
+    guint           timeout_id = 0;
 
-static GtkBox *create_tab                    (void);
-static GtkLabel *create_label_line           (GtkBox          *tab,
-                                              const gchar     *text);
-static GtkBox *create_option_line            (GtkBox          *tab,
-                                              GtkSizeGroup    *sg,
-                                              const gchar     *name,
-                                              const gchar     *tooltip);
-static GtkBox* create_check_box              (GtkBox          *tab,
-                                              GtkSizeGroup    *sg,
-                                              const gchar     *name,
-                                              bool            init,
-                                              void            (callback)(GtkToggleButton*, CPUGraphOptions*),
-                                              CPUGraphOptions *cb_data,
-                                              GtkToggleButton **out_checkbox);
-static GtkWidget* create_drop_down           (GtkBox          *tab,
-                                              GtkSizeGroup    *sg,
-                                              const gchar     *name,
-                                              const gchar     **items,
-                                              gsize           nb_items,
-                                              guint           init,
-                                              void            (callback)(GtkComboBox*, CPUGraphOptions*),
-                                              CPUGraphOptions *cb_data);
-static void    destroy_cb                    (GtkWidget       *dlg,
-                                              CPUGraphOptions *dlg_data);
+    CPUGraphOptions(CPUGraph *_base) : base(_base) {}
 
-static void    setup_update_interval_option  (GtkBox          *vbox,
-                                              GtkSizeGroup    *sg,
-                                              CPUGraphOptions *data);
-static void    setup_tracked_core_option     (GtkBox          *vbox,
-                                              GtkSizeGroup    *sg,
-                                              CPUGraphOptions *data);
-static void    setup_size_option             (GtkBox          *vbox,
-                                              GtkSizeGroup    *sg,
-                                              XfcePanelPlugin *plugin,
-                                              CPUGraph        *base);
-static void    setup_command_option          (GtkBox          *vbox,
-                                              GtkSizeGroup    *sg,
-                                              CPUGraphOptions *data);
-static void    setup_color_option            (GtkBox          *vbox,
-                                              GtkSizeGroup    *sg,
-                                              CPUGraphOptions *data,
-                                              guint            number,
-                                              const gchar     *name,
-                                              const gchar     *tooltip,
-                                              void            (callback)(GtkColorButton*, CPUGraph*));
-static void    setup_mode_option             (GtkBox          *vbox,
-                                              GtkSizeGroup    *sg,
-                                              CPUGraphOptions *data);
-static void    setup_color_mode_option       (GtkBox          *vbox,
-                                              GtkSizeGroup    *sg,
-                                              CPUGraphOptions *data);
-static void    setup_load_threshold_option   (GtkBox          *vbox,
-                                              GtkSizeGroup    *sg,
-                                              CPUGraph        *base);
-static GtkBox* setup_per_core_spacing_option (GtkBox          *vbox,
-                                              GtkSizeGroup    *sg,
-                                              CPUGraph        *base);
+    ~CPUGraphOptions() {
+        removeTimer();
+    }
 
-static void    change_in_terminal            (GtkToggleButton *button,
-                                              CPUGraphOptions *data);
-static void    change_startup_notification   (GtkToggleButton *button,
-                                              CPUGraphOptions *data);
-static void    change_command                (GtkEntry        *entry,
-                                              CPUGraphOptions *data);
-static void    change_color_0                (GtkColorButton  *button,
-                                              CPUGraph        *base);
-static void    change_color_1                (GtkColorButton  *button,
-                                              CPUGraph        *base);
-static void    change_color_2                (GtkColorButton  *button,
-                                              CPUGraph        *base);
-static void    change_color_3                (GtkColorButton  *button,
-                                              CPUGraph        *base);
-static void    change_color_4                (GtkColorButton  *button,
-                                              CPUGraph        *base);
-static void    change_color_5                (GtkColorButton  *button,
-                                              CPUGraph        *base);
-static void    update_sensitivity            (const CPUGraphOptions *data);
-static void    change_mode                   (GtkComboBox     *om,
-                                              CPUGraphOptions *data);
-static void    change_color_mode             (GtkComboBox     *om,
-                                              CPUGraphOptions *data);
-static void    response_cb                   (GtkWidget       *dlg,
-                                              gint             response,
-                                              CPUGraph        *base);
-static void    change_frame                  (GtkToggleButton *button,
-                                              CPUGraphOptions *data);
-static void    change_border                 (GtkToggleButton *button,
-                                              CPUGraphOptions *data);
-static void    change_bars                   (GtkToggleButton *button,
-                                              CPUGraphOptions *data);
-static void    change_per_core               (GtkToggleButton *button,
-                                              CPUGraphOptions *data);
-static void    change_per_core_spacing       (GtkSpinButton   *button,
-                                              CPUGraph        *base);
-static void    change_size                   (GtkSpinButton   *button,
-                                              CPUGraph        *base);
-static void    change_smt                    (GtkToggleButton *button,
-                                              CPUGraphOptions *data);
-static void    change_time_scale             (GtkToggleButton *button,
-                                              CPUGraphOptions *data);
-static void    change_update                 (GtkComboBox     *om,
-                                              CPUGraphOptions *data);
-static void    change_core                   (GtkComboBox     *combo,
-                                              CPUGraphOptions *data);
-static void    change_load_threshold         (GtkSpinButton   *button,
-                                              CPUGraph        *base);
-static gboolean update_cb                    (CPUGraphOptions *data);
+    void
+    removeTimer() {
+        if (timeout_id) {
+            g_source_remove (timeout_id);
+            timeout_id = 0;
+        }
+    }
+
+    static std::string
+    smt_stats_tooltip() {
+        return std::string() +
+            _("'Overall' is showing the impact on the overall performance of the machine.") + "\n" +
+            _("'Hotspots' is showing the momentary performance impact on just the threads involved in suboptimal SMT scheduling decisions.");
+    }
+};
+
+static GtkBox*    create_tab ();
+static GtkLabel*  create_label_line (GtkBox *tab, const gchar *text);
+static GtkBox*    create_option_line (GtkBox *tab, GtkSizeGroup *sg, const gchar *name, const gchar *tooltip);
+static GtkBox*    create_check_box (GtkBox *tab, GtkSizeGroup *sg, const gchar *name, bool init,
+                                    GtkToggleButton **out_checkbox, const std::function<void (GtkToggleButton*)> &callback);
+static GtkWidget* create_drop_down (GtkBox *tab, GtkSizeGroup *sg, const gchar *name,
+                                    const std::vector<std::string> &items, size_t init,
+                                    const std::function<void(GtkComboBox*)> &callback);
+static void       setup_update_interval_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data);
+static void       setup_tracked_core_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data);
+static void       setup_size_option (GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, CPUGraph *base);
+static void       setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data);
+static void       setup_color_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data,
+                                      CPUGraphColorNumber number, const gchar *name, const gchar *tooltip,
+                                      const std::function<void(GtkColorButton*)> &callback);
+static void       setup_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data);
+static void       setup_color_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data);
+static void       setup_load_threshold_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base);
+static GtkBox*    setup_per_core_spacing_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base);
+static void       change_color (GtkColorButton  *button, CPUGraph *base, CPUGraphColorNumber number);
+static void       update_sensitivity (const xfce4::Ptr<CPUGraphOptions> &data);
+static bool       update_cb (const xfce4::Ptr<CPUGraphOptions> &data);
 
 void
 create_options (XfcePanelPlugin *plugin, CPUGraph *base)
 {
     xfce_panel_plugin_block_menu (plugin);
 
-    GtkWidget *dlg = xfce_titled_dialog_new_with_mixed_buttons (_("CPU Graph Properties"),
-                                       GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (plugin))),
-                                       GTK_DIALOG_DESTROY_WITH_PARENT,
-                                       "window-close-symbolic",
-                                       _("_Close"),
-                                       GTK_RESPONSE_OK,
-                                       NULL);
+    GtkWidget *dlg = xfce_titled_dialog_new_with_mixed_buttons (
+        _("CPU Graph Properties"),
+        GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (plugin))),
+        GTK_DIALOG_DESTROY_WITH_PARENT,
+        "window-close-symbolic",
+        _("_Close"),
+        GTK_RESPONSE_OK,
+        NULL
+    );
 
-    CPUGraphOptions *dlg_data = g_new0 (CPUGraphOptions, 1);
-    dlg_data->base = base;
+    auto dlg_data = xfce4::make<CPUGraphOptions>(base);
 
-    g_signal_connect (dlg, "destroy", G_CALLBACK (destroy_cb), dlg_data);
-    g_signal_connect (dlg, "response", G_CALLBACK (response_cb), base);
+    xfce4::connect_destroy (dlg, [dlg_data](GtkWidget*) {
+        dlg_data->removeTimer();
+    });
+    xfce4::connect_response (GTK_DIALOG (dlg), [base, dlg](GtkDialog*, gint response) {
+        gtk_widget_destroy (dlg);
+        xfce_panel_plugin_unblock_menu (base->plugin);
+        write_settings (base->plugin, base);
+    });
 
     gtk_window_set_icon_name (GTK_WINDOW (dlg), "org.xfce.panel.cpugraph");
 
@@ -195,43 +137,81 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     gtk_box_pack_start (vbox, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, BORDER/2);
     setup_command_option (vbox, sg, dlg_data);
     dlg_data->hbox_in_terminal = create_check_box (vbox, sg, _("Run in terminal"),
-                                                   base->command_in_terminal, change_in_terminal, dlg_data,
-                                                   NULL);
+        base->command_in_terminal, NULL,
+        [dlg_data](GtkToggleButton *button) {
+            set_in_terminal (dlg_data->base, gtk_toggle_button_get_active (button));
+            update_sensitivity (dlg_data);
+        });
     dlg_data->hbox_startup_notification = create_check_box (vbox, sg, _("Use startup notification"),
-                                                            base->command_startup_notification, change_startup_notification, dlg_data,
-                                                            NULL);
+        base->command_startup_notification, NULL,
+        [dlg_data](GtkToggleButton *button) {
+            set_startup_notification (dlg_data->base, gtk_toggle_button_get_active (button));
+            update_sensitivity (dlg_data);
+        });
 
     const gchar *smt_issues_tooltip = _("Color used to highlight potentially suboptimal\nplacement of threads on CPUs with SMT");
-    dlg_data->smt_stats_tooltip = g_strdup_printf("%s\n%s",
-        _("'Overall' is showing the impact on the overall performance of the machine."),
-        _("'Hotspots' is showing the momentary performance impact on just the threads involved in suboptimal SMT scheduling decisions."));
 
     gtk_box_pack_start (vbox, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, BORDER/2);
     dlg_data->hbox_highlight_smt = create_check_box (vbox, sg, _("Highlight suboptimal SMT scheduling"),
-                                                     base->highlight_smt, change_smt, dlg_data,
-                                                     NULL);
-    setup_color_option (vbox, sg, dlg_data, SMT_ISSUES_COLOR, _("SMT issues color:"), smt_issues_tooltip, change_color_5);
+        base->highlight_smt, NULL,
+        [dlg_data](GtkToggleButton *button) {
+            set_smt (dlg_data->base, gtk_toggle_button_get_active (button));
+            update_sensitivity (dlg_data);
+        });
+    setup_color_option (vbox, sg, dlg_data, SMT_ISSUES_COLOR, _("SMT issues color:"), smt_issues_tooltip, [base](GtkColorButton *button) {
+        change_color (button, base, SMT_ISSUES_COLOR);
+    });
 
     gtk_box_pack_start (vbox, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, BORDER/2);
-    create_check_box (vbox, sg, _("Use non-linear time-scale"), base->non_linear, change_time_scale, dlg_data, NULL);
-    create_check_box (vbox, sg, _("Per-core history graphs"), base->per_core, change_per_core, dlg_data, &dlg_data->per_core);
+    create_check_box (vbox, sg, _("Use non-linear time-scale"), base->non_linear, NULL,
+        [dlg_data](GtkToggleButton *button) {
+            set_nonlinear_time (dlg_data->base, gtk_toggle_button_get_active (button));
+            update_sensitivity (dlg_data);
+        });
+    create_check_box (vbox, sg, _("Per-core history graphs"), base->per_core, &dlg_data->per_core,
+        [dlg_data](GtkToggleButton *button) {
+            set_per_core (dlg_data->base, gtk_toggle_button_get_active (button));
+            update_sensitivity (dlg_data);
+        });
     dlg_data->hbox_per_core_spacing  = setup_per_core_spacing_option (vbox, sg, base);
 
     GtkBox *vbox2 = create_tab ();
-    setup_color_option (vbox2, sg, dlg_data, FG_COLOR1, _("Color 1:"), NULL, change_color_1);
-    setup_color_option (vbox2, sg, dlg_data, FG_COLOR2, _("Color 2:"), NULL, change_color_2);
-    setup_color_option (vbox2, sg, dlg_data, FG_COLOR3, _("Color 3:"), NULL, change_color_3);
-    setup_color_option (vbox2, sg, dlg_data, BG_COLOR, _("Background:"), NULL, change_color_0);
+    setup_color_option (vbox2, sg, dlg_data, FG_COLOR1, _("Color 1:"), NULL, [base](GtkColorButton *button) {
+        change_color (button, base, FG_COLOR1);
+    });
+    setup_color_option (vbox2, sg, dlg_data, FG_COLOR2, _("Color 2:"), NULL, [base](GtkColorButton *button) {
+        change_color (button, base, FG_COLOR2);
+    });
+    setup_color_option (vbox2, sg, dlg_data, FG_COLOR3, _("Color 3:"), NULL, [base](GtkColorButton *button) {
+        change_color (button, base, FG_COLOR3);
+    });
+    setup_color_option (vbox2, sg, dlg_data, BG_COLOR, _("Background:"), NULL, [base](GtkColorButton *button) {
+        change_color (button, base, BG_COLOR);
+    });
     setup_mode_option (vbox2, sg, dlg_data);
     setup_color_mode_option (vbox2, sg, dlg_data);
     gtk_box_pack_start (vbox2, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, BORDER/2);
     create_check_box (vbox2, sg, ngettext ("Show current usage bar", "Show current usage bars", base->nr_cores),
-                      base->has_bars, change_bars, dlg_data,
-                      &dlg_data->show_bars_checkbox);
-    setup_color_option (vbox2, sg, dlg_data, BARS_COLOR, _("Bars color:"), NULL, change_color_4);
+        base->has_bars, &dlg_data->show_bars_checkbox,
+        [dlg_data](GtkToggleButton *button) {
+            set_bars (dlg_data->base, gtk_toggle_button_get_active (button));
+            update_sensitivity (dlg_data);
+        });
+    setup_color_option (vbox2, sg, dlg_data, BARS_COLOR, _("Bars color:"), NULL, [base](GtkColorButton *button) {
+        base->has_barcolor = true;
+        change_color (button, base, BARS_COLOR);
+    });
     gtk_box_pack_start (vbox2, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, BORDER/2);
-    create_check_box (vbox2, sg, _("Show frame"), base->has_frame, change_frame, dlg_data, NULL);
-    create_check_box (vbox2, sg, _("Show border"), base->has_border, change_border, dlg_data, NULL);
+    create_check_box (vbox2, sg, _("Show frame"), base->has_frame, NULL,
+        [dlg_data](GtkToggleButton *button) {
+            set_frame (dlg_data->base, gtk_toggle_button_get_active (button));
+            update_sensitivity (dlg_data);
+        });
+    create_check_box (vbox2, sg, _("Show border"), base->has_border, NULL,
+        [dlg_data](GtkToggleButton *button) {
+            set_border (dlg_data->base, gtk_toggle_button_get_active (button));
+            update_sensitivity (dlg_data);
+        });
 
     GtkBox *vbox3 = create_tab ();
     dlg_data->smt_stats = create_label_line (vbox3, "");
@@ -246,14 +226,14 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     gtk_container_add (GTK_CONTAINER (content), notebook);
 
     update_cb (dlg_data);
-    dlg_data->timeout_id = g_timeout_add (100, (GSourceFunc) update_cb, dlg_data);
+    dlg_data->timeout_id = xfce4::timeout_add (100, [dlg_data]() -> bool { return update_cb(dlg_data); });
 
     update_sensitivity (dlg_data);
     gtk_widget_show_all (dlg);
 }
 
 static GtkBox *
-create_tab (void)
+create_tab ()
 {
     GtkBox *tab = GTK_BOX (gtk_box_new (GTK_ORIENTATION_VERTICAL, BORDER));
     gtk_container_set_border_width (GTK_CONTAINER (tab), BORDER);
@@ -302,81 +282,76 @@ create_option_line (GtkBox *tab, GtkSizeGroup *sg, const gchar *name, const gcha
 
 static GtkBox*
 create_check_box (GtkBox *tab, GtkSizeGroup *sg, const gchar *name, bool init,
-                  void (callback)(GtkToggleButton*, CPUGraphOptions*), CPUGraphOptions *cb_data,
-                  GtkToggleButton **out_checkbox)
+                  GtkToggleButton **out_checkbox,
+                  const std::function<void (GtkToggleButton*)> &callback)
 {
     GtkBox *hbox = create_option_line (tab, sg, NULL, NULL);
 
-    GtkWidget *checkbox = gtk_check_button_new_with_mnemonic (name);
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbox), init);
+    GtkToggleButton *checkbox = GTK_TOGGLE_BUTTON (gtk_check_button_new_with_mnemonic (name));
+    gtk_toggle_button_set_active (checkbox, init);
     gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (checkbox), FALSE, FALSE, 0);
-    g_signal_connect (checkbox, "toggled", G_CALLBACK (callback), cb_data);
+    xfce4::connect (GTK_TOGGLE_BUTTON (checkbox), "toggled", callback);
 
     if (out_checkbox)
-        *out_checkbox = GTK_TOGGLE_BUTTON (checkbox);
+        *out_checkbox = checkbox;
 
     return hbox;
 }
 
 static GtkWidget*
 create_drop_down (GtkBox *tab, GtkSizeGroup *sg, const gchar *name,
-                  const gchar **items, gsize nb_items, guint init,
-                  void (callback)(GtkComboBox*, CPUGraphOptions*), CPUGraphOptions *cb_data)
+                  const std::vector<std::string> &items, size_t init,
+                  const std::function<void(GtkComboBox*)> &callback)
 {
     GtkBox *hbox = create_option_line (tab, sg, name, NULL);
 
     GtkWidget *combo = gtk_combo_box_text_new ();
-    for (gsize i = 0; i < nb_items; i++)
-    {
-        gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (combo), NULL, items[i]);
-    }
+    for (const std::string &item : items)
+        gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (combo), NULL, item.c_str());
     gtk_combo_box_set_active (GTK_COMBO_BOX (combo), init);
     gtk_box_pack_start (GTK_BOX (hbox), combo, FALSE, FALSE, 0);
 
-    g_signal_connect (combo, "changed", G_CALLBACK (callback), cb_data);
+    xfce4::connect (GTK_COMBO_BOX (combo), "changed", callback);
 
     return combo;
 }
 
 static void
-destroy_cb (GtkWidget *dlg, CPUGraphOptions *data)
+setup_update_interval_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data)
 {
-    if (data->timeout_id)
-        g_source_remove (data->timeout_id);
-    g_free (data->smt_stats_tooltip);
-    g_free (data);
+    const std::vector<std::string> items = {
+        _("Fastest (~250ms)"),
+        _("Fast (~500ms)"),
+        _("Normal (~750ms)"),
+        _("Slow (~1s)"),
+        _("Slowest (~3s)")
+    };
+
+    create_drop_down (vbox, sg, _("Update Interval:"), items, data->base->update_interval,
+        [data](GtkComboBox *combo) {
+            set_update_rate (data->base, (CPUGraphUpdateRate) gtk_combo_box_get_active (combo));
+        });
 }
 
 static void
-setup_update_interval_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraphOptions *data)
-{
-    const gchar *items[] = { _("Fastest (~250ms)"),
-                             _("Fast (~500ms)"),
-                             _("Normal (~750ms)"),
-                             _("Slow (~1s)"),
-                             _("Slowest (~3s)")
-                           };
-    gsize nb_items = sizeof (items) / sizeof (*items);
-
-    create_drop_down (vbox, sg, _("Update Interval:"), items, nb_items,
-                      data->base->update_interval, change_update, data);
-}
-
-static void
-setup_tracked_core_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraphOptions *data)
+setup_tracked_core_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data)
 {
     const gsize nb_items = data->base->nr_cores + 1;
-    gchar *items[nb_items];
+    std::vector<std::string> items(nb_items);
 
-    items[0] = g_strdup (_("All"));
+    items[0] = _("All");
     for (gsize i = 1; i < nb_items; i++)
-        items[i] = g_strdup_printf ("%zu", i-1);
+        items[i] = xfce4::sprintf ("%zu", i-1);
 
-    create_drop_down (vbox, sg, _("Tracked Core:"), (const gchar **) items, nb_items,
-                      data->base->tracked_core, change_core, data);
-
-    for (gsize i = 0; i < nb_items; i++)
-        g_free (items[i]);
+    create_drop_down (vbox, sg, _("Tracked Core:"), items, data->base->tracked_core,
+        [data](GtkComboBox *combo) {
+            set_tracked_core (data->base, gtk_combo_box_get_active (combo));
+            if (data->base->tracked_core != 0)
+                set_per_core (data->base, false);
+            else
+                set_per_core (data->base, gtk_toggle_button_get_active (data->per_core));
+            update_sensitivity (data);
+        });
 }
 
 static void
@@ -390,8 +365,10 @@ setup_size_option (GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, CPUG
 
     GtkWidget *size = gtk_spin_button_new_with_range (MIN_SIZE, MAX_SIZE, 1);
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (size), base->size);
-    gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (size), FALSE, FALSE, 0);
-    g_signal_connect (size, "value-changed", G_CALLBACK (change_size), base);
+    gtk_box_pack_start (GTK_BOX (hbox), size, FALSE, FALSE, 0);
+    xfce4::connect (GTK_SPIN_BUTTON (size), "value-changed", [base](GtkSpinButton *button) {
+        set_size (base, gtk_spin_button_get_value_as_int (button));
+    });
 }
 
 static void
@@ -400,8 +377,10 @@ setup_load_threshold_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base)
     GtkBox *hbox = create_option_line (vbox, sg, _("Threshold (%):"), NULL);
     GtkWidget *threshold = gtk_spin_button_new_with_range (0, (gint) roundf (100 * MAX_LOAD_THRESHOLD), 1);
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (threshold), (gint) roundf (100 * base->load_threshold));
-    gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (threshold), FALSE, FALSE, 0);
-    g_signal_connect (threshold, "value-changed", G_CALLBACK (change_load_threshold), base);
+    gtk_box_pack_start (GTK_BOX (hbox), threshold, FALSE, FALSE, 0);
+    xfce4::connect (GTK_SPIN_BUTTON (threshold), "value-changed", [base](GtkSpinButton *button) {
+        set_load_threshold (base, gtk_spin_button_get_value (button) / 100);
+    });
 }
 
 static GtkBox*
@@ -411,13 +390,15 @@ setup_per_core_spacing_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base)
     GtkWidget *spacing = gtk_spin_button_new_with_range (PER_CORE_SPACING_MIN, PER_CORE_SPACING_MAX, 1);
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (spacing), base->per_core_spacing);
     gtk_widget_set_tooltip_text (GTK_WIDGET (hbox), _("Spacing between per-core history graphs"));
-    gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (spacing), FALSE, FALSE, 0);
-    g_signal_connect (spacing, "value-changed", G_CALLBACK (change_per_core_spacing), base);
+    gtk_box_pack_start (GTK_BOX (hbox), spacing, FALSE, FALSE, 0);
+    xfce4::connect (GTK_SPIN_BUTTON (spacing), "value-changed", [base](GtkSpinButton *button) {
+        set_per_core_spacing (base, gtk_spin_button_get_value_as_int (button));
+    });
     return hbox;
 }
 
 static void
-setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraphOptions *data)
+setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data)
 {
     GtkBox *hbox = create_option_line (vbox, sg, _("Associated command:"), NULL);
 
@@ -429,92 +410,91 @@ setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraphOptions *data)
     gtk_entry_set_icon_tooltip_text (GTK_ENTRY (associatecommand),
                                      GTK_ENTRY_ICON_SECONDARY,
                                      _("Defaults to xfce4-taskmanager, htop or top."));
-    gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (associatecommand), FALSE, FALSE, 0);
-    g_signal_connect (associatecommand, "changed", G_CALLBACK (change_command), data);
+    gtk_box_pack_start (GTK_BOX (hbox), associatecommand, FALSE, FALSE, 0);
+    xfce4::connect (GTK_ENTRY (associatecommand), "changed", [data](GtkEntry *entry) {
+        set_command (data->base, gtk_entry_get_text (entry));
+        update_sensitivity (data);
+    });
 }
 
 static void
-setup_color_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraphOptions *data,
-                    guint number, const gchar *name, const gchar *tooltip,
-                    void (callback)(GtkColorButton*, CPUGraph*))
+setup_color_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data,
+                    CPUGraphColorNumber number, const gchar *name, const gchar *tooltip,
+                    const std::function<void(GtkColorButton*)> &callback)
 {
     GtkBox *hbox = create_option_line (vbox, sg, name, tooltip);
 
-    data->color_buttons[number] = gtk_color_button_new_with_rgba (&data->base->colors[number]);
+    data->color_buttons[number] = GTK_COLOR_BUTTON (gtk_color_button_new_with_rgba (&data->base->colors[number]));
     gtk_color_chooser_set_use_alpha (GTK_COLOR_CHOOSER (data->color_buttons[number]), TRUE);
     gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (data->color_buttons[number]), FALSE, FALSE, 0);
 
-    g_signal_connect (data->color_buttons[number], "color-set", G_CALLBACK (callback), data->base);
+    xfce4::connect (data->color_buttons[number], "color-set", callback);
 }
 
 static void
-setup_mode_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraphOptions *data)
+setup_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data)
 {
-    const gchar *items[] = { _("Disabled"),
-                             _("Normal"),
-                             _("LED"),
-                             _("No history"),
-                             _("Grid")
-                           };
-    gsize nb_items = sizeof (items) / sizeof (*items);
-    gint selected;
+    const std::vector<std::string> items = {
+        _("Disabled"),
+        _("Normal"),
+        _("LED"),
+        _("No history"),
+        _("Grid")
+    };
 
+    gint selected = 0;
     switch (data->base->mode)
     {
-        case MODE_DISABLED:
-            selected = 0;
-            break;
-        case MODE_NORMAL:
-            selected = 1;
-            break;
-        case MODE_LED:
-            selected = 2;
-            break;
-        case MODE_NO_HISTORY:
-            selected = 3;
-            break;
-        case MODE_GRID:
-            selected = 4;
-            break;
-        default:
-            selected = 0;
+        case MODE_DISABLED:   selected = 0; break;
+        case MODE_NORMAL:     selected = 1; break;
+        case MODE_LED:        selected = 2; break;
+        case MODE_NO_HISTORY: selected = 3; break;
+        case MODE_GRID:       selected = 4; break;
     }
 
-    create_drop_down (vbox, sg, _("Mode:"), items, nb_items, selected, change_mode, data);
+    create_drop_down (vbox, sg, _("Mode:"), items, selected,
+        [data](GtkComboBox *combo) {
+            /* 'Disabled' mode was introduced in 1.1.0 as '-1'
+             * for this reason we need to decrement the selected value */
+            gint active = gtk_combo_box_get_active (combo) - 1;
+            CPUGraphMode mode;
+
+            switch (active)
+            {
+                case MODE_DISABLED:
+                case MODE_NORMAL:
+                case MODE_LED:
+                case MODE_NO_HISTORY:
+                case MODE_GRID:
+                    mode = (CPUGraphMode) active;
+                    break;
+                default:
+                    mode = MODE_NORMAL;
+            }
+
+            set_mode (data->base, mode);
+            if (mode == MODE_DISABLED && !data->base->has_bars)
+                gtk_toggle_button_set_active (data->show_bars_checkbox, TRUE);
+
+            update_sensitivity (data);
+        });
 }
 
 static void
-setup_color_mode_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraphOptions *data)
+setup_color_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data)
 {
-    const gchar *items[] = { _("Solid"),
-                             _("Gradient"),
-                             _("Fire"),
-                           };
-    gsize nb_items = sizeof (items) / sizeof (*items);
+    const std::vector<std::string> items = {
+        _("Solid"),
+        _("Gradient"),
+        _("Fire"),
+    };
 
-    data->color_mode_combobox = create_drop_down (vbox, sg, _("Color mode: "), items, nb_items,
-                                                  data->base->color_mode, change_color_mode, data);
-}
-
-static void
-change_in_terminal (GtkToggleButton *button, CPUGraphOptions *data)
-{
-    set_in_terminal (data->base, gtk_toggle_button_get_active (button));
-    update_sensitivity (data);
-}
-
-static void
-change_startup_notification (GtkToggleButton *button, CPUGraphOptions *data)
-{
-    set_startup_notification (data->base, gtk_toggle_button_get_active (button));
-    update_sensitivity (data);
-}
-
-static void
-change_command (GtkEntry *entry, CPUGraphOptions *data)
-{
-    set_command (data->base, gtk_entry_get_text (entry));
-    update_sensitivity (data);
+    data->color_mode_combobox = create_drop_down (
+        vbox, sg, _("Color mode: "), items, data->base->color_mode,
+        [data](GtkComboBox *combo) {
+            set_color_mode (data->base, gtk_combo_box_get_active (combo));
+            update_sensitivity (data);
+        });
 }
 
 static void
@@ -526,44 +506,7 @@ change_color (GtkColorButton *button, CPUGraph *base, CPUGraphColorNumber number
 }
 
 static void
-change_color_0 (GtkColorButton *button, CPUGraph *base)
-{
-    change_color (button, base, BG_COLOR);
-}
-
-static void
-change_color_1 (GtkColorButton *button, CPUGraph *base)
-{
-    change_color (button, base, FG_COLOR1);
-}
-
-static void
-change_color_2 (GtkColorButton *button, CPUGraph *base)
-{
-    change_color (button, base, FG_COLOR2);
-}
-
-static void
-change_color_3 (GtkColorButton *button, CPUGraph *base)
-{
-    change_color (button, base, FG_COLOR3);
-}
-
-static void
-change_color_4 (GtkColorButton *button, CPUGraph *base)
-{
-    base->has_barcolor = true;
-    change_color (button, base, BARS_COLOR);
-}
-
-static void
-change_color_5 (GtkColorButton *button, CPUGraph *base)
-{
-    change_color (button, base, SMT_ISSUES_COLOR);
-}
-
-static void
-update_sensitivity (const CPUGraphOptions *data)
+update_sensitivity (const xfce4::Ptr<CPUGraphOptions> &data)
 {
     const CPUGraph *base = data->base;
     const bool default_command = (base->command == NULL);
@@ -576,134 +519,22 @@ update_sensitivity (const CPUGraphOptions *data)
     gtk_widget_set_sensitive (GTK_WIDGET (data->per_core), per_core);
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_per_core_spacing), per_core && base->per_core);
 
-    gtk_widget_set_sensitive (gtk_widget_get_parent (data->color_buttons[FG_COLOR2]),
+    gtk_widget_set_sensitive (gtk_widget_get_parent (GTK_WIDGET (data->color_buttons[FG_COLOR2])),
                               base->color_mode != 0 || base->mode == MODE_LED || base->mode == MODE_GRID);
-    gtk_widget_set_sensitive (gtk_widget_get_parent (data->color_buttons[FG_COLOR3]),
+    gtk_widget_set_sensitive (gtk_widget_get_parent (GTK_WIDGET (data->color_buttons[FG_COLOR3])),
                               base->color_mode != 0 && base->mode == MODE_LED);
 
-    gtk_widget_set_sensitive (gtk_widget_get_parent (data->color_buttons[BARS_COLOR]), base->has_bars);
-    gtk_widget_set_sensitive (gtk_widget_get_parent (data->color_buttons[SMT_ISSUES_COLOR]),
+    gtk_widget_set_sensitive (gtk_widget_get_parent (GTK_WIDGET (data->color_buttons[BARS_COLOR])), base->has_bars);
+    gtk_widget_set_sensitive (gtk_widget_get_parent (GTK_WIDGET (data->color_buttons[SMT_ISSUES_COLOR])),
                               base->has_bars && base->highlight_smt && base->topology && base->topology->smt);
 
-    gtk_widget_set_sensitive (gtk_widget_get_parent (data->color_mode_combobox), base->mode != MODE_GRID);
+    gtk_widget_set_sensitive (gtk_widget_get_parent (data->color_mode_combobox),
+                              base->mode != MODE_DISABLED && base->mode != MODE_GRID);
     gtk_widget_set_sensitive (GTK_WIDGET (data->show_bars_checkbox), base->mode != MODE_DISABLED);
 }
 
-static void
-change_mode (GtkComboBox *combo, CPUGraphOptions *data)
-{
-    /* 'Disabled' mode was introduced in 1.1.0 as '-1'
-     * for this reason we need to decrement the selected value */
-    gint selected = gtk_combo_box_get_active (combo) - 1;
-    CPUGraphMode mode;
-
-    switch (selected)
-    {
-        case MODE_DISABLED:
-        case MODE_NORMAL:
-        case MODE_LED:
-        case MODE_NO_HISTORY:
-        case MODE_GRID:
-            mode = (CPUGraphMode) selected;
-            break;
-        default:
-            mode = MODE_NORMAL;
-    }
-
-    set_mode (data->base, mode);
-    if (mode == MODE_DISABLED && !data->base->has_bars)
-        gtk_toggle_button_set_active (data->show_bars_checkbox, TRUE);
-    update_sensitivity (data);
-}
-
-static void
-change_color_mode (GtkComboBox *combo, CPUGraphOptions *data)
-{
-    set_color_mode (data->base, gtk_combo_box_get_active (combo));
-    update_sensitivity (data);
-}
-
-static void
-response_cb (GtkWidget *dlg, gint response, CPUGraph *base)
-{
-    gtk_widget_destroy (dlg);
-    xfce_panel_plugin_unblock_menu (base->plugin);
-    write_settings (base->plugin, base);
-}
-
-static void
-change_frame (GtkToggleButton *button, CPUGraphOptions *data)
-{
-    set_frame (data->base, gtk_toggle_button_get_active (button));
-}
-
-static void
-change_border (GtkToggleButton *button, CPUGraphOptions *data)
-{
-    set_border (data->base, gtk_toggle_button_get_active (button));
-}
-
-static void
-change_bars (GtkToggleButton *button, CPUGraphOptions *data)
-{
-    set_bars (data->base, gtk_toggle_button_get_active (button));
-    update_sensitivity (data);
-}
-
-static void
-change_per_core (GtkToggleButton *button, CPUGraphOptions *data)
-{
-    set_per_core (data->base, gtk_toggle_button_get_active (button));
-    update_sensitivity (data);
-}
-
-static void
-change_per_core_spacing (GtkSpinButton *button, CPUGraph *base)
-{
-    set_per_core_spacing (base, gtk_spin_button_get_value_as_int (button));
-}
-
-static void
-change_size (GtkSpinButton *button, CPUGraph *base)
-{
-    set_size (base, gtk_spin_button_get_value_as_int (button));
-}
-
-static void
-change_smt (GtkToggleButton *button, CPUGraphOptions *data)
-{
-    set_smt (data->base, gtk_toggle_button_get_active (button));
-    update_sensitivity (data);
-}
-
-static void
-change_load_threshold (GtkSpinButton *button, CPUGraph *base)
-{
-    set_load_threshold (base, gtk_spin_button_get_value (button) / 100);
-}
-
-static void change_time_scale (GtkToggleButton *button, CPUGraphOptions *data)
-{
-    set_nonlinear_time (data->base, gtk_toggle_button_get_active (button));
-}
-
-static void change_update (GtkComboBox *combo, CPUGraphOptions *data)
-{
-    set_update_rate (data->base, (CPUGraphUpdateRate) gtk_combo_box_get_active (combo));
-}
-
-static void change_core (GtkComboBox *combo, CPUGraphOptions *data)
-{
-    set_tracked_core (data->base, gtk_combo_box_get_active (combo));
-    if (data->base->tracked_core != 0)
-        set_per_core (data->base, false);
-    else
-        set_per_core (data->base, gtk_toggle_button_get_active (data->per_core));
-    update_sensitivity (data);
-}
-
-static gboolean
-update_cb (CPUGraphOptions *data)
+static bool
+update_cb (const xfce4::Ptr<CPUGraphOptions> &data)
 {
     const CPUGraph *base = data->base;
     std::string smt_text;
@@ -761,8 +592,8 @@ update_cb (CPUGraphOptions *data)
     if (gtk_label_get_text (data->smt_stats) != smt_text)
     {
         gtk_label_set_text (data->smt_stats, smt_text.c_str());
-        gtk_widget_set_tooltip_text (GTK_WIDGET (data->smt_stats), show_tooltip ? data->smt_stats_tooltip : "");
+        gtk_widget_set_tooltip_text (GTK_WIDGET (data->smt_stats), show_tooltip ? data->smt_stats_tooltip().c_str() : "");
     }
 
-    return TRUE;
+    return true;
 }

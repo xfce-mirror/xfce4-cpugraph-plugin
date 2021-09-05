@@ -21,10 +21,17 @@ AM_CPPFLAGS = -I${top_srcdir}
 noinst_LTLIBRARIES = libxfce4util_pp.la
 
 libxfce4util_pp_la_CXXFLAGS = \
+	@GTK_CFLAGS@ \
 	@LIBXFCE4UTIL_CFLAGS@
+
+libxfce4util_pp_la_LIBADD = \
+	@GTK_LIBS@ \
+	@LIBXFCE4UTIL_LIBS@
 
 libxfce4util_pp_la_SOURCES = \
 	fixes.h \
+	gtk.h \
+	gtk.cc \
 	memory.h \
 	rc.h \
 	rc.cc \
