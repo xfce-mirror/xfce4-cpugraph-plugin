@@ -21,11 +21,11 @@
  *  with this program; if not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-#ifndef _XFCE_PROPERTIES_H_
-#define _XFCE_PROPERTIES_H_
+#ifndef _XFCE_CPUGRAPH_PROPERTIES_H_
+#define _XFCE_CPUGRAPH_PROPERTIES_H_
 
 #include "cpu.h"
 
 void create_options (XfcePanelPlugin *plugin, CPUGraph *base);
 
-#endif /* !_XFCE_PROPERTIES_H_ */
+#endif /* _XFCE_CPUGRAPH_PROPERTIES_H_ */

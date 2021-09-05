@@ -21,8 +21,8 @@
  *  with this program; if not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-#ifndef _XFCE_OS_H_
-#define _XFCE_OS_H_
+#ifndef _XFCE_CPUGRAPH_OS_H_
+#define _XFCE_CPUGRAPH_OS_H_
 
 #include <glib.h>
 
@@ -70,4 +70,4 @@ guint detect_cpu_number (void);
 bool read_cpu_data (CpuData *data, guint nb_cpu);
 Topology* read_topology (void);
 
-#endif /* !_XFCE_OS_H */
+#endif /* _XFCE_CPUGRAPH_OS_H */

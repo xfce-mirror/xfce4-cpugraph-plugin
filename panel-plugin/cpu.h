@@ -21,8 +21,8 @@
  *  with this program; if not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-#ifndef _XFCE_CPU_H_
-#define _XFCE_CPU_H_
+#ifndef _XFCE_CPUGRAPH_CPU_H_
+#define _XFCE_CPUGRAPH_CPU_H_
 
 #if HAVE_CONFIG_H
 #include "config.h"
@@ -152,4 +152,4 @@ void set_startup_notification (CPUGraph *base, bool startup_notification);
 void set_tracked_core (CPUGraph *base, guint core);
 void set_update_rate (CPUGraph *base, CPUGraphUpdateRate rate);
 
-#endif /* !_XFCE_CPU_H_ */
+#endif /* _XFCE_CPUGRAPH_CPU_H_ */

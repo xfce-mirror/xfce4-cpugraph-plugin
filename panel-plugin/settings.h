@@ -21,12 +21,12 @@
  *  with this program; if not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-#ifndef _XFCE_SETTINGS_H_
-#define _XFCE_SETTINGS_H_
+#ifndef _XFCE_CPUGRAPH_SETTINGS_H_
+#define _XFCE_CPUGRAPH_SETTINGS_H_
 
 #include "cpu.h"
 
 void read_settings (XfcePanelPlugin *plugin, CPUGraph *base);
 void write_settings (XfcePanelPlugin *plugin, CPUGraph *base);
 
-#endif /* !_XFCE_SETTINGS_H_ */
+#endif /* _XFCE_CPUGRAPH_SETTINGS_H_ */

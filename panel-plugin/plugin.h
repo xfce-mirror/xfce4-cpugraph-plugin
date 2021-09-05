@@ -18,8 +18,8 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _XFCE_PLUGIN_H_
-#define _XFCE_PLUGIN_H_
+#ifndef _XFCE_CPUGRAPH_PLUGIN_H_
+#define _XFCE_CPUGRAPH_PLUGIN_H_
 
 #include <libxfce4panel/libxfce4panel.h>
 
@@ -29,4 +29,4 @@ void cpugraph_construct (XfcePanelPlugin *plugin);
 
 G_END_DECLS
 
-#endif /* _XFCE_PLUGIN_H_ */
+#endif /* _XFCE_CPUGRAPH_PLUGIN_H_ */

@@ -21,8 +21,8 @@
  *  with this program; if not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-#ifndef _XFCE_MODE_H_
-#define _XFCE_MODE_H_
+#ifndef _XFCE_CPUGRAPH_MODE_H_
+#define _XFCE_CPUGRAPH_MODE_H_
 
 #include "cpu.h"
 
@@ -31,4 +31,4 @@ void draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core);
 void draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core);
 void draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core);
 
-#endif /* !_XFCE_MODE_H_ */
+#endif /* _XFCE_CPUGRAPH_MODE_H_ */
