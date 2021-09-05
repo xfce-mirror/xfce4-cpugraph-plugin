@@ -21,24 +21,20 @@
  *  with this program; if not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-#ifndef _XFCE_OS_H_
-#define _XFCE_OS_H_
+#ifndef _XFCE_CPUGRAPH_OS_H_
+#define _XFCE_CPUGRAPH_OS_H_
 
 #include <glib.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-typedef struct
+struct CpuData
 {
     gfloat load; /* Range: from 0.0 to 1.0 */
     guint64 previous_used;
     guint64 previous_total;
     bool smt_highlight;
-} CpuData;
+};
 
-typedef struct
+struct CpuStats
 {
     guint num_smt_incidents;
     struct {
@@ -50,12 +46,12 @@ typedef struct
             gdouble actual, optimal;
         } total;
     } num_instructions_executed;
-} CpuStats;
+};
 
 /* All pointers in this data structure are internal to a single memory allocation
  * and thus the whole data structure can be deallocated using a single call to g_free().
  * Consequenly, pointers exported/read from this data structure are invalid after the deallocation. */
-typedef struct
+struct Topology
 {
     guint num_all_logical_cpus;
     guint num_online_logical_cpus;
@@ -68,14 +64,10 @@ typedef struct
     } *cores;
     bool smt;           /* Simultaneous multi-threading (hyper-threading) */
     gdouble smt_ratio;  /* Equals to (num_online_logical_cpus / num_online_cores), >= 1.0 */
-} Topology;
+};
 
 guint detect_cpu_number (void);
 bool read_cpu_data (CpuData *data, guint nb_cpu);
 Topology* read_topology (void);
 
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* !_XFCE_OS_H */
+#endif /* _XFCE_CPUGRAPH_OS_H */
