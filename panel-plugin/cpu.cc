@@ -148,10 +148,17 @@ create_gui (XfcePanelPlugin *plugin)
 static void
 about_cb (XfcePanelPlugin *plugin, CPUGraph *base)
 {
+    /* List of authors (in alphabetical order) */
     const gchar *auth[] = {
-        "Alexander Nordfelth <alex.nordfelth@telia.com>", "gatopeich <gatoguan-os@yahoo.com>",
-        "lidiriel <lidiriel@coriolys.org>","Angelo Miguel Arrifano <miknix@gmail.com>",
-        "Florian Rivoal <frivoal@gmail.com>","Peter Tribble <peter.tribble@gmail.com>", NULL};
+        "Alexander Nordfelth <alex.nordfelth@telia.com>",
+        "Angelo Miguel Arrifano <miknix@gmail.com>",
+        "Florian Rivoal <frivoal@gmail.com>",
+        "gatopeich <gatoguan-os@yahoo.com>",
+        "Jan Ziak <0xe2.0x9a.0x9b@xfce.org>",
+        "lidiriel <lidiriel@coriolys.org>",
+        "Peter Tribble <peter.tribble@gmail.com>",
+        NULL
+    };
 
     gtk_show_about_dialog (NULL,
         "logo-icon-name", "org.xfce.panel.cpugraph",
