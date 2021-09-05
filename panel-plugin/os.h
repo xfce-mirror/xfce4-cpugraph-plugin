@@ -26,10 +26,6 @@
 
 #include <glib.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 typedef struct
 {
     gfloat load; /* Range: from 0.0 to 1.0 */
@@ -73,9 +69,5 @@ typedef struct
 guint detect_cpu_number (void);
 bool read_cpu_data (CpuData *data, guint nb_cpu);
 Topology* read_topology (void);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* !_XFCE_OS_H */

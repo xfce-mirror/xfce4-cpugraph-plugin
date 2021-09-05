@@ -26,15 +26,7 @@
 
 #include "cpu.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 void read_settings (XfcePanelPlugin *plugin, CPUGraph *base);
 void write_settings (XfcePanelPlugin *plugin, CPUGraph *base);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* !_XFCE_SETTINGS_H_ */

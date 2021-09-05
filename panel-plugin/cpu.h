@@ -32,10 +32,6 @@
 
 #include "os.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #define BORDER 8
 #define HIGHLIGHT_SMT_BY_DEFAULT false
 #define MAX_HISTORY_SIZE (100*1000)
@@ -155,9 +151,5 @@ void set_smt (CPUGraph * base, bool highlight_smt);
 void set_startup_notification (CPUGraph *base, bool startup_notification);
 void set_tracked_core (CPUGraph *base, guint core);
 void set_update_rate (CPUGraph *base, CPUGraphUpdateRate rate);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* !_XFCE_CPU_H_ */

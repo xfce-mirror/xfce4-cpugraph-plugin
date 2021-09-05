@@ -26,17 +26,9 @@
 
 #include "cpu.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 void draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core);
 void draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core);
 void draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core);
 void draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* !_XFCE_MODE_H_ */
