@@ -43,28 +43,28 @@
 #define PER_CORE_SPACING_MAX 3
 #define PER_CORE_SPACING_MIN 0
 
-typedef enum
+enum CPUGraphMode
 {
     MODE_DISABLED = -1,
     MODE_NORMAL = 0,
     MODE_LED = 1,
     MODE_NO_HISTORY = 2,
     MODE_GRID = 3,
-} CPUGraphMode;
+};
 
 /* Number of milliseconds between updates */
-typedef enum
+enum CPUGraphUpdateRate
 {
     RATE_FASTEST = 0,
     RATE_FAST = 1,
     RATE_NORMAL = 2,
     RATE_SLOW = 3,
     RATE_SLOWEST = 4,
-} CPUGraphUpdateRate;
+};
 
 enum { NUM_COLORS = 6 };
 
-typedef enum
+enum CPUGraphColorNumber
 {
     BG_COLOR = 0,
     FG_COLOR1 = 1,
@@ -72,15 +72,15 @@ typedef enum
     FG_COLOR3 = 3,
     BARS_COLOR = 4,
     SMT_ISSUES_COLOR = 5, /* NUM_COLORS-1 */
-} CPUGraphColorNumber;
+};
 
-typedef struct
+struct CpuLoad
 {
     gint64 timestamp; /* Microseconds since 1970-01-01 UTC, or zero */
     gfloat value;     /* Range: from 0.0 to 1.0 */
-} CpuLoad;
+};
 
-typedef struct
+struct CPUGraph
 {
     /* GUI components */
     XfcePanelPlugin *plugin;
@@ -131,7 +131,7 @@ typedef struct
     CpuData *cpu_data;
     Topology *topology;
     CpuStats stats;
-} CPUGraph;
+};
 
 guint get_update_interval_ms (CPUGraphUpdateRate rate);
 void set_bars (CPUGraph * base, bool bars);
