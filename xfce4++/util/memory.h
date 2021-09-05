@@ -40,6 +40,8 @@ struct Ptr final {
 
     Ptr(const Ptr<T> &p) : ptr(p.ptr) {}
 
+    T* operator->() const { return ptr.get(); }
+
 private:
     Ptr() {}
 };
