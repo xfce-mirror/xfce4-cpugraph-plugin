@@ -35,10 +35,6 @@
 #include <libxfce4ui/libxfce4ui.h>
 #include <math.h>
 #include "xfce4++/util.h"
-#ifndef _
-# include <libintl.h>
-# define _(String) gettext (String)
-#endif
 
 static CPUGraph  *create_gui           (XfcePanelPlugin    *plugin);
 static void       create_bars          (CPUGraph           *base,

@@ -35,11 +35,6 @@
 #include <vector>
 #include "xfce4++/util.h"
 
-#ifndef _
-# include <libintl.h>
-# define _(String) gettext (String)
-#endif
-
 struct CPUGraphOptions
 {
     CPUGraph        *const base;
