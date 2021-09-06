@@ -134,13 +134,13 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     dlg_data->hbox_in_terminal = create_check_box (vbox, sg, _("Run in terminal"),
         base->command_in_terminal, NULL,
         [dlg_data](GtkToggleButton *button) {
-            set_in_terminal (dlg_data->base, gtk_toggle_button_get_active (button));
+            dlg_data->base->set_in_terminal (gtk_toggle_button_get_active (button));
             update_sensitivity (dlg_data);
         });
     dlg_data->hbox_startup_notification = create_check_box (vbox, sg, _("Use startup notification"),
         base->command_startup_notification, NULL,
         [dlg_data](GtkToggleButton *button) {
-            set_startup_notification (dlg_data->base, gtk_toggle_button_get_active (button));
+            dlg_data->base->set_startup_notification (gtk_toggle_button_get_active (button));
             update_sensitivity (dlg_data);
         });
 
@@ -150,7 +150,7 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     dlg_data->hbox_highlight_smt = create_check_box (vbox, sg, _("Highlight suboptimal SMT scheduling"),
         base->highlight_smt, NULL,
         [dlg_data](GtkToggleButton *button) {
-            set_smt (dlg_data->base, gtk_toggle_button_get_active (button));
+            dlg_data->base->set_smt (gtk_toggle_button_get_active (button));
             update_sensitivity (dlg_data);
         });
     setup_color_option (vbox, sg, dlg_data, SMT_ISSUES_COLOR, _("SMT issues color:"), smt_issues_tooltip, [base](GtkColorButton *button) {
@@ -160,12 +160,12 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     gtk_box_pack_start (vbox, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, BORDER/2);
     create_check_box (vbox, sg, _("Use non-linear time-scale"), base->non_linear, NULL,
         [dlg_data](GtkToggleButton *button) {
-            set_nonlinear_time (dlg_data->base, gtk_toggle_button_get_active (button));
+            dlg_data->base->set_nonlinear_time (gtk_toggle_button_get_active (button));
             update_sensitivity (dlg_data);
         });
     create_check_box (vbox, sg, _("Per-core history graphs"), base->per_core, &dlg_data->per_core,
         [dlg_data](GtkToggleButton *button) {
-            set_per_core (dlg_data->base, gtk_toggle_button_get_active (button));
+            dlg_data->base->set_per_core (gtk_toggle_button_get_active (button));
             update_sensitivity (dlg_data);
         });
     dlg_data->hbox_per_core_spacing  = setup_per_core_spacing_option (vbox, sg, base);
@@ -189,7 +189,7 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     create_check_box (vbox2, sg, ngettext ("Show current usage bar", "Show current usage bars", base->nr_cores),
         base->has_bars, &dlg_data->show_bars_checkbox,
         [dlg_data](GtkToggleButton *button) {
-            set_bars (dlg_data->base, gtk_toggle_button_get_active (button));
+            dlg_data->base->set_bars (gtk_toggle_button_get_active (button));
             update_sensitivity (dlg_data);
         });
     setup_color_option (vbox2, sg, dlg_data, BARS_COLOR, _("Bars color:"), NULL, [base](GtkColorButton *button) {
@@ -199,12 +199,12 @@ create_options (XfcePanelPlugin *plugin, CPUGraph *base)
     gtk_box_pack_start (vbox2, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, BORDER/2);
     create_check_box (vbox2, sg, _("Show frame"), base->has_frame, NULL,
         [dlg_data](GtkToggleButton *button) {
-            set_frame (dlg_data->base, gtk_toggle_button_get_active (button));
+            dlg_data->base->set_frame (gtk_toggle_button_get_active (button));
             update_sensitivity (dlg_data);
         });
     create_check_box (vbox2, sg, _("Show border"), base->has_border, NULL,
         [dlg_data](GtkToggleButton *button) {
-            set_border (dlg_data->base, gtk_toggle_button_get_active (button));
+            dlg_data->base->set_border (gtk_toggle_button_get_active (button));
             update_sensitivity (dlg_data);
         });
 
@@ -324,7 +324,7 @@ setup_update_interval_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<C
 
     create_drop_down (vbox, sg, _("Update Interval:"), items, data->base->update_interval,
         [data](GtkComboBox *combo) {
-            set_update_rate (data->base, (CPUGraphUpdateRate) gtk_combo_box_get_active (combo));
+            data->base->set_update_rate ((CPUGraphUpdateRate) gtk_combo_box_get_active (combo));
         });
 }
 
@@ -340,11 +340,11 @@ setup_tracked_core_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUG
 
     create_drop_down (vbox, sg, _("Tracked Core:"), items, data->base->tracked_core,
         [data](GtkComboBox *combo) {
-            set_tracked_core (data->base, gtk_combo_box_get_active (combo));
+            data->base->set_tracked_core (gtk_combo_box_get_active (combo));
             if (data->base->tracked_core != 0)
-                set_per_core (data->base, false);
+                data->base->set_per_core (false);
             else
-                set_per_core (data->base, gtk_toggle_button_get_active (data->per_core));
+                data->base->set_per_core (gtk_toggle_button_get_active (data->per_core));
             update_sensitivity (data);
         });
 }
@@ -362,7 +362,7 @@ setup_size_option (GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, CPUG
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (size), base->size);
     gtk_box_pack_start (GTK_BOX (hbox), size, FALSE, FALSE, 0);
     xfce4::connect (GTK_SPIN_BUTTON (size), "value-changed", [base](GtkSpinButton *button) {
-        set_size (base, gtk_spin_button_get_value_as_int (button));
+        base->set_size (gtk_spin_button_get_value_as_int (button));
     });
 }
 
@@ -374,7 +374,7 @@ setup_load_threshold_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base)
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (threshold), (gint) roundf (100 * base->load_threshold));
     gtk_box_pack_start (GTK_BOX (hbox), threshold, FALSE, FALSE, 0);
     xfce4::connect (GTK_SPIN_BUTTON (threshold), "value-changed", [base](GtkSpinButton *button) {
-        set_load_threshold (base, gtk_spin_button_get_value (button) / 100);
+        base->set_load_threshold (gtk_spin_button_get_value (button) / 100);
     });
 }
 
@@ -387,7 +387,7 @@ setup_per_core_spacing_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base)
     gtk_widget_set_tooltip_text (GTK_WIDGET (hbox), _("Spacing between per-core history graphs"));
     gtk_box_pack_start (GTK_BOX (hbox), spacing, FALSE, FALSE, 0);
     xfce4::connect (GTK_SPIN_BUTTON (spacing), "value-changed", [base](GtkSpinButton *button) {
-        set_per_core_spacing (base, gtk_spin_button_get_value_as_int (button));
+        base->set_per_core_spacing (gtk_spin_button_get_value_as_int (button));
     });
     return hbox;
 }
@@ -398,7 +398,7 @@ setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphO
     GtkBox *hbox = create_option_line (vbox, sg, _("Associated command:"), NULL);
 
     GtkWidget *associatecommand = gtk_entry_new ();
-    gtk_entry_set_text (GTK_ENTRY (associatecommand), data->base->command ? data->base->command : "");
+    gtk_entry_set_text (GTK_ENTRY (associatecommand), data->base->command.c_str());
     gtk_entry_set_icon_from_icon_name (GTK_ENTRY (associatecommand),
                                        GTK_ENTRY_ICON_SECONDARY,
                                        "help-contents");
@@ -407,7 +407,7 @@ setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphO
                                      _("Defaults to xfce4-taskmanager, htop or top."));
     gtk_box_pack_start (GTK_BOX (hbox), associatecommand, FALSE, FALSE, 0);
     xfce4::connect (GTK_ENTRY (associatecommand), "changed", [data](GtkEntry *entry) {
-        set_command (data->base, gtk_entry_get_text (entry));
+        data->base->set_command (gtk_entry_get_text (entry));
         update_sensitivity (data);
     });
 }
@@ -467,7 +467,7 @@ setup_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOpti
                     mode = MODE_NORMAL;
             }
 
-            set_mode (data->base, mode);
+            data->base->set_mode (mode);
             if (mode == MODE_DISABLED && !data->base->has_bars)
                 gtk_toggle_button_set_active (data->show_bars_checkbox, TRUE);
 
@@ -487,7 +487,7 @@ setup_color_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGra
     data->color_mode_combobox = create_drop_down (
         vbox, sg, _("Color mode: "), items, data->base->color_mode,
         [data](GtkComboBox *combo) {
-            set_color_mode (data->base, gtk_combo_box_get_active (combo));
+            data->base->set_color_mode (gtk_combo_box_get_active (combo));
             update_sensitivity (data);
         });
 }
@@ -497,14 +497,14 @@ change_color (GtkColorButton *button, CPUGraph *base, CPUGraphColorNumber number
 {
     GdkRGBA color;
     gtk_color_chooser_get_rgba (GTK_COLOR_CHOOSER (button), &color);
-    set_color (base, number, color);
+    base->set_color (number, color);
 }
 
 static void
 update_sensitivity (const xfce4::Ptr<CPUGraphOptions> &data)
 {
     const CPUGraph *base = data->base;
-    const bool default_command = (base->command == NULL);
+    const bool default_command = base->command.empty();
     const bool per_core = base->nr_cores > 1 && base->tracked_core == 0 && base->mode != MODE_DISABLED;
 
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_highlight_smt),

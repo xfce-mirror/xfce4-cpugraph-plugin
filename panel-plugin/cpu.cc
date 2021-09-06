@@ -72,11 +72,10 @@ static gboolean   command_cb           (GtkWidget          *w,
 void
 cpugraph_construct (XfcePanelPlugin *plugin)
 {
-    CPUGraph *base;
 
     xfce_textdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR, "UTF-8");
 
-    base = create_gui (plugin);
+    CPUGraph *base = create_gui (plugin);
     read_settings (plugin, base);
     xfce_panel_plugin_menu_show_configure (plugin);
 
@@ -95,7 +94,7 @@ create_gui (XfcePanelPlugin *plugin)
 {
     GtkWidget *frame, *ebox;
     GtkOrientation orientation;
-    CPUGraph *base = g_new0 (CPUGraph, 1);
+    CPUGraph *base = new CPUGraph();
 
     orientation = xfce_panel_plugin_get_orientation (plugin);
     if ((base->nr_cores = init_cpu_data (&base->cpu_data)) == 0)
@@ -190,12 +189,29 @@ create_bars (CPUGraph *base, GtkOrientation orientation)
     base->bars.frame = gtk_frame_new (NULL);
     base->bars.draw_area = gtk_drawing_area_new ();
     base->bars.orientation = orientation;
-    set_frame (base, base->has_frame);
+    base->set_frame (base->has_frame);
     gtk_container_add (GTK_CONTAINER (base->bars.frame), base->bars.draw_area);
     gtk_box_pack_end (GTK_BOX (base->box), base->bars.frame, TRUE, TRUE, 0);
     g_signal_connect_after (base->bars.draw_area, "draw", G_CALLBACK (draw_bars_cb), base);
     gtk_widget_show_all (base->bars.frame);
     ebox_revalidate (base);
+}
+
+CPUGraph::~CPUGraph()
+{
+    g_free (cpu_data);
+    g_free (topology);
+    delete_bars (this);
+    gtk_widget_destroy (ebox);
+    g_object_unref (tooltip_text);
+    if (timeout_id)
+        g_source_remove (timeout_id);
+    if (history.data)
+    {
+        for (guint core = 0; core < nr_cores + 1; core++)
+            g_free (history.data[core]);
+        g_free (history.data);
+    }
 }
 
 guint
@@ -215,21 +231,7 @@ init_cpu_data (CpuData **data)
 static void
 shutdown (XfcePanelPlugin *plugin, CPUGraph *base)
 {
-    g_free (base->cpu_data);
-    g_free (base->topology);
-    delete_bars (base);
-    gtk_widget_destroy (base->ebox);
-    gtk_widget_destroy (base->tooltip_text);
-    if (base->timeout_id)
-        g_source_remove (base->timeout_id);
-    if (base->history.data)
-    {
-        for (guint core = 0; core < base->nr_cores + 1; core++)
-            g_free (base->history.data[core]);
-        g_free (base->history.data);
-    }
-    g_free (base->command);
-    g_free (base);
+    delete base;
 }
 
 static void
@@ -350,7 +352,7 @@ size_cb (XfcePanelPlugin *plugin, guint plugin_size, CPUGraph *base)
         border_width = 0;
     gtk_container_set_border_width (GTK_CONTAINER (base->box), border_width);
 
-    set_border (base, base->has_border);
+    base->set_border (base->has_border);
 
     return TRUE;
 }
@@ -630,10 +632,9 @@ update_cb (gpointer user_data)
 static void
 update_tooltip (CPUGraph *base)
 {
-    gchar tooltip[32];
-    g_snprintf (tooltip, 32, _("Usage: %u%%"), (guint) roundf (base->cpu_data[0].load * 100));
-    if (strcmp (gtk_label_get_text (GTK_LABEL (base->tooltip_text)), tooltip))
-        gtk_label_set_text (GTK_LABEL (base->tooltip_text), tooltip);
+    auto tooltip = xfce4::sprintf (_("Usage: %u%%"), (guint) roundf (base->cpu_data[0].load * 100));
+    if (gtk_label_get_text (GTK_LABEL (base->tooltip_text)) != tooltip)
+        gtk_label_set_text (GTK_LABEL (base->tooltip_text), tooltip.c_str());
 }
 
 static gboolean
@@ -838,10 +839,10 @@ command_cb (GtkWidget *w, GdkEventButton *event, CPUGraph *base)
 {
     if (event->button == 1)
     {
-        const gchar *command;
+        std::string command;
         bool in_terminal, startup_notification;
 
-        if (base->command)
+        if (!base->command.empty())
         {
             command = base->command;
             in_terminal = base->command_in_terminal;
@@ -853,7 +854,7 @@ command_cb (GtkWidget *w, GdkEventButton *event, CPUGraph *base)
         }
 
         xfce_spawn_command_line_on_screen (gdk_screen_get_default (),
-                                           command, in_terminal,
+                                           command.c_str(), in_terminal,
                                            startup_notification, NULL);
     }
     return FALSE;
@@ -885,88 +886,84 @@ get_update_interval_ms (CPUGraphUpdateRate rate)
 }
 
 void
-set_startup_notification (CPUGraph *base, bool startup_notification)
+CPUGraph::set_startup_notification (bool startup_notification)
 {
-    base->command_startup_notification = startup_notification;
+    command_startup_notification = startup_notification;
 }
 
 void
-set_in_terminal (CPUGraph *base, bool in_terminal)
+CPUGraph::set_in_terminal (bool in_terminal)
 {
-    base->command_in_terminal = in_terminal;
+    command_in_terminal = in_terminal;
 }
 
 void
-set_command (CPUGraph *base, const gchar *command)
+CPUGraph::set_command (const gchar *_command)
 {
-    g_free (base->command);
-    base->command = g_strdup (command);
-    g_strstrip (base->command);
-    if (strlen (base->command) == 0)
+    char *cmd = g_strdup (_command);
+    g_strstrip (cmd);
+    command = cmd;
+    g_free (cmd);
+}
+
+void
+CPUGraph::set_bars (bool _has_bars)
+{
+    if (has_bars != _has_bars)
     {
-        g_free (base->command);
-        base->command = NULL;
-    }
-}
-
-void
-set_bars (CPUGraph *base, bool bars)
-{
-    if (base->has_bars != bars)
-    {
-        base->has_bars = bars;
-        if (bars)
+        has_bars = _has_bars;
+        if (has_bars)
         {
-            create_bars (base, xfce_panel_plugin_get_orientation (base->plugin));
-            set_bars_size (base);
+            create_bars (this, xfce_panel_plugin_get_orientation (plugin));
+            set_bars_size (this);
         }
         else
-            delete_bars (base);
+            delete_bars (this);
     }
 }
 
 void
-set_border (CPUGraph *base, bool border)
+CPUGraph::set_border (bool _has_border)
 {
-    if (base->has_border != border)
+    if (has_border != _has_border)
     {
-        base->has_border = border;
-        size_cb (base->plugin, xfce_panel_plugin_get_size (base->plugin), base);
+        has_border = _has_border;
+        size_cb (plugin, xfce_panel_plugin_get_size (plugin), this);
     }
 }
 
 void
-set_frame (CPUGraph *base, bool frame)
+CPUGraph::set_frame (bool _has_frame)
 {
-    base->has_frame = frame;
-    gtk_frame_set_shadow_type (GTK_FRAME (base->frame_widget), base->has_frame ? GTK_SHADOW_IN : GTK_SHADOW_NONE);
-    if (base->bars.frame)
-        gtk_frame_set_shadow_type (GTK_FRAME (base->bars.frame), base->has_frame ? GTK_SHADOW_IN : GTK_SHADOW_NONE);
-    size_cb (base->plugin, xfce_panel_plugin_get_size (base->plugin), base);
+    has_frame = _has_frame;
+    gtk_frame_set_shadow_type (GTK_FRAME (frame_widget), has_frame ? GTK_SHADOW_IN : GTK_SHADOW_NONE);
+    if (bars.frame)
+        gtk_frame_set_shadow_type (GTK_FRAME (bars.frame), has_frame ? GTK_SHADOW_IN : GTK_SHADOW_NONE);
+    size_cb (plugin, xfce_panel_plugin_get_size (plugin), this);
 }
 
 void
-set_nonlinear_time (CPUGraph *base, bool nonlinear)
+CPUGraph::set_nonlinear_time (bool _non_linear)
 {
-    if (base->non_linear != nonlinear)
+    if (non_linear != _non_linear)
     {
-        base->non_linear = nonlinear;
-        queue_draw (base);
+        non_linear = _non_linear;
+        queue_draw (this);
     }
 }
 
 void
-set_per_core (CPUGraph *base, bool per_core)
+CPUGraph::set_per_core (bool _per_core)
 {
-    if (base->per_core != per_core)
+    if (per_core != _per_core)
     {
-        base->per_core = per_core;
-        size_cb (base->plugin, xfce_panel_plugin_get_size (base->plugin), base);
+        per_core = _per_core;
+        size_cb (plugin, xfce_panel_plugin_get_size (plugin), this);
     }
 }
 
 void
-set_per_core_spacing (CPUGraph *base, guint spacing)
+CPUGraph::set_per_core_spacing (guint spacing)
 {
     /* Use <=, instead of <, supresses a compiler warning */
     if (G_UNLIKELY (spacing <= PER_CORE_SPACING_MIN))
@@ -974,110 +971,109 @@ set_per_core_spacing (CPUGraph *base, guint spacing)
     if (G_UNLIKELY (spacing > PER_CORE_SPACING_MAX))
         spacing = PER_CORE_SPACING_MAX;
 
-    if (base->per_core_spacing != spacing)
+    if (per_core_spacing != spacing)
     {
-        base->per_core_spacing = spacing;
-        size_cb (base->plugin, xfce_panel_plugin_get_size (base->plugin), base);
+        per_core_spacing = spacing;
+        size_cb (plugin, xfce_panel_plugin_get_size (plugin), this);
     }
 }
 
 void
-set_smt (CPUGraph *base, bool highlight_smt)
+CPUGraph::set_smt (bool _highlight_smt)
 {
-    base->highlight_smt = highlight_smt;
+    highlight_smt = _highlight_smt;
 }
 
 void
-set_update_rate (CPUGraph *base, CPUGraphUpdateRate rate)
+CPUGraph::set_update_rate (CPUGraphUpdateRate rate)
 {
-    bool change = (base->update_interval != rate);
-    bool init = (base->timeout_id == 0);
+    bool change = (update_interval != rate);
+    bool init = (timeout_id == 0);
 
     if (change || init)
     {
         guint interval = get_update_interval_ms (rate);
 
-        base->update_interval = rate;
-        if (base->timeout_id)
-            g_source_remove (base->timeout_id);
-        base->timeout_id = g_timeout_add (interval, update_cb, base);
+        update_interval = rate;
+        if (timeout_id)
+            g_source_remove (timeout_id);
+        timeout_id = g_timeout_add (interval, update_cb, this);
 
         if (change && !init)
-            queue_draw (base);
+            queue_draw (this);
     }
 }
 
 void
-set_size (CPUGraph *base, guint size)
+CPUGraph::set_size (guint _size)
 {
-    if (G_UNLIKELY (size < MIN_SIZE))
-        size = MIN_SIZE;
-    if (G_UNLIKELY (size > MAX_SIZE))
-        size = MAX_SIZE;
+    if (G_UNLIKELY (_size < MIN_SIZE))
+        _size = MIN_SIZE;
+    if (G_UNLIKELY (_size > MAX_SIZE))
+        _size = MAX_SIZE;
 
-    base->size = size;
-    size_cb (base->plugin, xfce_panel_plugin_get_size (base->plugin), base);
+    size = _size;
+    size_cb (plugin, xfce_panel_plugin_get_size (plugin), this);
 }
 
 void
-set_color_mode (CPUGraph *base, guint color_mode)
+CPUGraph::set_color_mode (guint _color_mode)
 {
-    if (base->color_mode != color_mode)
+    if (color_mode != _color_mode)
     {
-        base->color_mode = color_mode;
-        queue_draw (base);
+        color_mode = _color_mode;
+        queue_draw (this);
     }
 }
 
 void
-set_mode (CPUGraph *base, CPUGraphMode mode)
+CPUGraph::set_mode (CPUGraphMode _mode)
 {
-    base->mode = mode;
-
+    mode = _mode;
     if (mode == MODE_DISABLED)
     {
-        gtk_widget_hide (base->frame_widget);
+        gtk_widget_hide (frame_widget);
     }
     else
     {
-        gtk_widget_show (base->frame_widget);
-        ebox_revalidate (base);
+        gtk_widget_show (frame_widget);
+        ebox_revalidate (this);
     }
 }
 
 void
-set_color (CPUGraph *base, CPUGraphColorNumber number, GdkRGBA color)
+CPUGraph::set_color (CPUGraphColorNumber number, GdkRGBA color)
 {
-    if (!gdk_rgba_equal (&base->colors[number], &color))
+    if (!gdk_rgba_equal (&colors[number], &color))
     {
-        base->colors[number] = color;
-        queue_draw (base);
+        colors[number] = color;
+        queue_draw (this);
     }
 }
 
 void
-set_tracked_core (CPUGraph *base, guint core)
+CPUGraph::set_tracked_core (guint core)
 {
-    if (G_UNLIKELY (core > base->nr_cores + 1))
+    if (G_UNLIKELY (core > nr_cores + 1))
         core = 0;
 
-    if (base->tracked_core != core)
+    if (tracked_core != core)
     {
-        bool has_bars = base->has_bars;
-        if (has_bars)
-            set_bars (base, false);
-        base->tracked_core = core;
-        if (has_bars)
-            set_bars (base, true);
+        const bool had_bars = has_bars;
+        if (had_bars)
+            set_bars (false);
+        tracked_core = core;
+        if (had_bars)
+            set_bars (true);
     }
 }
 
 void
-set_load_threshold (CPUGraph *base, gfloat threshold)
+CPUGraph::set_load_threshold (gfloat threshold)
 {
     if (threshold < 0)
         threshold = 0;
     if (threshold > MAX_LOAD_THRESHOLD)
         threshold = MAX_LOAD_THRESHOLD;
-    base->load_threshold = threshold;
+    load_threshold = threshold;
 }

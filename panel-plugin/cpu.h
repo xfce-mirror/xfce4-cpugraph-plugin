@@ -29,6 +29,7 @@
 #endif
 
 #include <libxfce4panel/libxfce4panel.h>
+#include <string>
 
 #include "os.h"
 
@@ -101,7 +102,7 @@ struct CPUGraph
     guint size;
     CPUGraphMode mode;
     guint color_mode;
-    gchar *command;
+    std::string command;
     GdkRGBA colors[NUM_COLORS];
     guint tracked_core;    /* 0 means "all CPU cores", an x >= 1 means "CPU core x-1" */
     gfloat load_threshold; /* Range: from 0.0 to MAX_LOAD_THRESHOLD */
@@ -131,25 +132,28 @@ struct CPUGraph
     CpuData *cpu_data;
     Topology *topology;
     CpuStats stats;
+
+    ~CPUGraph();
+
+    void set_bars (bool bars);
+    void set_border (bool border);
+    void set_color (CPUGraphColorNumber number, GdkRGBA color);
+    void set_color_mode (guint color_mode);
+    void set_command (const gchar *command);
+    void set_frame (bool frame);
+    void set_in_terminal (bool in_terminal);
+    void set_load_threshold (gfloat threshold);
+    void set_mode (CPUGraphMode mode);
+    void set_nonlinear_time (bool nonlinear);
+    void set_per_core (bool per_core);
+    void set_per_core_spacing (guint spacing);
+    void set_size (guint width);
+    void set_smt (bool highlight_smt);
+    void set_startup_notification (bool startup_notification);
+    void set_tracked_core (guint core);
+    void set_update_rate (CPUGraphUpdateRate rate);
 };
 
 guint get_update_interval_ms (CPUGraphUpdateRate rate);
-void set_bars (CPUGraph * base, bool bars);
-void set_border (CPUGraph *base, bool border);
-void set_color (CPUGraph *base, CPUGraphColorNumber number, GdkRGBA color);
-void set_color_mode (CPUGraph *base, guint color_mode);
-void set_command (CPUGraph *base, const gchar *command);
-void set_frame (CPUGraph *base, bool frame);
-void set_in_terminal (CPUGraph *base, bool in_terminal);
-void set_load_threshold (CPUGraph *base, gfloat threshold);
-void set_mode (CPUGraph *base, CPUGraphMode mode);
-void set_nonlinear_time (CPUGraph *base, bool nonlinear);
-void set_per_core (CPUGraph *base, bool per_core);
-void set_per_core_spacing (CPUGraph *base, guint spacing);
-void set_size (CPUGraph *base, guint width);
-void set_smt (CPUGraph * base, bool highlight_smt);
-void set_startup_notification (CPUGraph *base, bool startup_notification);
-void set_tracked_core (CPUGraph *base, guint core);
-void set_update_rate (CPUGraph *base, CPUGraphUpdateRate rate);
 
 #endif /* _XFCE_CPUGRAPH_CPU_H_ */
