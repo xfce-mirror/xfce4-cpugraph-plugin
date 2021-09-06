@@ -199,7 +199,7 @@ write_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     rc->write_int_entry ("Bars", base->has_bars ? 1 : 0);
     rc->write_int_entry ("PerCore", base->per_core ? 1 : 0);
     rc->write_int_entry ("TrackedCore", base->tracked_core);
-    if (base->command)
+    if (!base->command.empty())
         rc->write_entry ("Command", base->command);
     else
         rc->delete_entry ("Command", false);

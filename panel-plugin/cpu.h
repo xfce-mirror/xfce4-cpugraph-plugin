@@ -29,6 +29,7 @@
 #endif
 
 #include <libxfce4panel/libxfce4panel.h>
+#include <string>
 
 #include "os.h"
 
@@ -101,7 +102,7 @@ struct CPUGraph
     guint size;
     CPUGraphMode mode;
     guint color_mode;
-    gchar *command;
+    std::string command;
     GdkRGBA colors[NUM_COLORS];
     guint tracked_core;    /* 0 means "all CPU cores", an x >= 1 means "CPU core x-1" */
     gfloat load_threshold; /* Range: from 0.0 to MAX_LOAD_THRESHOLD */
@@ -131,6 +132,8 @@ struct CPUGraph
     CpuData *cpu_data;
     Topology *topology;
     CpuStats stats;
+
+    ~CPUGraph();
 
     void set_bars (bool bars);
     void set_border (bool border);

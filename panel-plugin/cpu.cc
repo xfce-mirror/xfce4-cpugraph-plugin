@@ -72,11 +72,10 @@ static gboolean   command_cb           (GtkWidget          *w,
 void
 cpugraph_construct (XfcePanelPlugin *plugin)
 {
-    CPUGraph *base;
 
     xfce_textdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR, "UTF-8");
 
-    base = create_gui (plugin);
+    CPUGraph *base = create_gui (plugin);
     read_settings (plugin, base);
     xfce_panel_plugin_menu_show_configure (plugin);
 
@@ -95,7 +94,7 @@ create_gui (XfcePanelPlugin *plugin)
 {
     GtkWidget *frame, *ebox;
     GtkOrientation orientation;
-    CPUGraph *base = g_new0 (CPUGraph, 1);
+    CPUGraph *base = new CPUGraph();
 
     orientation = xfce_panel_plugin_get_orientation (plugin);
     if ((base->nr_cores = init_cpu_data (&base->cpu_data)) == 0)
@@ -198,6 +197,23 @@ create_bars (CPUGraph *base, GtkOrientation orientation)
     ebox_revalidate (base);
 }
 
+CPUGraph::~CPUGraph()
+{
+    g_free (cpu_data);
+    g_free (topology);
+    delete_bars (this);
+    gtk_widget_destroy (ebox);
+    g_object_unref (tooltip_text);
+    if (timeout_id)
+        g_source_remove (timeout_id);
+    if (history.data)
+    {
+        for (guint core = 0; core < nr_cores + 1; core++)
+            g_free (history.data[core]);
+        g_free (history.data);
+    }
+}
+
 guint
 init_cpu_data (CpuData **data)
 {
@@ -215,21 +231,7 @@ init_cpu_data (CpuData **data)
 static void
 shutdown (XfcePanelPlugin *plugin, CPUGraph *base)
 {
-    g_free (base->cpu_data);
-    g_free (base->topology);
-    delete_bars (base);
-    gtk_widget_destroy (base->ebox);
-    gtk_widget_destroy (base->tooltip_text);
-    if (base->timeout_id)
-        g_source_remove (base->timeout_id);
-    if (base->history.data)
-    {
-        for (guint core = 0; core < base->nr_cores + 1; core++)
-            g_free (base->history.data[core]);
-        g_free (base->history.data);
-    }
-    g_free (base->command);
-    g_free (base);
+    delete base;
 }
 
 static void
@@ -630,10 +632,9 @@ update_cb (gpointer user_data)
 static void
 update_tooltip (CPUGraph *base)
 {
-    gchar tooltip[32];
-    g_snprintf (tooltip, 32, _("Usage: %u%%"), (guint) roundf (base->cpu_data[0].load * 100));
-    if (strcmp (gtk_label_get_text (GTK_LABEL (base->tooltip_text)), tooltip))
-        gtk_label_set_text (GTK_LABEL (base->tooltip_text), tooltip);
+    auto tooltip = xfce4::sprintf (_("Usage: %u%%"), (guint) roundf (base->cpu_data[0].load * 100));
+    if (gtk_label_get_text (GTK_LABEL (base->tooltip_text)) != tooltip)
+        gtk_label_set_text (GTK_LABEL (base->tooltip_text), tooltip.c_str());
 }
 
 static gboolean
@@ -838,10 +839,10 @@ command_cb (GtkWidget *w, GdkEventButton *event, CPUGraph *base)
 {
     if (event->button == 1)
     {
-        const gchar *command;
+        std::string command;
         bool in_terminal, startup_notification;
 
-        if (base->command)
+        if (!base->command.empty())
         {
             command = base->command;
             in_terminal = base->command_in_terminal;
@@ -853,7 +854,7 @@ command_cb (GtkWidget *w, GdkEventButton *event, CPUGraph *base)
         }
 
         xfce_spawn_command_line_on_screen (gdk_screen_get_default (),
-                                           command, in_terminal,
+                                           command.c_str(), in_terminal,
                                            startup_notification, NULL);
     }
     return FALSE;
@@ -899,14 +900,10 @@ CPUGraph::set_in_terminal (bool in_terminal)
 void
 CPUGraph::set_command (const gchar *_command)
 {
-    g_free (command);
-    command = g_strdup (_command);
-    g_strstrip (command);
-    if (strlen (command) == 0)
-    {
-        g_free (command);
-        command = NULL;
-    }
+    char *cmd = g_strdup (_command);
+    g_strstrip (cmd);
+    command = cmd;
+    g_free (cmd);
 }
 
 void

@@ -398,7 +398,7 @@ setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphO
     GtkBox *hbox = create_option_line (vbox, sg, _("Associated command:"), NULL);
 
     GtkWidget *associatecommand = gtk_entry_new ();
-    gtk_entry_set_text (GTK_ENTRY (associatecommand), data->base->command ? data->base->command : "");
+    gtk_entry_set_text (GTK_ENTRY (associatecommand), data->base->command.c_str());
     gtk_entry_set_icon_from_icon_name (GTK_ENTRY (associatecommand),
                                        GTK_ENTRY_ICON_SECONDARY,
                                        "help-contents");
@@ -504,7 +504,7 @@ static void
 update_sensitivity (const xfce4::Ptr<CPUGraphOptions> &data)
 {
     const CPUGraph *base = data->base;
-    const bool default_command = (base->command == NULL);
+    const bool default_command = base->command.empty();
     const bool per_core = base->nr_cores > 1 && base->tracked_core == 0 && base->mode != MODE_DISABLED;
 
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_highlight_smt),
