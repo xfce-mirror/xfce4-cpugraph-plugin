@@ -153,25 +153,25 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
             size = 10;
     }
 
-    set_bars (base, bars);
-    set_border (base, border);
+    base->set_bars (bars);
+    base->set_border (border);
     for (guint i = 0; i < NUM_COLORS; i++)
-        set_color (base, (CPUGraphColorNumber) i, colors[i]);
-    set_color_mode (base, color_mode);
+        base->set_color ((CPUGraphColorNumber) i, colors[i]);
+    base->set_color_mode (color_mode);
     if (command)
-        set_command (base, command);
-    set_in_terminal (base, in_terminal);
-    set_frame (base, frame);
-    set_load_threshold (base, load_threshold * 0.01f);
-    set_mode (base, mode);
-    set_nonlinear_time (base, nonlinear);
-    set_per_core (base, per_core);
-    set_per_core_spacing (base, per_core_spacing);
-    set_size (base, size);
-    set_smt (base, highlight_smt);
-    set_startup_notification (base, startup_notification);
-    set_tracked_core (base, tracked_core);
-    set_update_rate (base, rate);
+        base->set_command (command);
+    base->set_in_terminal (in_terminal);
+    base->set_frame (frame);
+    base->set_load_threshold (load_threshold * 0.01f);
+    base->set_mode (mode);
+    base->set_nonlinear_time (nonlinear);
+    base->set_per_core (per_core);
+    base->set_per_core_spacing (per_core_spacing);
+    base->set_size (size);
+    base->set_smt (highlight_smt);
+    base->set_startup_notification (startup_notification);
+    base->set_tracked_core (tracked_core);
+    base->set_update_rate (rate);
     g_free (command);
 }
 
