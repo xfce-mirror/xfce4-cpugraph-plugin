@@ -419,8 +419,7 @@ setup_color_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOpt
 {
     GtkBox *hbox = create_option_line (vbox, sg, name, tooltip);
 
-    data->color_buttons[number] = GTK_COLOR_BUTTON (gtk_color_button_new_with_rgba (&data->base->colors[number]));
-    gtk_color_chooser_set_use_alpha (GTK_COLOR_CHOOSER (data->color_buttons[number]), TRUE);
+    data->color_buttons[number] = xfce4::gtk_color_button_new (data->base->colors[number], true);
     gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (data->color_buttons[number]), FALSE, FALSE, 0);
 
     xfce4::connect (data->color_buttons[number], "color-set", callback);
@@ -495,9 +494,7 @@ setup_color_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGra
 static void
 change_color (GtkColorButton *button, CPUGraph *base, CPUGraphColorNumber number)
 {
-    GdkRGBA color;
-    gtk_color_chooser_get_rgba (GTK_COLOR_CHOOSER (button), &color);
-    base->set_color (number, color);
+    base->set_color (number, xfce4::gtk_get_rgba (button));
 }
 
 static void
