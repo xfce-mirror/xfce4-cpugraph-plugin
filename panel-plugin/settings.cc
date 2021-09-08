@@ -27,10 +27,10 @@
 #include "xfce4++/util/fixes.h"
 
 #include "settings.h"
-#include "xfce4++/util/rc.h"
+#include "xfce4++/util.h"
 #include <math.h>
 
-static const GdkRGBA default_colors[NUM_COLORS] =
+static const xfce4::RGBA default_colors[NUM_COLORS] =
 {
     [BG_COLOR]         = {1.0, 1.0, 1.0, 0.0},
     [FG_COLOR1]        = {0.0, 1.0, 0.0, 1.0},
@@ -65,7 +65,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
     guint per_core_spacing = PER_CORE_SPACING_DEFAULT;
     guint tracked_core = 0;
 
-    GdkRGBA colors[NUM_COLORS];
+    xfce4::RGBA colors[NUM_COLORS];
     gchar *command = NULL;
     bool in_terminal = true;
     bool startup_notification = false;
@@ -110,7 +110,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
             {
                 if ((value = rc->read_entry (color_keys[i], NULL)))
                 {
-                    gdk_rgba_parse (&colors[i], value->c_str());
+                    xfce4::RGBA::parse (colors[i], *value);
                     if (i == BARS_COLOR)
                         base->has_barcolor = true;
                 }
@@ -220,16 +220,13 @@ write_settings (XfcePanelPlugin *plugin, CPUGraph *base)
 
         if (key)
         {
-            gchar *rgba = gdk_rgba_to_string (&base->colors[i]);
-            gchar *rgba_default = gdk_rgba_to_string (&default_colors[i]);
+            auto rgba = (std::string) base->colors[i];
+            auto rgba_default = (std::string) default_colors[i];
 
-            if (strcmp (rgba, rgba_default) != 0)
+            if (rgba != rgba_default)
                 rc->write_entry (key, rgba);
             else
                 rc->delete_entry (key, false);
-
-            g_free (rgba);
-            g_free (rgba_default);
         }
     }
 

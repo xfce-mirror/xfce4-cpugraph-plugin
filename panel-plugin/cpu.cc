@@ -665,9 +665,9 @@ draw_area_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
         {
             guint core;
 
-            if (base->colors[BG_COLOR].alpha != 0)
+            if (!base->colors[BG_COLOR].isTransparent())
             {
-                gdk_cairo_set_source_rgba (cr, &base->colors[BG_COLOR]);
+                xfce4::cairo_set_source (cr, base->colors[BG_COLOR]);
                 cairo_rectangle (cr, 0, 0, w, h);
                 cairo_fill (cr);
             }
@@ -702,9 +702,9 @@ draw_area_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
                     *(horizontal ? &translation.x : &translation.y) = core * (base->size + base->per_core_spacing);
                     cairo_translate (cr, translation.x, translation.y);
 
-                    if (base->colors[BG_COLOR].alpha != 0)
+                    if (!base->colors[BG_COLOR].isTransparent())
                     {
-                        gdk_cairo_set_source_rgba (cr, &base->colors[BG_COLOR]);
+                        xfce4::cairo_set_source (cr, base->colors[BG_COLOR]);
                         cairo_rectangle (cr, 0, 0, w1, h1);
                         cairo_fill (cr);
                     }
@@ -729,9 +729,9 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
 
     gtk_widget_get_allocation (base->bars.draw_area, &alloc);
 
-    if (base->colors[BG_COLOR].alpha != 0)
+    if (!base->colors[BG_COLOR].isTransparent())
     {
-        gdk_cairo_set_source_rgba (cr, &base->colors[BG_COLOR]);
+        xfce4::cairo_set_source (cr, base->colors[BG_COLOR]);
         cairo_rectangle (cr, 0, 0, alloc.width, alloc.height);
         cairo_fill (cr);
     }
@@ -744,7 +744,7 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
             usage = 0;
         usage *= size;
 
-        gdk_cairo_set_source_rgba (cr, &base->colors[BARS_COLOR]);
+        xfce4::cairo_set_source (cr, base->colors[BARS_COLOR]);
         if (horizontal)
             cairo_rectangle (cr, 0, size-usage, 4, usage);
         else
@@ -753,21 +753,19 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
     }
     else
     {
-        const GdkRGBA *active_color = NULL;
+        const xfce4::RGBA *active_color = NULL;
         bool fill = false;
         for (guint i = 0; i < base->nr_cores; i++)
         {
-            const GdkRGBA *color;
             const bool highlight = base->highlight_smt && base->cpu_data[i+1].smt_highlight;
-            gfloat usage;
 
-            usage = base->cpu_data[i+1].load;
+            gfloat usage = base->cpu_data[i+1].load;
             if (usage < base->load_threshold)
                 usage = 0;
             usage *= size;
 
             /* Suboptimally placed threads on SMT CPUs are optionally painted using a different color. */
-            color = &base->colors[highlight ? SMT_ISSUES_COLOR : BARS_COLOR];
+            const xfce4::RGBA *color = &base->colors[highlight ? SMT_ISSUES_COLOR : BARS_COLOR];
             if (active_color != color)
             {
                 if (fill)
@@ -775,7 +773,7 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
                     cairo_fill (cr);
                     fill = false;
                 }
-                gdk_cairo_set_source_rgba (cr, color);
+                xfce4::cairo_set_source (cr, *color);
                 active_color = color;
             }
 
@@ -1027,9 +1025,9 @@ CPUGraph::set_mode (CPUGraphMode _mode)
 }
 
 void
-CPUGraph::set_color (CPUGraphColorNumber number, GdkRGBA color)
+CPUGraph::set_color (CPUGraphColorNumber number, const xfce4::RGBA &color)
 {
-    if (!gdk_rgba_equal (&colors[number], &color))
+    if (!colors[number].equals(color))
     {
         colors[number] = color;
         queue_draw (this);

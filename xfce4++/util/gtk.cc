@@ -87,4 +87,88 @@ guint timeout_add(guint interval_ms, const std::function<bool()> &handler) {
     return id;
 }
 
+
+
+
+void RGBA::clamp() {
+    R = (R >= 0 ? R : 0);
+    G = (G >= 0 ? G : 0);
+    B = (B >= 0 ? B : 0);
+    A = (A >= 0 ? A : 0);
+
+    R = (R <= 1 ? R : 1);
+    G = (G <= 1 ? G : 1);
+    B = (B <= 1 ? B : 1);
+    A = (A <= 1 ? A : 1);
+}
+
+bool RGBA::equals(const RGBA &b, double e) const {
+    const RGBA &a = *this;
+    if(a.R == b.R && a.G == b.G && a.B == b.B && a.A == b.A) {
+        return true;
+    }
+    else {
+        return (a.R >= b.R - e && a.R <= b.R + e) &&
+               (a.G >= b.G - e && a.G <= b.G + e) &&
+               (a.B >= b.B - e && a.B <= b.B + e) &&
+               (a.A >= b.A - e && a.A <= b.A + e);
+    }
+}
+
+bool RGBA::parse(RGBA &color, const std::string &s) {
+    GdkRGBA c;
+    if(gdk_rgba_parse(&c, s.c_str())) {
+        color = c;
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+RGBA::operator std::string() const {
+    GdkRGBA c = *this;
+    char *s = gdk_rgba_to_string(&c);
+    std::string s1(s);
+    g_free(s);
+    return s1;
+}
+
+RGBA operator+(const RGBA &a, const RGBA &b) {
+    return RGBA(a.R + b.R, a.G + b.G, a.B + b.B, a.A + b.A);
+}
+
+RGBA operator-(const RGBA &a, const RGBA &b) {
+    return RGBA(a.R - b.R, a.G - b.G, a.B - b.B, a.A - b.A);
+}
+
+RGBA operator*(const RGBA &a, double b) {
+    return RGBA(a.R * b, a.G * b, a.B * b, a.A * b);
+}
+
+RGBA operator*(double a, const RGBA &b) {
+    return RGBA(a * b.R, a * b.G, a * b.B, a * b.A);
+}
+
+
+
+void cairo_set_source(cairo_t *cr, const RGBA &color) {
+    GdkRGBA c = color;
+    gdk_cairo_set_source_rgba(cr, &c);
+}
+
+GtkColorButton* gtk_color_button_new(const RGBA &color, bool alpha) {
+    GdkRGBA c = color;
+    GtkWidget *b = gtk_color_button_new_with_rgba(&c);
+    if(alpha)
+        gtk_color_chooser_set_use_alpha(GTK_COLOR_CHOOSER(b), true);
+    return GTK_COLOR_BUTTON(b);
+}
+
+RGBA gtk_get_rgba(GtkColorButton *button) {
+    GdkRGBA c;
+    gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(button), &c);
+    return c;
+}
+
 } /* namespace xfce4 */

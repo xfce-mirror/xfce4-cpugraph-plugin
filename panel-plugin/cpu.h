@@ -105,7 +105,7 @@ struct CPUGraph
     CPUGraphMode mode;
     guint color_mode;
     std::string command;
-    GdkRGBA colors[NUM_COLORS];
+    xfce4::RGBA colors[NUM_COLORS];
     guint tracked_core;    /* 0 means "all CPU cores", an x >= 1 means "CPU core x-1" */
     gfloat load_threshold; /* Range: from 0.0 to MAX_LOAD_THRESHOLD */
     guint per_core_spacing;
@@ -139,7 +139,7 @@ struct CPUGraph
 
     void set_bars (bool bars);
     void set_border (bool border);
-    void set_color (CPUGraphColorNumber number, GdkRGBA color);
+    void set_color (CPUGraphColorNumber number, const xfce4::RGBA &color);
     void set_color_mode (guint color_mode);
     void set_command (const gchar *command);
     void set_frame (bool frame);
