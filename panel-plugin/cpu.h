@@ -30,6 +30,8 @@
 
 #include <libxfce4panel/libxfce4panel.h>
 #include <string>
+#include <vector>
+#include "xfce4++/util.h"
 
 #include "os.h"
 
@@ -123,14 +125,14 @@ struct CPUGraph
     guint nr_cores;
     guint timeout_id;
     struct {
-        gssize cap_pow2;  /* Capacity. A power of 2. */
-        gssize size;      /* size <= cap_pow2 */
-        gssize mask;      /* Equals to (cap_pow2 - 1) */
-        gssize offset;    /* Circular buffer position. Range: from 0 to (cap_pow2 - 1) */
-        CpuLoad **data;   /* Circular buffers */
+        gssize cap_pow2;            /* Capacity. A power of 2. */
+        gssize size;                /* size <= cap_pow2 */
+        gssize mask;                /* Equals to (cap_pow2 - 1) */
+        gssize offset;              /* Circular buffer position. Range: from 0 to (cap_pow2 - 1) */
+        std::vector<CpuLoad*> data; /* Circular buffers */
     } history;
-    CpuData *cpu_data;
-    Topology *topology;
+    std::vector<CpuData> cpu_data;  /* size == nr_cores+1 */
+    xfce4::Ptr0<Topology> topology;
     CpuStats stats;
 
     ~CPUGraph();

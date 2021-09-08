@@ -23,6 +23,9 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+/* The fixes file has to be included before any other #include directives */
+#include "xfce4++/util/fixes.h"
+
 #include <cairo/cairo.h>
 #include <math.h>
 #include <stdlib.h>
@@ -177,7 +180,7 @@ nearest_loads (const CPUGraph *base, const guint core, const gint64 start, const
 void
 draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 {
-    if (G_UNLIKELY (base->history.data == NULL))
+    if (G_UNLIKELY (base->history.data.empty()))
         return;
 
     const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
@@ -224,7 +227,7 @@ draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 void
 draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 {
-    if (G_UNLIKELY (base->history.data == NULL))
+    if (G_UNLIKELY (base->history.data.empty()))
         return;
 
     const gint nrx = (w + 2) / 3;
@@ -279,7 +282,7 @@ draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 void
 draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 {
-    if (G_UNLIKELY (base->history.data == NULL))
+    if (G_UNLIKELY (base->history.data.empty()))
         return;
 
     gfloat usage = base->history.data[core][base->history.offset].value;
@@ -313,7 +316,7 @@ draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 void
 draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 {
-    if (G_UNLIKELY (base->history.data == NULL))
+    if (G_UNLIKELY (base->history.data.empty()))
         return;
 
     const gfloat thickness = 1.75f;

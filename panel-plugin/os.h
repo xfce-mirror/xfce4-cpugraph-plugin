@@ -25,6 +25,8 @@
 #define _XFCE_CPUGRAPH_OS_H_
 
 #include <glib.h>
+#include <vector>
+#include "xfce4++/util.h"
 
 struct CpuData
 {
@@ -55,19 +57,20 @@ struct Topology
 {
     guint num_all_logical_cpus;
     guint num_online_logical_cpus;
-    guint num_all_cores;      /* Range: <1, num_all_logical_cpus> */
-    guint num_online_cores;   /* Range: <1, num_online_logical_cpus> */
-    gint *logical_cpu_2_core; /* Maps a logical CPU to its core, or to -1 if offline */
+    guint num_all_cores;                  /* Range: <1, num_all_logical_cpus> */
+    guint num_online_cores;               /* Range: <1, num_online_logical_cpus> */
+    std::vector<gint> logical_cpu_2_core; /* Maps a logical CPU to its core, or to -1 if offline */
     struct CpuCore {
-        guint num_logical_cpus; /* Number of logical CPUs in this core. Might be zero. */
-        guint *logical_cpus;    /* logical_cpus[i] range: <0, num_all_logical_cpus> */
-    } *cores;
+        guint num_logical_cpus;           /* Number of logical CPUs in this core. Might be zero. */
+        std::vector<guint> logical_cpus;  /* logical_cpus[i] range: <0, num_all_logical_cpus> */
+    };
+    std::vector<CpuCore> cores;
     bool smt;           /* Simultaneous multi-threading (hyper-threading) */
     gdouble smt_ratio;  /* Equals to (num_online_logical_cpus / num_online_cores), >= 1.0 */
 };
 
-guint detect_cpu_number (void);
-bool read_cpu_data (CpuData *data, guint nb_cpu);
-Topology* read_topology (void);
+guint detect_cpu_number ();
+bool read_cpu_data (std::vector<CpuData> &data);
+xfce4::Ptr0<Topology> read_topology ();
 
 #endif /* _XFCE_CPUGRAPH_OS_H */

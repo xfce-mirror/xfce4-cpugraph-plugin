@@ -23,6 +23,10 @@
  *  with this program; if not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
+
+/* The fixes file has to be included before any other #include directives */
+#include "xfce4++/util/fixes.h"
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -86,7 +90,7 @@ parse_ulong (gchar **s)
 }
 
 guint
-detect_cpu_number (void)
+detect_cpu_number ()
 {
     FILE *fstat = NULL;
     if (!(fstat = fopen (PROC_STAT, "r")))
@@ -112,8 +116,12 @@ detect_cpu_number (void)
 }
 
 bool
-read_cpu_data (CpuData *data, guint nb_cpu)
+read_cpu_data (std::vector<CpuData> &data)
 {
+    if (G_UNLIKELY(data.size() == 0))
+        return false;
+
+    const size_t nb_cpu = data.size()-1;
     FILE *fStat;
     gulong used[nb_cpu+1], total[nb_cpu+1];
 
@@ -151,7 +159,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
         gulong irq = parse_ulong (&s);
         gulong softirq = parse_ulong (&s);
 
-        if (cpu < nb_cpu + 1)
+        if (G_LIKELY (cpu < nb_cpu + 1))
         {
             used[cpu] = user + nice + system + irq + softirq;
             total[cpu] = used[cpu] + idle + iowait;
@@ -177,7 +185,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
 
 #elif defined (__FreeBSD__)
 guint
-detect_cpu_number (void)
+detect_cpu_number ()
 {
     static gint mib[] = {CTL_HW, HW_NCPU};
     gint ncpu;
@@ -190,8 +198,12 @@ detect_cpu_number (void)
 }
 
 bool
-read_cpu_data (CpuData *data, guint nb_cpu)
+read_cpu_data (std::vector<CpuData> &data)
 {
+    if (G_UNLIKELY(data.size() == 0))
+        return false;
+
+    const size_t nb_cpu = data.size()-1;
     glong used, total;
     glong *cp_time;
     glong *cp_time1;
@@ -238,7 +250,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
 
 #elif defined (__NetBSD__)
 guint
-detect_cpu_number (void)
+detect_cpu_number ()
 {
     static gint mib[] = {CTL_HW, HW_NCPU};
     gint ncpu;
@@ -251,8 +263,12 @@ detect_cpu_number (void)
 }
 
 bool
-read_cpu_data (CpuData *data, guint nb_cpu)
+read_cpu_data (std::vector<CpuData> &data)
 {
+    if (G_UNLIKELY(data.size() == 0))
+        return false;
+
+    const size_t nb_cpu = data.size()-1;
     guint64 cp_time[CPUSTATES * nb_cpu];
     gsize len = nb_cpu * CPUSTATES * sizeof (guint64);
     gint mib[] = {CTL_KERN, KERN_CP_TIME};
@@ -284,7 +300,7 @@ read_cpu_data (CpuData *data, guint nb_cpu)
 
 #elif defined (__OpenBSD__)
 guint
-detect_cpu_number (void)
+detect_cpu_number ()
 {
     static gint mib[] = {CTL_HW, HW_NCPU};
     gint ncpu;
@@ -297,8 +313,12 @@ detect_cpu_number (void)
 }
 
 bool
-read_cpu_data (CpuData *data, guint nb_cpu)
+read_cpu_data (std::vector<CpuData> &data)
 {
+    if (G_UNLIKELY(data.size() == 0))
+        return false;
+
+    const size_t nb_cpu = data.size()-1;
     guint64 cp_time[CPUSTATES];
     data[0].load = 0;
 
@@ -330,13 +350,13 @@ read_cpu_data (CpuData *data, guint nb_cpu)
 
 #elif defined (__sun__)
 static void
-init_stats (void)
+init_stats ()
 {
     kc = kstat_open ();
 }
 
 guint
-detect_cpu_number (void)
+detect_cpu_number ()
 {
     kstat_t *ksp;
     kstat_named_t *knp;
@@ -354,8 +374,12 @@ detect_cpu_number (void)
 }
 
 bool
-read_cpu_data (CpuData *data, guint nb_cpu)
+read_cpu_data (std::vector<CpuData> &data)
 {
+    if (G_UNLIKELY(data.size() == 0))
+        return false;
+
+    const size_t nb_cpu = data.size()-1;
     kstat_t *ksp;
     kstat_named_t *knp;
     data[0].load = 0;
@@ -405,35 +429,34 @@ read_cpu_data (CpuData *data, guint nb_cpu)
 
 #define SYSFS_BASE "/sys/devices/system/cpu"
 
-Topology*
-read_topology (void)
+xfce4::Ptr0<Topology>
+read_topology ()
 {
     std::vector<gint> core_ids;
     gint max_core_id = -1;
-    guint num_all_logical_cpus, num_online_logical_cpus;
 
-    num_all_logical_cpus = 0;
-    num_online_logical_cpus = 0;
+    guint num_all_logical_cpus = 0;
+    guint num_online_logical_cpus = 0;
     for (guint logical_cpu = 0; true; logical_cpu++)
     {
-        gchar path[128];
+        std::string path;
         gchar *file_contents;
 
         /* See also: https://www.kernel.org/doc/html/latest/admin-guide/cputopology.html */
 
-        g_snprintf (path, sizeof (path), "%s/cpu%d", SYSFS_BASE, logical_cpu);
-        if (!g_file_test (path, G_FILE_TEST_IS_DIR))
+        path = xfce4::sprintf ("%s/cpu%d", SYSFS_BASE, logical_cpu);
+        if (!g_file_test (path.c_str(), G_FILE_TEST_IS_DIR))
             break;
 
         num_all_logical_cpus++;
 
-        g_snprintf (path, sizeof (path), "%s/cpu%d/topology/core_id", SYSFS_BASE, logical_cpu);
-        if (g_file_get_contents (path, &file_contents, NULL, NULL))
+        path = xfce4::sprintf ("%s/cpu%d/topology/core_id", SYSFS_BASE, logical_cpu);
+        if (g_file_get_contents (path.c_str(), &file_contents, NULL, NULL))
         {
             errno = 0;
             glong core_id = strtol (file_contents, NULL, 10);
             if (G_UNLIKELY (errno || core_id < 0 || core_id > G_MAXINT))
-                return NULL;
+                return nullptr;
 
             num_online_logical_cpus++;
             core_ids.push_back(core_id);
@@ -451,30 +474,19 @@ read_topology (void)
 
     /* Perform some sanity checks */
     if (G_UNLIKELY (max_core_id < 0 || max_core_id > G_MAXINT-1 || !(num_all_cores <= num_all_logical_cpus)))
-        return NULL;
+        return nullptr;
 
     if (!core_ids.empty())
     {
-        Topology *t;
-        gchar *p; /* Pointer inside the region of allocated memory */
-
-        /* Compute total size of memory to allocate */
-        gsize memory_size = sizeof (Topology) + num_all_cores * sizeof (*t->cores) +
-                            num_all_logical_cpus * sizeof (*t->logical_cpu_2_core) +
-                            num_online_logical_cpus * sizeof (*t->cores[0].logical_cpus);
-
-        /* Allocate required memory via a single g_malloc() call */
-        p = (gchar*) g_malloc0 (memory_size);
-        G_GNUC_UNUSED gchar *const p_end = p + memory_size;
+        auto t = xfce4::make<Topology>();
 
         /* Fill-in the topology data */
-        t = (Topology*) p; p += sizeof (*t);
         t->num_all_logical_cpus = num_all_logical_cpus;
         t->num_online_logical_cpus = num_online_logical_cpus;
         t->num_all_cores = num_all_cores;
         t->num_online_cores = 0;
-        t->logical_cpu_2_core = (gint *) p; p += num_all_logical_cpus * sizeof (*t->logical_cpu_2_core);
-        t->cores = (Topology::CpuCore *) p; p += num_all_cores * sizeof (*t->cores);
+        t->logical_cpu_2_core.resize(num_all_logical_cpus);
+        t->cores.resize(num_all_cores);
         t->smt = false;
         for (gint core_id : core_ids)
         {
@@ -493,8 +505,7 @@ read_topology (void)
         }
         for (guint i = 0; i < num_all_cores; i++)
         {
-            t->cores[i].logical_cpus = (guint *) p;
-            p += t->cores[i].num_logical_cpus * sizeof (*t->cores[i].logical_cpus);
+            t->cores[i].logical_cpus.resize(t->cores[i].num_logical_cpus);
             t->cores[i].num_logical_cpus = 0;
             /* The zeroed num_logical_cpus will be restored in the for-loop below */
         }
@@ -519,21 +530,18 @@ read_topology (void)
         t->smt_ratio = t->num_online_logical_cpus / (gdouble) t->num_online_cores;
         g_info ("smt: %s, ratio=%.3f", t->smt ? "active" : "inactive", t->smt_ratio);
 
-        /* Verify that exactly all of the allocated memory has been used */
-        g_assert (p == p_end);
-
         return t;
     }
     else
-        return NULL;
+        return nullptr;
 }
 
 #else
 
-Topology*
-read_topology (void)
+xfce4::Ptr0<Topology>
+read_topology ()
 {
-    return NULL;
+    return nullptr;
 }
 
 #endif
