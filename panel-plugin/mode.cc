@@ -23,6 +23,9 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+/* The fixes file has to be included before any other #include directives */
+#include "xfce4++/util/fixes.h"
+
 #include <cairo/cairo.h>
 #include <math.h>
 #include <stdlib.h>
@@ -35,21 +38,10 @@ struct Point
     Point(gfloat _x, gfloat _y) : x(_x), y(_y) {}
 };
 
-static gdouble
-_lerp (gdouble t, gdouble a, gdouble b)
+static xfce4::RGBA
+mix_colors (gdouble ratio, const xfce4::RGBA &color1, const xfce4::RGBA &color2)
 {
-    return a + t * (b - a);
-}
-
-static void
-mix_colors (gdouble ratio, GdkRGBA *color1, GdkRGBA *color2, cairo_t *target)
-{
-    GdkRGBA color;
-    color.red = _lerp (ratio, color1->red, color2->red);
-    color.green = _lerp (ratio, color1->green, color2->green);
-    color.blue = _lerp (ratio, color1->blue, color2->blue);
-    color.alpha = 1.0;
-    gdk_cairo_set_source_rgba (target, &color);
+    return color1 + ratio * (color2 - color1);
 }
 
 /**
@@ -177,14 +169,14 @@ nearest_loads (const CPUGraph *base, const guint core, const gint64 start, const
 void
 draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 {
-    if (G_UNLIKELY (base->history.data == NULL))
+    if (G_UNLIKELY (base->history.data.empty()))
         return;
 
     const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
     gfloat nearest[w];
 
     if (base->color_mode == 0)
-        gdk_cairo_set_source_rgba (cr, &base->colors[FG_COLOR1]);
+        xfce4::cairo_set_source (cr, base->colors[FG_COLOR1]);
 
     gint64 t0 = base->history.data[core][base->history.offset].timestamp;
     nearest_loads (base, core, t0, -step, w, nearest);
@@ -212,7 +204,7 @@ draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
             for (gint y = h - 1; y >= h_usage; y--, tmp++)
             {
                 gfloat t = tmp / (base->color_mode == 1 ? (gfloat) h : usage);
-                mix_colors (t, &base->colors[FG_COLOR1], &base->colors[FG_COLOR2], cr);
+                xfce4::cairo_set_source (cr, mix_colors (t, base->colors[FG_COLOR1], base->colors[FG_COLOR2]));
                 /* draw point */
                 cairo_rectangle (cr, x, y, 1, 1);
                 cairo_fill (cr);
@@ -224,12 +216,12 @@ draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 void
 draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 {
-    if (G_UNLIKELY (base->history.data == NULL))
+    if (G_UNLIKELY (base->history.data.empty()))
         return;
 
     const gint nrx = (w + 2) / 3;
     const gint nry = (h + 1) / 2;
-    const GdkRGBA *active_color = NULL;
+    const xfce4::RGBA *active_color = NULL;
     const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
     gfloat nearest[nrx];
 
@@ -256,15 +248,15 @@ draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
             if (base->color_mode != 0 && y < limit)
             {
                 gfloat t = y / (gfloat) (base->color_mode == 1 ? nry : limit);
-                mix_colors (t, &base->colors[FG_COLOR3], &base->colors[FG_COLOR2], cr);
+                xfce4::cairo_set_source (cr, mix_colors (t, base->colors[FG_COLOR3], base->colors[FG_COLOR2]));
                 active_color = NULL;
             }
             else
             {
-                const GdkRGBA *color = (y >= limit ? &base->colors[FG_COLOR1] : &base->colors[FG_COLOR2]);
+                const xfce4::RGBA *color = (y >= limit ? &base->colors[FG_COLOR1] : &base->colors[FG_COLOR2]);
                 if (active_color != color)
                 {
-                    gdk_cairo_set_source_rgba (cr, color);
+                    xfce4::cairo_set_source (cr, *color);
                     active_color = color;
                 }
             }
@@ -279,7 +271,7 @@ draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 void
 draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 {
-    if (G_UNLIKELY (base->history.data == NULL))
+    if (G_UNLIKELY (base->history.data.empty()))
         return;
 
     gfloat usage = base->history.data[core][base->history.offset].value;
@@ -291,7 +283,7 @@ draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 
     if (base->color_mode == 0)
     {
-        gdk_cairo_set_source_rgba (cr, &base->colors[FG_COLOR1]);
+        xfce4::cairo_set_source (cr, base->colors[FG_COLOR1]);
         cairo_rectangle (cr, 0, h - usage, w, usage);
         cairo_fill (cr);
     }
@@ -302,7 +294,7 @@ draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
         for (gint y = h - 1; y >= h_usage; y--, tmp++)
         {
             gfloat t = tmp / (base->color_mode == 1 ? (gfloat) h : usage);
-            mix_colors (t, &base->colors[FG_COLOR1], &base->colors[FG_COLOR2], cr);
+            xfce4::cairo_set_source (cr, mix_colors (t, base->colors[FG_COLOR1], base->colors[FG_COLOR2]));
             /* draw line */
             cairo_rectangle (cr, 0, y, w, 1);
             cairo_fill (cr);
@@ -313,7 +305,7 @@ draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 void
 draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 {
-    if (G_UNLIKELY (base->history.data == NULL))
+    if (G_UNLIKELY (base->history.data.empty()))
         return;
 
     const gfloat thickness = 1.75f;
@@ -326,10 +318,10 @@ draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
     cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
 
     /* Paint the grid using a single call to cairo_stroke() */
-    if (G_LIKELY (base->colors[FG_COLOR1].alpha != 0.0)) {
+    if (G_LIKELY (!base->colors[FG_COLOR1].isTransparent())) {
         cairo_save (cr);
         cairo_set_line_width (cr, 1);
-        gdk_cairo_set_source_rgba (cr, &base->colors[FG_COLOR1]);
+        xfce4::cairo_set_source (cr, base->colors[FG_COLOR1]);
         for (gint x = 0; x < w; x += 6)
         {
             gint x1 = x;
@@ -356,12 +348,12 @@ draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
     }
 
     /* Paint a line on top of the grid, using a single call to cairo_stroke() */
-    if (G_LIKELY (base->colors[2].alpha != 0.0)) {
+    if (G_LIKELY (!base->colors[2].isTransparent())) {
         Point last;
 
         cairo_save (cr);
         cairo_set_line_width (cr, thickness);
-        gdk_cairo_set_source_rgba (cr, &base->colors[2]);
+        xfce4::cairo_set_source (cr, base->colors[2]);
         for (gint x = 0; x < w; x++)
         {
             gfloat load = nearest[w - 1 - x];

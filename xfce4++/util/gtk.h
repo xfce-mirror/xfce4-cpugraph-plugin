@@ -24,6 +24,7 @@
 #include <functional>
 #include <glib.h>
 #include <gtk/gtk.h>
+#include <string>
 
 /*
  * This file contains partially type-safe or fully type-safe C++ wrappers to selected GLib and GTK+ C functions.
@@ -60,6 +61,57 @@ void connect_destroy (GtkWidget *widget, const std::function<void(GtkWidget *wid
 void connect_response(GtkDialog *widget, const std::function<void(GtkDialog *widget, gint response)> &handler);
 
 guint timeout_add(guint interval_ms, const std::function<bool()> &handler);
+
+
+
+/*
+ * An RGB color with an alpha channel. All color channels are 64-bit floats.
+ *
+ * This data structure is aligned to 32 bytes to improve performance
+ * and to facilitate compiler auto-vectorization (x86: SSE, AVX).
+ *
+ * The operators == and != are unsupported. Please use the equals() member function instead.
+ */
+struct RGBA {
+    double R, G, B, A;  /* Red, Green, Blue, Alpha */
+
+    RGBA()                                             : R(0), G(0), B(0), A(1) {}
+    RGBA(double r, double g, double b)                 : R(r), G(g), B(b), A(1) {}
+    RGBA(double r, double g, double b, double a = 1.0) : R(r), G(g), B(b), A(a) {}
+    RGBA(const GdkRGBA &x)                             : R(x.red), G(x.green), B(x.blue), A(x.alpha) {}
+
+    static bool parse(RGBA &color, const std::string &s);
+
+    bool equals(const RGBA&, double e = 1e-10) const;
+    bool operator==(const RGBA&) const = delete;
+    bool operator!=(const RGBA&) const = delete;
+
+    void clamp();
+    RGBA clamped() const       { RGBA a = *this; a.clamp(); return a; }
+    bool isTransparent() const { return A == 0; }
+    void removeAlpha()         { A = 1.0; }
+    RGBA withoutAlpha() const  { return RGBA(R, G, B, 1.0); }
+
+    operator GdkRGBA() const { return GdkRGBA{R, G, B, A}; }
+    operator std::string() const; /* gdk_rgba_to_string() wrapper */
+}
+__attribute__ ((aligned (4*8)));
+
+/*
+ * The following operators return unclamped RGBA values.
+ * All color components, including the alpha channel, are treated uniformly in the same manner.
+ */
+RGBA operator+(const RGBA &a, const RGBA &b);
+RGBA operator-(const RGBA &a, const RGBA &b);
+RGBA operator*(const RGBA &a, double b);
+RGBA operator*(double a, const RGBA &b);
+
+
+
+void cairo_set_source(cairo_t *cr, const RGBA &color);
+
+GtkColorButton* gtk_color_button_new(const RGBA &color, bool alpha);
+RGBA gtk_get_rgba (GtkColorButton *button);
 
 } /* namespace xfce4 */
 

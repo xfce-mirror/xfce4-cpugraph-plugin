@@ -30,6 +30,8 @@
 
 #include <libxfce4panel/libxfce4panel.h>
 #include <string>
+#include <vector>
+#include "xfce4++/util.h"
 
 #include "os.h"
 
@@ -103,7 +105,7 @@ struct CPUGraph
     CPUGraphMode mode;
     guint color_mode;
     std::string command;
-    GdkRGBA colors[NUM_COLORS];
+    xfce4::RGBA colors[NUM_COLORS];
     guint tracked_core;    /* 0 means "all CPU cores", an x >= 1 means "CPU core x-1" */
     gfloat load_threshold; /* Range: from 0.0 to MAX_LOAD_THRESHOLD */
     guint per_core_spacing;
@@ -123,21 +125,21 @@ struct CPUGraph
     guint nr_cores;
     guint timeout_id;
     struct {
-        gssize cap_pow2;  /* Capacity. A power of 2. */
-        gssize size;      /* size <= cap_pow2 */
-        gssize mask;      /* Equals to (cap_pow2 - 1) */
-        gssize offset;    /* Circular buffer position. Range: from 0 to (cap_pow2 - 1) */
-        CpuLoad **data;   /* Circular buffers */
+        gssize cap_pow2;            /* Capacity. A power of 2. */
+        gssize size;                /* size <= cap_pow2 */
+        gssize mask;                /* Equals to (cap_pow2 - 1) */
+        gssize offset;              /* Circular buffer position. Range: from 0 to (cap_pow2 - 1) */
+        std::vector<CpuLoad*> data; /* Circular buffers */
     } history;
-    CpuData *cpu_data;
-    Topology *topology;
+    std::vector<CpuData> cpu_data;  /* size == nr_cores+1 */
+    xfce4::Ptr0<Topology> topology;
     CpuStats stats;
 
     ~CPUGraph();
 
     void set_bars (bool bars);
     void set_border (bool border);
-    void set_color (CPUGraphColorNumber number, GdkRGBA color);
+    void set_color (CPUGraphColorNumber number, const xfce4::RGBA &color);
     void set_color_mode (guint color_mode);
     void set_command (const gchar *command);
     void set_frame (bool frame);

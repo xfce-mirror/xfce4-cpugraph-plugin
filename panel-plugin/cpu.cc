@@ -39,7 +39,6 @@
 static CPUGraph  *create_gui           (XfcePanelPlugin    *plugin);
 static void       create_bars          (CPUGraph           *base,
                                         GtkOrientation      orientation);
-static guint      init_cpu_data        (CpuData           **data);
 static void       shutdown             (XfcePanelPlugin    *plugin,
                                         CPUGraph           *base);
 static void       delete_bars          (CPUGraph           *base);
@@ -89,6 +88,15 @@ cpugraph_construct (XfcePanelPlugin *plugin)
     g_signal_connect (plugin, "mode-changed", G_CALLBACK (mode_cb), base);
 }
 
+static guint
+init_cpu_data (std::vector<CpuData> &data)
+{
+    guint cpuNr = detect_cpu_number ();
+    if (cpuNr != 0)
+        data.resize(cpuNr+1);
+    return cpuNr;
+}
+
 static CPUGraph *
 create_gui (XfcePanelPlugin *plugin)
 {
@@ -97,14 +105,14 @@ create_gui (XfcePanelPlugin *plugin)
     CPUGraph *base = new CPUGraph();
 
     orientation = xfce_panel_plugin_get_orientation (plugin);
-    if ((base->nr_cores = init_cpu_data (&base->cpu_data)) == 0)
+    if ((base->nr_cores = init_cpu_data (base->cpu_data)) == 0)
         fprintf (stderr,"Cannot init cpu data !\n");
 
     /* Read CPU data twice in order to initialize
      * cpu_data[].previous_used and cpu_data[].previous_total
      * with the current HWMs. HWM = High Water Mark. */
-    read_cpu_data (base->cpu_data, base->nr_cores);
-    read_cpu_data (base->cpu_data, base->nr_cores);
+    read_cpu_data (base->cpu_data);
+    read_cpu_data (base->cpu_data);
 
     base->topology = read_topology ();
 
@@ -199,33 +207,13 @@ create_bars (CPUGraph *base, GtkOrientation orientation)
 
 CPUGraph::~CPUGraph()
 {
-    g_free (cpu_data);
-    g_free (topology);
     delete_bars (this);
     gtk_widget_destroy (ebox);
     g_object_unref (tooltip_text);
     if (timeout_id)
         g_source_remove (timeout_id);
-    if (history.data)
-    {
-        for (guint core = 0; core < nr_cores + 1; core++)
-            g_free (history.data[core]);
-        g_free (history.data);
-    }
-}
-
-guint
-init_cpu_data (CpuData **data)
-{
-    guint cpuNr;
-
-    cpuNr = detect_cpu_number ();
-    if (cpuNr == 0)
-        return 0;
-
-    *data = (CpuData *) g_malloc0 ((cpuNr+1) * sizeof (CpuData));
-
-    return cpuNr;
+    for (auto hist_data : history.data)
+        g_free (hist_data);
 }
 
 static void
@@ -259,15 +247,9 @@ resize_history (CPUGraph *base, gssize history_size)
 {
     const guint fastest = get_update_interval_ms (RATE_FASTEST);
     const guint slowest = get_update_interval_ms (RATE_SLOWEST);
-    gssize cap_pow2, old_cap_pow2, old_mask, old_offset;
-    CpuLoad **old_data;
+    const gssize old_cap_pow2 = base->history.cap_pow2;
 
-    old_cap_pow2 = base->history.cap_pow2;
-    old_data = base->history.data;
-    old_mask = base->history.mask;
-    old_offset = base->history.offset;
-
-    cap_pow2 = 1;
+    gssize cap_pow2 = 1;
     while (cap_pow2 < MAX_SIZE * slowest / fastest)
         cap_pow2 <<= 1;
     while (cap_pow2 < history_size * slowest / fastest)
@@ -275,13 +257,17 @@ resize_history (CPUGraph *base, gssize history_size)
 
     if (cap_pow2 != old_cap_pow2)
     {
+        const std::vector<CpuLoad*> old_data = std::move(base->history.data);
+        const gssize old_mask = base->history.mask;
+        const gssize old_offset = base->history.offset;
+
         base->history.cap_pow2 = cap_pow2;
-        base->history.data = (CpuLoad**) g_malloc0 ((base->nr_cores + 1) * sizeof (CpuLoad*));
+        base->history.data.resize(base->nr_cores + 1);
         for (guint core = 0; core < base->nr_cores + 1; core++)
             base->history.data[core] = (CpuLoad*) g_malloc0 (cap_pow2 * sizeof (CpuLoad));
         base->history.mask = cap_pow2 - 1;
         base->history.offset = 0;
-        if (old_data != NULL)
+        if (!old_data.empty())
         {
             for (guint core = 0; core < base->nr_cores + 1; core++)
             {
@@ -289,7 +275,6 @@ resize_history (CPUGraph *base, gssize history_size)
                     base->history.data[core][i] = old_data[core][(old_offset + i) & old_mask];
                 g_free (old_data[core]);
             }
-            g_free (old_data);
         }
     }
 
@@ -407,7 +392,7 @@ detect_smt_issues (CPUGraph *base)
 
     if (base->topology && base->topology->smt)
     {
-        Topology *const topo = base->topology;
+        const auto topo = base->topology;
         gfloat optimal_load[base->nr_cores];
         gfloat actual_num_instr_executed[base->nr_cores];
         gfloat optimal_num_instr_executed[base->nr_cores];
@@ -603,12 +588,12 @@ update_cb (gpointer user_data)
 {
     CPUGraph *base = (CPUGraph*) user_data;
 
-    if (!read_cpu_data (base->cpu_data, base->nr_cores))
+    if (!read_cpu_data (base->cpu_data))
         return TRUE;
 
     detect_smt_issues (base);
 
-    if (base->history.data != NULL)
+    if (!base->history.data.empty())
     {
         const gint64 timestamp = g_get_real_time ();
 
@@ -680,9 +665,9 @@ draw_area_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
         {
             guint core;
 
-            if (base->colors[BG_COLOR].alpha != 0)
+            if (!base->colors[BG_COLOR].isTransparent())
             {
-                gdk_cairo_set_source_rgba (cr, &base->colors[BG_COLOR]);
+                xfce4::cairo_set_source (cr, base->colors[BG_COLOR]);
                 cairo_rectangle (cr, 0, 0, w, h);
                 cairo_fill (cr);
             }
@@ -717,9 +702,9 @@ draw_area_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
                     *(horizontal ? &translation.x : &translation.y) = core * (base->size + base->per_core_spacing);
                     cairo_translate (cr, translation.x, translation.y);
 
-                    if (base->colors[BG_COLOR].alpha != 0)
+                    if (!base->colors[BG_COLOR].isTransparent())
                     {
-                        gdk_cairo_set_source_rgba (cr, &base->colors[BG_COLOR]);
+                        xfce4::cairo_set_source (cr, base->colors[BG_COLOR]);
                         cairo_rectangle (cr, 0, 0, w1, h1);
                         cairo_fill (cr);
                     }
@@ -744,9 +729,9 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
 
     gtk_widget_get_allocation (base->bars.draw_area, &alloc);
 
-    if (base->colors[BG_COLOR].alpha != 0)
+    if (!base->colors[BG_COLOR].isTransparent())
     {
-        gdk_cairo_set_source_rgba (cr, &base->colors[BG_COLOR]);
+        xfce4::cairo_set_source (cr, base->colors[BG_COLOR]);
         cairo_rectangle (cr, 0, 0, alloc.width, alloc.height);
         cairo_fill (cr);
     }
@@ -759,7 +744,7 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
             usage = 0;
         usage *= size;
 
-        gdk_cairo_set_source_rgba (cr, &base->colors[BARS_COLOR]);
+        xfce4::cairo_set_source (cr, base->colors[BARS_COLOR]);
         if (horizontal)
             cairo_rectangle (cr, 0, size-usage, 4, usage);
         else
@@ -768,21 +753,19 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
     }
     else
     {
-        const GdkRGBA *active_color = NULL;
+        const xfce4::RGBA *active_color = NULL;
         bool fill = false;
         for (guint i = 0; i < base->nr_cores; i++)
         {
-            const GdkRGBA *color;
             const bool highlight = base->highlight_smt && base->cpu_data[i+1].smt_highlight;
-            gfloat usage;
 
-            usage = base->cpu_data[i+1].load;
+            gfloat usage = base->cpu_data[i+1].load;
             if (usage < base->load_threshold)
                 usage = 0;
             usage *= size;
 
             /* Suboptimally placed threads on SMT CPUs are optionally painted using a different color. */
-            color = &base->colors[highlight ? SMT_ISSUES_COLOR : BARS_COLOR];
+            const xfce4::RGBA *color = &base->colors[highlight ? SMT_ISSUES_COLOR : BARS_COLOR];
             if (active_color != color)
             {
                 if (fill)
@@ -790,7 +773,7 @@ draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
                     cairo_fill (cr);
                     fill = false;
                 }
-                gdk_cairo_set_source_rgba (cr, color);
+                xfce4::cairo_set_source (cr, *color);
                 active_color = color;
             }
 
@@ -1042,9 +1025,9 @@ CPUGraph::set_mode (CPUGraphMode _mode)
 }
 
 void
-CPUGraph::set_color (CPUGraphColorNumber number, GdkRGBA color)
+CPUGraph::set_color (CPUGraphColorNumber number, const xfce4::RGBA &color)
 {
-    if (!gdk_rgba_equal (&colors[number], &color))
+    if (!colors[number].equals(color))
     {
         colors[number] = color;
         queue_draw (this);
