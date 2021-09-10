@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-14 00:48+0200\n"
-"PO-Revision-Date: 2021-04-13 22:48+0000\n"
-"Last-Translator: Nick Schermer <nick@xfce.org>\n"
+"PO-Revision-Date: 2021-09-10 12:48+0000\n"
+"Last-Translator: Triyan W. Nugroho <triyan.wn@gmail.com>\n"
 "Language-Team: Indonesian (http://www.transifex.com/xfce/xfce-panel-plugins/language/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,242 +18,242 @@ msgstr ""
 "Language: id\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../panel-plugin/cpu.cc:161 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.c:161 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Representasi grafik beban kerja CPU"
 
-#: ../panel-plugin/cpu.cc:163
+#: ../panel-plugin/cpu.c:163
 msgid "Copyright (c) 2003-2021\n"
 msgstr "Hak Cipta (c) 2003-2021\n"
 
-#: ../panel-plugin/cpu.cc:634
+#: ../panel-plugin/cpu.c:634
 #, c-format
 msgid "Usage: %u%%"
 msgstr "Penggunaan: %u%%"
 
-#: ../panel-plugin/properties.cc:172
+#: ../panel-plugin/properties.c:172
 msgid "CPU Graph Properties"
 msgstr "Properti Grafik CPU"
 
-#: ../panel-plugin/properties.cc:176
+#: ../panel-plugin/properties.c:176
 msgid "_Close"
 msgstr "_Tutup"
 
-#: ../panel-plugin/properties.cc:198
+#: ../panel-plugin/properties.c:198
 msgid "Run in terminal"
 msgstr "Jalankan di terminal"
 
-#: ../panel-plugin/properties.cc:201
+#: ../panel-plugin/properties.c:201
 msgid "Use startup notification"
 msgstr "Gunakan notifikasi hidupkan"
 
-#: ../panel-plugin/properties.cc:205
+#: ../panel-plugin/properties.c:205
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
-msgstr ""
+msgstr "Warna yang digunakan untuk menyorot peletakan ulir yang berpotensi suboptimal pada CPU dengan SMT"
 
-#: ../panel-plugin/properties.cc:207
+#: ../panel-plugin/properties.c:207
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
-msgstr ""
+msgstr "'Keseluruhan' menampilkan dampak pada keseluruhan performa mesin."
 
-#: ../panel-plugin/properties.cc:208
+#: ../panel-plugin/properties.c:208
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
-msgstr ""
+msgstr "'Titik Panas' menampilkan dampak performa sesaat pada hanya ulir yang terlibat di keputusan penjadwalan SMT yang suboptimal."
 
-#: ../panel-plugin/properties.cc:211
+#: ../panel-plugin/properties.c:211
 msgid "Highlight suboptimal SMT scheduling"
 msgstr "Sorot penjadwalan SMT yang tidak optimal"
 
-#: ../panel-plugin/properties.cc:214
+#: ../panel-plugin/properties.c:214
 msgid "SMT issues color:"
-msgstr ""
+msgstr "Warna permasalahan SMT:"
 
-#: ../panel-plugin/properties.cc:217
+#: ../panel-plugin/properties.c:217
 msgid "Use non-linear time-scale"
 msgstr "Gunakan skala waktu non-linear"
 
-#: ../panel-plugin/properties.cc:218
+#: ../panel-plugin/properties.c:218
 msgid "Per-core history graphs"
 msgstr "Grafik riwayat per-inti"
 
-#: ../panel-plugin/properties.cc:222
+#: ../panel-plugin/properties.c:222
 msgid "Color 1:"
 msgstr "Warna 1:"
 
-#: ../panel-plugin/properties.cc:223
+#: ../panel-plugin/properties.c:223
 msgid "Color 2:"
 msgstr "Warna 2:"
 
-#: ../panel-plugin/properties.cc:224
+#: ../panel-plugin/properties.c:224
 msgid "Color 3:"
 msgstr "Warna 3:"
 
-#: ../panel-plugin/properties.cc:225
+#: ../panel-plugin/properties.c:225
 msgid "Background:"
 msgstr "Latar belakang:"
 
-#: ../panel-plugin/properties.cc:229
+#: ../panel-plugin/properties.c:229
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Tampilkan mistar penggunaan"
 
-#: ../panel-plugin/properties.cc:232
+#: ../panel-plugin/properties.c:232
 msgid "Bars color:"
 msgstr "Warna batang:"
 
-#: ../panel-plugin/properties.cc:234
+#: ../panel-plugin/properties.c:234
 msgid "Show frame"
 msgstr "Tampilkan bingkai"
 
-#: ../panel-plugin/properties.cc:235
+#: ../panel-plugin/properties.c:235
 msgid "Show border"
 msgstr "Tampilkan batas"
 
-#: ../panel-plugin/properties.cc:242
+#: ../panel-plugin/properties.c:242
 msgid "Appearance"
 msgstr "Penampilan"
 
-#: ../panel-plugin/properties.cc:244
+#: ../panel-plugin/properties.c:244
 msgid "Advanced"
 msgstr "Mahir"
 
-#: ../panel-plugin/properties.cc:246
+#: ../panel-plugin/properties.c:246
 msgid "Stats"
-msgstr ""
+msgstr "Stat"
 
-#: ../panel-plugin/properties.cc:370
+#: ../panel-plugin/properties.c:370
 msgid "Fastest (~250ms)"
 msgstr "Tercepat (~250ms)"
 
-#: ../panel-plugin/properties.cc:371
+#: ../panel-plugin/properties.c:371
 msgid "Fast (~500ms)"
 msgstr "Cepat (~500ms)"
 
-#: ../panel-plugin/properties.cc:372
+#: ../panel-plugin/properties.c:372
 msgid "Normal (~750ms)"
 msgstr "Normal (~750ms)"
 
-#: ../panel-plugin/properties.cc:373
+#: ../panel-plugin/properties.c:373
 msgid "Slow (~1s)"
 msgstr "Lambat (~1s)"
 
-#: ../panel-plugin/properties.cc:374
+#: ../panel-plugin/properties.c:374
 msgid "Slowest (~3s)"
 msgstr "Terlambat (~3s)"
 
-#: ../panel-plugin/properties.cc:378
+#: ../panel-plugin/properties.c:378
 msgid "Update Interval:"
 msgstr "Interval Pemutakhiran:"
 
-#: ../panel-plugin/properties.cc:389
+#: ../panel-plugin/properties.c:389
 msgid "All"
 msgstr "Semua"
 
-#: ../panel-plugin/properties.cc:393
+#: ../panel-plugin/properties.c:393
 msgid "Tracked Core:"
 msgstr "Inti Terlacak:"
 
-#: ../panel-plugin/properties.cc:407
+#: ../panel-plugin/properties.c:407
 msgid "Width:"
 msgstr "Lebar:"
 
-#: ../panel-plugin/properties.cc:409
+#: ../panel-plugin/properties.c:409
 msgid "Height:"
 msgstr "Tinggi:"
 
-#: ../panel-plugin/properties.cc:423
+#: ../panel-plugin/properties.c:423
 msgid "Threshold (%):"
 msgstr "Ambang Batas (%):"
 
-#: ../panel-plugin/properties.cc:436
+#: ../panel-plugin/properties.c:436
 msgid "Spacing:"
 msgstr "Jarak:"
 
-#: ../panel-plugin/properties.cc:439
+#: ../panel-plugin/properties.c:439
 msgid "Spacing between per-core history graphs"
 msgstr "Jarak antar grafik riwayat per-inti"
 
-#: ../panel-plugin/properties.cc:451
+#: ../panel-plugin/properties.c:451
 msgid "Associated command:"
 msgstr "Perintah diasosiasikan:"
 
-#: ../panel-plugin/properties.cc:460
+#: ../panel-plugin/properties.c:460
 msgid "Defaults to xfce4-taskmanager, htop or top."
 msgstr "Bawaan menggunakan xfce4-taskmanager, htop atau top."
 
-#: ../panel-plugin/properties.cc:482
+#: ../panel-plugin/properties.c:482
 msgid "Disabled"
 msgstr "Dinonaktifkan"
 
-#: ../panel-plugin/properties.cc:483
+#: ../panel-plugin/properties.c:483
 msgid "Normal"
 msgstr "Normal"
 
-#: ../panel-plugin/properties.cc:484
+#: ../panel-plugin/properties.c:484
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.cc:485
+#: ../panel-plugin/properties.c:485
 msgid "No history"
 msgstr "Tak ada riwayat"
 
-#: ../panel-plugin/properties.cc:486
+#: ../panel-plugin/properties.c:486
 msgid "Grid"
 msgstr "Petak"
 
-#: ../panel-plugin/properties.cc:512
+#: ../panel-plugin/properties.c:512
 msgid "Mode:"
 msgstr "Mode:"
 
-#: ../panel-plugin/properties.cc:518
+#: ../panel-plugin/properties.c:518
 msgid "Solid"
 msgstr "Solid"
 
-#: ../panel-plugin/properties.cc:519
+#: ../panel-plugin/properties.c:519
 msgid "Gradient"
 msgstr "Gradasi"
 
-#: ../panel-plugin/properties.cc:520
+#: ../panel-plugin/properties.c:520
 msgid "Fire"
 msgstr "Corak Api"
 
-#: ../panel-plugin/properties.cc:524
+#: ../panel-plugin/properties.c:524
 msgid "Color mode: "
 msgstr "Mode warna: "
 
-#: ../panel-plugin/properties.cc:743
+#: ../panel-plugin/properties.c:743
 msgid "SMT detected: Yes"
 msgstr "SMT terdeteksi: Ya"
 
-#: ../panel-plugin/properties.cc:743
+#: ../panel-plugin/properties.c:743
 msgid "SMT detected: No"
 msgstr "SMT terdeteksi: Tidak"
 
-#: ../panel-plugin/properties.cc:768
+#: ../panel-plugin/properties.c:768
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
 msgstr "Jumlah insiden penjadwalan SMT: %u"
 
-#: ../panel-plugin/properties.cc:777
+#: ../panel-plugin/properties.c:777
 #, c-format
 msgid "Estimated performance impact:"
 msgstr "Perkiraan pengaruh performa:"
 
-#: ../panel-plugin/properties.cc:778
+#: ../panel-plugin/properties.c:778
 #, c-format
 msgid "Overall: %.3g%%"
 msgstr "Keseluruhan: %.3g%%"
 
-#: ../panel-plugin/properties.cc:779
+#: ../panel-plugin/properties.c:779
 #, c-format
 msgid "Hotspots: %.3g%%"
-msgstr ""
+msgstr "Titik Panas: %.3g%%"
 
-#: ../panel-plugin/properties.cc:794
+#: ../panel-plugin/properties.c:794
 msgid "SMT detected: N/A"
 msgstr "SMT terdeteksi: Tidak ada"
 
