@@ -84,7 +84,7 @@ read_settings (XfcePanelPlugin *plugin, CPUGraph *base)
 
         if (rc)
         {
-            xfce4::Ptr0<std::string> value;
+            Ptr0<std::string> value;
 
             rate = (CPUGraphUpdateRate) rc->read_int_entry ("UpdateInterval", rate);
             nonlinear = rc->read_int_entry ("TimeScale", nonlinear);

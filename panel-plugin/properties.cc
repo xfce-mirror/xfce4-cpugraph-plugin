@@ -78,20 +78,20 @@ static GtkBox*    create_check_box (GtkBox *tab, GtkSizeGroup *sg, const gchar *
 static GtkWidget* create_drop_down (GtkBox *tab, GtkSizeGroup *sg, const gchar *name,
                                     const std::vector<std::string> &items, size_t init,
                                     const std::function<void(GtkComboBox*)> &callback);
-static void       setup_update_interval_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data);
-static void       setup_tracked_core_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data);
+static void       setup_update_interval_option (GtkBox *vbox, GtkSizeGroup *sg, const Ptr<CPUGraphOptions> &data);
+static void       setup_tracked_core_option (GtkBox *vbox, GtkSizeGroup *sg, const Ptr<CPUGraphOptions> &data);
 static void       setup_size_option (GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, CPUGraph *base);
-static void       setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data);
-static void       setup_color_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data,
+static void       setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, const Ptr<CPUGraphOptions> &data);
+static void       setup_color_option (GtkBox *vbox, GtkSizeGroup *sg, const Ptr<CPUGraphOptions> &data,
                                       CPUGraphColorNumber number, const gchar *name, const gchar *tooltip,
                                       const std::function<void(GtkColorButton*)> &callback);
-static void       setup_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data);
-static void       setup_color_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data);
+static void       setup_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const Ptr<CPUGraphOptions> &data);
+static void       setup_color_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const Ptr<CPUGraphOptions> &data);
 static void       setup_load_threshold_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base);
 static GtkBox*    setup_per_core_spacing_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base);
 static void       change_color (GtkColorButton  *button, CPUGraph *base, CPUGraphColorNumber number);
-static void       update_sensitivity (const xfce4::Ptr<CPUGraphOptions> &data);
-static bool       update_cb (const xfce4::Ptr<CPUGraphOptions> &data);
+static void       update_sensitivity (const Ptr<CPUGraphOptions> &data);
+static bool       update_cb (const Ptr<CPUGraphOptions> &data);
 
 void
 create_options (XfcePanelPlugin *plugin, CPUGraph *base)
@@ -312,7 +312,7 @@ create_drop_down (GtkBox *tab, GtkSizeGroup *sg, const gchar *name,
 }
 
 static void
-setup_update_interval_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data)
+setup_update_interval_option (GtkBox *vbox, GtkSizeGroup *sg, const Ptr<CPUGraphOptions> &data)
 {
     const std::vector<std::string> items = {
         _("Fastest (~250ms)"),
@@ -329,7 +329,7 @@ setup_update_interval_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<C
 }
 
 static void
-setup_tracked_core_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data)
+setup_tracked_core_option (GtkBox *vbox, GtkSizeGroup *sg, const Ptr<CPUGraphOptions> &data)
 {
     const gsize nb_items = data->base->nr_cores + 1;
     std::vector<std::string> items(nb_items);
@@ -393,7 +393,7 @@ setup_per_core_spacing_option (GtkBox *vbox, GtkSizeGroup *sg, CPUGraph *base)
 }
 
 static void
-setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data)
+setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, const Ptr<CPUGraphOptions> &data)
 {
     GtkBox *hbox = create_option_line (vbox, sg, _("Associated command:"), NULL);
 
@@ -413,7 +413,7 @@ setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphO
 }
 
 static void
-setup_color_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data,
+setup_color_option (GtkBox *vbox, GtkSizeGroup *sg, const Ptr<CPUGraphOptions> &data,
                     CPUGraphColorNumber number, const gchar *name, const gchar *tooltip,
                     const std::function<void(GtkColorButton*)> &callback)
 {
@@ -426,7 +426,7 @@ setup_color_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOpt
 }
 
 static void
-setup_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data)
+setup_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const Ptr<CPUGraphOptions> &data)
 {
     const std::vector<std::string> items = {
         _("Disabled"),
@@ -475,7 +475,7 @@ setup_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOpti
 }
 
 static void
-setup_color_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const xfce4::Ptr<CPUGraphOptions> &data)
+setup_color_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const Ptr<CPUGraphOptions> &data)
 {
     const std::vector<std::string> items = {
         _("Solid"),
@@ -498,7 +498,7 @@ change_color (GtkColorButton *button, CPUGraph *base, CPUGraphColorNumber number
 }
 
 static void
-update_sensitivity (const xfce4::Ptr<CPUGraphOptions> &data)
+update_sensitivity (const Ptr<CPUGraphOptions> &data)
 {
     const CPUGraph *base = data->base;
     const bool default_command = base->command.empty();
@@ -526,7 +526,7 @@ update_sensitivity (const xfce4::Ptr<CPUGraphOptions> &data)
 }
 
 static bool
-update_cb (const xfce4::Ptr<CPUGraphOptions> &data)
+update_cb (const Ptr<CPUGraphOptions> &data)
 {
     const CPUGraph *base = data->base;
     std::string smt_text;

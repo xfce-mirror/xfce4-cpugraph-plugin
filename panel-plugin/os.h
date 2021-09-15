@@ -28,6 +28,8 @@
 #include <vector>
 #include "xfce4++/util.h"
 
+using xfce4::Ptr0;
+
 struct CpuData
 {
     gfloat load; /* Range: from 0.0 to 1.0 */
@@ -71,6 +73,6 @@ struct Topology
 
 guint detect_cpu_number ();
 bool read_cpu_data (std::vector<CpuData> &data);
-xfce4::Ptr0<Topology> read_topology ();
+Ptr0<Topology> read_topology ();
 
 #endif /* _XFCE_CPUGRAPH_OS_H */
