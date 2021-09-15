@@ -429,7 +429,7 @@ read_cpu_data (std::vector<CpuData> &data)
 
 #define SYSFS_BASE "/sys/devices/system/cpu"
 
-xfce4::Ptr0<Topology>
+Ptr0<Topology>
 read_topology ()
 {
     std::vector<gint> core_ids;
@@ -538,7 +538,7 @@ read_topology ()
 
 #else
 
-xfce4::Ptr0<Topology>
+Ptr0<Topology>
 read_topology ()
 {
     return nullptr;

@@ -35,6 +35,9 @@
 
 #include "os.h"
 
+using xfce4::Ptr;
+using xfce4::Ptr0;
+
 #define BORDER 8
 #define HIGHLIGHT_SMT_BY_DEFAULT false
 #define MAX_HISTORY_SIZE (100*1000)
@@ -132,7 +135,7 @@ struct CPUGraph
         std::vector<CpuLoad*> data; /* Circular buffers */
     } history;
     std::vector<CpuData> cpu_data;  /* size == nr_cores+1 */
-    xfce4::Ptr0<Topology> topology;
+    Ptr0<Topology> topology;
     CpuStats stats;
 
     ~CPUGraph();
