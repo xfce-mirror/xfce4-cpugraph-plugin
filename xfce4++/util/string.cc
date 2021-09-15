@@ -56,4 +56,21 @@ std::string sprintf(const char *fmt, ...) {
     return "<xfce4::sprintf() failure>";
 }
 
+std::string trim(const std::string &s) {
+    return trim_left(trim_right(s));
+}
+
+std::string trim_left(const std::string &s) {
+    auto index = s.find_first_not_of(" \n\r\t");
+    if(index == std::string::npos)
+        return std::string();
+    else
+        return s.substr(index);
+}
+
+std::string trim_right(const std::string &s) {
+    auto index = s.find_last_not_of(" \n\r\t");
+    return index == std::string::npos ? s : s.substr(0, index+1);
+}
+
 } /* namespace xfce4 */

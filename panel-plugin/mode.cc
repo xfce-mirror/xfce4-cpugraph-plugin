@@ -55,7 +55,7 @@ mix_colors (gdouble ratio, const xfce4::RGBA &color1, const xfce4::RGBA &color2)
  * The timestampts range from 'timestamp' to timestamp+step*(count-1).
  */
 static void
-nearest_loads (const CPUGraph *base, const guint core, const gint64 start, const gint64 step, const gssize count, gfloat *out)
+nearest_loads (const Ptr<const CPUGraph> &base, const guint core, const gint64 start, const gint64 step, const gssize count, gfloat *out)
 {
     const gssize history_cap_pow2 = base->history.cap_pow2;
     const CpuLoad *history_data = base->history.data[core];
@@ -167,7 +167,7 @@ nearest_loads (const CPUGraph *base, const guint core, const gint64 start, const
 }
 
 void
-draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
+draw_graph_normal (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core)
 {
     if (G_UNLIKELY (base->history.data.empty()))
         return;
@@ -214,7 +214,7 @@ draw_graph_normal (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 }
 
 void
-draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
+draw_graph_LED (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core)
 {
     if (G_UNLIKELY (base->history.data.empty()))
         return;
@@ -269,7 +269,7 @@ draw_graph_LED (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 }
 
 void
-draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
+draw_graph_no_history (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core)
 {
     if (G_UNLIKELY (base->history.data.empty()))
         return;
@@ -303,7 +303,7 @@ draw_graph_no_history (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
 }
 
 void
-draw_graph_grid (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core)
+draw_graph_grid (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core)
 {
     if (G_UNLIKELY (base->history.data.empty()))
         return;

@@ -38,7 +38,7 @@ struct Ptr final {
         return p;
     }
 
-    Ptr(const Ptr<T> &p) : ptr(p.ptr) {}
+    template<typename U> Ptr(const Ptr<U> &p) : ptr(p.ptr) {}
 
     T* operator->() const { return ptr.get(); }
 
@@ -51,9 +51,9 @@ template<typename T>
 struct Ptr0 final : std::shared_ptr<T> {
     Ptr0() : std::shared_ptr<T>(nullptr) {}
     Ptr0(std::nullptr_t) : std::shared_ptr<T>(nullptr) {}
-    Ptr0(const std::shared_ptr<T> &p) : std::shared_ptr<T>(p) {}
-    Ptr0(std::shared_ptr<T> &&p) : std::shared_ptr<T>(std::move(p)) {}
-    Ptr0(const Ptr<T> &p) : std::shared_ptr<T>(p.ptr) {}
+    template<typename U> Ptr0(const std::shared_ptr<U> &p) : std::shared_ptr<T>(p) {}
+    template<typename U> Ptr0(std::shared_ptr<U> &&p) : std::shared_ptr<T>(std::move(p)) {}
+    template<typename U> Ptr0(const Ptr<U> &p) : std::shared_ptr<T>(p.ptr) {}
 };
 
 /* Allocates a new instance of T on the heap, passing args to T's constructor */

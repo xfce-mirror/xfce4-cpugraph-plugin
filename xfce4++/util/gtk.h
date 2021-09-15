@@ -24,6 +24,7 @@
 #include <functional>
 #include <glib.h>
 #include <gtk/gtk.h>
+#include <libxfce4panel/libxfce4panel.h>
 #include <string>
 
 /*
@@ -50,6 +51,8 @@ void connect(GtkEntry        *widget, const char *signal, const std::function<vo
 void connect(GtkSpinButton   *widget, const char *signal, const std::function<void(GtkSpinButton   *widget)> &handler);
 void connect(GtkToggleButton *widget, const char *signal, const std::function<void(GtkToggleButton *widget)> &handler);
 
+
+
 /*
  * Fully type-safe functions for making signal -> handler connections.
  *
@@ -57,10 +60,35 @@ void connect(GtkToggleButton *widget, const char *signal, const std::function<vo
  * are automatically destroyed (via calling the corresponding C++ destructor)
  * when the object/widget generating the signal gets destroyed.
  */
-void connect_destroy (GtkWidget *widget, const std::function<void(GtkWidget *widget)>                &handler);
-void connect_response(GtkDialog *widget, const std::function<void(GtkDialog *widget, gint response)> &handler);
 
-guint timeout_add(guint interval_ms, const std::function<bool()> &handler);
+typedef void ButtonHandler  (GtkWidget *widget, GdkEventButton *event);
+typedef void DestroyHandler (GtkWidget *widget);
+typedef void DrawHandler1   (cairo_t *cr);
+typedef void DrawHandler2   (GtkWidget *widget, cairo_t *cr);
+typedef void ResponseHandler(GtkDialog *widget, gint response);
+typedef bool TooltipHandler (GtkWidget *widget, gint x, gint y, bool keyboard, GtkTooltip *tooltip);
+
+void connect_after_draw   (GtkWidget *widget, const std::function<DrawHandler1>    &handler);
+void connect_after_draw   (GtkWidget *widget, const std::function<DrawHandler2>    &handler);
+void connect_button_press (GtkWidget *widget, const std::function<ButtonHandler>   &handler);
+void connect_destroy      (GtkWidget *widget, const std::function<DestroyHandler>  &handler);
+void connect_query_tooltip(GtkWidget *widget, const std::function<TooltipHandler>  &handler);
+void connect_response     (GtkDialog *widget, const std::function<ResponseHandler> &handler);
+
+typedef void PluginHandler    (XfcePanelPlugin *plugin);
+typedef void ModeChangeHandler(XfcePanelPlugin *plugin, XfcePanelPluginMode mode);
+typedef void SizeChangeHandler(XfcePanelPlugin *plugin, guint size);
+
+void connect_about           (XfcePanelPlugin *plugin, const std::function<PluginHandler>     &handler);
+void connect_configure_plugin(XfcePanelPlugin *plugin, const std::function<PluginHandler>     &handler);
+void connect_free_data       (XfcePanelPlugin *plugin, const std::function<PluginHandler>     &handler);
+void connect_mode_changed    (XfcePanelPlugin *plugin, const std::function<ModeChangeHandler> &handler);
+void connect_save            (XfcePanelPlugin *plugin, const std::function<PluginHandler>     &handler);
+void connect_size_changed    (XfcePanelPlugin *plugin, const std::function<SizeChangeHandler> &handler);
+
+typedef bool TimeoutHandler();
+
+guint timeout_add(guint interval_ms, const std::function<TimeoutHandler> &handler);
 
 
 

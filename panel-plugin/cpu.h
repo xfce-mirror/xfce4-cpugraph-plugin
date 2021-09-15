@@ -140,23 +140,23 @@ struct CPUGraph
 
     ~CPUGraph();
 
-    void set_bars (bool bars);
-    void set_border (bool border);
-    void set_color (CPUGraphColorNumber number, const xfce4::RGBA &color);
-    void set_color_mode (guint color_mode);
-    void set_command (const gchar *command);
-    void set_frame (bool frame);
-    void set_in_terminal (bool in_terminal);
-    void set_load_threshold (gfloat threshold);
-    void set_mode (CPUGraphMode mode);
-    void set_nonlinear_time (bool nonlinear);
-    void set_per_core (bool per_core);
-    void set_per_core_spacing (guint spacing);
-    void set_size (guint width);
-    void set_smt (bool highlight_smt);
-    void set_startup_notification (bool startup_notification);
-    void set_tracked_core (guint core);
-    void set_update_rate (CPUGraphUpdateRate rate);
+    static void set_bars                 (const Ptr<CPUGraph> &base, bool bars);
+    static void set_border               (const Ptr<CPUGraph> &base, bool border);
+    static void set_color                (const Ptr<CPUGraph> &base, CPUGraphColorNumber number, const xfce4::RGBA &color);
+    static void set_color_mode           (const Ptr<CPUGraph> &base, guint color_mode);
+    static void set_command              (const Ptr<CPUGraph> &base, const std::string &command);
+    static void set_frame                (const Ptr<CPUGraph> &base, bool frame);
+    static void set_in_terminal          (const Ptr<CPUGraph> &base, bool in_terminal);
+    static void set_load_threshold       (const Ptr<CPUGraph> &base, gfloat threshold);
+    static void set_mode                 (const Ptr<CPUGraph> &base, CPUGraphMode mode);
+    static void set_nonlinear_time       (const Ptr<CPUGraph> &base, bool nonlinear);
+    static void set_per_core             (const Ptr<CPUGraph> &base, bool per_core);
+    static void set_per_core_spacing     (const Ptr<CPUGraph> &base, guint spacing);
+    static void set_size                 (const Ptr<CPUGraph> &base, guint width);
+    static void set_smt                  (const Ptr<CPUGraph> &base, bool highlight_smt);
+    static void set_startup_notification (const Ptr<CPUGraph> &base, bool startup_notification);
+    static void set_tracked_core         (const Ptr<CPUGraph> &base, guint core);
+    static void set_update_rate          (const Ptr<CPUGraph> &base, CPUGraphUpdateRate rate);
 };
 
 guint get_update_interval_ms (CPUGraphUpdateRate rate);
