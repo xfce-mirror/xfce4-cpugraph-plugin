@@ -26,7 +26,7 @@
 
 #include "cpu.h"
 
-void read_settings (XfcePanelPlugin *plugin, CPUGraph *base);
-void write_settings (XfcePanelPlugin *plugin, CPUGraph *base);
+void read_settings (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base);
+void write_settings (XfcePanelPlugin *plugin, const Ptr<const CPUGraph> &base);
 
 #endif /* _XFCE_CPUGRAPH_SETTINGS_H_ */

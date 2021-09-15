@@ -36,56 +36,40 @@
 #include <math.h>
 #include "xfce4++/util.h"
 
-static CPUGraph  *create_gui           (XfcePanelPlugin    *plugin);
-static void       create_bars          (CPUGraph           *base,
-                                        GtkOrientation      orientation);
-static void       shutdown             (XfcePanelPlugin    *plugin,
-                                        CPUGraph           *base);
-static void       delete_bars          (CPUGraph           *base);
-static gboolean   size_cb              (XfcePanelPlugin    *plugin,
-                                        guint               size,
-                                        CPUGraph           *base);
-static void       about_cb             (XfcePanelPlugin    *plugin,
-                                        CPUGraph           *base);
-static void       set_bars_size        (CPUGraph           *base);
-static void       mode_cb              (XfcePanelPlugin    *plugin,
-                                        XfcePanelPluginMode mode,
-                                        CPUGraph           *base);
-static void       update_tooltip       (CPUGraph           *base);
-static gboolean   tooltip_cb           (GtkWidget          *widget,
-                                        gint                x,
-                                        gint                y,
-                                        gboolean            keyboard,
-                                        GtkTooltip         *tooltip,
-                                        CPUGraph           *base);
-static void       draw_area_cb         (GtkWidget          *w,
-                                        cairo_t            *cr,
-                                        gpointer            data);
-static void       draw_bars_cb         (GtkWidget          *w,
-                                        cairo_t            *cr,
-                                        gpointer            data);
-static gboolean   command_cb           (GtkWidget          *w,
-                                        GdkEventButton     *event,
-                                        CPUGraph           *base);
+/* vim: !sort -k3 */
+static void          about_cb       ();
+static gboolean      command_cb     (GdkEventButton *event, const Ptr<CPUGraph> &base);
+static void          create_bars    (const Ptr<CPUGraph> &base, GtkOrientation orientation);
+static Ptr<CPUGraph> create_gui     (XfcePanelPlugin *plugin);
+static void          delete_bars    (const Ptr<CPUGraph> &base);
+static void          draw_area_cb   (cairo_t *cr, const Ptr<CPUGraph> &base);
+static void          draw_bars_cb   (cairo_t *cr, const Ptr<CPUGraph> &base);
+static void          mode_cb        (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base);
+static guint         nb_bars        (const Ptr<const CPUGraph> &base);
+static void          set_bars_size  (const Ptr<CPUGraph> &base);
+static void          shutdown       (const Ptr<CPUGraph> &base);
+static gboolean      size_cb        (XfcePanelPlugin *plugin, guint size, const Ptr<CPUGraph> &base);
+static gboolean      tooltip_cb     (GtkTooltip *tooltip, const Ptr<CPUGraph> &base);
+static void          update_tooltip (const Ptr<CPUGraph> &base);
 
 void
 cpugraph_construct (XfcePanelPlugin *plugin)
 {
-
     xfce_textdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR, "UTF-8");
 
-    CPUGraph *base = create_gui (plugin);
+    Ptr<CPUGraph> base = create_gui (plugin);
+
     read_settings (plugin, base);
-    xfce_panel_plugin_menu_show_configure (plugin);
 
     xfce_panel_plugin_menu_show_about (plugin);
+    xfce_panel_plugin_menu_show_configure (plugin);
 
-    g_signal_connect (plugin, "about", G_CALLBACK (about_cb), base);
-    g_signal_connect (plugin, "free-data", G_CALLBACK (shutdown), base);
-    g_signal_connect (plugin, "save", G_CALLBACK (write_settings), base);
-    g_signal_connect (plugin, "configure-plugin", G_CALLBACK (create_options), base);
-    g_signal_connect (plugin, "size-changed", G_CALLBACK (size_cb), base);
-    g_signal_connect (plugin, "mode-changed", G_CALLBACK (mode_cb), base);
+    xfce4::connect_about           (plugin, [base](XfcePanelPlugin *p) { about_cb(); });
+    xfce4::connect_free_data       (plugin, [base](XfcePanelPlugin *p) { shutdown(base); });
+    xfce4::connect_save            (plugin, [base](XfcePanelPlugin *p) { write_settings(p, base); });
+    xfce4::connect_configure_plugin(plugin, [base](XfcePanelPlugin *p) { create_options(p, base); });
+    xfce4::connect_mode_changed    (plugin, [base](XfcePanelPlugin *p, XfcePanelPluginMode mode) { mode_cb(p, base); });
+    xfce4::connect_size_changed    (plugin, [base](XfcePanelPlugin *p, guint size) -> bool { return size_cb(p, size, base); });
 }
 
 static guint
@@ -97,12 +81,12 @@ init_cpu_data (std::vector<CpuData> &data)
     return cpuNr;
 }
 
-static CPUGraph *
+static Ptr<CPUGraph>
 create_gui (XfcePanelPlugin *plugin)
 {
     GtkWidget *frame, *ebox;
     GtkOrientation orientation;
-    CPUGraph *base = new CPUGraph();
+    auto base = xfce4::make<CPUGraph>();
 
     orientation = xfce_panel_plugin_get_orientation (plugin);
     if ((base->nr_cores = init_cpu_data (base->cpu_data)) == 0)
@@ -123,19 +107,23 @@ create_gui (XfcePanelPlugin *plugin)
     gtk_event_box_set_above_child (GTK_EVENT_BOX (ebox), TRUE);
     gtk_container_add (GTK_CONTAINER (plugin), ebox);
     xfce_panel_plugin_add_action_widget (plugin, ebox);
-    g_signal_connect (ebox, "button-press-event", G_CALLBACK (command_cb), base);
+    xfce4::connect_button_press (ebox, [base](GtkWidget*, GdkEventButton *event) -> bool {
+        return command_cb (event, base);
+    });
 
     base->box = gtk_box_new (orientation, 0);
     gtk_container_add (GTK_CONTAINER (ebox), base->box);
     gtk_widget_set_has_tooltip (base->box, TRUE);
-    g_signal_connect (base->box, "query-tooltip", G_CALLBACK (tooltip_cb), base);
+    xfce4::connect_query_tooltip (base->box, [base](GtkWidget *widget, gint x, gint y, bool keyboard, GtkTooltip *tooltip) -> bool {
+        return tooltip_cb (tooltip, base);
+    });
 
     base->frame_widget = frame = gtk_frame_new (NULL);
     gtk_box_pack_end (GTK_BOX (base->box), frame, TRUE, TRUE, 2);
 
     base->draw_area = gtk_drawing_area_new ();
     gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (base->draw_area));
-    g_signal_connect_after (base->draw_area, "draw", G_CALLBACK (draw_area_cb), base);
+    xfce4::connect_after_draw (base->draw_area, [base](cairo_t *cr) { draw_area_cb (cr, base); });
 
     base->has_bars = false;
     base->has_barcolor = false;
@@ -143,7 +131,7 @@ create_gui (XfcePanelPlugin *plugin)
     base->highlight_smt = HIGHLIGHT_SMT_BY_DEFAULT;
     base->per_core_spacing = PER_CORE_SPACING_DEFAULT;
 
-    mode_cb (plugin, (XfcePanelPluginMode) orientation, base);
+    mode_cb (plugin, base);
     gtk_widget_show_all (ebox);
 
     base->tooltip_text = gtk_label_new (NULL);
@@ -153,7 +141,7 @@ create_gui (XfcePanelPlugin *plugin)
 }
 
 static void
-about_cb (XfcePanelPlugin *plugin, CPUGraph *base)
+about_cb ()
 {
     /* List of authors (in alphabetical order) */
     const gchar *auth[] = {
@@ -179,51 +167,56 @@ about_cb (XfcePanelPlugin *plugin, CPUGraph *base)
 }
 
 static void
-ebox_revalidate (CPUGraph *base)
+ebox_revalidate (const Ptr<CPUGraph> &base)
 {
     gtk_event_box_set_above_child (GTK_EVENT_BOX (base->ebox), FALSE);
     gtk_event_box_set_above_child (GTK_EVENT_BOX (base->ebox), TRUE);
 }
 
 static guint
-nb_bars (CPUGraph *base)
+nb_bars (const Ptr<const CPUGraph> &base)
 {
     return base->tracked_core == 0 ? base->nr_cores : 1;
 }
 
 static void
-create_bars (CPUGraph *base, GtkOrientation orientation)
+create_bars (const Ptr<CPUGraph> &base, GtkOrientation orientation)
 {
     base->bars.frame = gtk_frame_new (NULL);
     base->bars.draw_area = gtk_drawing_area_new ();
     base->bars.orientation = orientation;
-    base->set_frame (base->has_frame);
+    CPUGraph::set_frame (base, base->has_frame);
     gtk_container_add (GTK_CONTAINER (base->bars.frame), base->bars.draw_area);
     gtk_box_pack_end (GTK_BOX (base->box), base->bars.frame, TRUE, TRUE, 0);
-    g_signal_connect_after (base->bars.draw_area, "draw", G_CALLBACK (draw_bars_cb), base);
+    xfce4::connect_after_draw (base->bars.draw_area, [base](cairo_t *cr) { draw_bars_cb(cr, base); });
     gtk_widget_show_all (base->bars.frame);
     ebox_revalidate (base);
 }
 
 CPUGraph::~CPUGraph()
 {
-    delete_bars (this);
-    gtk_widget_destroy (ebox);
-    g_object_unref (tooltip_text);
-    if (timeout_id)
-        g_source_remove (timeout_id);
+    g_info ("%s", __PRETTY_FUNCTION__);
     for (auto hist_data : history.data)
         g_free (hist_data);
 }
 
 static void
-shutdown (XfcePanelPlugin *plugin, CPUGraph *base)
+shutdown (const Ptr<CPUGraph> &base)
 {
-    delete base;
+    delete_bars (base);
+    gtk_widget_destroy (base->ebox);
+    base->ebox = NULL;
+    g_object_unref (base->tooltip_text);
+    base->tooltip_text = NULL;
+    if (base->timeout_id)
+    {
+        g_source_remove (base->timeout_id);
+        base->timeout_id = 0;
+    }
 }
 
 static void
-queue_draw (CPUGraph *base)
+queue_draw (const Ptr<CPUGraph> &base)
 {
     if (base->mode != MODE_DISABLED)
         gtk_widget_queue_draw (base->draw_area);
@@ -232,7 +225,7 @@ queue_draw (CPUGraph *base)
 }
 
 static void
-delete_bars (CPUGraph *base)
+delete_bars (const Ptr<CPUGraph> &base)
 {
     if (base->bars.frame)
     {
@@ -243,7 +236,7 @@ delete_bars (CPUGraph *base)
 }
 
 static void
-resize_history (CPUGraph *base, gssize history_size)
+resize_history (const Ptr<CPUGraph> &base, gssize history_size)
 {
     const guint fastest = get_update_interval_ms (RATE_FASTEST);
     const guint slowest = get_update_interval_ms (RATE_SLOWEST);
@@ -282,7 +275,7 @@ resize_history (CPUGraph *base, gssize history_size)
 }
 
 static gboolean
-size_cb (XfcePanelPlugin *plugin, guint plugin_size, CPUGraph *base)
+size_cb (XfcePanelPlugin *plugin, guint plugin_size, const Ptr<CPUGraph> &base)
 {
     gint frame_h, frame_v, size;
     gssize history;
@@ -337,13 +330,13 @@ size_cb (XfcePanelPlugin *plugin, guint plugin_size, CPUGraph *base)
         border_width = 0;
     gtk_container_set_border_width (GTK_CONTAINER (base->box), border_width);
 
-    base->set_border (base->has_border);
+    base->set_border (base, base->has_border);
 
     return TRUE;
 }
 
 static void
-set_bars_size (CPUGraph *base)
+set_bars_size (const Ptr<CPUGraph> &base)
 {
     gint h, v;
     gint shadow_width;
@@ -365,16 +358,15 @@ set_bars_size (CPUGraph *base)
 }
 
 static void
-mode_cb (XfcePanelPlugin *plugin, XfcePanelPluginMode mode, CPUGraph *base)
+mode_cb (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
 {
-    gtk_orientable_set_orientation (GTK_ORIENTABLE (base->box),
-                                    xfce_panel_plugin_get_orientation (plugin));
+    gtk_orientable_set_orientation (GTK_ORIENTABLE (base->box), xfce_panel_plugin_get_orientation (plugin));
 
     size_cb (plugin, xfce_panel_plugin_get_size (base->plugin), base);
 }
 
 static void
-detect_smt_issues (CPUGraph *base)
+detect_smt_issues (const Ptr<CPUGraph> &base)
 {
     const bool debug = false;
     gfloat actual_load[base->nr_cores];
@@ -584,10 +576,8 @@ detect_smt_issues (CPUGraph *base)
 }
 
 static gboolean
-update_cb (gpointer user_data)
+update_cb (const Ptr<CPUGraph> &base)
 {
-    CPUGraph *base = (CPUGraph*) user_data;
-
     if (!read_cpu_data (base->cpu_data))
         return TRUE;
 
@@ -615,7 +605,7 @@ update_cb (gpointer user_data)
 }
 
 static void
-update_tooltip (CPUGraph *base)
+update_tooltip (const Ptr<CPUGraph> &base)
 {
     auto tooltip = xfce4::sprintf (_("Usage: %u%%"), (guint) roundf (base->cpu_data[0].load * 100));
     if (gtk_label_get_text (GTK_LABEL (base->tooltip_text)) != tooltip)
@@ -623,19 +613,18 @@ update_tooltip (CPUGraph *base)
 }
 
 static gboolean
-tooltip_cb (GtkWidget *widget, gint x, gint y, gboolean keyboard, GtkTooltip *tooltip, CPUGraph *base)
+tooltip_cb (GtkTooltip *tooltip, const Ptr<CPUGraph> &base)
 {
     gtk_tooltip_set_custom (tooltip, base->tooltip_text);
     return TRUE;
 }
 
 static void
-draw_area_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
+draw_area_cb (cairo_t *cr, const Ptr<CPUGraph> &base)
 {
-    CPUGraph *base = (CPUGraph *) data;
     GtkAllocation alloc;
     gint w, h;
-    void (*draw) (CPUGraph *base, cairo_t *cr, gint w, gint h, guint core) = NULL;
+    void (*draw) (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core) = NULL;
 
     gtk_widget_get_allocation (base->draw_area, &alloc);
     w = alloc.width;
@@ -720,9 +709,8 @@ draw_area_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
 }
 
 static void
-draw_bars_cb (GtkWidget *widget, cairo_t *cr, gpointer data)
+draw_bars_cb (cairo_t *cr, const Ptr<CPUGraph> &base)
 {
-    CPUGraph *const base = (CPUGraph *) data;
     GtkAllocation alloc;
     gfloat size;
     const bool horizontal = (base->bars.orientation == GTK_ORIENTATION_HORIZONTAL);
@@ -818,7 +806,7 @@ default_command (bool *in_terminal, bool *startup_notification)
 }
 
 static gboolean
-command_cb (GtkWidget *w, GdkEventButton *event, CPUGraph *base)
+command_cb (GdkEventButton *event, const Ptr<CPUGraph> &base)
 {
     if (event->button == 1)
     {
@@ -869,84 +857,81 @@ get_update_interval_ms (CPUGraphUpdateRate rate)
 }
 
 void
-CPUGraph::set_startup_notification (bool startup_notification)
+CPUGraph::set_startup_notification (const Ptr<CPUGraph> &base, bool startup_notification)
 {
-    command_startup_notification = startup_notification;
+    base->command_startup_notification = startup_notification;
 }
 
 void
-CPUGraph::set_in_terminal (bool in_terminal)
+CPUGraph::set_in_terminal (const Ptr<CPUGraph> &base, bool in_terminal)
 {
-    command_in_terminal = in_terminal;
+    base->command_in_terminal = in_terminal;
 }
 
 void
-CPUGraph::set_command (const gchar *_command)
+CPUGraph::set_command (const Ptr<CPUGraph> &base, const std::string &command)
 {
-    char *cmd = g_strdup (_command);
-    g_strstrip (cmd);
-    command = cmd;
-    g_free (cmd);
+    base->command = xfce4::trim (command);
 }
 
 void
-CPUGraph::set_bars (bool _has_bars)
+CPUGraph::set_bars (const Ptr<CPUGraph> &base, bool has_bars)
 {
-    if (has_bars != _has_bars)
+    if (base->has_bars != has_bars)
     {
-        has_bars = _has_bars;
-        if (has_bars)
+        base->has_bars = has_bars;
+        if (base->has_bars)
         {
-            create_bars (this, xfce_panel_plugin_get_orientation (plugin));
-            set_bars_size (this);
+            create_bars (base, xfce_panel_plugin_get_orientation (base->plugin));
+            set_bars_size (base);
         }
         else
-            delete_bars (this);
+            delete_bars (base);
     }
 }
 
 void
-CPUGraph::set_border (bool _has_border)
+CPUGraph::set_border (const Ptr<CPUGraph> &base, bool has_border)
 {
-    if (has_border != _has_border)
+    if (base->has_border != has_border)
     {
-        has_border = _has_border;
-        size_cb (plugin, xfce_panel_plugin_get_size (plugin), this);
+        base->has_border = has_border;
+        size_cb (base->plugin, xfce_panel_plugin_get_size (base->plugin), base);
     }
 }
 
 void
-CPUGraph::set_frame (bool _has_frame)
+CPUGraph::set_frame (const Ptr<CPUGraph> &base, bool has_frame)
 {
-    has_frame = _has_frame;
-    gtk_frame_set_shadow_type (GTK_FRAME (frame_widget), has_frame ? GTK_SHADOW_IN : GTK_SHADOW_NONE);
-    if (bars.frame)
-        gtk_frame_set_shadow_type (GTK_FRAME (bars.frame), has_frame ? GTK_SHADOW_IN : GTK_SHADOW_NONE);
-    size_cb (plugin, xfce_panel_plugin_get_size (plugin), this);
+    base->has_frame = has_frame;
+    gtk_frame_set_shadow_type (GTK_FRAME (base->frame_widget), has_frame ? GTK_SHADOW_IN : GTK_SHADOW_NONE);
+    if (base->bars.frame)
+        gtk_frame_set_shadow_type (GTK_FRAME (base->bars.frame), has_frame ? GTK_SHADOW_IN : GTK_SHADOW_NONE);
+    size_cb (base->plugin, xfce_panel_plugin_get_size (base->plugin), base);
 }
 
 void
-CPUGraph::set_nonlinear_time (bool _non_linear)
+CPUGraph::set_nonlinear_time (const Ptr<CPUGraph> &base, bool non_linear)
 {
-    if (non_linear != _non_linear)
+    if (base->non_linear != non_linear)
     {
-        non_linear = _non_linear;
-        queue_draw (this);
+        base->non_linear = non_linear;
+        queue_draw (base);
     }
 }
 
 void
-CPUGraph::set_per_core (bool _per_core)
+CPUGraph::set_per_core (const Ptr<CPUGraph> &base, bool per_core)
 {
-    if (per_core != _per_core)
+    if (base->per_core != per_core)
     {
-        per_core = _per_core;
-        size_cb (plugin, xfce_panel_plugin_get_size (plugin), this);
+        base->per_core = per_core;
+        size_cb (base->plugin, xfce_panel_plugin_get_size (base->plugin), base);
     }
 }
 
 void
-CPUGraph::set_per_core_spacing (guint spacing)
+CPUGraph::set_per_core_spacing (const Ptr<CPUGraph> &base, guint spacing)
 {
     /* Use <=, instead of <, supresses a compiler warning */
     if (G_UNLIKELY (spacing <= PER_CORE_SPACING_MIN))
@@ -954,109 +939,109 @@ CPUGraph::set_per_core_spacing (guint spacing)
     if (G_UNLIKELY (spacing > PER_CORE_SPACING_MAX))
         spacing = PER_CORE_SPACING_MAX;
 
-    if (per_core_spacing != spacing)
+    if (base->per_core_spacing != spacing)
     {
-        per_core_spacing = spacing;
-        size_cb (plugin, xfce_panel_plugin_get_size (plugin), this);
+        base->per_core_spacing = spacing;
+        size_cb (base->plugin, xfce_panel_plugin_get_size (base->plugin), base);
     }
 }
 
 void
-CPUGraph::set_smt (bool _highlight_smt)
+CPUGraph::set_smt (const Ptr<CPUGraph> &base, bool highlight_smt)
 {
-    highlight_smt = _highlight_smt;
+    base->highlight_smt = highlight_smt;
 }
 
 void
-CPUGraph::set_update_rate (CPUGraphUpdateRate rate)
+CPUGraph::set_update_rate (const Ptr<CPUGraph> &base, CPUGraphUpdateRate rate)
 {
-    bool change = (update_interval != rate);
-    bool init = (timeout_id == 0);
+    bool change = (base->update_interval != rate);
+    bool init = (base->timeout_id == 0);
 
     if (change || init)
     {
         guint interval = get_update_interval_ms (rate);
 
-        update_interval = rate;
-        if (timeout_id)
-            g_source_remove (timeout_id);
-        timeout_id = g_timeout_add (interval, update_cb, this);
+        base->update_interval = rate;
+        if (base->timeout_id)
+            g_source_remove (base->timeout_id);
+        base->timeout_id = xfce4::timeout_add (interval, [base]() -> bool { return update_cb(base); });
 
         if (change && !init)
-            queue_draw (this);
+            queue_draw (base);
     }
 }
 
 void
-CPUGraph::set_size (guint _size)
+CPUGraph::set_size (const Ptr<CPUGraph> &base, guint size)
 {
-    if (G_UNLIKELY (_size < MIN_SIZE))
-        _size = MIN_SIZE;
-    if (G_UNLIKELY (_size > MAX_SIZE))
-        _size = MAX_SIZE;
+    if (G_UNLIKELY (size < MIN_SIZE))
+        size = MIN_SIZE;
+    if (G_UNLIKELY (size > MAX_SIZE))
+        size = MAX_SIZE;
 
-    size = _size;
-    size_cb (plugin, xfce_panel_plugin_get_size (plugin), this);
+    base->size = size;
+    size_cb (base->plugin, xfce_panel_plugin_get_size (base->plugin), base);
 }
 
 void
-CPUGraph::set_color_mode (guint _color_mode)
+CPUGraph::set_color_mode (const Ptr<CPUGraph> &base, guint color_mode)
 {
-    if (color_mode != _color_mode)
+    if (base->color_mode != color_mode)
     {
-        color_mode = _color_mode;
-        queue_draw (this);
+        base->color_mode = color_mode;
+        queue_draw (base);
     }
 }
 
 void
-CPUGraph::set_mode (CPUGraphMode _mode)
+CPUGraph::set_mode (const Ptr<CPUGraph> &base, CPUGraphMode mode)
 {
-    mode = _mode;
+    base->mode = mode;
     if (mode == MODE_DISABLED)
     {
-        gtk_widget_hide (frame_widget);
+        gtk_widget_hide (base->frame_widget);
     }
     else
     {
-        gtk_widget_show (frame_widget);
-        ebox_revalidate (this);
+        gtk_widget_show (base->frame_widget);
+        ebox_revalidate (base);
     }
 }
 
 void
-CPUGraph::set_color (CPUGraphColorNumber number, const xfce4::RGBA &color)
+CPUGraph::set_color (const Ptr<CPUGraph> &base, CPUGraphColorNumber number, const xfce4::RGBA &color)
 {
-    if (!colors[number].equals(color))
+    if (!base->colors[number].equals(color))
     {
-        colors[number] = color;
-        queue_draw (this);
+        base->colors[number] = color;
+        queue_draw (base);
     }
 }
 
 void
-CPUGraph::set_tracked_core (guint core)
+CPUGraph::set_tracked_core (const Ptr<CPUGraph> &base, guint core)
 {
-    if (G_UNLIKELY (core > nr_cores + 1))
+    if (G_UNLIKELY (core > base->nr_cores + 1))
         core = 0;
 
-    if (tracked_core != core)
+    if (base->tracked_core != core)
     {
-        const bool had_bars = has_bars;
+        const bool had_bars = base->has_bars;
         if (had_bars)
-            set_bars (false);
-        tracked_core = core;
+            set_bars (base, false);
+        base->tracked_core = core;
         if (had_bars)
-            set_bars (true);
+            set_bars (base, true);
     }
 }
 
 void
-CPUGraph::set_load_threshold (gfloat threshold)
+CPUGraph::set_load_threshold (const Ptr<CPUGraph> &base, gfloat threshold)
 {
     if (threshold < 0)
         threshold = 0;
     if (threshold > MAX_LOAD_THRESHOLD)
         threshold = MAX_LOAD_THRESHOLD;
-    load_threshold = threshold;
+    base->load_threshold = threshold;
 }

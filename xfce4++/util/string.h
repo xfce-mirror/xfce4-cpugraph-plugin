@@ -26,7 +26,10 @@
 
 namespace xfce4 {
 
-std::string sprintf(const char *fmt, ...) G_GNUC_PRINTF(1, 2);
+std::string sprintf   (const char *fmt, ...) G_GNUC_PRINTF(1, 2);
+std::string trim      (const std::string &s);
+std::string trim_left (const std::string &s);
+std::string trim_right(const std::string &s);
 
 } /* namespace xfce4 */
 
