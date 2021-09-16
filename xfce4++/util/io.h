@@ -18,17 +18,16 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _XFCE4PP_UTIL_H_
-#define _XFCE4PP_UTIL_H_
+#ifndef _XFCE4PP_UTIL_IO_H_
+#define _XFCE4PP_UTIL_IO_H_
 
-#ifndef _XFCE4PP_UTIL_FIXES_H_
-#error "Please include xfce4++/util/fixes.h before any other include directives"
-#endif
+#include <string>
 
-#include <libxfce4util/libxfce4util.h>
-#include "xfce4++/util/gtk.h"
-#include "xfce4++/util/io.h"
-#include "xfce4++/util/rc.h"
-#include "xfce4++/util/string.h"
+namespace xfce4 {
 
-#endif /* _XFCE4PP_UTIL_H_ */
+bool is_directory(const std::string &path);
+bool read_file   (const std::string &path, std::string &data);
+
+} /* namespace xfce4 */
+
+#endif /* _XFCE4PP_UTIL_IO_H_ */

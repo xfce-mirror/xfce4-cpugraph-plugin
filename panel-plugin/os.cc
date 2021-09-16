@@ -439,22 +439,18 @@ read_topology ()
     guint num_online_logical_cpus = 0;
     for (guint logical_cpu = 0; true; logical_cpu++)
     {
-        std::string path;
-        gchar *file_contents;
-
         /* See also: https://www.kernel.org/doc/html/latest/admin-guide/cputopology.html */
 
-        path = xfce4::sprintf ("%s/cpu%d", SYSFS_BASE, logical_cpu);
-        if (!g_file_test (path.c_str(), G_FILE_TEST_IS_DIR))
+        if (!xfce4::is_directory (xfce4::sprintf ("%s/cpu%d", SYSFS_BASE, logical_cpu)))
             break;
 
         num_all_logical_cpus++;
 
-        path = xfce4::sprintf ("%s/cpu%d/topology/core_id", SYSFS_BASE, logical_cpu);
-        if (g_file_get_contents (path.c_str(), &file_contents, NULL, NULL))
+        std::string file_contents;
+        if (xfce4::read_file (xfce4::sprintf ("%s/cpu%d/topology/core_id", SYSFS_BASE, logical_cpu), file_contents))
         {
             errno = 0;
-            glong core_id = strtol (file_contents, NULL, 10);
+            glong core_id = strtol (file_contents.c_str(), NULL, 10);
             if (G_UNLIKELY (errno || core_id < 0 || core_id > G_MAXINT))
                 return nullptr;
 
