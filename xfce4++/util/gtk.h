@@ -54,19 +54,38 @@ void connect(GtkToggleButton *widget, const char *signal, const std::function<vo
 
 
 /*
- * Fully type-safe functions for making signal -> handler connections.
+ * Type-safe functions for making signal -> handler connections.
  *
  * If the handler is a C++ λ-function, variables captured by the handler
  * are automatically destroyed (via calling the corresponding C++ destructor)
  * when the object/widget generating the signal gets destroyed.
  */
 
-typedef void ButtonHandler  (GtkWidget *widget, GdkEventButton *event);
-typedef void DestroyHandler (GtkWidget *widget);
-typedef void DrawHandler1   (cairo_t *cr);
-typedef void DrawHandler2   (GtkWidget *widget, cairo_t *cr);
-typedef void ResponseHandler(GtkDialog *widget, gint response);
-typedef bool TooltipHandler (GtkWidget *widget, gint x, gint y, bool keyboard, GtkTooltip *tooltip);
+struct PluginSize {
+    bool rectangle; /* Whether the panel plugin size is forced to be a square. Otherwise, the plugin can be a rectangle. */
+    PluginSize() = delete;
+};
+
+struct Propagation {
+    bool stop; /* Whether to prevent the event from propagating to other handlers */
+    Propagation() = delete;
+};
+
+struct TooltipTime {
+    bool now; /* Whether to show the tooltip now or later */
+    TooltipTime() = delete;
+};
+
+extern const PluginSize RECTANGLE, SQUARE;
+extern const Propagation PROPAGATE, STOP;
+extern const TooltipTime LATER, NOW; /* If in doubt, use NOW */
+
+typedef Propagation ButtonHandler  (GtkWidget *widget, GdkEventButton *event);
+typedef void        DestroyHandler (GtkWidget *widget);
+typedef Propagation DrawHandler1   (cairo_t *cr);
+typedef Propagation DrawHandler2   (GtkWidget *widget, cairo_t *cr);
+typedef void        ResponseHandler(GtkDialog *widget, gint response);
+typedef TooltipTime TooltipHandler (GtkWidget *widget, gint x, gint y, bool keyboard, GtkTooltip *tooltip);
 
 void connect_after_draw   (GtkWidget *widget, const std::function<DrawHandler1>    &handler);
 void connect_after_draw   (GtkWidget *widget, const std::function<DrawHandler2>    &handler);
@@ -75,9 +94,9 @@ void connect_destroy      (GtkWidget *widget, const std::function<DestroyHandler
 void connect_query_tooltip(GtkWidget *widget, const std::function<TooltipHandler>  &handler);
 void connect_response     (GtkDialog *widget, const std::function<ResponseHandler> &handler);
 
-typedef void PluginHandler    (XfcePanelPlugin *plugin);
-typedef void ModeChangeHandler(XfcePanelPlugin *plugin, XfcePanelPluginMode mode);
-typedef void SizeChangeHandler(XfcePanelPlugin *plugin, guint size);
+typedef void       PluginHandler    (XfcePanelPlugin *plugin);
+typedef void       ModeChangeHandler(XfcePanelPlugin *plugin, XfcePanelPluginMode mode);
+typedef PluginSize SizeChangeHandler(XfcePanelPlugin *plugin, guint size);
 
 void connect_about           (XfcePanelPlugin *plugin, const std::function<PluginHandler>     &handler);
 void connect_configure_plugin(XfcePanelPlugin *plugin, const std::function<PluginHandler>     &handler);
