@@ -36,20 +36,24 @@
 #include <math.h>
 #include "xfce4++/util.h"
 
+using xfce4::PluginSize;
+using xfce4::Propagation;
+using xfce4::TooltipTime;
+
 /* vim: !sort -k3 */
 static void          about_cb       ();
-static gboolean      command_cb     (GdkEventButton *event, const Ptr<CPUGraph> &base);
+static Propagation   command_cb     (GdkEventButton *event, const Ptr<CPUGraph> &base);
 static void          create_bars    (const Ptr<CPUGraph> &base, GtkOrientation orientation);
 static Ptr<CPUGraph> create_gui     (XfcePanelPlugin *plugin);
 static void          delete_bars    (const Ptr<CPUGraph> &base);
-static void          draw_area_cb   (cairo_t *cr, const Ptr<CPUGraph> &base);
-static void          draw_bars_cb   (cairo_t *cr, const Ptr<CPUGraph> &base);
+static Propagation   draw_area_cb   (cairo_t *cr, const Ptr<CPUGraph> &base);
+static Propagation   draw_bars_cb   (cairo_t *cr, const Ptr<CPUGraph> &base);
 static void          mode_cb        (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base);
 static guint         nb_bars        (const Ptr<const CPUGraph> &base);
 static void          set_bars_size  (const Ptr<CPUGraph> &base);
 static void          shutdown       (const Ptr<CPUGraph> &base);
-static gboolean      size_cb        (XfcePanelPlugin *plugin, guint size, const Ptr<CPUGraph> &base);
-static gboolean      tooltip_cb     (GtkTooltip *tooltip, const Ptr<CPUGraph> &base);
+static PluginSize    size_cb        (XfcePanelPlugin *plugin, guint size, const Ptr<CPUGraph> &base);
+static TooltipTime   tooltip_cb     (GtkTooltip *tooltip, const Ptr<CPUGraph> &base);
 static void          update_tooltip (const Ptr<CPUGraph> &base);
 
 void
@@ -69,7 +73,7 @@ cpugraph_construct (XfcePanelPlugin *plugin)
     xfce4::connect_save            (plugin, [base](XfcePanelPlugin *p) { write_settings(p, base); });
     xfce4::connect_configure_plugin(plugin, [base](XfcePanelPlugin *p) { create_options(p, base); });
     xfce4::connect_mode_changed    (plugin, [base](XfcePanelPlugin *p, XfcePanelPluginMode mode) { mode_cb(p, base); });
-    xfce4::connect_size_changed    (plugin, [base](XfcePanelPlugin *p, guint size) -> bool { return size_cb(p, size, base); });
+    xfce4::connect_size_changed    (plugin, [base](XfcePanelPlugin *p, guint size) { return size_cb(p, size, base); });
 }
 
 static guint
@@ -107,14 +111,14 @@ create_gui (XfcePanelPlugin *plugin)
     gtk_event_box_set_above_child (GTK_EVENT_BOX (ebox), TRUE);
     gtk_container_add (GTK_CONTAINER (plugin), ebox);
     xfce_panel_plugin_add_action_widget (plugin, ebox);
-    xfce4::connect_button_press (ebox, [base](GtkWidget*, GdkEventButton *event) -> bool {
+    xfce4::connect_button_press (ebox, [base](GtkWidget*, GdkEventButton *event) -> Propagation {
         return command_cb (event, base);
     });
 
     base->box = gtk_box_new (orientation, 0);
     gtk_container_add (GTK_CONTAINER (ebox), base->box);
     gtk_widget_set_has_tooltip (base->box, TRUE);
-    xfce4::connect_query_tooltip (base->box, [base](GtkWidget *widget, gint x, gint y, bool keyboard, GtkTooltip *tooltip) -> bool {
+    xfce4::connect_query_tooltip (base->box, [base](GtkWidget *widget, gint x, gint y, bool keyboard, GtkTooltip *tooltip) {
         return tooltip_cb (tooltip, base);
     });
 
@@ -123,7 +127,7 @@ create_gui (XfcePanelPlugin *plugin)
 
     base->draw_area = gtk_drawing_area_new ();
     gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (base->draw_area));
-    xfce4::connect_after_draw (base->draw_area, [base](cairo_t *cr) { draw_area_cb (cr, base); });
+    xfce4::connect_after_draw (base->draw_area, [base](cairo_t *cr) { return draw_area_cb (cr, base); });
 
     base->has_bars = false;
     base->has_barcolor = false;
@@ -188,7 +192,7 @@ create_bars (const Ptr<CPUGraph> &base, GtkOrientation orientation)
     CPUGraph::set_frame (base, base->has_frame);
     gtk_container_add (GTK_CONTAINER (base->bars.frame), base->bars.draw_area);
     gtk_box_pack_end (GTK_BOX (base->box), base->bars.frame, TRUE, TRUE, 0);
-    xfce4::connect_after_draw (base->bars.draw_area, [base](cairo_t *cr) { draw_bars_cb(cr, base); });
+    xfce4::connect_after_draw (base->bars.draw_area, [base](cairo_t *cr) { return draw_bars_cb(cr, base); });
     gtk_widget_show_all (base->bars.frame);
     ebox_revalidate (base);
 }
@@ -274,7 +278,7 @@ resize_history (const Ptr<CPUGraph> &base, gssize history_size)
     base->history.size = history_size;
 }
 
-static gboolean
+static PluginSize
 size_cb (XfcePanelPlugin *plugin, guint plugin_size, const Ptr<CPUGraph> &base)
 {
     gint frame_h, frame_v, size;
@@ -332,7 +336,7 @@ size_cb (XfcePanelPlugin *plugin, guint plugin_size, const Ptr<CPUGraph> &base)
 
     base->set_border (base, base->has_border);
 
-    return TRUE;
+    return xfce4::RECTANGLE;
 }
 
 static void
@@ -575,7 +579,7 @@ detect_smt_issues (const Ptr<CPUGraph> &base)
         base->cpu_data[i+1].smt_highlight = suboptimal[i];
 }
 
-static gboolean
+static bool
 update_cb (const Ptr<CPUGraph> &base)
 {
     if (!read_cpu_data (base->cpu_data))
@@ -612,14 +616,14 @@ update_tooltip (const Ptr<CPUGraph> &base)
         gtk_label_set_text (GTK_LABEL (base->tooltip_text), tooltip.c_str());
 }
 
-static gboolean
+static TooltipTime
 tooltip_cb (GtkTooltip *tooltip, const Ptr<CPUGraph> &base)
 {
     gtk_tooltip_set_custom (tooltip, base->tooltip_text);
-    return TRUE;
+    return xfce4::NOW;
 }
 
-static void
+static Propagation
 draw_area_cb (cairo_t *cr, const Ptr<CPUGraph> &base)
 {
     GtkAllocation alloc;
@@ -706,9 +710,10 @@ draw_area_cb (cairo_t *cr, const Ptr<CPUGraph> &base)
             }
         }
     }
+    return xfce4::PROPAGATE;
 }
 
-static void
+static Propagation
 draw_bars_cb (cairo_t *cr, const Ptr<CPUGraph> &base)
 {
     GtkAllocation alloc;
@@ -774,6 +779,7 @@ draw_bars_cb (cairo_t *cr, const Ptr<CPUGraph> &base)
         if (fill)
             cairo_fill (cr);
     }
+    return xfce4::PROPAGATE;
 }
 
 static const gchar*
@@ -805,7 +811,7 @@ default_command (bool *in_terminal, bool *startup_notification)
     }
 }
 
-static gboolean
+static Propagation
 command_cb (GdkEventButton *event, const Ptr<CPUGraph> &base)
 {
     if (event->button == 1)
@@ -828,7 +834,7 @@ command_cb (GdkEventButton *event, const Ptr<CPUGraph> &base)
                                            command.c_str(), in_terminal,
                                            startup_notification, NULL);
     }
-    return FALSE;
+    return xfce4::STOP;
 }
 
 /**
