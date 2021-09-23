@@ -388,7 +388,12 @@ detect_smt_issues (const Ptr<CPUGraph> &base)
 
     if (base->topology && base->topology->smt)
     {
-        const auto topo = base->topology;
+        /* Use <Topology> instead of <const Topology>.
+         * The non-const version results in less efficient C++ code,
+         * but it is less prone to generate an exception or a crash
+         * than the const version due to an unforseen programming bug. */
+        const Ptr0<Topology> topo = base->topology;
+
         gfloat optimal_load[base->nr_cores];
         gfloat actual_num_instr_executed[base->nr_cores];
         gfloat optimal_num_instr_executed[base->nr_cores];
@@ -407,10 +412,10 @@ detect_smt_issues (const Ptr<CPUGraph> &base)
 
         for (guint i = 0; i < base->nr_cores; i++)
         {
-            if (G_LIKELY (i < topo->num_all_logical_cpus))
+            if (G_LIKELY (i < topo->num_logical_cpus))
             {
                 const gint core = topo->logical_cpu_2_core[i];
-                if (G_LIKELY (core != -1) && topo->cores[core].num_logical_cpus >= 2)
+                if (G_LIKELY (core != -1) && topo->cores[core].logical_cpus.size() >= 2)
                 {
                     const gfloat THRESHOLD = 1.0 + 0.1;       /* A lower bound (this core) */
                     const gfloat THRESHOLD_OTHER = 1.0 - 0.1; /* An upper bound (some other core) */
@@ -423,13 +428,10 @@ detect_smt_issues (const Ptr<CPUGraph> &base)
                      * "stress-ng --cpu=1" on a Ryzen 3700X CPU. */
                     const gfloat SMT_SLOWDOWN = 0.25f;
 
-                    gfloat combined_usage;
-
                 retry:
-                    combined_usage = 0;
-                    for (guint j = 0; j < topo->cores[core].num_logical_cpus; j++)
+                    gfloat combined_usage = 0;
+                    for (guint cpu : topo->cores[core].logical_cpus)
                     {
-                        guint cpu = topo->cores[core].logical_cpus[j];
                         if (G_LIKELY (cpu < base->nr_cores))
                             combined_usage += optimal_load[cpu];
                     }
@@ -438,14 +440,14 @@ detect_smt_issues (const Ptr<CPUGraph> &base)
                         /* Attempt to find a free CPU *core* different from `core`
                          * that might have had executed the workload
                          * without resorting to SMT/hyperthreading */
-                        for (guint other_core = 0; other_core < topo->num_all_cores; other_core++)
+                        for (const auto &core_iterator : topo->cores)
                         {
+                            guint other_core = core_iterator.first;
                             if (other_core != (guint) core)
                             {
                                 gfloat combined_usage_other = 0.0;
-                                for (guint j = 0; j < topo->cores[other_core].num_logical_cpus; j++)
+                                for (guint other_cpu : topo->cores[other_core].logical_cpus)
                                 {
-                                    guint other_cpu = topo->cores[other_core].logical_cpus[j];
                                     if (G_LIKELY (other_cpu < base->nr_cores))
                                         combined_usage_other += optimal_load[other_cpu];
                                 }
@@ -456,9 +458,8 @@ detect_smt_issues (const Ptr<CPUGraph> &base)
                                      * a much higher IPC (instructions per clock) ratio */
 
                                     smt_incident = true;
-                                    for (guint j = 0; j < topo->cores[other_core].num_logical_cpus; j++)
+                                    for (guint cpu : topo->cores[core].logical_cpus)
                                     {
-                                        guint cpu = topo->cores[core].logical_cpus[j];
                                         if (G_LIKELY (cpu < base->nr_cores))
                                             suboptimal[cpu] = true;
                                     }
@@ -475,9 +476,8 @@ detect_smt_issues (const Ptr<CPUGraph> &base)
                                         /* Move as much of excess load to the other core as possible */
                                         const gfloat excess_load = combined_usage - 1.0f;
                                         gint other_cpu_min = -1;
-                                        for (guint j = 0; j < topo->cores[other_core].num_logical_cpus; j++)
+                                        for (guint other_cpu : topo->cores[other_core].logical_cpus)
                                         {
-                                            guint other_cpu = topo->cores[other_core].logical_cpus[j];
                                             if (G_LIKELY (other_cpu < base->nr_cores))
                                                 if (optimal_load[other_cpu] < 0.999f)
                                                     if (other_cpu_min == -1 || optimal_load[other_cpu_min] > optimal_load[other_cpu])
@@ -501,7 +501,7 @@ detect_smt_issues (const Ptr<CPUGraph> &base)
                                             optimal_num_instr_executed[other_cpu_min] += (1.0f + SMT_SLOWDOWN) * load_to_move;
 
                                             /* Decrease combined_usage by load_to_move */
-                                            for (guint j = topo->cores[core].num_logical_cpus; load_to_move > 0 && j != 0;)
+                                            for (guint j = topo->cores[core].logical_cpus.size(); load_to_move > 0 && j != 0;)
                                             {
                                                 guint cpu = topo->cores[core].logical_cpus[--j];
                                                 if (G_LIKELY (cpu < base->nr_cores))

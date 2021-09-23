@@ -37,6 +37,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #if defined (__linux__) || defined (__FreeBSD_kernel__)
@@ -432,10 +434,10 @@ read_cpu_data (std::vector<CpuData> &data)
 Ptr0<Topology>
 read_topology ()
 {
-    std::vector<gint> core_ids;
+    std::unordered_set<gint> core_ids;
+    std::unordered_map<guint, gint> logical_cpu_2_core;
     gint max_core_id = -1;
 
-    guint num_all_logical_cpus = 0;
     guint num_online_logical_cpus = 0;
     for (guint logical_cpu = 0; true; logical_cpu++)
     {
@@ -443,8 +445,6 @@ read_topology ()
 
         if (!xfce4::is_directory (xfce4::sprintf ("%s/cpu%d", SYSFS_BASE, logical_cpu)))
             break;
-
-        num_all_logical_cpus++;
 
         std::string file_contents;
         if (xfce4::read_file (xfce4::sprintf ("%s/cpu%d/topology/core_id", SYSFS_BASE, logical_cpu), file_contents))
@@ -455,75 +455,67 @@ read_topology ()
                 return nullptr;
 
             num_online_logical_cpus++;
-            core_ids.push_back(core_id);
+            core_ids.insert(core_id);
+            logical_cpu_2_core[logical_cpu] = core_id;
             if (max_core_id < core_id)
                 max_core_id = core_id;
         }
         else
         {
             /* The CPU is probably offline */
-            core_ids.push_back(-1);
+            logical_cpu_2_core[logical_cpu] = -1;
         }
     }
 
-    const guint num_all_cores = guint(max_core_id + 1);
+    const size_t num_cores = core_ids.size();
+    const size_t num_logical_cpus = logical_cpu_2_core.size();
 
     /* Perform some sanity checks */
-    if (G_UNLIKELY (max_core_id < 0 || max_core_id > G_MAXINT-1 || !(num_all_cores <= num_all_logical_cpus)))
+    if (G_UNLIKELY (max_core_id < 0 || max_core_id > G_MAXINT-1 || !(num_cores <= num_logical_cpus)))
         return nullptr;
 
-    if (!core_ids.empty())
+    if (!logical_cpu_2_core.empty())
     {
         auto t = xfce4::make<Topology>();
 
         /* Fill-in the topology data */
-        t->num_all_logical_cpus = num_all_logical_cpus;
+
+        t->num_logical_cpus = num_logical_cpus;
         t->num_online_logical_cpus = num_online_logical_cpus;
-        t->num_all_cores = num_all_cores;
-        t->num_online_cores = 0;
-        t->logical_cpu_2_core.resize(num_all_logical_cpus);
-        t->cores.resize(num_all_cores);
-        t->smt = false;
-        for (gint core_id : core_ids)
+        t->num_cores = num_cores;
+        t->logical_cpu_2_core.resize(num_logical_cpus);
         {
-            if (core_id != -1)
+            for (const auto &i : logical_cpu_2_core)
             {
-                switch (++(t->cores[core_id].num_logical_cpus))
-                {
-                    case 1:
-                        t->num_online_cores++;
-                        break;
-                    case 2:
-                        t->smt = true;
-                        break;
-                }
-            }
-        }
-        for (guint i = 0; i < num_all_cores; i++)
-        {
-            t->cores[i].logical_cpus.resize(t->cores[i].num_logical_cpus);
-            t->cores[i].num_logical_cpus = 0;
-            /* The zeroed num_logical_cpus will be restored in the for-loop below */
-        }
-        {
-            guint logical_cpu = 0;
-            for (gint core_id : core_ids)
-            {
+                guint logical_cpu = i.first;
+                gint core_id = i.second;
                 if (core_id != -1)
                 {
                     t->logical_cpu_2_core[logical_cpu] = core_id;
-                    t->cores[core_id].logical_cpus[t->cores[core_id].num_logical_cpus++] = logical_cpu;
+                    t->cores[core_id].logical_cpus.push_back(logical_cpu);
                 }
                 else
                 {
                     t->logical_cpu_2_core[logical_cpu] = -1;
                 }
                 g_info ("thread %u is in core %d", logical_cpu, t->logical_cpu_2_core[logical_cpu]);
-                logical_cpu++;
             }
-            g_assert (logical_cpu == num_all_logical_cpus);
+        }
+
+        t->num_online_cores = 0;
+        t->smt = false;
+        for (const auto &i : t->cores)
+        {
+            const Topology::CpuCore &core = i.second;
+            if (!core.logical_cpus.empty())
+                t->num_online_cores++;
+            if (core.logical_cpus.size() > 1)
+                t->smt = true;
         }
         t->smt_ratio = t->num_online_logical_cpus / (gdouble) t->num_online_cores;
+
+        g_info ("num_logical_cpus: %u total, %u online", t->num_logical_cpus, t->num_online_logical_cpus);
+        g_info ("num_cores: %u total, %u online", t->num_cores, t->num_online_cores);
         g_info ("smt: %s, ratio=%.3f", t->smt ? "active" : "inactive", t->smt_ratio);
 
         return t;

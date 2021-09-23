@@ -25,6 +25,7 @@
 #define _XFCE_CPUGRAPH_OS_H_
 
 #include <glib.h>
+#include <unordered_map>
 #include <vector>
 #include "xfce4++/util.h"
 
@@ -52,21 +53,22 @@ struct CpuStats
     } num_instructions_executed;
 };
 
-/* All pointers in this data structure are internal to a single memory allocation
- * and thus the whole data structure can be deallocated using a single call to g_free().
- * Consequenly, pointers exported/read from this data structure are invalid after the deallocation. */
 struct Topology
 {
-    guint num_all_logical_cpus;
+    guint num_logical_cpus;
     guint num_online_logical_cpus;
-    guint num_all_cores;                  /* Range: <1, num_all_logical_cpus> */
+    guint num_cores;                      /* Range: <1, num_logical_cpus> */
     guint num_online_cores;               /* Range: <1, num_online_logical_cpus> */
     std::vector<gint> logical_cpu_2_core; /* Maps a logical CPU to its core, or to -1 if offline */
+
     struct CpuCore {
-        guint num_logical_cpus;           /* Number of logical CPUs in this core. Might be zero. */
-        std::vector<guint> logical_cpus;  /* logical_cpus[i] range: <0, num_all_logical_cpus> */
+        std::vector<guint> logical_cpus;  /* Logical CPUs in this core. Empty if the core is offline. */
     };
-    std::vector<CpuCore> cores;
+
+    /* Maps a core ID to a CpuCore. The core ID can be larger than num_cores,
+     * for example in case of a 6-core CPU on an 8-core die (2 cores are disabled). */
+    std::unordered_map<guint, CpuCore> cores;
+
     bool smt;           /* Simultaneous multi-threading (hyper-threading) */
     gdouble smt_ratio;  /* Equals to (num_online_logical_cpus / num_online_cores), >= 1.0 */
 };
