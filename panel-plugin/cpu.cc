@@ -410,6 +410,9 @@ detect_smt_issues (const Ptr<CPUGraph> &base)
             optimal_num_instr_executed[i] = load;
         }
 
+        const gfloat THRESHOLD = 1.0 + 0.1;       /* A lower bound (this core) */
+        const gfloat THRESHOLD_OTHER = 1.0 - 0.1; /* An upper bound (some other core) */
+
         for (guint i = 0; i < base->nr_cores; i++)
         {
             if (G_LIKELY (i < topo->num_logical_cpus))
@@ -417,9 +420,6 @@ detect_smt_issues (const Ptr<CPUGraph> &base)
                 const gint core = topo->logical_cpu_2_core[i];
                 if (G_LIKELY (core != -1) && topo->cores[core].logical_cpus.size() >= 2)
                 {
-                    const gfloat THRESHOLD = 1.0 + 0.1;       /* A lower bound (this core) */
-                    const gfloat THRESHOLD_OTHER = 1.0 - 0.1; /* An upper bound (some other core) */
-
                     /* _Approximate_ slowdown if two threads
                      * are executed on the same physical core
                      * instead of being executed on separate cores.
@@ -571,6 +571,35 @@ detect_smt_issues (const Ptr<CPUGraph> &base)
                     base->stats.num_instructions_executed.during_smt_incidents.actual += actual_num_instr_executed[i];
                     base->stats.num_instructions_executed.during_smt_incidents.optimal += optimal_num_instr_executed[i];
                 }
+            }
+        }
+
+        /* At this point, the values in suboptimal[] are based on values in optimal_load.
+         * This can falsely mark a CPU as suboptimal if the algoritm moved some work to the CPU from other CPUs.
+         * Fix false positives in suboptimal[] based on values in actual_load.
+         *
+         * It is uncertain whether this correction should be performed before or after instruction counter updates.
+         */
+        for (const auto &core_iterator : topo->cores)
+        {
+            const Topology::CpuCore &core = core_iterator.second;
+
+            bool positive = false;
+            for (guint cpu : core.logical_cpus)
+                if (G_LIKELY (cpu < base->nr_cores))
+                    positive |= suboptimal[cpu];
+
+            if (positive)
+            {
+                gfloat actual_combined_usage = 0;
+                for (guint cpu : core_iterator.second.logical_cpus)
+                    actual_combined_usage += actual_load[cpu];
+
+                bool false_positive = !(actual_combined_usage > THRESHOLD);
+                if (false_positive)
+                    for (guint cpu : core.logical_cpus)
+                        if (G_LIKELY (cpu < base->nr_cores))
+                            suboptimal[cpu] = false;
             }
         }
     }
