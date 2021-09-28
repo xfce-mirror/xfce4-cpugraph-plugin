@@ -130,9 +130,9 @@ struct CPUGraph
     struct {
         gssize cap_pow2;            /* Capacity. A power of 2. */
         gssize size;                /* size <= cap_pow2 */
-        gssize mask;                /* Equals to (cap_pow2 - 1) */
         gssize offset;              /* Circular buffer position. Range: from 0 to (cap_pow2 - 1) */
         std::vector<CpuLoad*> data; /* Circular buffers */
+        gssize mask() const         { return cap_pow2 - 1; }
     } history;
     std::vector<CpuData> cpu_data;  /* size == nr_cores+1 */
     Ptr0<Topology> topology;

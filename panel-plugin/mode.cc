@@ -59,7 +59,7 @@ nearest_loads (const Ptr<const CPUGraph> &base, const guint core, const gint64 s
 {
     const gssize history_cap_pow2 = base->history.cap_pow2;
     const CpuLoad *history_data = base->history.data[core];
-    const gssize history_mask = base->history.mask;
+    const gssize history_mask = base->history.mask();
     const gssize history_offset = base->history.offset;
 
     if (!base->non_linear)
