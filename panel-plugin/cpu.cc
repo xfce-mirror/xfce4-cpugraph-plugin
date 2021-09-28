@@ -255,14 +255,13 @@ resize_history (const Ptr<CPUGraph> &base, gssize history_size)
     if (cap_pow2 != old_cap_pow2)
     {
         const std::vector<CpuLoad*> old_data = std::move(base->history.data);
-        const gssize old_mask = base->history.mask;
+        const gssize old_mask = base->history.mask();
         const gssize old_offset = base->history.offset;
 
         base->history.cap_pow2 = cap_pow2;
         base->history.data.resize(base->nr_cores + 1);
         for (guint core = 0; core < base->nr_cores + 1; core++)
             base->history.data[core] = (CpuLoad*) g_malloc0 (cap_pow2 * sizeof (CpuLoad));
-        base->history.mask = cap_pow2 - 1;
         base->history.offset = 0;
         if (!old_data.empty())
         {
@@ -621,7 +620,7 @@ update_cb (const Ptr<CPUGraph> &base)
         const gint64 timestamp = g_get_real_time ();
 
         /* Prepend the current CPU load to the history */
-        base->history.offset = (base->history.offset - 1) & base->history.mask;
+        base->history.offset = (base->history.offset - 1) & base->history.mask();
         for (guint core = 0; core < base->nr_cores + 1; core++)
         {
             CpuLoad load;
