@@ -29,6 +29,6 @@
 #include "xfce4++/util/gtk.h"
 #include "xfce4++/util/io.h"
 #include "xfce4++/util/rc.h"
-#include "xfce4++/util/string.h"
+#include "xfce4++/util/string-utils.h"
 
 #endif /* _XFCE4PP_UTIL_H_ */

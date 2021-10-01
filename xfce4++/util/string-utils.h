@@ -18,8 +18,8 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _XFCE4PP_UTIL_STRING_H_
-#define _XFCE4PP_UTIL_STRING_H_
+#ifndef _XFCE4PP_UTIL_STRINGUTILS_H_
+#define _XFCE4PP_UTIL_STRINGUTILS_H_
 
 #include <glib.h>
 #include <string>
@@ -33,4 +33,4 @@ std::string trim_right(const std::string &s);
 
 } /* namespace xfce4 */
 
-#endif /* _XFCE4PP_UTIL_STRING_H_ */
+#endif /* _XFCE4PP_UTIL_STRINGUTILS_H_ */
