@@ -1,3 +1,31 @@
+1.2.4 (2021-10-01)
+=====
+- Update README
+- New icons
+- Lower the number of false positives in sub-optimal SMT scheduling
+- Account for irregular core IDs in CPU topology (issue #25)
+- Increase type-safety of the return types of callback functions
+- Fix CPU topology initialization memory leak
+- Replace author nicknames with real names
+- Update and sort the list of authors
+- Use C++ λ-functions for widget signal handlers
+- Slightly improved CPU count detection in case some CPUs are offline
+- Bump requirements to version 4.14
+- Enable close button translations (issue #24)
+- Fix compiler warnings on FreeBSD and SUN
+- Bump properties dialog to Xfce 4.14 API
+- Avoid FreeBSD "string.h" include file issue
+- Translation Updates:
+  Albanian, Arabic, Armenian (Armenia), Basque, Belarusian,
+  Bulgarian, Catalan, Chinese (China), Chinese (Taiwan), Croatian,
+  Czech, Danish, Dutch, Eastern Armenian, English (Australia), English
+  (United Kingdom), Estonian, Finnish, French, Galician, German, Greek,
+  Hebrew, Hungarian, Icelandic, Indonesian, Interlingue, Italian,
+  Japanese, Kazakh, Korean, Lithuanian, Malay, Norwegian Bokmål,
+  Occitan (post 1500), Polish, Portuguese, Portuguese (Brazil),
+  Russian, Serbian, Slovak, Slovenian, Spanish, Swedish, Thai, Turkish,
+  Ukrainian, Uyghur
+
 1.2.3 (2021-02-23)
 =====
 - Add support for per-core history graphs
