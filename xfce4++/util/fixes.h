@@ -33,7 +33,10 @@
  */
 #define LIBXFCE4UTIL_INSIDE_LIBXFCE4UTIL_H
 extern "C" {
-    #include <libxfce4util/xfce-gio-extensions.h>
+    #include <libxfce4util/libxfce4util-config.h>
+    #if LIBXFCE4UTIL_CHECK_VERSION(4, 17, 0)
+        #include <libxfce4util/xfce-gio-extensions.h>
+    #endif
     #include <libxfce4util/xfce-i18n.h>
 }
 #undef LIBXFCE4UTIL_INSIDE_LIBXFCE4UTIL_H
