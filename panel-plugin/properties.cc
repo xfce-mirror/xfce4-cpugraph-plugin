@@ -92,7 +92,7 @@ static void       setup_color_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const
 static void       setup_load_threshold_option (GtkBox *vbox, GtkSizeGroup *sg, const Ptr<CPUGraph> &base);
 static GtkBox*    setup_per_core_spacing_option (GtkBox *vbox, GtkSizeGroup *sg, const Ptr<CPUGraph> &base);
 static void       change_color (GtkColorButton  *button, const Ptr<CPUGraph> &base, CPUGraphColorNumber number);
-static void       update_sensitivity (const Ptr<CPUGraphOptions> &data);
+static void       update_sensitivity (const Ptr<CPUGraphOptions> &data, bool initial = false);
 static bool       update_cb (const Ptr<CPUGraphOptions> &data);
 
 void
@@ -225,8 +225,9 @@ create_options (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
     update_cb (dlg_data);
     dlg_data->timeout_id = xfce4::timeout_add (100, [dlg_data]() -> bool { return update_cb(dlg_data); });
 
-    update_sensitivity (dlg_data);
-    gtk_widget_show_all (dlg);
+    gtk_widget_show_all (notebook);
+    update_sensitivity (dlg_data, true);
+    gtk_widget_show (dlg);
 }
 
 static GtkBox *
@@ -404,9 +405,12 @@ setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, const Ptr<CPUGraphOptions>
     gtk_entry_set_icon_from_icon_name (GTK_ENTRY (associatecommand),
                                        GTK_ENTRY_ICON_SECONDARY,
                                        "help-contents");
+    auto tooltip = std::string() +
+        _("The command to run when the plugin is left-clicked.") + "\n" +
+        _("If not specified, it defaults to xfce4-taskmanager, htop or top.");
     gtk_entry_set_icon_tooltip_text (GTK_ENTRY (associatecommand),
                                      GTK_ENTRY_ICON_SECONDARY,
-                                     _("Defaults to xfce4-taskmanager, htop or top."));
+                                     tooltip.c_str());
     gtk_box_pack_start (GTK_BOX (hbox), associatecommand, FALSE, FALSE, 0);
     xfce4::connect (GTK_ENTRY (associatecommand), "changed", [data](GtkEntry *entry) {
         CPUGraph::set_command (data->base, gtk_entry_get_text (entry));
@@ -500,7 +504,7 @@ change_color (GtkColorButton *button, const Ptr<CPUGraph> &base, CPUGraphColorNu
 }
 
 static void
-update_sensitivity (const Ptr<CPUGraphOptions> &data)
+update_sensitivity (const Ptr<CPUGraphOptions> &data, bool initial)
 {
     const Ptr<CPUGraph> base = data->base;
     const bool default_command = base->command.empty();
@@ -510,6 +514,16 @@ update_sensitivity (const Ptr<CPUGraphOptions> &data)
                               base->has_bars && base->topology && base->topology->smt);
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_in_terminal), !default_command);
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_startup_notification), !default_command);
+    if (initial)
+    {
+        gtk_widget_set_visible (GTK_WIDGET (data->hbox_in_terminal), !default_command);
+        gtk_widget_set_visible (GTK_WIDGET (data->hbox_startup_notification), !default_command);
+    }
+    else
+    {
+        gtk_widget_set_visible (GTK_WIDGET (data->hbox_in_terminal), true);
+        gtk_widget_set_visible (GTK_WIDGET (data->hbox_startup_notification), true);
+    }
     gtk_widget_set_sensitive (GTK_WIDGET (data->per_core), per_core);
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_per_core_spacing), per_core && base->per_core);
 
