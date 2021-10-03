@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-14 00:48+0200\n"
-"PO-Revision-Date: 2021-05-08 18:49+0000\n"
-"Last-Translator: Arve Eriksson <031299870@telia.com>\n"
+"POT-Creation-Date: 2021-10-03 00:50+0200\n"
+"PO-Revision-Date: 2021-10-02 22:50+0000\n"
+"Last-Translator: Xfce Bot <transifex@xfce.org>\n"
 "Language-Team: Swedish (http://www.transifex.com/xfce/xfce-panel-plugins/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,243 +21,246 @@ msgstr ""
 "Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../panel-plugin/cpu.cc:161 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.cc:167 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Grafisk representation av processorbelastning"
 
-#: ../panel-plugin/cpu.cc:163
+#: ../panel-plugin/cpu.cc:169
 msgid "Copyright (c) 2003-2021\n"
 msgstr "Copyright (c) 2003-2021\n"
 
-#: ../panel-plugin/cpu.cc:634
+#: ../panel-plugin/cpu.cc:642
 #, c-format
 msgid "Usage: %u%%"
 msgstr "Användning: %u%%"
 
-#: ../panel-plugin/properties.cc:172
-msgid "CPU Graph Properties"
-msgstr "Egenskaper för processorgraf"
-
-#: ../panel-plugin/properties.cc:176
-msgid "_Close"
-msgstr "_Stäng"
-
-#: ../panel-plugin/properties.cc:198
-msgid "Run in terminal"
-msgstr "Kör i terminal"
-
-#: ../panel-plugin/properties.cc:201
-msgid "Use startup notification"
-msgstr "Använd startnotifiering"
-
-#: ../panel-plugin/properties.cc:205
-msgid ""
-"Color used to highlight potentially suboptimal\n"
-"placement of threads on CPUs with SMT"
-msgstr "Färg som används för att markera potentiellt suboptimal\nplacering av trådar på CPU med SMT"
-
-#: ../panel-plugin/properties.cc:207
+#: ../panel-plugin/properties.cc:70
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
 msgstr "'Översikt' visar påverkan på maskinens övergripande prestanda."
 
-#: ../panel-plugin/properties.cc:208
+#: ../panel-plugin/properties.cc:71
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
 msgstr "\"Hotspots\" visar den tillfälliga påverkan på tjänsten endast för de trådar som är involverade i suboptimala SMT-planeringsbeslut"
 
-#: ../panel-plugin/properties.cc:211
+#: ../panel-plugin/properties.cc:104
+msgid "CPU Graph Properties"
+msgstr "Egenskaper för processorgraf"
+
+#: ../panel-plugin/properties.cc:108
+msgid "_Close"
+msgstr "_Stäng"
+
+#: ../panel-plugin/properties.cc:136
+msgid "Run in terminal"
+msgstr "Kör i terminal"
+
+#: ../panel-plugin/properties.cc:142
+msgid "Use startup notification"
+msgstr "Använd startnotifiering"
+
+#: ../panel-plugin/properties.cc:149
+msgid ""
+"Color used to highlight potentially suboptimal\n"
+"placement of threads on CPUs with SMT"
+msgstr "Färg som används för att markera potentiellt suboptimal\nplacering av trådar på CPU med SMT"
+
+#: ../panel-plugin/properties.cc:152
 msgid "Highlight suboptimal SMT scheduling"
 msgstr "Markera suboptimal SMT-schemaläggning"
 
-#: ../panel-plugin/properties.cc:214
+#: ../panel-plugin/properties.cc:158
 msgid "SMT issues color:"
 msgstr "Färg för SMT-problem:"
 
-#: ../panel-plugin/properties.cc:217
+#: ../panel-plugin/properties.cc:163
 msgid "Use non-linear time-scale"
 msgstr "Ickelinjär tidsskala"
 
-#: ../panel-plugin/properties.cc:218
+#: ../panel-plugin/properties.cc:168
 msgid "Per-core history graphs"
 msgstr "Historikdiagram per kärna"
 
-#: ../panel-plugin/properties.cc:222
+#: ../panel-plugin/properties.cc:176
 msgid "Color 1:"
 msgstr "Färg 1:"
 
-#: ../panel-plugin/properties.cc:223
+#: ../panel-plugin/properties.cc:179
 msgid "Color 2:"
 msgstr "Färg 2:"
 
-#: ../panel-plugin/properties.cc:224
+#: ../panel-plugin/properties.cc:182
 msgid "Color 3:"
 msgstr "Färg 3:"
 
-#: ../panel-plugin/properties.cc:225
+#: ../panel-plugin/properties.cc:185
 msgid "Background:"
 msgstr "Bakgrund:"
 
-#: ../panel-plugin/properties.cc:229
+#: ../panel-plugin/properties.cc:191
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Visa aktuell användningsrad"
 msgstr[1] "Visa aktuella användningsrader"
 
-#: ../panel-plugin/properties.cc:232
+#: ../panel-plugin/properties.cc:197
 msgid "Bars color:"
 msgstr "Stapelfärg:"
 
-#: ../panel-plugin/properties.cc:234
+#: ../panel-plugin/properties.cc:202
 msgid "Show frame"
 msgstr "Visa ram"
 
-#: ../panel-plugin/properties.cc:235
+#: ../panel-plugin/properties.cc:207
 msgid "Show border"
 msgstr "Visa ram"
 
-#: ../panel-plugin/properties.cc:242
+#: ../panel-plugin/properties.cc:218
 msgid "Appearance"
 msgstr "Utseende"
 
-#: ../panel-plugin/properties.cc:244
+#: ../panel-plugin/properties.cc:219
 msgid "Advanced"
 msgstr "Avancerat"
 
-#: ../panel-plugin/properties.cc:246
+#: ../panel-plugin/properties.cc:220
 msgid "Stats"
 msgstr "Statistik"
 
-#: ../panel-plugin/properties.cc:370
+#: ../panel-plugin/properties.cc:321
 msgid "Fastest (~250ms)"
 msgstr "Snabbast (~250 ms)"
 
-#: ../panel-plugin/properties.cc:371
+#: ../panel-plugin/properties.cc:322
 msgid "Fast (~500ms)"
 msgstr "Snabb (~500 ms)"
 
-#: ../panel-plugin/properties.cc:372
+#: ../panel-plugin/properties.cc:323
 msgid "Normal (~750ms)"
 msgstr "Normal (~750 ms)"
 
-#: ../panel-plugin/properties.cc:373
+#: ../panel-plugin/properties.cc:324
 msgid "Slow (~1s)"
 msgstr "Långsam (~1 s)"
 
-#: ../panel-plugin/properties.cc:374
+#: ../panel-plugin/properties.cc:325
 msgid "Slowest (~3s)"
 msgstr "Långsammast (~3s)"
 
-#: ../panel-plugin/properties.cc:378
+#: ../panel-plugin/properties.cc:328
 msgid "Update Interval:"
 msgstr "Uppdateringsintervall: "
 
-#: ../panel-plugin/properties.cc:389
+#: ../panel-plugin/properties.cc:340
 msgid "All"
 msgstr "Alla"
 
-#: ../panel-plugin/properties.cc:393
+#: ../panel-plugin/properties.cc:344
 msgid "Tracked Core:"
 msgstr "Bevakad kärna:"
 
-#: ../panel-plugin/properties.cc:407
+#: ../panel-plugin/properties.cc:360
 msgid "Width:"
 msgstr "Bredd:"
 
-#: ../panel-plugin/properties.cc:409
+#: ../panel-plugin/properties.cc:362
 msgid "Height:"
 msgstr "Höjd:"
 
-#: ../panel-plugin/properties.cc:423
+#: ../panel-plugin/properties.cc:375
 msgid "Threshold (%):"
 msgstr "Tröskel (%):"
 
-#: ../panel-plugin/properties.cc:436
+#: ../panel-plugin/properties.cc:387
 msgid "Spacing:"
 msgstr "Mellanrum:"
 
-#: ../panel-plugin/properties.cc:439
+#: ../panel-plugin/properties.cc:390
 msgid "Spacing between per-core history graphs"
 msgstr "Avstånd mellan historikdiagram per kärna"
 
-#: ../panel-plugin/properties.cc:451
+#: ../panel-plugin/properties.cc:401
 msgid "Associated command:"
 msgstr "Associerat kommando:"
 
-#: ../panel-plugin/properties.cc:460
-msgid "Defaults to xfce4-taskmanager, htop or top."
-msgstr "Standard är xfce4-taskmanager, htop eller top."
+#: ../panel-plugin/properties.cc:409
+msgid "The command to run when the plugin is left-clicked."
+msgstr ""
 
-#: ../panel-plugin/properties.cc:482
+#: ../panel-plugin/properties.cc:410
+msgid "If not specified, it defaults to xfce4-taskmanager, htop or top."
+msgstr ""
+
+#: ../panel-plugin/properties.cc:438
 msgid "Disabled"
 msgstr "Inaktiverad"
 
-#: ../panel-plugin/properties.cc:483
+#: ../panel-plugin/properties.cc:439
 msgid "Normal"
 msgstr "Normal"
 
-#: ../panel-plugin/properties.cc:484
+#: ../panel-plugin/properties.cc:440
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.cc:485
+#: ../panel-plugin/properties.cc:441
 msgid "No history"
 msgstr "Ingen historik"
 
-#: ../panel-plugin/properties.cc:486
+#: ../panel-plugin/properties.cc:442
 msgid "Grid"
 msgstr "Rutnät"
 
-#: ../panel-plugin/properties.cc:512
+#: ../panel-plugin/properties.cc:455
 msgid "Mode:"
 msgstr "Läge:"
 
-#: ../panel-plugin/properties.cc:518
+#: ../panel-plugin/properties.cc:487
 msgid "Solid"
 msgstr "Enfärgad"
 
-#: ../panel-plugin/properties.cc:519
+#: ../panel-plugin/properties.cc:488
 msgid "Gradient"
 msgstr "Gradient"
 
-#: ../panel-plugin/properties.cc:520
+#: ../panel-plugin/properties.cc:489
 msgid "Fire"
 msgstr "Eld"
 
-#: ../panel-plugin/properties.cc:524
+#: ../panel-plugin/properties.cc:493
 msgid "Color mode: "
 msgstr "Färgläge: "
 
-#: ../panel-plugin/properties.cc:743
+#: ../panel-plugin/properties.cc:553
 msgid "SMT detected: Yes"
 msgstr "SMT upptäcktes: Ja"
 
-#: ../panel-plugin/properties.cc:743
+#: ../panel-plugin/properties.cc:553
 msgid "SMT detected: No"
 msgstr "SMT upptäcktes: Nej"
 
-#: ../panel-plugin/properties.cc:768
+#: ../panel-plugin/properties.cc:578
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
 msgstr "Antal SMT-schemaläggningsincidenter: %u"
 
-#: ../panel-plugin/properties.cc:777
-#, c-format
+#: ../panel-plugin/properties.cc:583
 msgid "Estimated performance impact:"
 msgstr "Beräknad prestandapåverkan:"
 
-#: ../panel-plugin/properties.cc:778
+#: ../panel-plugin/properties.cc:584
 #, c-format
 msgid "Overall: %.3g%%"
 msgstr "Övergripande: %.3g %%"
 
-#: ../panel-plugin/properties.cc:779
+#: ../panel-plugin/properties.cc:585
 #, c-format
 msgid "Hotspots: %.3g%%"
 msgstr "Hotspots: %.3g%%"
 
-#: ../panel-plugin/properties.cc:794
+#: ../panel-plugin/properties.cc:597
 msgid "SMT detected: N/A"
 msgstr "SMT upptäcktes: N/A"
 
