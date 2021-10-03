@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-14 00:48+0200\n"
-"PO-Revision-Date: 2021-09-08 12:51+0000\n"
-"Last-Translator: Seong-ho Cho <darkcircle.0426@gmail.com>\n"
+"POT-Creation-Date: 2021-10-03 00:50+0200\n"
+"PO-Revision-Date: 2021-10-02 22:50+0000\n"
+"Last-Translator: Xfce Bot <transifex@xfce.org>\n"
 "Language-Team: Korean (http://www.transifex.com/xfce/xfce-panel-plugins/language/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,242 +18,245 @@ msgstr ""
 "Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../panel-plugin/cpu.c:161 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.cc:167 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "CPU 부하를 그래픽으로 표현합니다"
 
-#: ../panel-plugin/cpu.c:163
+#: ../panel-plugin/cpu.cc:169
 msgid "Copyright (c) 2003-2021\n"
 msgstr "Copyright (c) 2003-2021\n"
 
-#: ../panel-plugin/cpu.c:634
+#: ../panel-plugin/cpu.cc:642
 #, c-format
 msgid "Usage: %u%%"
 msgstr "사용량: %u%%"
 
-#: ../panel-plugin/properties.c:172
-msgid "CPU Graph Properties"
-msgstr "CPU 그래프 속성"
-
-#: ../panel-plugin/properties.c:176
-msgid "_Close"
-msgstr "닫기(_C)"
-
-#: ../panel-plugin/properties.c:198
-msgid "Run in terminal"
-msgstr "터미널에서 실행"
-
-#: ../panel-plugin/properties.c:201
-msgid "Use startup notification"
-msgstr "시작 알림 사용"
-
-#: ../panel-plugin/properties.c:205
-msgid ""
-"Color used to highlight potentially suboptimal\n"
-"placement of threads on CPUs with SMT"
-msgstr "CPU의 SMT 스레드 동작시 잠재적 차선 동작\n강조에 사용하는 색상입니다"
-
-#: ../panel-plugin/properties.c:207
+#: ../panel-plugin/properties.cc:70
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
 msgstr "'전체' 는 머신 전체 성능의 영향 추세를 보여줍니다."
 
-#: ../panel-plugin/properties.c:208
+#: ../panel-plugin/properties.cc:71
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
 msgstr "'활성' 은 차선의 SMT 스케쥴링 결정에 기여하는 스레드에 대해서만 영향을 주는 집중적 성능 추세를 나타냅니다."
 
-#: ../panel-plugin/properties.c:211
+#: ../panel-plugin/properties.cc:104
+msgid "CPU Graph Properties"
+msgstr "CPU 그래프 속성"
+
+#: ../panel-plugin/properties.cc:108
+msgid "_Close"
+msgstr "닫기(_C)"
+
+#: ../panel-plugin/properties.cc:136
+msgid "Run in terminal"
+msgstr "터미널에서 실행"
+
+#: ../panel-plugin/properties.cc:142
+msgid "Use startup notification"
+msgstr "시작 알림 사용"
+
+#: ../panel-plugin/properties.cc:149
+msgid ""
+"Color used to highlight potentially suboptimal\n"
+"placement of threads on CPUs with SMT"
+msgstr "CPU의 SMT 스레드 동작시 잠재적 차선 동작\n강조에 사용하는 색상입니다"
+
+#: ../panel-plugin/properties.cc:152
 msgid "Highlight suboptimal SMT scheduling"
 msgstr "차선 SMT 스케쥴링 강조"
 
-#: ../panel-plugin/properties.c:214
+#: ../panel-plugin/properties.cc:158
 msgid "SMT issues color:"
 msgstr "SMT 표시 색상:"
 
-#: ../panel-plugin/properties.c:217
+#: ../panel-plugin/properties.cc:163
 msgid "Use non-linear time-scale"
 msgstr "비선형 타임스케일 사용"
 
-#: ../panel-plugin/properties.c:218
+#: ../panel-plugin/properties.cc:168
 msgid "Per-core history graphs"
 msgstr "코어당 기록 그래프"
 
-#: ../panel-plugin/properties.c:222
+#: ../panel-plugin/properties.cc:176
 msgid "Color 1:"
 msgstr "색 1:"
 
-#: ../panel-plugin/properties.c:223
+#: ../panel-plugin/properties.cc:179
 msgid "Color 2:"
 msgstr "색 2:"
 
-#: ../panel-plugin/properties.c:224
+#: ../panel-plugin/properties.cc:182
 msgid "Color 3:"
 msgstr "색 3:"
 
-#: ../panel-plugin/properties.c:225
+#: ../panel-plugin/properties.cc:185
 msgid "Background:"
 msgstr "배경색:"
 
-#: ../panel-plugin/properties.c:229
+#: ../panel-plugin/properties.cc:191
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "현재 사용 막대 보기"
 
-#: ../panel-plugin/properties.c:232
+#: ../panel-plugin/properties.cc:197
 msgid "Bars color:"
 msgstr "막대 색상:"
 
-#: ../panel-plugin/properties.c:234
+#: ../panel-plugin/properties.cc:202
 msgid "Show frame"
 msgstr "틀 보기"
 
-#: ../panel-plugin/properties.c:235
+#: ../panel-plugin/properties.cc:207
 msgid "Show border"
 msgstr "테두리 보기"
 
-#: ../panel-plugin/properties.c:242
+#: ../panel-plugin/properties.cc:218
 msgid "Appearance"
 msgstr "모양새"
 
-#: ../panel-plugin/properties.c:244
+#: ../panel-plugin/properties.cc:219
 msgid "Advanced"
 msgstr "고급"
 
-#: ../panel-plugin/properties.c:246
+#: ../panel-plugin/properties.cc:220
 msgid "Stats"
 msgstr "상태"
 
-#: ../panel-plugin/properties.c:370
+#: ../panel-plugin/properties.cc:321
 msgid "Fastest (~250ms)"
 msgstr "아주 빠르게 (~250ms)"
 
-#: ../panel-plugin/properties.c:371
+#: ../panel-plugin/properties.cc:322
 msgid "Fast (~500ms)"
 msgstr "빠르게 (~500ms)"
 
-#: ../panel-plugin/properties.c:372
+#: ../panel-plugin/properties.cc:323
 msgid "Normal (~750ms)"
 msgstr "보통 (~750ms)"
 
-#: ../panel-plugin/properties.c:373
+#: ../panel-plugin/properties.cc:324
 msgid "Slow (~1s)"
 msgstr "느리게 (~1s)"
 
-#: ../panel-plugin/properties.c:374
+#: ../panel-plugin/properties.cc:325
 msgid "Slowest (~3s)"
 msgstr "아주 느리게 (~3s)"
 
-#: ../panel-plugin/properties.c:378
+#: ../panel-plugin/properties.cc:328
 msgid "Update Interval:"
 msgstr "업데이트 주기:"
 
-#: ../panel-plugin/properties.c:389
+#: ../panel-plugin/properties.cc:340
 msgid "All"
 msgstr "모두"
 
-#: ../panel-plugin/properties.c:393
+#: ../panel-plugin/properties.cc:344
 msgid "Tracked Core:"
 msgstr "추적 코어:"
 
-#: ../panel-plugin/properties.c:407
+#: ../panel-plugin/properties.cc:360
 msgid "Width:"
 msgstr "폭:"
 
-#: ../panel-plugin/properties.c:409
+#: ../panel-plugin/properties.cc:362
 msgid "Height:"
 msgstr "높이:"
 
-#: ../panel-plugin/properties.c:423
+#: ../panel-plugin/properties.cc:375
 msgid "Threshold (%):"
 msgstr "임계치 (%):"
 
-#: ../panel-plugin/properties.c:436
+#: ../panel-plugin/properties.cc:387
 msgid "Spacing:"
 msgstr "간격:"
 
-#: ../panel-plugin/properties.c:439
+#: ../panel-plugin/properties.cc:390
 msgid "Spacing between per-core history graphs"
 msgstr "코어당 기록 그래프 간격"
 
-#: ../panel-plugin/properties.c:451
+#: ../panel-plugin/properties.cc:401
 msgid "Associated command:"
 msgstr "관련 명령:"
 
-#: ../panel-plugin/properties.c:460
-msgid "Defaults to xfce4-taskmanager, htop or top."
-msgstr "xfce4-taskmanager의 기본 프로그램, htop 또는 top 입니다."
+#: ../panel-plugin/properties.cc:409
+msgid "The command to run when the plugin is left-clicked."
+msgstr ""
 
-#: ../panel-plugin/properties.c:482
+#: ../panel-plugin/properties.cc:410
+msgid "If not specified, it defaults to xfce4-taskmanager, htop or top."
+msgstr ""
+
+#: ../panel-plugin/properties.cc:438
 msgid "Disabled"
 msgstr "비활성"
 
-#: ../panel-plugin/properties.c:483
+#: ../panel-plugin/properties.cc:439
 msgid "Normal"
 msgstr "일반"
 
-#: ../panel-plugin/properties.c:484
+#: ../panel-plugin/properties.cc:440
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.c:485
+#: ../panel-plugin/properties.cc:441
 msgid "No history"
 msgstr "기록 없음"
 
-#: ../panel-plugin/properties.c:486
+#: ../panel-plugin/properties.cc:442
 msgid "Grid"
 msgstr "그리드"
 
-#: ../panel-plugin/properties.c:512
+#: ../panel-plugin/properties.cc:455
 msgid "Mode:"
 msgstr "모드:"
 
-#: ../panel-plugin/properties.c:518
+#: ../panel-plugin/properties.cc:487
 msgid "Solid"
 msgstr "단순"
 
-#: ../panel-plugin/properties.c:519
+#: ../panel-plugin/properties.cc:488
 msgid "Gradient"
 msgstr "그레디언트"
 
-#: ../panel-plugin/properties.c:520
+#: ../panel-plugin/properties.cc:489
 msgid "Fire"
 msgstr "화염"
 
-#: ../panel-plugin/properties.c:524
+#: ../panel-plugin/properties.cc:493
 msgid "Color mode: "
 msgstr "색상 모드"
 
-#: ../panel-plugin/properties.c:743
+#: ../panel-plugin/properties.cc:553
 msgid "SMT detected: Yes"
 msgstr "SMT 감지: 예"
 
-#: ../panel-plugin/properties.c:743
+#: ../panel-plugin/properties.cc:553
 msgid "SMT detected: No"
 msgstr "SMT 감지: 아니요"
 
-#: ../panel-plugin/properties.c:768
+#: ../panel-plugin/properties.cc:578
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
 msgstr "SMT 스케쥴링 발생 횟수: %u"
 
-#: ../panel-plugin/properties.c:777
-#, c-format
+#: ../panel-plugin/properties.cc:583
 msgid "Estimated performance impact:"
 msgstr "추산 성능 영향:"
 
-#: ../panel-plugin/properties.c:778
+#: ../panel-plugin/properties.cc:584
 #, c-format
 msgid "Overall: %.3g%%"
 msgstr "전체: %.3g%%"
 
-#: ../panel-plugin/properties.c:779
+#: ../panel-plugin/properties.cc:585
 #, c-format
 msgid "Hotspots: %.3g%%"
 msgstr "활성: %.3g%%"
 
-#: ../panel-plugin/properties.c:794
+#: ../panel-plugin/properties.cc:597
 msgid "SMT detected: N/A"
 msgstr "SMT 감지: 불가능"
 
