@@ -416,12 +416,8 @@ read_cpu_data (std::vector<CpuData> &data)
 
 
 
-#if defined (__linux__)
-
-#define SYSFS_BASE "/sys/devices/system/cpu"
-
-Ptr0<Topology>
-read_topology ()
+static Ptr0<Topology>
+read_topology_linux ()
 {
     std::unordered_set<gint> core_ids;
     std::unordered_map<guint, gint> logical_cpu_2_core;
@@ -432,11 +428,13 @@ read_topology ()
     {
         /* See also: https://www.kernel.org/doc/html/latest/admin-guide/cputopology.html */
 
-        if (!xfce4::is_directory (xfce4::sprintf ("%s/cpu%d", SYSFS_BASE, logical_cpu)))
+        const char *sysfs_base = "/sys/devices/system/cpu";
+
+        if (!xfce4::is_directory (xfce4::sprintf ("%s/cpu%d", sysfs_base, logical_cpu)))
             break;
 
         std::string file_contents;
-        if (xfce4::read_file (xfce4::sprintf ("%s/cpu%d/topology/core_id", SYSFS_BASE, logical_cpu), file_contents))
+        if (xfce4::read_file (xfce4::sprintf ("%s/cpu%d/topology/core_id", sysfs_base, logical_cpu), file_contents))
         {
             auto core_id_opt = xfce4::parse_long (file_contents, 10);
             if (core_id_opt.has_value())
@@ -520,12 +518,17 @@ read_topology ()
         return nullptr;
 }
 
-#else
-
 Ptr0<Topology>
 read_topology ()
 {
-    return nullptr;
-}
+    bool is_linux = false;
 
+#if defined __linux__
+    is_linux = true;
 #endif
+
+    if (is_linux)
+        return read_topology_linux();
+    else
+        return nullptr;
+}
