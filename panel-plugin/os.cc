@@ -327,7 +327,7 @@ read_cpu_data (std::vector<CpuData> &data)
     for (guint i = 1; i <= nb_cpu; i++)
     {
         gsize len = CPUSTATES * sizeof (guint64);
-        gint mib[] = {CTL_KERN, KERN_CPTIME2, i - 1};
+        gint mib[] = {CTL_KERN, KERN_CPTIME2, gint(i) - 1};
 
         if (sysctl (mib, 3, &cp_time, &len, NULL, 0) < 0)
             return false;
