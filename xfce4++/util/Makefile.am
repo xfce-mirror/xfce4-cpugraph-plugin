@@ -37,6 +37,7 @@ libxfce4util_pp_la_SOURCES = \
 	io.h \
 	io.cc \
 	memory.h \
+	optional.h \
 	rc.h \
 	rc.cc \
 	string-utils.h \
