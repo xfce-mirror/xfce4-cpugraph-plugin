@@ -23,8 +23,27 @@
 
 #include <glib.h>
 #include <string>
+#include "optional.h"
 
 namespace xfce4 {
+
+/*
+ * Number parsing functions. If parsing fails, an Optional without a value is returned.
+ *
+ * The string can contain just the number, with an optional prefix and suffix consisting from whitespace characters.
+ */
+Optional<glong>  parse_long (const std::string &s, unsigned base = 0);
+Optional<gulong> parse_ulong(const std::string &s, unsigned base = 0);
+
+/*
+ * Number parsing functions which move an indirect string pointer
+ * to the character which follows the parsed number.
+ * If parsing fails then the indirect string pointer is not modified.
+ *
+ * These functions return zero in case of an error.
+ */
+glong  parse_long (gchar **s, unsigned base = 0, bool *error = nullptr);
+gulong parse_ulong(gchar **s, unsigned base = 0, bool *error = nullptr);
 
 std::string sprintf   (const char *fmt, ...) G_GNUC_PRINTF(1, 2);
 std::string trim      (const std::string &s);

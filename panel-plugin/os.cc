@@ -41,6 +41,8 @@
 #include <unordered_set>
 #include <vector>
 
+using xfce4::parse_ulong;
+
 #if defined (__linux__) || defined (__FreeBSD_kernel__)
 #define PROC_STAT "/proc/stat"
 #define PROCMAXLNLEN 256 /* should make it */
@@ -78,19 +80,6 @@ static kstat_ctl_t *kc;
 #endif
 
 #if defined (__linux__) || defined (__FreeBSD_kernel__)
-static gulong
-parse_ulong (gchar **s)
-{
-    guint64 v;
-
-    errno = 0;
-    v = g_ascii_strtoull (*s, s, 0);
-    if (errno || v != (gulong) v)
-        v = 0;
-
-    return v;
-}
-
 guint
 detect_cpu_number ()
 {
@@ -449,16 +438,23 @@ read_topology ()
         std::string file_contents;
         if (xfce4::read_file (xfce4::sprintf ("%s/cpu%d/topology/core_id", SYSFS_BASE, logical_cpu), file_contents))
         {
-            errno = 0;
-            glong core_id = strtol (file_contents.c_str(), NULL, 10);
-            if (G_UNLIKELY (errno || core_id < 0 || core_id > G_MAXINT))
+            auto core_id_opt = xfce4::parse_long (file_contents, 10);
+            if (core_id_opt.has_value())
+            {
+                auto core_id = core_id_opt.value();
+                if (G_LIKELY (core_id >= 0 && core_id <= G_MAXINT))
+                {
+                    num_online_logical_cpus++;
+                    core_ids.insert(core_id);
+                    logical_cpu_2_core[logical_cpu] = core_id;
+                    if (max_core_id < core_id)
+                        max_core_id = core_id;
+                }
+                else
+                    return nullptr;
+            }
+            else
                 return nullptr;
-
-            num_online_logical_cpus++;
-            core_ids.insert(core_id);
-            logical_cpu_2_core[logical_cpu] = core_id;
-            if (max_core_id < core_id)
-                max_core_id = core_id;
         }
         else
         {
