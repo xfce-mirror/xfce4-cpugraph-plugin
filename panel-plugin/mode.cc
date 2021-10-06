@@ -169,7 +169,7 @@ nearest_loads (const Ptr<const CPUGraph> &base, const guint core, const gint64 s
 void
 draw_graph_normal (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core)
 {
-    if (G_UNLIKELY (base->history.data.empty()))
+    if (G_UNLIKELY (core >= base->history.data.size()))
         return;
 
     const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
@@ -216,7 +216,7 @@ draw_graph_normal (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint
 void
 draw_graph_LED (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core)
 {
-    if (G_UNLIKELY (base->history.data.empty()))
+    if (G_UNLIKELY (core >= base->history.data.size()))
         return;
 
     const gint nrx = (w + 2) / 3;
@@ -271,7 +271,7 @@ draw_graph_LED (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint co
 void
 draw_graph_no_history (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core)
 {
-    if (G_UNLIKELY (base->history.data.empty()))
+    if (G_UNLIKELY (core >= base->history.data.size()))
         return;
 
     gfloat usage = base->history.data[core][base->history.offset].value;
@@ -305,7 +305,7 @@ draw_graph_no_history (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, g
 void
 draw_graph_grid (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core)
 {
-    if (G_UNLIKELY (base->history.data.empty()))
+    if (G_UNLIKELY (core >= base->history.data.size()))
         return;
 
     const gfloat thickness = 1.75f;

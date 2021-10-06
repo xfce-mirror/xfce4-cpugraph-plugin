@@ -84,7 +84,7 @@ struct CpuLoad
 {
     gint64 timestamp; /* Microseconds since 1970-01-01 UTC, or zero */
     gfloat value;     /* Range: from 0.0 to 1.0 */
-};
+} __attribute__((packed));
 
 struct CPUGraph
 {

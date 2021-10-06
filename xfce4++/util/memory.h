@@ -62,6 +62,9 @@ inline Ptr<T> make(Args&&... args) {
     return Ptr<T>::template make<Args...>(std::forward<Args>(args)...);
 }
 
+/* Calls malloc_trim(), if malloc_trim() is available */
+bool trim_memory(size_t pad = 0);
+
 } /* namespace xfce4 */
 
 #endif /* _XFCE4PP_UTIL_MEMORY_H_ */
