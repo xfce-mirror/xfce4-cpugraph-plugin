@@ -260,18 +260,19 @@ resize_history (const Ptr<CPUGraph> &base, gssize history_size)
 
         base->history.cap_pow2 = cap_pow2;
         base->history.data.resize(base->nr_cores + 1);
-        for (guint core = 0; core < base->nr_cores + 1; core++)
-            base->history.data[core] = (CpuLoad*) g_malloc0 (cap_pow2 * sizeof (CpuLoad));
         base->history.offset = 0;
-        if (!old_data.empty())
+        for (guint core = 0; core < base->nr_cores + 1; core++)
         {
-            for (guint core = 0; core < base->nr_cores + 1; core++)
+            base->history.data[core] = (CpuLoad*) g_malloc0 (cap_pow2 * sizeof (CpuLoad));
+            if (!old_data.empty())
             {
                 for (gssize i = 0; i < old_cap_pow2 && i < cap_pow2; i++)
                     base->history.data[core][i] = old_data[core][(old_offset + i) & old_mask];
                 g_free (old_data[core]);
             }
         }
+
+        xfce4::trim_memory ();
     }
 
     base->history.size = history_size;
