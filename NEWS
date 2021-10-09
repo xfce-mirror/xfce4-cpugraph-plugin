@@ -1,3 +1,18 @@
+1.2.5 (2021-10-09)
+=====
+- Lower peak memory consumption in case of a long CPU load history
+- Fix OpenBSD codepath (issue #28)
+- Initially hide run-in-terminal checkbox if the command field is empty (#23)
+- Translation Updates:
+  Albanian, Arabic, Armenian (Armenia), Basque, Belarusian, Bulgarian,
+  Catalan, Chinese (China), Chinese (Taiwan), Croatian, Czech, Danish,
+  Dutch, Eastern Armenian, English (Australia), English (United
+  Kingdom), Estonian, Finnish, French, Galician, German, Greek, Hebrew,
+  Hungarian, Icelandic, Indonesian, Interlingue, Italian, Japanese,
+  Kazakh, Korean, Lithuanian, Malay, Norwegian Bokmål, Occitan (post
+  1500), Polish, Portuguese, Portuguese (Brazil), Russian, Serbian,
+  Slovak, Slovenian, Spanish, Swedish, Thai, Turkish, Ukrainian, Uyghur
+
 1.2.4 (2021-10-01)
 =====
 - Update README
