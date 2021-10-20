@@ -38,21 +38,47 @@ void Rc::close() {
     }
 }
 
-void Rc::delete_entry(const std::string &key, bool global) {
-    xfce_rc_delete_entry(rc, key.c_str(), global);
+void Rc::delete_entry(const char *key, bool global) {
+    xfce_rc_delete_entry(rc, key, global);
 }
 
-Ptr0<std::string> Rc::read_entry(const std::string &key, const char *fallback_orNull) const {
-    const gchar *e = xfce_rc_read_entry(rc, key.c_str(), fallback_orNull);
+void Rc::delete_entry(const std::string &key, bool global) { delete_entry(key.c_str(), global); }
+
+bool Rc::has_group(const char *group) const {
+    return xfce_rc_has_group(rc, group);
+}
+
+bool Rc::has_group(const std::string &group) const { return has_group(group.c_str()); }
+
+bool Rc::read_bool_entry(const char *key, bool fallback) const {
+    return xfce_rc_read_bool_entry(rc, key, fallback);
+}
+
+bool Rc::read_bool_entry(const std::string &key, bool fallback) const { return read_bool_entry(key.c_str(), fallback); }
+
+Ptr0<std::string> Rc::read_entry(const char *key, const char *fallback_orNull) const {
+    const gchar *e = xfce_rc_read_entry(rc, key, fallback_orNull);
     if(e)
         return make<std::string>(e);
     else
         return nullptr;
 }
 
-gint Rc::read_int_entry(const std::string &key, gint fallback) const {
-    return xfce_rc_read_int_entry(rc, key.c_str(), fallback);
+Ptr0<std::string> Rc::read_entry(const std::string &key, const char *fallback_orNull) const {
+    return read_entry(key.c_str(), fallback_orNull);
 }
+
+gint Rc::read_int_entry(const char *key, gint fallback) const {
+    return xfce_rc_read_int_entry(rc, key, fallback);
+}
+
+gint Rc::read_int_entry(const std::string &key, gint fallback) const { return read_int_entry(key.c_str(), fallback); }
+
+void Rc::set_group(const char *group) {
+    xfce_rc_set_group(rc, group);
+}
+
+void Rc::set_group(const std::string &group) { set_group(group.c_str()); }
 
 Ptr0<Rc> Rc::simple_open(const std::string &filename, bool readonly) {
     XfceRc *rc = xfce_rc_simple_open(filename.c_str(), readonly);
@@ -62,12 +88,24 @@ Ptr0<Rc> Rc::simple_open(const std::string &filename, bool readonly) {
         return nullptr;
 }
 
-void Rc::write_entry(const std::string &key, const std::string &value) {
-    xfce_rc_write_entry(rc, key.c_str(), value.c_str());
+void Rc::write_bool_entry(const char *key, bool value) {
+    xfce_rc_write_bool_entry(rc, key, value);
 }
 
-void Rc::write_int_entry(const std::string &key, gint value) {
-    xfce_rc_write_int_entry(rc, key.c_str(), value);
+void Rc::write_bool_entry(const std::string &key, bool value) { write_bool_entry(key.c_str(), value); }
+
+void Rc::write_entry(const char *key, const char *value) {
+    xfce_rc_write_entry(rc, key, value);
 }
+
+void Rc::write_entry(const char        *key, const std::string &value) { write_entry(key        , value.c_str()); }
+void Rc::write_entry(const std::string &key, const char        *value) { write_entry(key.c_str(), value        ); }
+void Rc::write_entry(const std::string &key, const std::string &value) { write_entry(key.c_str(), value.c_str()); }
+
+void Rc::write_int_entry(const char *key, gint value) {
+    xfce_rc_write_int_entry(rc, key, value);
+}
+
+void Rc::write_int_entry(const std::string &key, gint value) { write_int_entry(key.c_str(), value); }
 
 } /* namespace xfce4 */
