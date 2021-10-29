@@ -45,10 +45,14 @@ Optional<gulong> parse_ulong(const std::string &s, unsigned base = 0);
 glong  parse_long (gchar **s, unsigned base = 0, bool *error = nullptr);
 gulong parse_ulong(gchar **s, unsigned base = 0, bool *error = nullptr);
 
-std::string sprintf   (const char *fmt, ...) G_GNUC_PRINTF(1, 2);
-std::string trim      (const std::string &s);
-std::string trim_left (const std::string &s);
-std::string trim_right(const std::string &s);
+bool        ends_with  (const std::string &s, const char        *suffix);
+bool        ends_with  (const std::string &s, const std::string &suffix);
+std::string sprintf    (const char *fmt, ...) G_GNUC_PRINTF(1, 2);
+bool        starts_with(const std::string &s, const char        *prefix);
+bool        starts_with(const std::string &s, const std::string &prefix);
+std::string trim       (const std::string &s);
+std::string trim_left  (const std::string &s);
+std::string trim_right (const std::string &s);
 
 } /* namespace xfce4 */
 
