@@ -20,11 +20,33 @@
 
 #include "string-utils.h"
 
+#include <algorithm>
 #include <cerrno>
 #include <cstdarg>
 #include <cstdio>
 
 namespace xfce4 {
+
+bool ends_with(const std::string &s, const char *suffix) {
+    size_t suffix_size = strlen(suffix);
+    if(s.size() >= suffix_size) {
+        size_t d = s.size() - suffix_size;
+        return std::equal(s.begin() + d, s.end(), suffix);
+    }
+    else {
+        return false;
+    }
+}
+
+bool ends_with(const std::string &s, const std::string &suffix) {
+    if(s.size() >= suffix.size()) {
+        size_t d = s.size() - suffix.size();
+        return std::equal(s.begin() + d, s.end(), suffix.begin());
+    }
+    else {
+        return false;
+    }
+}
 
 template<typename T, typename fT>
 static T parse_number(gchar **s, unsigned base, bool *error, fT (*f)(const gchar*, gchar**, guint)) {
@@ -105,6 +127,15 @@ std::string sprintf(const char *fmt, ...) {
     }
 
     return "<xfce4::sprintf() failure>";
+}
+
+bool starts_with(const std::string &s, const char *prefix) {
+    size_t prefix_size = strlen(prefix);
+    return s.size() >= prefix_size && std::equal(prefix, prefix + prefix_size, s.begin());
+}
+
+bool starts_with(const std::string &s, const std::string &prefix) {
+    return s.size() >= prefix.size() && std::equal(prefix.begin(), prefix.end(), s.begin());
 }
 
 std::string trim(const std::string &s) {

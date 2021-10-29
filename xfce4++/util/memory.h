@@ -21,10 +21,14 @@
 #ifndef _XFCE4PP_UTIL_MEMORY_H_
 #define _XFCE4PP_UTIL_MEMORY_H_
 
+#include <cstdlib>
+#include <glib.h>
 #include <memory>
 #include <utility>
 
 namespace xfce4 {
+
+template<typename T> struct Ptr0;
 
 /* A pointer that cannot be null */
 template<typename T>
@@ -33,17 +37,19 @@ struct Ptr final {
 
     template<typename... Args>
     static Ptr<T> make(Args&&... args) {
-        Ptr p;
-        p.ptr = std::make_shared<T>(std::forward<Args>(args)...);
-        return p;
+        return Ptr<T>(std::make_shared<T>(std::forward<Args>(args)...));
     }
 
     template<typename U> Ptr(const Ptr<U> &p) : ptr(p.ptr) {}
 
     T* operator->() const { return ptr.get(); }
 
+    template<typename U> bool operator<(const Ptr<U> &p) const { return ptr < p.ptr; }
+
 private:
-    Ptr() {}
+    friend Ptr0<T>;
+    Ptr(const std::shared_ptr<T> &p) : ptr(p) {}
+    Ptr(std::shared_ptr<T> &&p) : ptr(std::move(p)) {}
 };
 
 /* A pointer that can be null */
@@ -54,6 +60,16 @@ struct Ptr0 final : std::shared_ptr<T> {
     template<typename U> Ptr0(const std::shared_ptr<U> &p) : std::shared_ptr<T>(p) {}
     template<typename U> Ptr0(std::shared_ptr<U> &&p) : std::shared_ptr<T>(std::move(p)) {}
     template<typename U> Ptr0(const Ptr<U> &p) : std::shared_ptr<T>(p.ptr) {}
+
+    Ptr<T> toPtr() const {
+        if(*this) {
+            return Ptr<T>(*this);
+        }
+        else {
+            g_error("null pointer");
+            std::abort();
+        }
+    }
 };
 
 /* Allocates a new instance of T on the heap, passing args to T's constructor */
