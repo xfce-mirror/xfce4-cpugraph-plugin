@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-03 00:50+0200\n"
-"PO-Revision-Date: 2021-10-02 22:50+0000\n"
-"Last-Translator: Xfce Bot <transifex@xfce.org>\n"
+"PO-Revision-Date: 2021-10-30 15:27+0000\n"
+"Last-Translator: beriain\n"
 "Language-Team: Basque (http://www.transifex.com/xfce/xfce-panel-plugins/language/eu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -186,11 +186,11 @@ msgstr "Loturiko komandoa:"
 
 #: ../panel-plugin/properties.cc:409
 msgid "The command to run when the plugin is left-clicked."
-msgstr ""
+msgstr "Plugina ezkerreko botoiarekin klikatua denean exekutatuko den komandoa."
 
 #: ../panel-plugin/properties.cc:410
 msgid "If not specified, it defaults to xfce4-taskmanager, htop or top."
-msgstr ""
+msgstr "Zehazten ez bada, xfce4-taskmanager, htop edo top erabiliko dira lehenetsi bezala."
 
 #: ../panel-plugin/properties.cc:438
 msgid "Disabled"
