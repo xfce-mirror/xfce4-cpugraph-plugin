@@ -22,12 +22,12 @@ noinst_LTLIBRARIES = libxfce4util_pp.la
 
 libxfce4util_pp_la_CXXFLAGS = \
 	@GTK_CFLAGS@ \
-	@LIBXFCE4PANEL_CFLAGS@
+	@LIBXFCE4PANEL_CFLAGS@ \
 	@LIBXFCE4UTIL_CFLAGS@
 
 libxfce4util_pp_la_LIBADD = \
 	@GTK_LIBS@ \
-	@LIBXFCE4PANEL_LIBS@
+	@LIBXFCE4PANEL_LIBS@ \
 	@LIBXFCE4UTIL_LIBS@
 
 libxfce4util_pp_la_SOURCES = \
