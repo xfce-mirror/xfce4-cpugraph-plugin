@@ -22,14 +22,16 @@
 
 namespace xfce4 {
 
-const PluginSize  RECTANGLE{true}, SQUARE{false};
-const Propagation PROPAGATE{false}, STOP{true};
-const TooltipTime LATER{false}, NOW{true};
+const PluginSize      RECTANGLE{true}, SQUARE{false};
+const Propagation     PROPAGATE{false}, STOP{true};
+const TimeoutResponse TIMEOUT_AGAIN{true}, TIMEOUT_REMOVE{false};
+const TooltipTime     LATER{false}, NOW{true};
 
-template<typename To, typename From> static To       convert(const From        &from) { return from; }
-template<>                                  gboolean convert(const PluginSize  &from) { return from.rectangle; }
-template<>                                  gboolean convert(const Propagation &from) { return from.stop; }
-template<>                                  gboolean convert(const TooltipTime &from) { return from.now; }
+template<typename To, typename From> static To       convert(const From          &from) { return from; }
+template<>                                  gboolean convert(const PluginSize    &from) { return from.rectangle; }
+template<>                                  gboolean convert(const Propagation   &from) { return from.stop; }
+template<>                                  gboolean convert(const TimeoutResponse &from) { return from.again; }
+template<>                                  gboolean convert(const TooltipTime   &from) { return from.now; }
 
 template<typename GReturnType, typename ObjectType, typename ReturnType, typename... Args>
 struct HandlerData {
@@ -92,22 +94,94 @@ void connect(GtkEntry        *widget, const char *signal, const std::function<vo
 void connect(GtkSpinButton   *widget, const char *signal, const std::function<void(GtkSpinButton*)>   &handler) { _connect<void>(widget, signal, handler); }
 void connect(GtkToggleButton *widget, const char *signal, const std::function<void(GtkToggleButton*)> &handler) { _connect<void>(widget, signal, handler); }
 
+
+
 /*
- * Links to documentation:
- *
- * http://docs.gtk.org/gtk3/signal.Dialog.response.html
- * http://docs.gtk.org/gtk3/signal.Widget.button-press-event.html
- * http://docs.gtk.org/gtk3/signal.Widget.destroy.html
- * http://docs.gtk.org/gtk3/signal.Widget.draw.html
- * http://docs.gtk.org/gtk3/signal.Widget.query-tooltip.html
+ * Connection functions, with links to associated GTK documentation.
  */
 
-void connect_after_draw   (GtkWidget *widget, const std::function<DrawHandler1>    &handler) { connect_after_draw(widget, [handler](GtkWidget*, cairo_t *cr) { return handler(cr); }); }
-void connect_after_draw   (GtkWidget *widget, const std::function<DrawHandler2>    &handler) { _connect<gboolean>(widget, "draw", handler, true); }
-void connect_button_press (GtkWidget *widget, const std::function<ButtonHandler>   &handler) { _connect<gboolean>(widget, "button-press-event", handler); }
-void connect_destroy      (GtkWidget *widget, const std::function<DestroyHandler>  &handler) { _connect<void>    (widget, "destroy", handler); }
-void connect_query_tooltip(GtkWidget *widget, const std::function<TooltipHandler>  &handler) { _connect<gboolean>(widget, "query-tooltip", handler); }
-void connect_response     (GtkDialog *widget, const std::function<ResponseHandler> &handler) { _connect<void>    (widget, "response", handler); }
+void connect_after_draw(GtkWidget *widget, const std::function<DrawHandler1> &handler) {
+    connect_after_draw(widget, [handler](GtkWidget*, cairo_t *cr) {
+        return handler(cr);
+    });
+}
+
+/* http://docs.gtk.org/gtk3/signal.Widget.draw.html */
+void connect_after_draw(GtkWidget *widget, const std::function<DrawHandler2> &handler) {
+    _connect<gboolean>(widget, "draw", handler, true);
+}
+
+/* http://docs.gtk.org/gtk3/signal.Widget.button-press-event.html */
+void connect_button_press(GtkWidget *widget, const std::function<ButtonHandler> &handler) {
+    _connect<gboolean>(widget, "button-press-event", handler);
+}
+
+/* http://docs.gtk.org/gtk3/signal.ComboBox.changed.html */
+void connect_changed(GtkComboBox *widget, const std::function<ChangedHandler_ComboBox> &handler) {
+    _connect<void>(widget, "changed", handler);
+}
+
+/* http://docs.gtk.org/gtk3/signal.Range.change-value.html */
+void connect_change_value(GtkRange *widget, const std::function<ChangeValueHandler_Range> &handler) {
+    _connect<gboolean>(widget, "change-value", handler);
+}
+
+/* http://docs.gtk.org/gtk3/signal.Widget.destroy.html */
+void connect_destroy(GtkWidget *widget, const std::function<DestroyHandler> &handler) {
+    _connect<void>(widget, "destroy", handler);
+}
+
+void connect_draw(GtkWidget *widget, const std::function<DrawHandler1> &handler) {
+    connect_draw(widget, [handler](GtkWidget*, cairo_t *cr) {
+        return handler(cr);
+    });
+}
+
+void connect_draw(GtkWidget *widget, const std::function<DrawHandler2> &handler) {
+    _connect<gboolean>(widget, "draw", handler);
+}
+
+/* http://docs.gtk.org/gtk3/signal.CellRendererText.edited.html */
+void connect_edited(GtkCellRendererText *object, const std::function<EditedHandler> &handler) {
+    _connect<void>(object, "edited", handler);
+}
+
+/* http://docs.gtk.org/gtk3/signal.FontButton.font-set.html */
+ void connect_font_set(GtkFontButton *widget, const std::function<FontSetHandler> &handler) {
+    _connect<void>(widget, "font-set", handler);
+}
+
+/* http://docs.gtk.org/gtk3/signal.Widget.query-tooltip.html */
+void connect_query_tooltip(GtkWidget *widget, const std::function<TooltipHandler> &handler) {
+    _connect<gboolean>(widget, "query-tooltip", handler);
+}
+
+/* http://docs.gtk.org/gtk3/signal.Dialog.response.html */
+void connect_response(GtkDialog *widget, const std::function<ResponseHandler> &handler) {
+    _connect<void>(widget, "response", handler);
+}
+
+/* http://docs.gtk.org/gtk3/signal.CellRendererToggle.toggled.html */
+void connect_toggled(GtkCellRendererToggle *object, const std::function<ToggledHandler_CellRendererToggle> &handler) {
+    _connect<void>(object, "toggled", handler);
+}
+
+/* http://docs.gtk.org/gtk3/signal.ToggleButton.toggled.html */
+void connect_toggled(GtkToggleButton *widget, const std::function<ToggledHandler_ToggleButton> &handler) {
+    _connect<void>(widget, "toggled", handler);
+}
+
+/* http://docs.gtk.org/gtk3/signal.Adjustment.value-changed.html */
+void connect_value_changed(GtkAdjustment *object, const std::function<ValueChangedHandler_Adjustment> &handler) {
+    _connect<void>(object, "value_changed", handler);
+}
+
+/* http://docs.gtk.org/gtk3/signal.SpinButton.value-changed.html */
+void connect_value_changed(GtkSpinButton *widget, const std::function<ValueChangedHandler_SpinButton> &handler) {
+    _connect<void>(widget, "value_changed", handler);
+}
+
+
 
 /*
  * Links to documentation:
@@ -120,24 +194,46 @@ void connect_response     (GtkDialog *widget, const std::function<ResponseHandle
  * http://developer.xfce.org/xfce4-panel/XfcePanelPlugin.html#XfcePanelPlugin-size-changed
  */
 
-void connect_about           (XfcePanelPlugin *plugin, const std::function<PluginHandler>     &handler) { _connect<void>    (plugin, "about", handler); }
-void connect_configure_plugin(XfcePanelPlugin *plugin, const std::function<PluginHandler>     &handler) { _connect<void>    (plugin, "configure-plugin", handler); }
-void connect_free_data       (XfcePanelPlugin *plugin, const std::function<PluginHandler>     &handler) { _connect<void>    (plugin, "free-data", handler); }
-void connect_mode_changed    (XfcePanelPlugin *plugin, const std::function<ModeChangeHandler> &handler) { _connect<void>    (plugin, "mode-changed", handler); }
-void connect_save            (XfcePanelPlugin *plugin, const std::function<PluginHandler>     &handler) { _connect<void>    (plugin, "save", handler); }
-void connect_size_changed    (XfcePanelPlugin *plugin, const std::function<SizeChangeHandler> &handler) { _connect<gboolean>(plugin, "size-changed", handler); }
+void connect_about(XfcePanelPlugin *plugin, const std::function<PluginHandler> &handler) {
+    _connect<void>(plugin, "about", handler);
+}
+
+void connect_configure_plugin(XfcePanelPlugin *plugin, const std::function<PluginHandler> &handler) {
+    _connect<void>(plugin, "configure-plugin", handler);
+}
+
+void connect_free_data(XfcePanelPlugin *plugin, const std::function<PluginHandler> &handler) {
+    _connect<void>(plugin, "free-data", handler);
+}
+
+void connect_mode_changed(XfcePanelPlugin *plugin, const std::function<ModeChangeHandler> &handler) {
+    _connect<void>(plugin, "mode-changed", handler);
+}
+
+void connect_save(XfcePanelPlugin *plugin, const std::function<PluginHandler>     &handler) {
+    _connect<void>(plugin, "save", handler);
+}
+
+void connect_size_changed(XfcePanelPlugin *plugin, const std::function<SizeChangeHandler> &handler) {
+    _connect<gboolean>(plugin, "size-changed", handler);
+}
 
 
 
 struct TimeoutHandlerData {
-    typedef bool FunctionType();
+    static const uint32_t MAGIC = 0x99F67650;
+    const uint32_t magic = MAGIC;
+
+    typedef TimeoutResponse FunctionType();
 
     std::function<FunctionType> handler;
 
     TimeoutHandlerData(const std::function<FunctionType> &_handler) : handler(_handler) {}
 
     static gboolean call(void *data) {
-        return ((TimeoutHandlerData*)data)->handler();
+        auto h = (TimeoutHandlerData*)data;
+        g_assert(h->magic == MAGIC);  /* Try to detect invalid number of parameters in the function signature of h->handler */
+        return convert<gboolean, TimeoutResponse>(h->handler());
     }
 
     static void destroy(void *data) {

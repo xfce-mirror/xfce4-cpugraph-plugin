@@ -93,7 +93,8 @@ static void       setup_load_threshold_option (GtkBox *vbox, GtkSizeGroup *sg, c
 static GtkBox*    setup_per_core_spacing_option (GtkBox *vbox, GtkSizeGroup *sg, const Ptr<CPUGraph> &base);
 static void       change_color (GtkColorButton  *button, const Ptr<CPUGraph> &base, CPUGraphColorNumber number);
 static void       update_sensitivity (const Ptr<CPUGraphOptions> &data, bool initial = false);
-static bool       update_cb (const Ptr<CPUGraphOptions> &data);
+
+static xfce4::TimeoutResponse update_cb (const Ptr<CPUGraphOptions> &data);
 
 void
 create_options (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
@@ -223,7 +224,7 @@ create_options (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
     gtk_container_add (GTK_CONTAINER (content), notebook);
 
     update_cb (dlg_data);
-    dlg_data->timeout_id = xfce4::timeout_add (100, [dlg_data]() -> bool { return update_cb(dlg_data); });
+    dlg_data->timeout_id = xfce4::timeout_add (100, [dlg_data]() { return update_cb(dlg_data); });
 
     gtk_widget_show_all (notebook);
     update_sensitivity (dlg_data, true);
@@ -541,7 +542,7 @@ update_sensitivity (const Ptr<CPUGraphOptions> &data, bool initial)
     gtk_widget_set_sensitive (GTK_WIDGET (data->show_bars_checkbox), base->mode != MODE_DISABLED);
 }
 
-static bool
+static xfce4::TimeoutResponse
 update_cb (const Ptr<CPUGraphOptions> &data)
 {
     const Ptr<CPUGraph> base = data->base;
@@ -603,5 +604,5 @@ update_cb (const Ptr<CPUGraphOptions> &data)
         gtk_widget_set_tooltip_text (GTK_WIDGET (data->smt_stats), show_tooltip ? data->smt_stats_tooltip().c_str() : "");
     }
 
-    return true;
+    return xfce4::TIMEOUT_AGAIN;
 }
