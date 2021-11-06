@@ -608,11 +608,11 @@ detect_smt_issues (const Ptr<CPUGraph> &base)
         base->cpu_data[i+1].smt_highlight = suboptimal[i];
 }
 
-static bool
+static xfce4::TimeoutResponse
 update_cb (const Ptr<CPUGraph> &base)
 {
     if (!read_cpu_data (base->cpu_data))
-        return TRUE;
+        return xfce4::TIMEOUT_AGAIN;
 
     detect_smt_issues (base);
 
@@ -634,7 +634,7 @@ update_cb (const Ptr<CPUGraph> &base)
     queue_draw (base);
     update_tooltip (base);
 
-    return TRUE;
+    return xfce4::TIMEOUT_AGAIN;
 }
 
 static void
@@ -1000,7 +1000,7 @@ CPUGraph::set_update_rate (const Ptr<CPUGraph> &base, CPUGraphUpdateRate rate)
         base->update_interval = rate;
         if (base->timeout_id)
             g_source_remove (base->timeout_id);
-        base->timeout_id = xfce4::timeout_add (interval, [base]() -> bool { return update_cb(base); });
+        base->timeout_id = xfce4::timeout_add (interval, [base]() { return update_cb(base); });
 
         if (change && !init)
             queue_draw (base);

@@ -71,28 +71,52 @@ struct Propagation {
     Propagation() = delete;
 };
 
+struct TimeoutResponse {
+    bool again; /* Invoke the timeout handler again, otherwise stop the timer */
+    TimeoutResponse() = delete;
+};
+
 struct TooltipTime {
     bool now; /* Whether to show the tooltip now or later */
     TooltipTime() = delete;
 };
 
-extern const PluginSize RECTANGLE, SQUARE;
-extern const Propagation PROPAGATE, STOP;
-extern const TooltipTime LATER, NOW; /* If in doubt, use NOW */
+extern const PluginSize      RECTANGLE, SQUARE;
+extern const Propagation     PROPAGATE, STOP;
+extern const TimeoutResponse TIMEOUT_AGAIN, TIMEOUT_REMOVE;
+extern const TooltipTime     LATER, NOW; /* If in doubt, use NOW */
 
-typedef Propagation ButtonHandler  (GtkWidget *widget, GdkEventButton *event);
-typedef void        DestroyHandler (GtkWidget *widget);
-typedef Propagation DrawHandler1   (cairo_t *cr);
-typedef Propagation DrawHandler2   (GtkWidget *widget, cairo_t *cr);
-typedef void        ResponseHandler(GtkDialog *widget, gint response);
-typedef TooltipTime TooltipHandler (GtkWidget *widget, gint x, gint y, bool keyboard, GtkTooltip *tooltip);
+typedef Propagation ButtonHandler                    (GtkWidget *widget, GdkEventButton *event);
+typedef void        ChangedHandler_ComboBox          (GtkComboBox *widget);
+typedef Propagation ChangeValueHandler_Range         (GtkRange *widget, GtkScrollType *scroll, gdouble value);
+typedef void        DestroyHandler                   (GtkWidget *widget);
+typedef Propagation DrawHandler1                     (cairo_t *cr);
+typedef Propagation DrawHandler2                     (GtkWidget *widget, cairo_t *cr);
+typedef void        EditedHandler                    (GtkCellRendererText *object, gchar *path, gchar *new_text);
+typedef void        FontSetHandler                   (GtkFontButton *widget);
+typedef void        ResponseHandler                  (GtkDialog *widget, gint response);
+typedef void        ToggledHandler_CellRendererToggle(GtkCellRendererToggle *object, gchar *path);
+typedef void        ToggledHandler_ToggleButton      (GtkToggleButton *widget);
+typedef TooltipTime TooltipHandler                   (GtkWidget *widget, gint x, gint y, bool keyboard, GtkTooltip *tooltip);
+typedef void        ValueChangedHandler_Adjustment   (GtkAdjustment *object);
+typedef void        ValueChangedHandler_SpinButton   (GtkSpinButton *widget);
 
-void connect_after_draw   (GtkWidget *widget, const std::function<DrawHandler1>    &handler);
-void connect_after_draw   (GtkWidget *widget, const std::function<DrawHandler2>    &handler);
-void connect_button_press (GtkWidget *widget, const std::function<ButtonHandler>   &handler);
-void connect_destroy      (GtkWidget *widget, const std::function<DestroyHandler>  &handler);
-void connect_query_tooltip(GtkWidget *widget, const std::function<TooltipHandler>  &handler);
-void connect_response     (GtkDialog *widget, const std::function<ResponseHandler> &handler);
+void connect_after_draw   (GtkWidget             *widget, const std::function<DrawHandler1>                      &handler);
+void connect_after_draw   (GtkWidget             *widget, const std::function<DrawHandler2>                      &handler);
+void connect_button_press (GtkWidget             *widget, const std::function<ButtonHandler>                     &handler);
+void connect_changed      (GtkComboBox           *widget, const std::function<ChangedHandler_ComboBox>           &handler);
+void connect_change_value (GtkRange              *widget, const std::function<ChangeValueHandler_Range>          &handler);
+void connect_destroy      (GtkWidget             *widget, const std::function<DestroyHandler>                    &handler);
+void connect_draw         (GtkWidget             *widget, const std::function<DrawHandler1>                      &handler);
+void connect_draw         (GtkWidget             *widget, const std::function<DrawHandler2>                      &handler);
+void connect_edited       (GtkCellRendererText   *object, const std::function<EditedHandler>                     &handler);
+void connect_font_set     (GtkFontButton         *widget, const std::function<FontSetHandler>                    &handler);
+void connect_query_tooltip(GtkWidget             *widget, const std::function<TooltipHandler>                    &handler);
+void connect_response     (GtkDialog             *widget, const std::function<ResponseHandler>                   &handler);
+void connect_toggled      (GtkCellRendererToggle *object, const std::function<ToggledHandler_CellRendererToggle> &handler);
+void connect_toggled      (GtkToggleButton       *widget, const std::function<ToggledHandler_ToggleButton>       &handler);
+void connect_value_changed(GtkAdjustment         *object, const std::function<ValueChangedHandler_Adjustment>    &handler);
+void connect_value_changed(GtkSpinButton         *widget, const std::function<ValueChangedHandler_SpinButton>    &handler);
 
 typedef void       PluginHandler    (XfcePanelPlugin *plugin);
 typedef void       ModeChangeHandler(XfcePanelPlugin *plugin, XfcePanelPluginMode mode);
@@ -105,7 +129,7 @@ void connect_mode_changed    (XfcePanelPlugin *plugin, const std::function<ModeC
 void connect_save            (XfcePanelPlugin *plugin, const std::function<PluginHandler>     &handler);
 void connect_size_changed    (XfcePanelPlugin *plugin, const std::function<SizeChangeHandler> &handler);
 
-typedef bool TimeoutHandler();
+typedef TimeoutResponse TimeoutHandler();
 
 guint timeout_add(guint interval_ms, const std::function<TimeoutHandler> &handler);
 
