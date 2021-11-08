@@ -31,6 +31,7 @@ libxfce4util_pp_la_LIBADD = \
 	@LIBXFCE4UTIL_LIBS@
 
 libxfce4util_pp_la_SOURCES = \
+	collection-utils.h \
 	fixes.h \
 	gtk.h \
 	gtk.cc \
