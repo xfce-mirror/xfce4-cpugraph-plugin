@@ -22,6 +22,7 @@
 #include "xfce4++/util/fixes.h"
 
 #include "rc.h"
+#include "string-utils.h"
 
 namespace xfce4 {
 
@@ -60,6 +61,8 @@ Ptr0<std::string> Rc::read_entry(const char *key, const char *fallback_orNull) c
     const gchar *e = xfce_rc_read_entry(rc, key, fallback_orNull);
     if(e)
         return make<std::string>(e);
+    else if(fallback_orNull)
+        return make<std::string>(fallback_orNull);
     else
         return nullptr;
 }
@@ -67,6 +70,18 @@ Ptr0<std::string> Rc::read_entry(const char *key, const char *fallback_orNull) c
 Ptr0<std::string> Rc::read_entry(const std::string &key, const char *fallback_orNull) const {
     return read_entry(key.c_str(), fallback_orNull);
 }
+
+float Rc::read_float_entry(const char *key, float fallback) const {
+    Ptr0<std::string> e = read_entry(key, nullptr);
+    if(e) {
+        Optional<float> value = parse_float(*e);
+        if(value.has_value())
+            return value.value();
+    }
+    return fallback;
+}
+
+float Rc::read_float_entry(const std::string &key, float fallback) const { return read_float_entry(key.c_str(), fallback); }
 
 gint Rc::read_int_entry(const char *key, gint fallback) const {
     return xfce_rc_read_int_entry(rc, key, fallback);
@@ -88,24 +103,88 @@ Ptr0<Rc> Rc::simple_open(const std::string &filename, bool readonly) {
         return nullptr;
 }
 
-void Rc::write_bool_entry(const char *key, bool value) {
-    xfce_rc_write_bool_entry(rc, key, value);
+void Rc::write_bool_entry(const char        *key, bool value) { xfce_rc_write_bool_entry(rc, key        , value); }
+void Rc::write_bool_entry(const std::string &key, bool value) { xfce_rc_write_bool_entry(rc, key.c_str(), value); }
+
+void Rc::write_entry(const char        *key, const char        *value) { xfce_rc_write_entry(rc, key        , value        ); }
+void Rc::write_entry(const char        *key, const std::string &value) { xfce_rc_write_entry(rc, key        , value.c_str()); }
+void Rc::write_entry(const std::string &key, const char        *value) { xfce_rc_write_entry(rc, key.c_str(), value        ); }
+void Rc::write_entry(const std::string &key, const std::string &value) { xfce_rc_write_entry(rc, key.c_str(), value.c_str()); }
+
+void Rc::write_float_entry(const char        *key, float value) { write_entry(key, xfce4::sprintf("%g", value)); }
+void Rc::write_float_entry(const std::string &key, float value) { write_entry(key, xfce4::sprintf("%g", value)); }
+
+void Rc::write_int_entry(const char        *key, gint value) { xfce_rc_write_int_entry(rc, key        , value); }
+void Rc::write_int_entry(const std::string &key, gint value) { xfce_rc_write_int_entry(rc, key.c_str(), value); }
+
+void Rc::write_default_bool_entry(const char *key, bool value, bool default_value) {
+    if(value == default_value)
+        delete_entry(key, false);
+    else
+        write_bool_entry(key, value);
 }
 
-void Rc::write_bool_entry(const std::string &key, bool value) { write_bool_entry(key.c_str(), value); }
-
-void Rc::write_entry(const char *key, const char *value) {
-    xfce_rc_write_entry(rc, key, value);
+void Rc::write_default_bool_entry(const std::string &key, bool value, bool default_value) {
+    if(value == default_value)
+        delete_entry(key, false);
+    else
+        write_bool_entry(key, value);
 }
 
-void Rc::write_entry(const char        *key, const std::string &value) { write_entry(key        , value.c_str()); }
-void Rc::write_entry(const std::string &key, const char        *value) { write_entry(key.c_str(), value        ); }
-void Rc::write_entry(const std::string &key, const std::string &value) { write_entry(key.c_str(), value.c_str()); }
-
-void Rc::write_int_entry(const char *key, gint value) {
-    xfce_rc_write_int_entry(rc, key, value);
+void Rc::write_default_entry(const char *key, const char *value, const char *default_value) {
+    if(value && default_value && strcmp(value, default_value) == 0)
+        delete_entry(key, false);
+    else
+        write_entry(key, value);
 }
 
-void Rc::write_int_entry(const std::string &key, gint value) { write_int_entry(key.c_str(), value); }
+void Rc::write_default_entry(const char *key, const std::string &value, const std::string &default_value) {
+    if(value == default_value)
+        delete_entry(key, false);
+    else
+        write_entry(key, value);
+}
+
+void Rc::write_default_entry(const std::string &key, const char *value, const char *default_value) {
+    if(value && default_value && strcmp(value, default_value) == 0)
+        delete_entry(key, false);
+    else
+        write_entry(key, value);
+}
+
+void Rc::write_default_entry(const std::string &key, const std::string &value, const std::string &default_value) {
+    if(value == default_value)
+        delete_entry(key, false);
+    else
+        write_entry(key, value);
+}
+
+void Rc::write_default_float_entry(const char *key, float value, float default_value, float epsilon) {
+    if(value >= default_value - epsilon && value <= default_value + epsilon)
+        delete_entry(key, false);
+    else
+        write_float_entry(key, value);
+}
+
+void Rc::write_default_float_entry(const std::string &key, float value, float default_value, float epsilon) {
+    if(value == default_value)
+        delete_entry(key, false);
+    else
+        write_float_entry(key, value);
+}
+
+void Rc::write_default_int_entry(const char *key, gint value, gint default_value) {
+    if(value == default_value)
+        delete_entry(key, false);
+    else
+        write_int_entry(key, value);
+}
+
+void Rc::write_default_int_entry(const std::string &key, gint value, gint default_value) {
+    if(value == default_value)
+        delete_entry(key, false);
+    else
+        write_int_entry(key, value);
+}
 
 } /* namespace xfce4 */

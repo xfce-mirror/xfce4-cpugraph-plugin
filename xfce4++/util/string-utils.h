@@ -32,8 +32,10 @@ namespace xfce4 {
  *
  * The string can contain just the number, with an optional prefix and suffix consisting from whitespace characters.
  */
-Optional<glong>  parse_long (const std::string &s, unsigned base = 0);
-Optional<gulong> parse_ulong(const std::string &s, unsigned base = 0);
+Optional<gdouble> parse_double(const std::string &s);
+Optional<gfloat>  parse_float (const std::string &s);
+Optional<glong>   parse_long  (const std::string &s, unsigned base = 0);
+Optional<gulong>  parse_ulong (const std::string &s, unsigned base = 0);
 
 /*
  * Number parsing functions which move an indirect string pointer
