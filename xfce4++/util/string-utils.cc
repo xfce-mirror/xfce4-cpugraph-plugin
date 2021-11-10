@@ -77,25 +77,47 @@ gulong parse_ulong(gchar **s, unsigned base, bool *error) {
 }
 
 template<typename T, typename fT>
-static Optional<T> parse_number_optional(const std::string &s, unsigned base, fT (*f)(const gchar*, gchar**, guint)) {
+static Optional<T> parse_float_optional(const std::string &s, fT (*f)(const gchar*, gchar**)) {
     const auto s1 = trim(s);
-    const char *s2 = s1.c_str();
+    if(!s1.empty()) {
+        const char *s2 = s1.c_str();
+        gchar *end;
+        errno = 0;
+        auto value = f(s2, &end);
+        if(errno == 0 && end == s2+s1.size())
+            return Optional<T>(value);
+    }
+    return Optional<T>();
+}
 
-    gchar *end;
-    errno = 0;
-    auto value = f(s2, &end, base);
-    if(errno || end != s2+s1.size() || value != T(value))
-        return Optional<T>();
-    else
-        return Optional<T>(value);
+template<typename T, typename fT>
+static Optional<T> parse_int_optional(const std::string &s, unsigned base, fT (*f)(const gchar*, gchar**, guint)) {
+    const auto s1 = trim(s);
+    if(!s1.empty()) {
+        const char *s2 = s1.c_str();
+        gchar *end;
+        errno = 0;
+        auto value = f(s2, &end, base);
+        if(errno == 0 && end == s2+s1.size() && value == T(value))
+            return Optional<T>(value);
+    }
+    return Optional<T>();
+}
+
+Optional<gdouble> parse_double(const std::string &s) {
+    return parse_float_optional<gdouble>(s, g_ascii_strtod);
+}
+
+Optional<gfloat> parse_float(const std::string &s) {
+    return parse_float_optional<gfloat>(s, g_ascii_strtod);
 }
 
 Optional<glong> parse_long(const std::string &s, unsigned base) {
-    return parse_number_optional<glong>(s, base, g_ascii_strtoll);
+    return parse_int_optional<glong>(s, base, g_ascii_strtoll);
 }
 
 Optional<gulong> parse_ulong(const std::string &s, unsigned base) {
-    return parse_number_optional<gulong>(s, base, g_ascii_strtoull);
+    return parse_int_optional<gulong>(s, base, g_ascii_strtoull);
 }
 
 std::string sprintf(const char *fmt, ...) {

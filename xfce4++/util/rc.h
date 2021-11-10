@@ -45,26 +45,43 @@ struct Rc final {
     void delete_entry(const char        *key, bool global);
     void delete_entry(const std::string &key, bool global);
 
-    bool              read_bool_entry(const char        *key, bool        fallback       ) const G_GNUC_WARN_UNUSED_RESULT;
-    bool              read_bool_entry(const std::string &key, bool        fallback       ) const G_GNUC_WARN_UNUSED_RESULT;
-    Ptr0<std::string> read_entry     (const char        *key, const char *fallback_orNull) const G_GNUC_WARN_UNUSED_RESULT;
-    Ptr0<std::string> read_entry     (const std::string &key, const char *fallback_orNull) const G_GNUC_WARN_UNUSED_RESULT;
-    gint              read_int_entry (const char        *key, gint        fallback       ) const G_GNUC_WARN_UNUSED_RESULT;
-    gint              read_int_entry (const std::string &key, gint        fallback       ) const G_GNUC_WARN_UNUSED_RESULT;
+    bool              read_bool_entry (const char        *key, bool        fallback       ) const G_GNUC_WARN_UNUSED_RESULT;
+    bool              read_bool_entry (const std::string &key, bool        fallback       ) const G_GNUC_WARN_UNUSED_RESULT;
+    Ptr0<std::string> read_entry      (const char        *key, const char *fallback_orNull) const G_GNUC_WARN_UNUSED_RESULT;
+    Ptr0<std::string> read_entry      (const std::string &key, const char *fallback_orNull) const G_GNUC_WARN_UNUSED_RESULT;
+    float             read_float_entry(const char        *key, float       fallback       ) const G_GNUC_WARN_UNUSED_RESULT;
+    float             read_float_entry(const std::string &key, float       fallback       ) const G_GNUC_WARN_UNUSED_RESULT;
+    gint              read_int_entry  (const char        *key, gint        fallback       ) const G_GNUC_WARN_UNUSED_RESULT;
+    gint              read_int_entry  (const std::string &key, gint        fallback       ) const G_GNUC_WARN_UNUSED_RESULT;
 
     bool has_group(const char        *group) const;
     bool has_group(const std::string &group) const;
     void set_group(const char        *group);
     void set_group(const std::string &group);
 
-    void write_bool_entry(const char        *key, bool               value);
-    void write_bool_entry(const std::string &key, bool               value);
-    void write_entry     (const char        *key, const char        *value);
-    void write_entry     (const char        *key, const std::string &value);
-    void write_entry     (const std::string &key, const char        *value);
-    void write_entry     (const std::string &key, const std::string &value);
-    void write_int_entry (const char        *key, gint               value);
-    void write_int_entry (const std::string &key, gint               value);
+    void write_bool_entry (const char        *key, bool               value);
+    void write_bool_entry (const std::string &key, bool               value);
+    void write_entry      (const char        *key, const char        *value);
+    void write_entry      (const char        *key, const std::string &value);
+    void write_entry      (const std::string &key, const char        *value);
+    void write_entry      (const std::string &key, const std::string &value);
+    void write_float_entry(const char        *key, float              value);
+    void write_float_entry(const std::string &key, float              value);
+    void write_int_entry  (const char        *key, gint               value);
+    void write_int_entry  (const std::string &key, gint               value);
+
+    /* Write an entry if it differs from the default value.
+     * Delete an entry if it equals to the default value. */
+    void write_default_bool_entry (const char        *key, bool               value, bool               default_value);
+    void write_default_bool_entry (const std::string &key, bool               value, bool               default_value);
+    void write_default_entry      (const char        *key, const char        *value, const char        *default_value);
+    void write_default_entry      (const char        *key, const std::string &value, const std::string &default_value);
+    void write_default_entry      (const std::string &key, const char        *value, const char        *default_value);
+    void write_default_entry      (const std::string &key, const std::string &value, const std::string &default_value);
+    void write_default_float_entry(const char        *key, float              value, float              default_value, float epsilon);
+    void write_default_float_entry(const std::string &key, float              value, float              default_value, float epsilon);
+    void write_default_int_entry  (const char        *key, gint               value, gint               default_value);
+    void write_default_int_entry  (const std::string &key, gint               value, gint               default_value);
 };
 
 } /* namespace xfce4 */
