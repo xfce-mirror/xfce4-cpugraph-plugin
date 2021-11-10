@@ -188,26 +188,20 @@ write_settings (XfcePanelPlugin *plugin, const Ptr<const CPUGraph> &base)
     if (!rc)
         return;
 
-    rc->write_int_entry ("UpdateInterval", base->update_interval);
+    rc->write_default_int_entry ("UpdateInterval", base->update_interval, RATE_NORMAL);
     rc->write_int_entry ("TimeScale", base->non_linear ? 1 : 0);
     rc->write_int_entry ("Size", base->size);
-    rc->write_int_entry ("Mode", base->mode);
+    rc->write_default_int_entry ("Mode", base->mode, MODE_NORMAL);
     rc->write_int_entry ("Frame", base->has_frame ? 1 : 0);
     rc->write_int_entry ("Border", base->has_border ? 1 : 0);
     rc->write_int_entry ("Bars", base->has_bars ? 1 : 0);
     rc->write_int_entry ("PerCore", base->per_core ? 1 : 0);
     rc->write_int_entry ("TrackedCore", base->tracked_core);
-    if (!base->command.empty())
-        rc->write_entry ("Command", base->command);
-    else
-        rc->delete_entry ("Command", false);
+    rc->write_default_entry ("Command", base->command, "");
     rc->write_int_entry ("InTerminal", base->command_in_terminal ? 1 : 0);
     rc->write_int_entry ("StartupNotification", base->command_startup_notification ? 1 : 0);
     rc->write_int_entry ("ColorMode", base->color_mode);
-    if (base->load_threshold != 0)
-        rc->write_int_entry ("LoadThreshold", gint (roundf (100 * base->load_threshold)));
-    else
-        rc->delete_entry ("LoadThreshold", false);
+    rc->write_default_int_entry ("LoadThreshold", gint (roundf (100 * base->load_threshold)), 0);
 
     for (guint i = 0; i < NUM_COLORS; i++)
     {
@@ -220,23 +214,12 @@ write_settings (XfcePanelPlugin *plugin, const Ptr<const CPUGraph> &base)
         {
             auto rgba = (std::string) base->colors[i];
             auto rgba_default = (std::string) default_colors[i];
-
-            if (rgba != rgba_default)
-                rc->write_entry (key, rgba);
-            else
-                rc->delete_entry (key, false);
+            rc->write_default_entry (key, rgba, rgba_default);
         }
     }
 
-    if (base->highlight_smt != HIGHLIGHT_SMT_BY_DEFAULT)
-        rc->write_int_entry ("SmtIssues", base->highlight_smt ? 1 : 0);
-    else
-        rc->delete_entry ("SmtIssues", false);
-
-    if (base->per_core_spacing != PER_CORE_SPACING_DEFAULT)
-        rc->write_int_entry ("PerCoreSpacing", base->per_core_spacing);
-    else
-        rc->delete_entry ("PerCoreSpacing", false);
+    rc->write_default_int_entry ("SmtIssues", base->highlight_smt ? 1 : 0, HIGHLIGHT_SMT_BY_DEFAULT);
+    rc->write_default_int_entry ("PerCoreSpacing", base->per_core_spacing, PER_CORE_SPACING_DEFAULT);
 
     rc->close ();
 }
