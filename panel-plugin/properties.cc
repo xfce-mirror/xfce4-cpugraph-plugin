@@ -520,7 +520,7 @@ update_sensitivity (const Ptr<CPUGraphOptions> &data, bool initial)
         gtk_widget_set_visible (GTK_WIDGET (data->hbox_in_terminal), !default_command);
         gtk_widget_set_visible (GTK_WIDGET (data->hbox_startup_notification), !default_command);
     }
-    else
+    else if (!default_command)
     {
         gtk_widget_set_visible (GTK_WIDGET (data->hbox_in_terminal), true);
         gtk_widget_set_visible (GTK_WIDGET (data->hbox_startup_notification), true);
