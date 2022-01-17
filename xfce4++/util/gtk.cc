@@ -126,6 +126,11 @@ void connect_change_value(GtkRange *widget, const std::function<ChangeValueHandl
     _connect<gboolean>(widget, "change-value", handler);
 }
 
+/* http://docs.gtk.org/gtk3/signal.Container.check-resize.html */
+void connect_check_resize(GtkContainer *widget, const std::function<CheckResizeHandler> &handler) {
+    _connect<void>(widget, "check-resize", handler);
+}
+
 /* http://docs.gtk.org/gtk3/signal.Widget.destroy.html */
 void connect_destroy(GtkWidget *widget, const std::function<DestroyHandler> &handler) {
     _connect<void>(widget, "destroy", handler);
