@@ -89,6 +89,7 @@ extern const TooltipTime     LATER, NOW; /* If in doubt, use NOW */
 typedef Propagation ButtonHandler                    (GtkWidget *widget, GdkEventButton *event);
 typedef void        ChangedHandler_ComboBox          (GtkComboBox *widget);
 typedef Propagation ChangeValueHandler_Range         (GtkRange *widget, GtkScrollType *scroll, gdouble value);
+typedef void        CheckResizeHandler               (GtkContainer *widget);
 typedef void        DestroyHandler                   (GtkWidget *widget);
 typedef Propagation DrawHandler1                     (cairo_t *cr);
 typedef Propagation DrawHandler2                     (GtkWidget *widget, cairo_t *cr);
@@ -106,6 +107,7 @@ void connect_after_draw   (GtkWidget             *widget, const std::function<Dr
 void connect_button_press (GtkWidget             *widget, const std::function<ButtonHandler>                     &handler);
 void connect_changed      (GtkComboBox           *widget, const std::function<ChangedHandler_ComboBox>           &handler);
 void connect_change_value (GtkRange              *widget, const std::function<ChangeValueHandler_Range>          &handler);
+void connect_check_resize (GtkContainer          *widget, const std::function<CheckResizeHandler>                &handler);
 void connect_destroy      (GtkWidget             *widget, const std::function<DestroyHandler>                    &handler);
 void connect_draw         (GtkWidget             *widget, const std::function<DrawHandler1>                      &handler);
 void connect_draw         (GtkWidget             *widget, const std::function<DrawHandler2>                      &handler);
