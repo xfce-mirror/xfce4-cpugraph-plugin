@@ -90,11 +90,15 @@ typedef Propagation ButtonHandler                    (GtkWidget *widget, GdkEven
 typedef void        ChangedHandler_ComboBox          (GtkComboBox *widget);
 typedef Propagation ChangeValueHandler_Range         (GtkRange *widget, GtkScrollType *scroll, gdouble value);
 typedef void        CheckResizeHandler               (GtkContainer *widget);
+typedef void        ClickHandler                     (GtkButton *widget);
+typedef void        ColorSetHandler                  (GtkColorButton *widget);
 typedef void        DestroyHandler                   (GtkWidget *widget);
 typedef Propagation DrawHandler1                     (cairo_t *cr);
 typedef Propagation DrawHandler2                     (GtkWidget *widget, cairo_t *cr);
 typedef void        EditedHandler                    (GtkCellRendererText *object, gchar *path, gchar *new_text);
+typedef Propagation EnterNotifyHandler               (GtkWidget *widget, GdkEventCrossing *event);
 typedef void        FontSetHandler                   (GtkFontButton *widget);
+typedef Propagation LeaveNotifyHandler               (GtkWidget *widget, GdkEventCrossing *event);
 typedef void        ResponseHandler                  (GtkDialog *widget, gint response);
 typedef void        ToggledHandler_CellRendererToggle(GtkCellRendererToggle *object, gchar *path);
 typedef void        ToggledHandler_ToggleButton      (GtkToggleButton *widget);
@@ -108,11 +112,15 @@ void connect_button_press (GtkWidget             *widget, const std::function<Bu
 void connect_changed      (GtkComboBox           *widget, const std::function<ChangedHandler_ComboBox>           &handler);
 void connect_change_value (GtkRange              *widget, const std::function<ChangeValueHandler_Range>          &handler);
 void connect_check_resize (GtkContainer          *widget, const std::function<CheckResizeHandler>                &handler);
+void connect_clicked      (GtkButton             *widget, const std::function<ClickHandler>                      &handler);
+void connect_color_set    (GtkColorButton        *widget, const std::function<ColorSetHandler>                   &handler);
 void connect_destroy      (GtkWidget             *widget, const std::function<DestroyHandler>                    &handler);
 void connect_draw         (GtkWidget             *widget, const std::function<DrawHandler1>                      &handler);
 void connect_draw         (GtkWidget             *widget, const std::function<DrawHandler2>                      &handler);
 void connect_edited       (GtkCellRendererText   *object, const std::function<EditedHandler>                     &handler);
+void connect_enter_notify (GtkWidget             *widget, const std::function<EnterNotifyHandler>                &handler);
 void connect_font_set     (GtkFontButton         *widget, const std::function<FontSetHandler>                    &handler);
+void connect_leave_notify (GtkWidget             *widget, const std::function<LeaveNotifyHandler>                &handler);
 void connect_query_tooltip(GtkWidget             *widget, const std::function<TooltipHandler>                    &handler);
 void connect_response     (GtkDialog             *widget, const std::function<ResponseHandler>                   &handler);
 void connect_toggled      (GtkCellRendererToggle *object, const std::function<ToggledHandler_CellRendererToggle> &handler);
@@ -130,6 +138,8 @@ void connect_free_data       (XfcePanelPlugin *plugin, const std::function<Plugi
 void connect_mode_changed    (XfcePanelPlugin *plugin, const std::function<ModeChangeHandler> &handler);
 void connect_save            (XfcePanelPlugin *plugin, const std::function<PluginHandler>     &handler);
 void connect_size_changed    (XfcePanelPlugin *plugin, const std::function<SizeChangeHandler> &handler);
+
+void invoke_later(const std::function<void()> &task);
 
 typedef TimeoutResponse TimeoutHandler();
 

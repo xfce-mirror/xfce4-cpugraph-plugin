@@ -37,7 +37,23 @@ extern "C" {
     #if LIBXFCE4UTIL_CHECK_VERSION(4, 17, 0)
         #include <libxfce4util/xfce-gio-extensions.h>
     #endif
-    #include <libxfce4util/xfce-i18n.h>
+
+    /*
+     * Define the macro GETTEXT_PACKAGE in order to avoid getting
+     * an invalid ngettext() definition from <libxfce4util/xfce-i18n.h>.
+     *
+     * See also: https://gitlab.xfce.org/xfce/libxfce4util/-/issues/7
+     */
+    #ifdef GETTEXT_PACKAGE
+        #include <libxfce4util/xfce-i18n.h>
+    #else
+        /* Note: The symbol __UNDEFINED__GETTEXT_PACKAGE__... is meant not to be defined anywhere.
+         *       The numeric suffix is a random 64-bit number. The random number makes it improbable
+         *       for any 3rd-party source code to define such a symbol. */
+        #define GETTEXT_PACKAGE __UNDEFINED__GETTEXT_PACKAGE__RND_11148334482592236430__
+        #include <libxfce4util/xfce-i18n.h>
+        #undef GETTEXT_PACKAGE
+    #endif
 }
 #undef LIBXFCE4UTIL_INSIDE_LIBXFCE4UTIL_H
 
