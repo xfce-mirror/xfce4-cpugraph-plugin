@@ -131,6 +131,16 @@ void connect_check_resize(GtkContainer *widget, const std::function<CheckResizeH
     _connect<void>(widget, "check-resize", handler);
 }
 
+/* http://docs.gtk.org/gtk3/signal.Button.clicked.html */
+void connect_clicked(GtkButton *widget, const std::function<ClickHandler> &handler) {
+    _connect<void>(widget, "clicked", handler);
+}
+
+/* http://docs.gtk.org/gtk3/signal.ColorButton.color-set.html */
+void connect_color_set(GtkColorButton *widget, const std::function<ColorSetHandler> &handler) {
+    _connect<void>(widget, "color-set", handler);
+}
+
 /* http://docs.gtk.org/gtk3/signal.Widget.destroy.html */
 void connect_destroy(GtkWidget *widget, const std::function<DestroyHandler> &handler) {
     _connect<void>(widget, "destroy", handler);
@@ -151,9 +161,27 @@ void connect_edited(GtkCellRendererText *object, const std::function<EditedHandl
     _connect<void>(object, "edited", handler);
 }
 
+/* http://docs.gtk.org/gtk3/signal.Widget.enter-notify-event.html
+ *
+ * Note: GTK+ documentation contains an error.
+ *       The event actually passed to the handler is a pointer to GdkEventCrossing.
+ */
+void connect_enter_notify(GtkWidget *widget, const std::function<EnterNotifyHandler> &handler) {
+    _connect<gboolean>(widget, "enter-notify-event", handler);
+}
+
 /* http://docs.gtk.org/gtk3/signal.FontButton.font-set.html */
  void connect_font_set(GtkFontButton *widget, const std::function<FontSetHandler> &handler) {
     _connect<void>(widget, "font-set", handler);
+}
+
+/* http://docs.gtk.org/gtk3/signal.Widget.leave-notify-event.html
+ *
+ * Note: GTK+ documentation contains an error.
+ *       The event actually passed to the handler is a pointer to GdkEventCrossing.
+ */
+void connect_leave_notify(GtkWidget *widget, const std::function<LeaveNotifyHandler> &handler) {
+    _connect<gboolean>(widget, "leave-notify-event", handler);
 }
 
 /* http://docs.gtk.org/gtk3/signal.Widget.query-tooltip.html */
@@ -215,12 +243,21 @@ void connect_mode_changed(XfcePanelPlugin *plugin, const std::function<ModeChang
     _connect<void>(plugin, "mode-changed", handler);
 }
 
-void connect_save(XfcePanelPlugin *plugin, const std::function<PluginHandler>     &handler) {
+void connect_save(XfcePanelPlugin *plugin, const std::function<PluginHandler> &handler) {
     _connect<void>(plugin, "save", handler);
 }
 
 void connect_size_changed(XfcePanelPlugin *plugin, const std::function<SizeChangeHandler> &handler) {
     _connect<gboolean>(plugin, "size-changed", handler);
+}
+
+
+
+void invoke_later(const std::function<void()> &task) {
+    timeout_add(0, [task]() {
+        task();
+        return TIMEOUT_REMOVE;
+    });
 }
 
 
