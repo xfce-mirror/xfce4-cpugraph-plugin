@@ -1,3 +1,13 @@
+1.2.6 (2022-02-02)
+=====
+- Fix translations not showing in the GUI
+- Don't save some defaults to configuration files
+- Fix visibility of the associated-command configuration
+- Update configure.ac.in syntax
+- Translation Updates:
+  Basque, Chinese (China), Croatian, Danish, Hebrew, Indonesian,
+  Occitan (post 1500), Portuguese (Brazil), Slovenian, Swedish
+
 1.2.5 (2021-10-09)
 =====
 - Lower peak memory consumption in case of a long CPU load history
