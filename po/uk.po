@@ -4,15 +4,15 @@
 # 
 # Translators:
 # Dmitry Nikitin <luckas_fb@mail.ru>, 2007-2008
-# Yarema aka Knedlyk <yupadmin@gmail.com>, 2019
+# Yarema aka Knedlyk <yupadmin@gmail.com>, 2019,2022
 # Andrij Mizyk <andmizyk@gmail.com>, 2021
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-03 00:50+0200\n"
-"PO-Revision-Date: 2021-10-02 22:50+0000\n"
-"Last-Translator: Xfce Bot <transifex@xfce.org>\n"
+"PO-Revision-Date: 2022-02-03 23:13+0000\n"
+"Last-Translator: Yarema aka Knedlyk <yupadmin@gmail.com>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/xfce/xfce-panel-plugins/language/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -80,7 +80,7 @@ msgstr "Використовувати нелінійну шкалу часу"
 
 #: ../panel-plugin/properties.cc:168
 msgid "Per-core history graphs"
-msgstr ""
+msgstr "Графіки історії для кожного ядра"
 
 #: ../panel-plugin/properties.cc:176
 msgid "Color 1:"
@@ -176,11 +176,11 @@ msgstr "Поріг (%):"
 
 #: ../panel-plugin/properties.cc:387
 msgid "Spacing:"
-msgstr ""
+msgstr "Відстань:"
 
 #: ../panel-plugin/properties.cc:390
 msgid "Spacing between per-core history graphs"
-msgstr ""
+msgstr "Відстань між графіками історії для кожного ядра"
 
 #: ../panel-plugin/properties.cc:401
 msgid "Associated command:"
@@ -188,11 +188,11 @@ msgstr "Асоційовано з командою:"
 
 #: ../panel-plugin/properties.cc:409
 msgid "The command to run when the plugin is left-clicked."
-msgstr ""
+msgstr "Команда, яка запускається, коли на додаток клацнути лівою кнопкою миші."
 
 #: ../panel-plugin/properties.cc:410
 msgid "If not specified, it defaults to xfce4-taskmanager, htop or top."
-msgstr ""
+msgstr "Якщо не вказано, за замовчуванням буде xfce4-taskmanager, htop або top."
 
 #: ../panel-plugin/properties.cc:438
 msgid "Disabled"
