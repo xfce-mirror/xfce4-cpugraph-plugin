@@ -3,8 +3,9 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# AlexanderFilev <avfill@outlook.com>, 2020-2021
-# AlexanderFilev <avfill@outlook.com>, 2020
+# Andrei Stepanov, 2022
+# Alexander Filёv, 2020-2021
+# Alexander Filёv, 2020
 # Igor <f2404@yandex.ru>, 2019
 # Sergey Alyoshin <alyoshin.s@gmail.com>, 2016,2021
 msgid ""
@@ -12,8 +13,8 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-03 00:50+0200\n"
-"PO-Revision-Date: 2021-10-02 22:50+0000\n"
-"Last-Translator: Xfce Bot <transifex@xfce.org>\n"
+"PO-Revision-Date: 2022-03-12 01:02+0000\n"
+"Last-Translator: Andrei Stepanov\n"
 "Language-Team: Russian (http://www.transifex.com/xfce/xfce-panel-plugins/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -237,11 +238,11 @@ msgstr "Стиль:"
 
 #: ../panel-plugin/properties.cc:553
 msgid "SMT detected: Yes"
-msgstr ""
+msgstr "SMT обнаружен: Да"
 
 #: ../panel-plugin/properties.cc:553
 msgid "SMT detected: No"
-msgstr ""
+msgstr "SMT обнаружен: Нет"
 
 #: ../panel-plugin/properties.cc:578
 #, c-format
@@ -250,12 +251,12 @@ msgstr ""
 
 #: ../panel-plugin/properties.cc:583
 msgid "Estimated performance impact:"
-msgstr ""
+msgstr "Ожидаемое влияние на производительность:"
 
 #: ../panel-plugin/properties.cc:584
 #, c-format
 msgid "Overall: %.3g%%"
-msgstr ""
+msgstr "Всего %.3g%%"
 
 #: ../panel-plugin/properties.cc:585
 #, c-format
@@ -264,7 +265,7 @@ msgstr ""
 
 #: ../panel-plugin/properties.cc:597
 msgid "SMT detected: N/A"
-msgstr ""
+msgstr "SMT обнаружен: Н/Д"
 
 #: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
