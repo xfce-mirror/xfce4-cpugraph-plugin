@@ -8,6 +8,7 @@
 # Alexander Filёv, 2020
 # Igor <f2404@yandex.ru>, 2019
 # Sergey Alyoshin <alyoshin.s@gmail.com>, 2016,2021
+# Виктор, 2022
 # Виктор Голованенко <drygdryg2014@yandex.ru>, 2022
 msgid ""
 msgstr ""
@@ -15,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-03 00:50+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
-"Last-Translator: Виктор Голованенко <drygdryg2014@yandex.ru>, 2022\n"
+"Last-Translator: Виктор, 2022\n"
 "Language-Team: Russian (http://www.transifex.com/xfce/xfce-panel-plugins/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +30,7 @@ msgstr "Графическое представление загруженнос
 
 #: ../panel-plugin/cpu.cc:169
 msgid "Copyright (c) 2003-2021\n"
-msgstr "Copyright © 2003—2021\n"
+msgstr "Copyright © 2003-2021\n"
 
 #: ../panel-plugin/cpu.cc:642
 #, c-format
@@ -39,7 +40,7 @@ msgstr "Загрузка: %u%%"
 #: ../panel-plugin/properties.cc:70
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
-msgstr ""
+msgstr "\"Всего\" показывает влияние на общую производительность машины."
 
 #: ../panel-plugin/properties.cc:71
 msgid ""
@@ -257,7 +258,7 @@ msgstr "Ожидаемое влияние на производительнос�
 #: ../panel-plugin/properties.cc:584
 #, c-format
 msgid "Overall: %.3g%%"
-msgstr "Всего %.3g%%"
+msgstr "Всего: %.3g%%"
 
 #: ../panel-plugin/properties.cc:585
 #, c-format
