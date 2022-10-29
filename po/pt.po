@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Hugo Carvalho <hugokarvalho@hotmail.com>, 2019-2021
+# Hugo Carvalho <hugokarvalho@hotmail.com>, 2019-2022
 # Nuno Miguel <nunis@netcabo.pt>, 2007
 # Nuno Miguel <nunomgue@gmail.com>, 2019
 msgid ""
@@ -11,14 +11,14 @@ msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-10-03 00:50+0200\n"
-"PO-Revision-Date: 2021-10-03 16:14+0000\n"
-"Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
+"PO-Revision-Date: 2013-07-03 18:54+0000\n"
+"Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>, 2019-2022\n"
 "Language-Team: Portuguese (http://www.transifex.com/xfce/xfce-panel-plugins/language/pt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: ../panel-plugin/cpu.cc:167 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
@@ -103,6 +103,7 @@ msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Mostrar barra de utilização"
 msgstr[1] "Mostrar barras de utilização"
+msgstr[2] "Mostrar barras de utilização"
 
 #: ../panel-plugin/properties.cc:197
 msgid "Bars color:"
@@ -230,7 +231,7 @@ msgstr "Fogo"
 
 #: ../panel-plugin/properties.cc:493
 msgid "Color mode: "
-msgstr "Modo de cor:"
+msgstr "Modo de cor: "
 
 #: ../panel-plugin/properties.cc:553
 msgid "SMT detected: Yes"
