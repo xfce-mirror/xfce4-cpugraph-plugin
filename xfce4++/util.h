@@ -1,7 +1,7 @@
 /*
  *  This file is part of Xfce (https://gitlab.xfce.org).
  *
- *  Copyright (c) 2021 Jan Ziak <0xe2.0x9a.0x9b@xfce.org>
+ *  Copyright (c) 2021-2022 Jan Ziak <0xe2.0x9a.0x9b@xfce.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,10 +20,6 @@
 
 #ifndef _XFCE4PP_UTIL_H_
 #define _XFCE4PP_UTIL_H_
-
-#ifndef _XFCE4PP_UTIL_FIXES_H_
-#error "Please include xfce4++/util/fixes.h before any other include directives"
-#endif
 
 #include <libxfce4util/libxfce4util.h>
 #include "xfce4++/util/collection-utils.h"

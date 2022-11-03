@@ -7,7 +7,7 @@
  *  Copyright (c) 2007-2008 Lidiriel <lidiriel@coriolys.org>
  *  Copyright (c) 2010 Florian Rivoal <frivoal@gmail.com>
  *  Copyright (c) 2010 Peter Tribble <peter.tribble@gmail.com>
- *  Copyright (c) 2021 Jan Ziak <0xe2.0x9a.0x9b@xfce.org>
+ *  Copyright (c) 2021-2022 Jan Ziak <0xe2.0x9a.0x9b@xfce.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,9 +23,6 @@
  *  with this program; if not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
-/* The fixes file has to be included before any other #include directives */
-#include "xfce4++/util/fixes.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
