@@ -101,11 +101,22 @@ nearest_loads (const Ptr<const CPUGraph> &base, const guint core, const gint64 s
     }
     else
     {
+        double pows[count + 1];
+        pows[0] = 1;
+        pows[1] = NONLINEAR_MODE_BASE;
+        for (int p = 1; p < (count + 1) / 2; p++) // Multiply first factors half by itself
+        {
+            pows[p*2+0] = pows[p] * pows[p+0];
+            pows[p*2+1] = pows[p] * pows[p+1];    // and by self+1 (for odd factors)
+        }
+        if (!( count % 1))                        // Handle trailing even factor
+            pows[count] = pows[count / 2] * pows[count / 2];
+
         for (gssize i = 0; i < count; i++)
         {
             /* Note: step < 0, therefore: timestamp1 < timestamp0 */
-            const gint64 timestamp0 = start + (i+0) * pow (NONLINEAR_MODE_BASE, i+0) * step;
-            const gint64 timestamp1 = start + (i+1) * pow (NONLINEAR_MODE_BASE, i+1) * step;
+            const gint64 timestamp0 = start + (i+0) * pows[i+0] * step;
+            const gint64 timestamp1 = start + (i+1) * pows[i+1] * step;
             gfloat sum = 0;
             gint num_loads = 0;
 
