@@ -52,12 +52,13 @@ mix_colors (gdouble ratio, const xfce4::RGBA &color1, const xfce4::RGBA &color2)
  * The timestampts range from 'timestamp' to timestamp+step*(count-1).
  */
 static void
-nearest_loads (const Ptr<const CPUGraph> &base, const guint core, const gint64 start, const gint64 step, const gssize count, gfloat *out)
+nearest_loads (const Ptr<const CPUGraph> &base, const guint core, const gint64 start, const gint64 step, const gssize _count, gfloat *out)
 {
     const gssize history_cap_pow2 = base->history.cap_pow2;
     const CpuLoad *history_data = base->history.data[core];
     const gssize history_mask = base->history.mask();
     const gssize history_offset = base->history.offset;
+    const gssize count =_count * base->scale;
 
     if (!base->non_linear)
     {
@@ -103,7 +104,7 @@ nearest_loads (const Ptr<const CPUGraph> &base, const guint core, const gint64 s
     {
         double pows[count + 1];
         pows[0] = 1;
-        pows[1] = NONLINEAR_MODE_BASE;
+        pows[1] = base->scale == 1 ? NONLINEAR_MODE_BASE : pow (NONLINEAR_MODE_BASE, 1.0/base->scale);
         for (int p = 1; p < (count + 1) / 2; p++) // Multiply first factors half by itself
         {
             pows[p*2+0] = pows[p] * pows[p+0];
@@ -112,11 +113,14 @@ nearest_loads (const Ptr<const CPUGraph> &base, const guint core, const gint64 s
         if (!( count % 1))                        // Handle trailing even factor
             pows[count] = pows[count / 2] * pows[count / 2];
 
+        // Premultiplied sub-step per device pixels, when in scale
+        const double f_step = step / (double)base->scale;
+
         for (gssize i = 0; i < count; i++)
         {
             /* Note: step < 0, therefore: timestamp1 < timestamp0 */
-            const gint64 timestamp0 = start + (i+0) * pows[i+0] * step;
-            const gint64 timestamp1 = start + (i+1) * pows[i+1] * step;
+            const gint64 timestamp0 = base->scale > 1 ? (start + f_step * (i+0) * pows[i+0]) : (start + step * (i+0) * pows[i+0]);
+            const gint64 timestamp1 = base->scale > 1 ? (start + f_step * (i+1) * pows[i+1]) : (start + step * (i+0) * pows[i+0]);
             gfloat sum = 0;
             gint num_loads = 0;
 
@@ -181,7 +185,7 @@ draw_graph_normal (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint
         return;
 
     const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
-    gfloat nearest[w];
+    gfloat nearest[w * base->scale];
 
     if (base->color_mode == 0)
         xfce4::cairo_set_source (cr, base->colors[FG_COLOR1]);
@@ -189,9 +193,9 @@ draw_graph_normal (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint
     gint64 t0 = base->history.data[core][base->history.offset].timestamp;
     nearest_loads (base, core, t0, -step, w, nearest);
 
-    for (gint x = 0; x < w; x++)
+    for (gint x = 0; x < w * base->scale; x++)
     {
-        gfloat load = nearest[w - 1 - x];
+        gfloat load = nearest[w * base->scale - 1 - x];
         if (load < base->load_threshold)
             load = 0;
         gfloat usage = h * load;
@@ -202,7 +206,7 @@ draw_graph_normal (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint
         if (base->color_mode == 0)
         {
             /* draw line */
-            cairo_rectangle (cr, x, h - usage, 1, usage);
+            cairo_rectangle (cr, x / (double)base->scale, h - usage, 1 / (double)base->scale, usage);
             cairo_fill (cr);
         }
         else
@@ -214,7 +218,7 @@ draw_graph_normal (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint
                 gfloat t = tmp / (base->color_mode == 1 ? (gfloat) h : usage);
                 xfce4::cairo_set_source (cr, mix_colors (t, base->colors[FG_COLOR1], base->colors[FG_COLOR2]));
                 /* draw point */
-                cairo_rectangle (cr, x, y, 1, 1);
+                cairo_rectangle (cr, x / (double)base->scale, y, 1 / (double)base->scale, 1);
                 cairo_fill (cr);
             }
         }
@@ -231,7 +235,7 @@ draw_graph_LED (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint co
     const gint nry = (h + 1) / 2;
     const xfce4::RGBA *active_color = NULL;
     const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
-    gfloat nearest[nrx];
+    gfloat nearest[nrx * base->scale];
 
     gint64 t0 = base->history.data[core][base->history.offset].timestamp;
     nearest_loads (base, core, t0, -step, nrx, nearest);
@@ -243,7 +247,10 @@ draw_graph_LED (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint co
 
         if (G_LIKELY (idx >= 0 && idx < nrx))
         {
-            gfloat load = nearest[idx];
+            gfloat load = 0;
+            for (int i=0; i < base->scale; i++)
+                load += nearest[idx * 3 + i];
+            load /= base->scale;
             if (load < base->load_threshold)
                 load = 0;
             limit = nry - (gint) roundf (nry * load);
@@ -316,9 +323,9 @@ draw_graph_grid (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint c
     if (G_UNLIKELY (core >= base->history.data.size()))
         return;
 
-    const gfloat thickness = 1.75f;
+    const gfloat thickness = 1.75f / base->scale;
     const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
-    gfloat nearest[w];
+    gfloat nearest[w * base->scale];
 
     gint64 t0 = base->history.data[core][base->history.offset].timestamp;
     nearest_loads (base, core, t0, -step, w, nearest);
@@ -362,14 +369,14 @@ draw_graph_grid (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint c
         cairo_save (cr);
         cairo_set_line_width (cr, thickness);
         xfce4::cairo_set_source (cr, base->colors[2]);
-        for (gint x = 0; x < w; x++)
+        for (gint x = 0; x < w * base->scale; x++)
         {
-            gfloat load = nearest[w - 1 - x];
+            gfloat load = nearest[w * base->scale - 1 - x];
             if (load < base->load_threshold)
                 load = 0;
             gfloat usage = h * load;
 
-            Point current(x, h + (thickness-1)/2 - usage);
+            Point current(x / (double)base->scale, h + (thickness-1)/2 - usage);
             if (x == 0)
                 last = current;
 
