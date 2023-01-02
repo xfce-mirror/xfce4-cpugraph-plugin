@@ -331,6 +331,7 @@ draw_graph_grid (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint c
     nearest_loads (base, core, t0, -step, w, nearest);
 
     cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
+    cairo_set_line_join (cr, CAIRO_LINE_JOIN_BEVEL);
 
     /* Paint the grid using a single call to cairo_stroke() */
     if (G_LIKELY (!base->colors[FG_COLOR1].isTransparent())) {
@@ -350,13 +351,13 @@ draw_graph_grid (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint c
 
             /* draw vertical line */
             cairo_move_to (cr, w - 1 - x1 + 0.5, 0.5);
-            cairo_line_to (cr, w - 1 - x1 + 0.5, h - 1 + 0.5);
+            cairo_rel_line_to (cr, 0, h-1);
         }
-        for (gint y = 0; y < h; y += 4)
+        for (gint y = h-1; y >= 0; y -= 4)
         {
             /* draw horizontal line */
-            cairo_move_to (cr, 0.5, h - 1 - y + 0.5);
-            cairo_line_to (cr, w - 1  + 0.5, h - 1 - y + 0.5);
+            cairo_move_to (cr, 0.5, y + 0.5);
+            cairo_rel_line_to (cr, w-1, 0);
         }
         cairo_stroke (cr);
         cairo_restore (cr);
@@ -364,8 +365,6 @@ draw_graph_grid (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint c
 
     /* Paint a line on top of the grid, using a single call to cairo_stroke() */
     if (G_LIKELY (!base->colors[2].isTransparent())) {
-        Point last;
-
         cairo_save (cr);
         cairo_set_line_width (cr, thickness);
         xfce4::cairo_set_source (cr, base->colors[2]);
@@ -378,12 +377,11 @@ draw_graph_grid (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint c
 
             Point current(x / (double)base->scale, h + (thickness-1)/2 - usage);
             if (x == 0)
-                last = current;
-
-            /* draw line */
-            cairo_move_to (cr, last.x + 0.5, last.y + 0.5);
-            cairo_line_to (cr, current.x + 0.5, current.y + 0.5);
-            last = current;
+                /* start new polyline */
+                cairo_move_to (cr, current.x + 0.5, current.y + 0.5);
+            else
+                /* add polyline segment */
+                cairo_line_to (cr, current.x + 0.5, current.y + 0.5);
         }
         cairo_stroke (cr);
         cairo_restore (cr);
