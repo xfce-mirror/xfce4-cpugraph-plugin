@@ -17,6 +17,11 @@ libcpugraph_la_LIBADD = \
 	-lm
 
 libcpugraph_la_SOURCES = \
+    FukushimaLambertW.cc \
+    FukushimaLambertW.h \
+    LambertW.cc \
+    LambertW.h \
+    Horner.h \
 	mode.cc \
 	mode.h \
 	cpu.cc \

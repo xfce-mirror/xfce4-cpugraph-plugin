@@ -134,6 +134,7 @@ struct CPUGraph
         std::vector<CpuLoad*> data; /* Circular buffers */
         gssize mask() const         { return cap_pow2 - 1; }
     } history;
+    gint scale;
     std::vector<CpuData> cpu_data;  /* size == nr_cores+1 */
     Ptr0<Topology> topology;
     CpuStats stats;
