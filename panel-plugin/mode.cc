@@ -106,7 +106,7 @@ nearest_loads (const Ptr<const CPUGraph> &base, const guint core, const gint64 s
     {
         double pows[count + 1];
         pows[0] = 1;
-        pows[1] = base->scale == 1 ? NONLINEAR_MODE_BASE : pow (NONLINEAR_MODE_BASE, 1.0/base->scale);
+        pows[1] = (base->scale == 1 || base->mode == MODE_LED) ? NONLINEAR_MODE_BASE : pow (NONLINEAR_MODE_BASE, 1.0/base->scale);
         for (int p = 1; p < (count + 1) / 2; p++) // Multiply first factors half by itself
         {
             pows[p*2+0] = pows[p] * pows[p+0];
