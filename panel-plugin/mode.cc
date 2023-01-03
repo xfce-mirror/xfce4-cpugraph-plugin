@@ -249,10 +249,7 @@ draw_graph_LED (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint co
 
         if (G_LIKELY (idx >= 0 && idx < nrx))
         {
-            gfloat load = 0;
-            for (int i=0; i < base->scale; i++)
-                load += nearest[idx * 3 + i];
-            load /= base->scale;
+            gfloat load = nearest[idx];
             if (load < base->load_threshold)
                 load = 0;
             limit = nry - (gint) roundf (nry * load);
