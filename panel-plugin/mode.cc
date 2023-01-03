@@ -27,6 +27,8 @@
 #include <math.h>
 #include <stdlib.h>
 #include "mode.h"
+#include "FukushimaLambertW.h"
+#include "LambertW.h"
 
 struct Point
 {
@@ -338,13 +340,22 @@ draw_graph_grid (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint c
         cairo_save (cr);
         cairo_set_line_width (cr, 1);
         xfce4::cairo_set_source (cr, base->colors[FG_COLOR1]);
+        
+        double ln1_04 = 0;
         for (gint x = 0; x < w; x += 6)
         {
-            gint x1 = x;
+            double x1 = x;
 
-            if (base->non_linear)
+            if (base->non_linear && x)
             {
-                x1 *= pow (1.02, x1);
+                if (ln1_04 == 0)
+                    ln1_04 = log (1.04);
+                // Start with logarithmic scale.
+                // First non-zero tick is at 6px.
+                x1 = pow (6 * (1.04*1.04*1.04) * (1.04*1.04*1.04), x1 / 12 + 0.5);
+                // Convert tick position to 'x*pow(c,x)' kind of space
+                x1 = (x1 > 399049500000000000000000000000 ? utl::LambertW (0, x1 * ln1_04) : Fukushima::LambertW (0, x1 * ln1_04)) / ln1_04;
+                x1 -= remainder (x1, (1.0 / base->scale));
                 if (x1 >= w)
                     break;
             }
