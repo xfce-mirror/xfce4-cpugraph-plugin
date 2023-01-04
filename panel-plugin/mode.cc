@@ -104,15 +104,17 @@ nearest_loads (const Ptr<const CPUGraph> &base, const guint core, const gint64 s
     }
     else
     {
-        double pows[count + 1];
+        double pows[count + 1], src[2];
         pows[0] = 1;
-        pows[1] = (base->scale == 1 || base->mode == MODE_LED) ? NONLINEAR_MODE_BASE : pow (NONLINEAR_MODE_BASE, 1.0/base->scale);
-        for (int p = 1; p < (count + 1) / 2; p++) // Multiply first factors half by itself
+        pows[1] = src[0] = (base->scale == 1 || base->mode == MODE_LED) ? NONLINEAR_MODE_BASE : pow (NONLINEAR_MODE_BASE, 1.0/base->scale);
+        for (int i1=2, i0=1; i0 < (count + 1) / 2; i0++, i1+=2) // Produce new factor from 2x less older factors
         {
-            pows[p*2+0] = pows[p] * pows[p+0];
-            pows[p*2+1] = pows[p] * pows[p+1];    // and by self+1 (for odd factors)
+            pows[i1 + 0] = src[0] * src[0]; // for new even factor
+            src[1] = pows[i0 + 1];
+            pows[i1 + 1] = src[0] * src[1]; // for new odd factor
+            src[0] = src[1];
         }
-        if (!( count % 1))                        // Handle trailing even factor
+        if (!( count % 1))                  // Handle trailing even factor
             pows[count] = pows[count / 2] * pows[count / 2];
 
         // Premultiplied sub-step per device pixels, when in scale
