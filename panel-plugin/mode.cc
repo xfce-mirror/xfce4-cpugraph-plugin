@@ -114,8 +114,10 @@ nearest_loads (const Ptr<const CPUGraph> &base, const guint core, const gint64 s
             pows[i1 + 1] = src[0] * src[1]; // for new odd factor
             src[0] = src[1];
         }
-        if (!( count % 1))                  // Handle trailing even factor
-            pows[count] = pows[count / 2] * pows[count / 2];
+        if ((count+1) % 2) {    // Handle trailing even factor
+            int i = (count) / 2;
+            pows[count] = pows[i] * pows[i];
+        }
 
         // Premultiplied sub-step per device pixels, when in scale
         const double f_step = step / (double)base->scale;
@@ -124,7 +126,7 @@ nearest_loads (const Ptr<const CPUGraph> &base, const guint core, const gint64 s
         {
             /* Note: step < 0, therefore: timestamp1 < timestamp0 */
             const gint64 timestamp0 = base->scale > 1 ? (start + f_step * (i+0) * pows[i+0]) : (start + step * (i+0) * pows[i+0]);
-            const gint64 timestamp1 = base->scale > 1 ? (start + f_step * (i+1) * pows[i+1]) : (start + step * (i+0) * pows[i+0]);
+            const gint64 timestamp1 = base->scale > 1 ? (start + f_step * (i+1) * pows[i+1]) : (start + step * (i+1) * pows[i+1]);
             gfloat sum = 0;
             gint num_loads = 0;
 
