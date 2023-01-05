@@ -27,6 +27,8 @@
 #include <math.h>
 #include <stdlib.h>
 #include "mode.h"
+#include "FukushimaLambertW.h"
+#include "LambertW.h"
 
 struct Point
 {
@@ -52,12 +54,13 @@ mix_colors (gdouble ratio, const xfce4::RGBA &color1, const xfce4::RGBA &color2)
  * The timestampts range from 'timestamp' to timestamp+step*(count-1).
  */
 static void
-nearest_loads (const Ptr<const CPUGraph> &base, const guint core, const gint64 start, const gint64 step, const gssize count, gfloat *out)
+nearest_loads (const Ptr<const CPUGraph> &base, const guint core, const gint64 start, const gint64 step, const gssize _count, gfloat *out)
 {
     const gssize history_cap_pow2 = base->history.cap_pow2;
     const CpuLoad *history_data = base->history.data[core];
     const gssize history_mask = base->history.mask();
     const gssize history_offset = base->history.offset;
+    const gssize count =_count * base->scale;
 
     if (!base->non_linear)
     {
@@ -101,11 +104,29 @@ nearest_loads (const Ptr<const CPUGraph> &base, const guint core, const gint64 s
     }
     else
     {
+        double pows[count + 1], src[2];
+        pows[0] = 1;
+        pows[1] = src[0] = (base->scale == 1 || base->mode == MODE_LED) ? NONLINEAR_MODE_BASE : pow (NONLINEAR_MODE_BASE, 1.0/base->scale);
+        for (int i1=2, i0=1; i0 < (count + 1) / 2; i0++, i1+=2) // Produce new factor from 2x less older factors
+        {
+            pows[i1 + 0] = src[0] * src[0]; // for new even factor
+            src[1] = pows[i0 + 1];
+            pows[i1 + 1] = src[0] * src[1]; // for new odd factor
+            src[0] = src[1];
+        }
+        if ((count+1) % 2) {    // Handle trailing even factor
+            int i = (count) / 2;
+            pows[count] = pows[i] * pows[i];
+        }
+
+        // Premultiplied sub-step per device pixels, when in scale
+        const double f_step = step / (double)base->scale;
+
         for (gssize i = 0; i < count; i++)
         {
             /* Note: step < 0, therefore: timestamp1 < timestamp0 */
-            const gint64 timestamp0 = start + (i+0) * pow (NONLINEAR_MODE_BASE, i+0) * step;
-            const gint64 timestamp1 = start + (i+1) * pow (NONLINEAR_MODE_BASE, i+1) * step;
+            const gint64 timestamp0 = base->scale > 1 ? (start + f_step * (i+0) * pows[i+0]) : (start + step * (i+0) * pows[i+0]);
+            const gint64 timestamp1 = base->scale > 1 ? (start + f_step * (i+1) * pows[i+1]) : (start + step * (i+1) * pows[i+1]);
             gfloat sum = 0;
             gint num_loads = 0;
 
@@ -170,7 +191,7 @@ draw_graph_normal (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint
         return;
 
     const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
-    gfloat nearest[w];
+    gfloat nearest[w * base->scale];
 
     if (base->color_mode == 0)
         xfce4::cairo_set_source (cr, base->colors[FG_COLOR1]);
@@ -178,9 +199,9 @@ draw_graph_normal (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint
     gint64 t0 = base->history.data[core][base->history.offset].timestamp;
     nearest_loads (base, core, t0, -step, w, nearest);
 
-    for (gint x = 0; x < w; x++)
+    for (gint x = 0; x < w * base->scale; x++)
     {
-        gfloat load = nearest[w - 1 - x];
+        gfloat load = nearest[w * base->scale - 1 - x];
         if (load < base->load_threshold)
             load = 0;
         gfloat usage = h * load;
@@ -191,7 +212,7 @@ draw_graph_normal (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint
         if (base->color_mode == 0)
         {
             /* draw line */
-            cairo_rectangle (cr, x, h - usage, 1, usage);
+            cairo_rectangle (cr, x / (double)base->scale, h - usage, 1 / (double)base->scale, usage);
             cairo_fill (cr);
         }
         else
@@ -203,7 +224,7 @@ draw_graph_normal (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint
                 gfloat t = tmp / (base->color_mode == 1 ? (gfloat) h : usage);
                 xfce4::cairo_set_source (cr, mix_colors (t, base->colors[FG_COLOR1], base->colors[FG_COLOR2]));
                 /* draw point */
-                cairo_rectangle (cr, x, y, 1, 1);
+                cairo_rectangle (cr, x / (double)base->scale, y, 1 / (double)base->scale, 1);
                 cairo_fill (cr);
             }
         }
@@ -220,7 +241,7 @@ draw_graph_LED (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint co
     const gint nry = (h + 1) / 2;
     const xfce4::RGBA *active_color = NULL;
     const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
-    gfloat nearest[nrx];
+    gfloat nearest[nrx * base->scale];
 
     gint64 t0 = base->history.data[core][base->history.offset].timestamp;
     nearest_loads (base, core, t0, -step, nrx, nearest);
@@ -305,40 +326,50 @@ draw_graph_grid (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint c
     if (G_UNLIKELY (core >= base->history.data.size()))
         return;
 
-    const gfloat thickness = 1.75f;
+    const gfloat thickness = 1.75f / base->scale;
     const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
-    gfloat nearest[w];
+    gfloat nearest[w * base->scale];
 
     gint64 t0 = base->history.data[core][base->history.offset].timestamp;
     nearest_loads (base, core, t0, -step, w, nearest);
 
     cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
+    cairo_set_line_join (cr, CAIRO_LINE_JOIN_BEVEL);
 
     /* Paint the grid using a single call to cairo_stroke() */
     if (G_LIKELY (!base->colors[FG_COLOR1].isTransparent())) {
         cairo_save (cr);
         cairo_set_line_width (cr, 1);
         xfce4::cairo_set_source (cr, base->colors[FG_COLOR1]);
+        
+        double ln1_04 = 0;
         for (gint x = 0; x < w; x += 6)
         {
-            gint x1 = x;
+            double x1 = x;
 
-            if (base->non_linear)
+            if (base->non_linear && x)
             {
-                x1 *= pow (1.02, x1);
+                if (ln1_04 == 0)
+                    ln1_04 = log (1.04);
+                // Start with logarithmic scale.
+                // First non-zero tick is at 6px.
+                x1 = pow (6 * (1.04*1.04*1.04) * (1.04*1.04*1.04), x1 / 12 + 0.5);
+                // Convert tick position to 'x*pow(c,x)' kind of space
+                x1 = (x1 > 399049500000000000000000000000 ? utl::LambertW (0, x1 * ln1_04) : Fukushima::LambertW (0, x1 * ln1_04)) / ln1_04;
+                x1 -= remainder (x1, (1.0 / base->scale));
                 if (x1 >= w)
                     break;
             }
 
             /* draw vertical line */
             cairo_move_to (cr, w - 1 - x1 + 0.5, 0.5);
-            cairo_line_to (cr, w - 1 - x1 + 0.5, h - 1 + 0.5);
+            cairo_rel_line_to (cr, 0, h-1);
         }
-        for (gint y = 0; y < h; y += 4)
+        for (gint y = h-1; y >= 0; y -= 4)
         {
             /* draw horizontal line */
-            cairo_move_to (cr, 0.5, h - 1 - y + 0.5);
-            cairo_line_to (cr, w - 1  + 0.5, h - 1 - y + 0.5);
+            cairo_move_to (cr, 0.5, y + 0.5);
+            cairo_rel_line_to (cr, w-1, 0);
         }
         cairo_stroke (cr);
         cairo_restore (cr);
@@ -346,26 +377,23 @@ draw_graph_grid (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint c
 
     /* Paint a line on top of the grid, using a single call to cairo_stroke() */
     if (G_LIKELY (!base->colors[2].isTransparent())) {
-        Point last;
-
         cairo_save (cr);
         cairo_set_line_width (cr, thickness);
         xfce4::cairo_set_source (cr, base->colors[2]);
-        for (gint x = 0; x < w; x++)
+        for (gint x = 0; x < w * base->scale; x++)
         {
-            gfloat load = nearest[w - 1 - x];
+            gfloat load = nearest[w * base->scale - 1 - x];
             if (load < base->load_threshold)
                 load = 0;
             gfloat usage = h * load;
 
-            Point current(x, h + (thickness-1)/2 - usage);
+            Point current(x / (double)base->scale, h + (thickness-1)/2 - usage);
             if (x == 0)
-                last = current;
-
-            /* draw line */
-            cairo_move_to (cr, last.x + 0.5, last.y + 0.5);
-            cairo_line_to (cr, current.x + 0.5, current.y + 0.5);
-            last = current;
+                /* start new polyline */
+                cairo_move_to (cr, current.x + 0.5, current.y + 0.5);
+            else
+                /* add polyline segment */
+                cairo_line_to (cr, current.x + 0.5, current.y + 0.5);
         }
         cairo_stroke (cr);
         cairo_restore (cr);
