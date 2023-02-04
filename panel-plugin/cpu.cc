@@ -632,6 +632,7 @@ update_cb (const Ptr<CPUGraph> &base)
         }
     }
 
+    base->scale = gtk_widget_get_scale_factor (base->draw_area);
     queue_draw (base);
     update_tooltip (base);
 
@@ -751,6 +752,7 @@ draw_bars_cb (cairo_t *cr, const Ptr<CPUGraph> &base)
     const bool horizontal = (base->bars.orientation == GTK_ORIENTATION_HORIZONTAL);
 
     gtk_widget_get_allocation (base->bars.draw_area, &alloc);
+    size = (horizontal ? alloc.height : alloc.width) * base->scale;
 
     if (!base->colors[BG_COLOR].isTransparent())
     {
@@ -759,7 +761,6 @@ draw_bars_cb (cairo_t *cr, const Ptr<CPUGraph> &base)
         cairo_fill (cr);
     }
 
-    size = (horizontal ? alloc.height : alloc.width);
     if (base->tracked_core != 0 || base->nr_cores == 1)
     {
         gfloat usage = base->cpu_data[0].load;
@@ -769,9 +770,9 @@ draw_bars_cb (cairo_t *cr, const Ptr<CPUGraph> &base)
 
         xfce4::cairo_set_source (cr, base->colors[BARS_COLOR]);
         if (horizontal)
-            cairo_rectangle (cr, 0, size-usage, 4, usage);
+            cairo_rectangle (cr, 0, (size-usage) / base->scale, 4, usage / base->scale);
         else
-            cairo_rectangle (cr, 0, 0, usage, 4);
+            cairo_rectangle (cr, 0, 0, usage / base->scale, 4);
         cairo_fill (cr);
     }
     else
@@ -801,9 +802,9 @@ draw_bars_cb (cairo_t *cr, const Ptr<CPUGraph> &base)
             }
 
             if (horizontal)
-                cairo_rectangle (cr, 6*i, size-usage, 4, usage);
+                cairo_rectangle (cr, 6*i, (size-usage) / base->scale, 4, usage / base->scale);
             else
-                cairo_rectangle (cr, 0, 6*i, usage, 4);
+                cairo_rectangle (cr, 0, 6*i, usage / base->scale, 4);
             fill = true;
         }
         if (fill)
