@@ -641,7 +641,7 @@ update_cb (const Ptr<CPUGraph> &base)
 static void
 update_tooltip (const Ptr<CPUGraph> &base)
 {
-    auto tooltip = xfce4::sprintf (_("Usage: %u%%"), (guint) roundf (base->cpu_data[0].load * 100));
+    auto tooltip = xfce4::sprintf (_("CPU usage: %.1f%%"), base->cpu_data[0].load * 100.0f);
     if (gtk_label_get_text (GTK_LABEL (base->tooltip_text)) != tooltip)
         gtk_label_set_text (GTK_LABEL (base->tooltip_text), tooltip.c_str());
 }
