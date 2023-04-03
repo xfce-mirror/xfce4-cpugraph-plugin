@@ -39,6 +39,10 @@ static const xfce4::RGBA default_colors[NUM_COLORS] =
     [FG_COLOR3]        = {0.0, 0.0, 1.0, 1.0},
     [BARS_COLOR]       = {1.0, 0.73048, 0.0, 1.0},
     [SMT_ISSUES_COLOR] = {0.9, 0, 0, 1},
+    [FG_COLOR_SYSTEM]  = {0.9, 0.1, 0.1, 1.0},
+    [FG_COLOR_USER]    = {0.1, 0.4, 0.9, 1.0},
+    [FG_COLOR_NICE]    = {0.9, 0.8, 0.2, 1.0},
+    [FG_COLOR_IOWAIT]  = {0.2, 0.9, 0.4, 1.0},
 };
 
 static const gchar *const color_keys[NUM_COLORS] =
@@ -49,6 +53,10 @@ static const gchar *const color_keys[NUM_COLORS] =
     [FG_COLOR3]        = "Foreground3",
     [BARS_COLOR]       = "BarsColor",
     [SMT_ISSUES_COLOR] = "SmtIssuesColor",
+    [FG_COLOR_SYSTEM]  = "ForegroundSystem",
+    [FG_COLOR_USER]    = "ForegroundUser",
+    [FG_COLOR_NICE]    = "ForegroundNice",
+    [FG_COLOR_IOWAIT]  = "ForegroundIOwait",
 };
 
 void
