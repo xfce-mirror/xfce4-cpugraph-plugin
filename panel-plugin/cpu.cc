@@ -625,10 +625,14 @@ update_cb (const Ptr<CPUGraph> &base)
         base->history.offset = (base->history.offset - 1) & base->history.mask();
         for (guint core = 0; core < base->nr_cores + 1; core++)
         {
-            CpuLoad load;
+            const CpuData &cpu_core_data = base->cpu_data[core];
+            CpuLoad &load = base->history.data[core][base->history.offset];
             load.timestamp = timestamp;
-            load.value = base->cpu_data[core].load;
-            base->history.data[core][base->history.offset] = load;
+            load.value = cpu_core_data.load;
+            load.system = cpu_core_data.system;
+            load.user = cpu_core_data.user;
+            load.nice = cpu_core_data.nice;
+            load.iowait = cpu_core_data.iowait;
         }
     }
 
@@ -641,7 +645,7 @@ update_cb (const Ptr<CPUGraph> &base)
 static void
 update_tooltip (const Ptr<CPUGraph> &base)
 {
-    auto tooltip = xfce4::sprintf (_("Usage: %u%%"), (guint) roundf (base->cpu_data[0].load * 100));
+    auto tooltip = xfce4::sprintf (_("CPU usage: %.1f%%"), base->cpu_data[0].load * 100.0f);
     if (gtk_label_get_text (GTK_LABEL (base->tooltip_text)) != tooltip)
         gtk_label_set_text (GTK_LABEL (base->tooltip_text), tooltip.c_str());
 }
@@ -952,6 +956,8 @@ CPUGraph::set_nonlinear_time (const Ptr<CPUGraph> &base, bool non_linear)
     if (base->non_linear != non_linear)
     {
         base->non_linear = non_linear;
+        if (!non_linear)
+            base->non_linear_cache = {};
         queue_draw (base);
     }
 }
