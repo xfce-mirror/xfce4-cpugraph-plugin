@@ -109,15 +109,12 @@ read_cpu_data (std::vector<CpuData> &data)
     if (G_UNLIKELY(data.size() == 0))
         return false;
 
-    const size_t nb_cpu = data.size()-1;
+    const size_t nb_cpu = data.size(); /* Number of CPU threads + 1 (index 0 - overall usage) */
     FILE *fStat;
-    gulong used[nb_cpu+1], total[nb_cpu+1];
+    std::vector<gulong> system_arr(nb_cpu), user_arr(nb_cpu), nice_arr(nb_cpu), iowait_arr(nb_cpu), total_arr(nb_cpu);
 
     if (!(fStat = fopen (PROC_STAT, "r")))
         return false;
-
-    for (guint cpu = 0; cpu < nb_cpu+1; cpu++)
-        used[cpu] = total[cpu] = 0;
 
     while (true)
     {
@@ -147,25 +144,50 @@ read_cpu_data (std::vector<CpuData> &data)
         gulong irq = parse_ulong (&s);
         gulong softirq = parse_ulong (&s);
 
-        if (G_LIKELY (cpu < nb_cpu + 1))
+        if (G_LIKELY (cpu < nb_cpu))
         {
-            used[cpu] = user + nice + system + irq + softirq;
-            total[cpu] = used[cpu] + idle + iowait;
+            system_arr[cpu] = system + irq + softirq;
+            user_arr[cpu] = user;
+            nice_arr[cpu] = nice;
+            iowait_arr[cpu] = iowait;
+            total_arr[cpu] = system + irq + softirq + user + nice + iowait + idle;
         }
     }
 
     fclose (fStat);
 
-    for (guint cpu = 0; cpu < nb_cpu + 1; cpu++)
+    for (guint cpu = 0; cpu < nb_cpu; cpu++)
     {
-        if (used[cpu] >= data[cpu].previous_used && total[cpu] > data[cpu].previous_total)
-            data[cpu].load = (gfloat) (used[cpu] - data[cpu].previous_used) /
-                             (gfloat) (total[cpu] - data[cpu].previous_total);
-        else
-            data[cpu].load = 0;
+        const bool total_greater = total_arr[cpu] > data[cpu].previous_total;
+        const gfloat divider = (gfloat) (total_arr[cpu] - data[cpu].previous_total);
 
-        data[cpu].previous_used = used[cpu];
-        data[cpu].previous_total = total[cpu];
+        if (total_greater && system_arr[cpu] >= data[cpu].previous_system)
+            data[cpu].system = (system_arr[cpu] - data[cpu].previous_system) / divider;
+        else
+            data[cpu].system = 0.0f;
+
+        if (total_greater && user_arr[cpu] >= data[cpu].previous_user)
+            data[cpu].user = (user_arr[cpu] - data[cpu].previous_user) / divider;
+        else
+            data[cpu].user = 0.0f;
+
+        if (total_greater && nice_arr[cpu] >= data[cpu].previous_nice)
+            data[cpu].nice = (nice_arr[cpu] - data[cpu].previous_nice) / divider;
+        else
+            data[cpu].nice = 0.0f;
+
+        if (total_greater && iowait_arr[cpu] >= data[cpu].previous_iowait)
+            data[cpu].iowait = (iowait_arr[cpu] - data[cpu].previous_iowait) / divider;
+        else
+            data[cpu].iowait = 0.0f;
+
+        data[cpu].load = data[cpu].user + data[cpu].system + data[cpu].nice;
+
+        data[cpu].previous_system = system_arr[cpu];
+        data[cpu].previous_user = user_arr[cpu];
+        data[cpu].previous_nice = nice_arr[cpu];
+        data[cpu].previous_iowait = iowait_arr[cpu];
+        data[cpu].previous_total = total_arr[cpu];
     }
 
     return true;
