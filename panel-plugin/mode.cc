@@ -45,6 +45,21 @@ mix_colors (gdouble ratio, const xfce4::RGBA &color1, const xfce4::RGBA &color2)
     return color1 + ratio * (color2 - color1);
 }
 
+template<typename Vector>
+static void
+ensure_vector_size (Vector &arr, gint size)
+{
+    if (G_UNLIKELY (size < 0))
+        size = 0;
+
+    if (arr.size() != (guint) size)
+    {
+        arr.clear();
+        arr.shrink_to_fit();
+        arr.resize(size);
+    }
+}
+
 /**
  * nearest_loads:
  * @start: microseconds since 1970-01-01 UTC
@@ -56,7 +71,7 @@ mix_colors (gdouble ratio, const xfce4::RGBA &color1, const xfce4::RGBA &color2)
  * The timestampts range from 'timestamp' to timestamp+step*(count-1).
  */
 static void
-nearest_loads (const Ptr<const CPUGraph> &base, const guint core, const gint64 start, const gint64 step, const gssize count, gfloat *out)
+nearest_loads (const Ptr<CPUGraph> &base, const guint core, const gint64 start, const gint64 step, const gssize count, const CpuLoad **out)
 {
     const gssize history_cap_pow2 = base->history.cap_pow2;
     const CpuLoad *history_data = base->history.data[core];
@@ -65,30 +80,33 @@ nearest_loads (const Ptr<const CPUGraph> &base, const guint core, const gint64 s
 
     if (!base->non_linear)
     {
-        gssize i, j;
-        for (i = 0, j = 0; i < count; i++)
+        for (gssize i = 0, j = 0; i < count; i++)
         {
             const gint64 timestamp = start + i * step;
-            CpuLoad nearest = {};
+            const CpuLoad *nearest = nullptr;
             for (; j < history_cap_pow2; j++)
             {
-                CpuLoad load = history_data[(history_offset + j) & history_mask];
+                const CpuLoad &load = history_data[(history_offset + j) & history_mask];
 
                 if (load.timestamp == 0)
-                    goto end;
-
-                if (nearest.timestamp == 0)
                 {
-                    nearest = load;
+                    for (; i < count; i++)
+                        out[i] = nullptr;
+                    return;
+                }
+
+                if (!nearest)
+                {
+                    nearest = &load;
                 }
                 else
                 {
                     gint64 delta = labs (load.timestamp - timestamp);
-                    if (delta < labs (nearest.timestamp - timestamp))
+                    if (delta < labs (nearest->timestamp - timestamp))
                     {
-                        nearest = load;
+                        nearest = &load;
                     }
-                    else if (delta > labs (nearest.timestamp - timestamp))
+                    else if (delta > labs (nearest->timestamp - timestamp))
                     {
                         if (j > 0)
                             j--;
@@ -96,36 +114,42 @@ nearest_loads (const Ptr<const CPUGraph> &base, const guint core, const gint64 s
                     }
                 }
             }
-            out[i] = nearest.value;
+            out[i] = nearest;
         }
-
-    end:
-        for (; i < count; i++)
-            out[i] = 0;
     }
     else
     {
+        auto &cache = base->non_linear_cache;
+        ensure_vector_size (cache, count);
         for (gssize i = 0; i < count; i++)
         {
             /* Note: step < 0, therefore: timestamp1 < timestamp0 */
             const gint64 timestamp0 = start + (i+0) * pow (NONLINEAR_MODE_BASE, i+0) * step;
             const gint64 timestamp1 = start + (i+1) * pow (NONLINEAR_MODE_BASE, i+1) * step;
-            gfloat sum = 0;
+            gfloat sum_value = 0.0f;
+            gfloat sum_user = 0.0f;
+            gfloat sum_system = 0.0f;
+            gfloat sum_nice = 0.0f;
+            gfloat sum_iowait = 0.0f;
             gint num_loads = 0;
 
             for (gssize j = 0; j < history_cap_pow2; j++)
             {
-                CpuLoad load = history_data[(history_offset + j) & history_mask];
+                const CpuLoad &load = history_data[(history_offset + j) & history_mask];
                 if (load.timestamp > timestamp1 && load.timestamp <= timestamp0)
                 {
-                    sum += load.value;
+                    sum_value += load.value;
+                    sum_system += load.system;
+                    sum_user += load.user;
+                    sum_nice += load.nice;
+                    sum_iowait += load.iowait;
                     num_loads++;
                 }
                 else if (load.timestamp < timestamp1)
                     break;
             }
 
-            /* count==0 in the following cases:
+            /* num_loads==0 in the following cases:
              *  - Both timestamps are pointing to a time before the CPU load measurements have started
              *  - Both timestamps are pointing to a time before the history has been cleared
              *  - There has been a change in base->update_interval,
@@ -133,36 +157,108 @@ nearest_loads (const Ptr<const CPUGraph> &base, const guint core, const gint64 s
              */
 
             if (num_loads != 0)
-                out[i] = sum / num_loads;
+            {
+                cache[i].value = sum_value / num_loads;
+                cache[i].system = sum_system / num_loads;
+                cache[i].user = sum_user / num_loads;
+                cache[i].nice = sum_nice / num_loads;
+                cache[i].iowait = sum_iowait / num_loads;
+                out[i] = &cache[i];
+            }
             else
-                out[i] = -1;
+            {
+                out[i] = nullptr;
+            }
         }
 
         for (gssize i = 0; i < count; i++)
         {
-            if (out[i] == -1)
+            if (!out[i])
             {
-                gfloat prev = -1, next = -1;
+                const CpuLoad *prev = nullptr, *next = nullptr;
 
                 for (gssize j = 0; j < i; j++)
-                    if (out[j] != -1)
+                    if (out[j])
                     {
                         prev = out[j];
                         break;
                     }
 
                 for (gssize j = i+1; j < count; j++)
-                    if (out[j] != -1)
+                    if (out[j])
                     {
                         next = out[j];
                         break;
                     }
 
-                if (prev != -1 && next != -1)
-                    out[i] = (prev + next) / 2;
+                if (prev && next)
+                {
+                    cache[i].value = (prev->value + next->value) / 2.0f;
+                    cache[i].system = (prev->system + next->system) / 2.0f;
+                    cache[i].user = (prev->user + next->user) / 2.0f;
+                    cache[i].nice = (prev->nice + next->nice) / 2.0f;
+                    cache[i].iowait = (prev->iowait + next->iowait) / 2.0f;
+                }
                 else
-                    out[i] = 0;
+                {
+                    cache[i].value = 0.0f;
+                    cache[i].system = 0.0f;
+                    cache[i].user = 0.0f;
+                    cache[i].nice = 0.0f;
+                    cache[i].iowait = 0.0f;
+                }
+
+                out[i] = &cache[i];
             }
+        }
+    }
+}
+
+static void
+draw_graph_helper (const Ptr<CPUGraph> &base, const CpuLoad &load, cairo_t *cr, gint x, gint w, gint h)
+{
+    if (load.value < base->load_threshold)
+        return;
+
+    const gfloat usage = h * load.value;
+
+    if (usage == 0.0f)
+        return;
+
+    if (base->color_mode == COLOR_MODE_DETAILED)
+    {
+        std::pair<gfloat, gint> usages[4] {
+            {h * load.system, FG_COLOR_SYSTEM},
+            {h * load.user, FG_COLOR_USER},
+            {h * load.nice, FG_COLOR_NICE},
+            {h * load.iowait, FG_COLOR_IOWAIT},
+        };
+
+        gfloat y_offset = 0.0f;
+        for (auto &&[value, color] : usages)
+        {
+            xfce4::cairo_set_source (cr, base->colors[color]);
+            cairo_rectangle (cr, x, h - value - y_offset, w, value);
+            cairo_fill (cr);
+            y_offset += value;
+        }
+    }
+    else if (base->color_mode == COLOR_MODE_SOLID)
+    {
+        xfce4::cairo_set_source (cr, base->colors[FG_COLOR1]);
+        cairo_rectangle (cr, x, h - usage, w, usage);
+        cairo_fill (cr);
+    }
+    else
+    {
+        const gint h_usage = h - (gint) roundf (usage);
+        gint tmp = 0;
+        for (gint y = h - 1; y >= h_usage; y--, tmp++)
+        {
+            gfloat t = tmp / (base->color_mode == COLOR_MODE_GRADIENT ? (gfloat) h : usage);
+            xfce4::cairo_set_source (cr, mix_colors (t, base->colors[FG_COLOR1], base->colors[FG_COLOR2]));
+            cairo_rectangle (cr, x, y, w, 1);
+            cairo_fill (cr);
         }
     }
 }
@@ -174,43 +270,16 @@ draw_graph_normal (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint
         return;
 
     const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
-    gfloat nearest[w];
-
-    if (base->color_mode == 0)
-        xfce4::cairo_set_source (cr, base->colors[FG_COLOR1]);
+    auto &nearest = base->nearest_cache;
+    ensure_vector_size (nearest, w);
 
     gint64 t0 = base->history.data[core][base->history.offset].timestamp;
-    nearest_loads (base, core, t0, -step, w, nearest);
+    nearest_loads (base, core, t0, -step, w, nearest.data());
 
     for (gint x = 0; x < w; x++)
     {
-        gfloat load = nearest[w - 1 - x];
-        if (load < base->load_threshold)
-            load = 0;
-        gfloat usage = h * load;
-
-        if (usage == 0)
-            continue;
-
-        if (base->color_mode == 0)
-        {
-            /* draw line */
-            cairo_rectangle (cr, x, h - usage, 1, usage);
-            cairo_fill (cr);
-        }
-        else
-        {
-            const gint h_usage = h - (gint) roundf (usage);
-            gint tmp = 0;
-            for (gint y = h - 1; y >= h_usage; y--, tmp++)
-            {
-                gfloat t = tmp / (base->color_mode == 1 ? (gfloat) h : usage);
-                xfce4::cairo_set_source (cr, mix_colors (t, base->colors[FG_COLOR1], base->colors[FG_COLOR2]));
-                /* draw point */
-                cairo_rectangle (cr, x, y, 1, 1);
-                cairo_fill (cr);
-            }
-        }
+        if (const CpuLoad *loadPtr = nearest[w - 1 - x])
+            draw_graph_helper (base, *loadPtr, cr, x, 1, h);
     }
 }
 
@@ -224,10 +293,11 @@ draw_graph_LED (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint co
     const gint nry = (h + 1) / 2;
     const xfce4::RGBA *active_color = NULL;
     const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
-    gfloat nearest[nrx];
+    auto &nearest = base->nearest_cache;
+    ensure_vector_size (nearest, w);
 
     gint64 t0 = base->history.data[core][base->history.offset].timestamp;
-    nearest_loads (base, core, t0, -step, nrx, nearest);
+    nearest_loads (base, core, t0, -step, nrx, nearest.data());
 
     for (gint x = 0; x * 3 < w; x++)
     {
@@ -236,9 +306,12 @@ draw_graph_LED (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint co
 
         if (G_LIKELY (idx >= 0 && idx < nrx))
         {
-            gfloat load = nearest[idx];
-            if (load < base->load_threshold)
-                load = 0;
+            gfloat load = 0.0f;
+            if (const CpuLoad *loadPtr = nearest[idx])
+            {
+                if (loadPtr->value >= base->load_threshold)
+                    load = loadPtr->value;
+            }
             limit = nry - (gint) roundf (nry * load);
         }
         else
@@ -246,9 +319,9 @@ draw_graph_LED (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint co
 
         for (gint y = 0; y * 2 < h; y++)
         {
-            if (base->color_mode != 0 && y < limit)
+            if (base->color_mode != COLOR_MODE_SOLID && y < limit)
             {
-                gfloat t = y / (gfloat) (base->color_mode == 1 ? nry : limit);
+                gfloat t = y / (gfloat) (base->color_mode == COLOR_MODE_GRADIENT ? nry : limit);
                 xfce4::cairo_set_source (cr, mix_colors (t, base->colors[FG_COLOR3], base->colors[FG_COLOR2]));
                 active_color = NULL;
             }
@@ -275,32 +348,8 @@ draw_graph_no_history (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, g
     if (G_UNLIKELY (core >= base->history.data.size()))
         return;
 
-    gfloat usage = base->history.data[core][base->history.offset].value;
-
-    if (usage < base->load_threshold)
-        usage = 0;
-
-    usage *= h;
-
-    if (base->color_mode == 0)
-    {
-        xfce4::cairo_set_source (cr, base->colors[FG_COLOR1]);
-        cairo_rectangle (cr, 0, h - usage, w, usage);
-        cairo_fill (cr);
-    }
-    else
-    {
-        const gint h_usage = h - (gint) roundf (usage);
-        gint tmp = 0;
-        for (gint y = h - 1; y >= h_usage; y--, tmp++)
-        {
-            gfloat t = tmp / (base->color_mode == 1 ? (gfloat) h : usage);
-            xfce4::cairo_set_source (cr, mix_colors (t, base->colors[FG_COLOR1], base->colors[FG_COLOR2]));
-            /* draw line */
-            cairo_rectangle (cr, 0, y, w, 1);
-            cairo_fill (cr);
-        }
-    }
+    const CpuLoad &load = base->history.data[core][base->history.offset];
+    draw_graph_helper (base, load, cr, 0, w, h);
 }
 
 void
@@ -311,10 +360,11 @@ draw_graph_grid (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint c
 
     const gfloat thickness = 1.75f;
     const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
-    gfloat nearest[w];
+    auto &nearest = base->nearest_cache;
+    ensure_vector_size (nearest, w);
 
     gint64 t0 = base->history.data[core][base->history.offset].timestamp;
-    nearest_loads (base, core, t0, -step, w, nearest);
+    nearest_loads (base, core, t0, -step, w, nearest.data());
 
     cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
 
@@ -357,10 +407,12 @@ draw_graph_grid (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint c
         xfce4::cairo_set_source (cr, base->colors[2]);
         for (gint x = 0; x < w; x++)
         {
-            gfloat load = nearest[w - 1 - x];
-            if (load < base->load_threshold)
-                load = 0;
-            gfloat usage = h * load;
+            gfloat usage = 0.0f;
+            if (const CpuLoad *loadPtr = nearest[w - 1 - x])
+            {
+                if (loadPtr->value >= base->load_threshold)
+                    usage = h * loadPtr->value;
+            }
 
             Point current(x, h + (thickness-1)/2 - usage);
             if (x == 0)

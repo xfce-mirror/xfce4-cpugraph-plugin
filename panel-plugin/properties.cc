@@ -41,6 +41,7 @@ struct CPUGraphOptions
     const Ptr<CPUGraph> base;
 
     GtkColorButton  *color_buttons[NUM_COLORS] = {};
+    GtkWidget       *mode_combobox = NULL;
     GtkWidget       *color_mode_combobox = NULL;
     GtkBox          *hbox_highlight_smt = NULL;
     GtkBox          *hbox_in_terminal = NULL;
@@ -183,6 +184,18 @@ create_options (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
     });
     setup_color_option (vbox2, sg, dlg_data, FG_COLOR3, _("Color 3:"), NULL, [base](GtkColorButton *button) {
         change_color (button, base, FG_COLOR3);
+    });
+    setup_color_option (vbox2, sg, dlg_data, FG_COLOR_SYSTEM, _("System:"), NULL, [base](GtkColorButton *button) {
+        change_color (button, base, FG_COLOR_SYSTEM);
+    });
+    setup_color_option (vbox2, sg, dlg_data, FG_COLOR_USER, _("User:"), NULL, [base](GtkColorButton *button) {
+        change_color (button, base, FG_COLOR_USER);
+    });
+    setup_color_option (vbox2, sg, dlg_data, FG_COLOR_NICE, _("Nice:"), NULL, [base](GtkColorButton *button) {
+        change_color (button, base, FG_COLOR_NICE);
+    });
+    setup_color_option (vbox2, sg, dlg_data, FG_COLOR_IOWAIT, _("IO wait:"), NULL, [base](GtkColorButton *button) {
+        change_color (button, base, FG_COLOR_IOWAIT);
     });
     setup_color_option (vbox2, sg, dlg_data, BG_COLOR, _("Background:"), NULL, [base](GtkColorButton *button) {
         change_color (button, base, BG_COLOR);
@@ -454,7 +467,7 @@ setup_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const Ptr<CPUGraphOptions> &d
         case MODE_GRID:       selected = 4; break;
     }
 
-    create_drop_down (vbox, sg, _("Mode:"), items, selected,
+    data->mode_combobox = create_drop_down (vbox, sg, _("Mode:"), items, selected,
         [data](GtkComboBox *combo) {
             /* 'Disabled' mode was introduced in 1.1.0 as '-1'
              * for this reason we need to decrement the selected value */
@@ -474,6 +487,9 @@ setup_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const Ptr<CPUGraphOptions> &d
                     mode = MODE_NORMAL;
             }
 
+            if ((mode == MODE_LED || mode == MODE_GRID) && data->base->color_mode == COLOR_MODE_DETAILED)
+                gtk_combo_box_set_active (GTK_COMBO_BOX (data->color_mode_combobox), COLOR_MODE_SOLID);
+
             CPUGraph::set_mode (data->base, mode);
             if (mode == MODE_DISABLED && !data->base->has_bars)
                 gtk_toggle_button_set_active (data->show_bars_checkbox, TRUE);
@@ -489,12 +505,22 @@ setup_color_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const Ptr<CPUGraphOptio
         _("Solid"),
         _("Gradient"),
         _("Fire"),
+#if defined (__linux__) || defined (__FreeBSD_kernel__)
+        _("Detailed"),
+#endif
     };
 
     data->color_mode_combobox = create_drop_down (
         vbox, sg, _("Color mode: "), items, data->base->color_mode,
         [data](GtkComboBox *combo) {
-            CPUGraph::set_color_mode (data->base, gtk_combo_box_get_active (combo));
+            const gint color_mode = gtk_combo_box_get_active (combo);
+            if (color_mode == COLOR_MODE_DETAILED)
+            {
+                const gint mode = gtk_combo_box_get_active (GTK_COMBO_BOX (data->mode_combobox)) - 1;
+                if (mode == MODE_LED || mode == MODE_GRID)
+                    gtk_combo_box_set_active (GTK_COMBO_BOX (data->mode_combobox), MODE_NORMAL + 1);
+            }
+            CPUGraph::set_color_mode (data->base, color_mode);
             update_sensitivity (data);
         });
 }
@@ -529,13 +555,32 @@ update_sensitivity (const Ptr<CPUGraphOptions> &data, bool initial)
     gtk_widget_set_sensitive (GTK_WIDGET (data->per_core), per_core);
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_per_core_spacing), per_core && base->per_core);
 
-    gtk_widget_set_sensitive (gtk_widget_get_parent (GTK_WIDGET (data->color_buttons[FG_COLOR2])),
-                              base->color_mode != 0 || base->mode == MODE_LED || base->mode == MODE_GRID);
-    gtk_widget_set_sensitive (gtk_widget_get_parent (GTK_WIDGET (data->color_buttons[FG_COLOR3])),
-                              base->color_mode != 0 && base->mode == MODE_LED);
-
-    gtk_widget_set_sensitive (gtk_widget_get_parent (GTK_WIDGET (data->color_buttons[BARS_COLOR])), base->has_bars);
-    gtk_widget_set_sensitive (gtk_widget_get_parent (GTK_WIDGET (data->color_buttons[SMT_ISSUES_COLOR])),
+    auto get_color_button_parent = [&](CPUGraphColorNumber color) {
+        return gtk_widget_get_parent (GTK_WIDGET (data->color_buttons[color]));
+    };
+    auto set_colors_visibility = [&](bool detailed_mode) {
+        gtk_widget_set_visible (get_color_button_parent (FG_COLOR1), !detailed_mode);
+        gtk_widget_set_visible (get_color_button_parent (FG_COLOR2), !detailed_mode);
+        gtk_widget_set_visible (get_color_button_parent (FG_COLOR3), !detailed_mode);
+        gtk_widget_set_visible (get_color_button_parent (FG_COLOR_SYSTEM), detailed_mode);
+        gtk_widget_set_visible (get_color_button_parent (FG_COLOR_USER), detailed_mode);
+        gtk_widget_set_visible (get_color_button_parent (FG_COLOR_NICE), detailed_mode);
+        gtk_widget_set_visible (get_color_button_parent (FG_COLOR_IOWAIT), detailed_mode);
+    };
+    if (base->color_mode == COLOR_MODE_DETAILED)
+    {
+        set_colors_visibility (true);
+    }
+    else
+    {
+        set_colors_visibility (false);
+        gtk_widget_set_sensitive (get_color_button_parent(FG_COLOR2),
+                                  base->color_mode != COLOR_MODE_SOLID || base->mode == MODE_LED || base->mode == MODE_GRID);
+        gtk_widget_set_sensitive (get_color_button_parent(FG_COLOR3),
+                                  base->color_mode != COLOR_MODE_SOLID && base->mode == MODE_LED);
+    }
+    gtk_widget_set_sensitive (get_color_button_parent(BARS_COLOR), base->has_bars);
+    gtk_widget_set_sensitive (get_color_button_parent(SMT_ISSUES_COLOR),
                               base->has_bars && base->highlight_smt && base->topology && base->topology->smt);
 
     gtk_widget_set_sensitive (gtk_widget_get_parent (data->color_mode_combobox),
