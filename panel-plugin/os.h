@@ -33,10 +33,25 @@ using xfce4::Ptr0;
 
 struct CpuData
 {
-    gfloat load; /* Range: from 0.0 to 1.0 */
+    /* Range of float values: from 0.0 to 1.0 */
+
+    gfloat load; /* Overall CPU load: user + system + nice */
+
     guint64 previous_used;
     guint64 previous_total;
+
     bool smt_highlight;
+
+    /* Detailed CPU load */
+    gfloat system;
+    gfloat user;
+    gfloat nice;
+    gfloat iowait;
+
+    guint64 previous_system;
+    guint64 previous_user;
+    guint64 previous_nice;
+    guint64 previous_iowait;
 };
 
 struct CpuStats
