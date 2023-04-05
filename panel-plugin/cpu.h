@@ -58,6 +58,14 @@ enum CPUGraphMode
     MODE_GRID = 3,
 };
 
+enum CPUGraphColorMode
+{
+    COLOR_MODE_SOLID = 0,
+    COLOR_MODE_GRADIENT = 1,
+    COLOR_MODE_FIRE = 2,
+    COLOR_MODE_DETAILED = 3,
+};
+
 /* Number of milliseconds between updates */
 enum CPUGraphUpdateRate
 {
@@ -68,8 +76,6 @@ enum CPUGraphUpdateRate
     RATE_SLOWEST = 4,
 };
 
-enum { NUM_COLORS = 6 };
-
 enum CPUGraphColorNumber
 {
     BG_COLOR = 0,
@@ -77,13 +83,29 @@ enum CPUGraphColorNumber
     FG_COLOR2 = 2,
     FG_COLOR3 = 3,
     BARS_COLOR = 4,
-    SMT_ISSUES_COLOR = 5, /* NUM_COLORS-1 */
+    SMT_ISSUES_COLOR = 5,
+    FG_COLOR_SYSTEM = 6,
+    FG_COLOR_USER = 7,
+    FG_COLOR_NICE = 8,
+    FG_COLOR_IOWAIT = 9,
+
+    NUM_COLORS = 10,
 };
 
 struct CpuLoad
 {
     gint64 timestamp; /* Microseconds since 1970-01-01 UTC, or zero */
-    gfloat value;     /* Range: from 0.0 to 1.0 */
+
+    /* Range of float values: from 0.0 to 1.0 */
+
+    /* Overall CPU load: user + system + nice */
+    gfloat value;
+
+    /* Detailed CPU load */
+    gfloat system;
+    gfloat user;
+    gfloat nice;
+    gfloat iowait;
 } __attribute__((packed));
 
 struct CPUGraph
@@ -137,6 +159,8 @@ struct CPUGraph
     std::vector<CpuData> cpu_data;  /* size == nr_cores+1 */
     Ptr0<Topology> topology;
     CpuStats stats;
+    std::vector<const CpuLoad *> nearest_cache;
+    std::vector<CpuLoad> non_linear_cache;
 
     ~CPUGraph();
 
