@@ -8,255 +8,275 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-03 00:50+0200\n"
+"POT-Creation-Date: 2023-04-06 00:51+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
 "Last-Translator: abuyop <abuyop@gmail.com>, 2014,2019,2021-2022\n"
-"Language-Team: Malay (http://www.transifex.com/xfce/xfce-panel-plugins/language/ms/)\n"
+"Language-Team: Malay (http://app.transifex.com/xfce/xfce-panel-plugins/language/ms/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ms\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../panel-plugin/cpu.cc:167 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.cc:168 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Perwakilan bergrafik bagi muatan CPU"
 
-#: ../panel-plugin/cpu.cc:169
+#: ../panel-plugin/cpu.cc:170
 msgid "Copyright (c) 2003-2021\n"
 msgstr "Hak cipta (c) 2003-2021\n"
 
-#: ../panel-plugin/cpu.cc:642
+#: ../panel-plugin/cpu.cc:648
 #, c-format
-msgid "Usage: %u%%"
-msgstr "Pengguna: %u%%"
+msgid "CPU usage: %.1f%%"
+msgstr ""
 
-#: ../panel-plugin/properties.cc:70
+#: ../panel-plugin/properties.cc:72
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
 msgstr "'Keseluruhan' menunjukkan impak ke atas keseluruhan prestasi komputer."
 
-#: ../panel-plugin/properties.cc:71
+#: ../panel-plugin/properties.cc:73
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
 msgstr "'Kawasan Khas\" menunjukkan impak prestasi sementara hanya pada jaluran yang terlibat dalam keputusan penjadualan SMT suboptimum."
 
-#: ../panel-plugin/properties.cc:104
+#: ../panel-plugin/properties.cc:108
 msgid "CPU Graph Properties"
 msgstr "Sifat Graf CPU"
 
-#: ../panel-plugin/properties.cc:108
+#: ../panel-plugin/properties.cc:112
 msgid "_Close"
 msgstr "_Tutup"
 
-#: ../panel-plugin/properties.cc:136
+#: ../panel-plugin/properties.cc:140
 msgid "Run in terminal"
 msgstr "Jalan dalam terminal"
 
-#: ../panel-plugin/properties.cc:142
+#: ../panel-plugin/properties.cc:146
 msgid "Use startup notification"
 msgstr "Guna pemberitahuan permulaan"
 
-#: ../panel-plugin/properties.cc:149
+#: ../panel-plugin/properties.cc:153
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
 msgstr "Warna yang digunakan untuk menyorot penggantian\njaluran suboptimum yang mungkin pada CPU dengan SMT"
 
-#: ../panel-plugin/properties.cc:152
+#: ../panel-plugin/properties.cc:156
 msgid "Highlight suboptimal SMT scheduling"
 msgstr "Sorot penjadualan SMT suboptimum"
 
-#: ../panel-plugin/properties.cc:158
+#: ../panel-plugin/properties.cc:162
 msgid "SMT issues color:"
 msgstr "Warna dikeluarkan SMT:"
 
-#: ../panel-plugin/properties.cc:163
+#: ../panel-plugin/properties.cc:167
 msgid "Use non-linear time-scale"
 msgstr "Guna skala-masa bukan-linear"
 
-#: ../panel-plugin/properties.cc:168
+#: ../panel-plugin/properties.cc:172
 msgid "Per-core history graphs"
 msgstr "Graf sejarah per-teras"
 
-#: ../panel-plugin/properties.cc:176
+#: ../panel-plugin/properties.cc:180
 msgid "Color 1:"
 msgstr "Warna 1:"
 
-#: ../panel-plugin/properties.cc:179
+#: ../panel-plugin/properties.cc:183
 msgid "Color 2:"
 msgstr "Warna 2:"
 
-#: ../panel-plugin/properties.cc:182
+#: ../panel-plugin/properties.cc:186
 msgid "Color 3:"
 msgstr "Warna 3:"
 
-#: ../panel-plugin/properties.cc:185
+#: ../panel-plugin/properties.cc:189
+msgid "System:"
+msgstr ""
+
+#: ../panel-plugin/properties.cc:192
+msgid "User:"
+msgstr ""
+
+#: ../panel-plugin/properties.cc:195
+msgid "Nice:"
+msgstr ""
+
+#: ../panel-plugin/properties.cc:198
+msgid "IO wait:"
+msgstr ""
+
+#: ../panel-plugin/properties.cc:201
 msgid "Background:"
 msgstr "Latar belakang:"
 
-#: ../panel-plugin/properties.cc:191
+#: ../panel-plugin/properties.cc:207
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Tunjuk palang penggunaan semasa"
 
-#: ../panel-plugin/properties.cc:197
+#: ../panel-plugin/properties.cc:213
 msgid "Bars color:"
 msgstr "Warna palang:"
 
-#: ../panel-plugin/properties.cc:202
+#: ../panel-plugin/properties.cc:218
 msgid "Show frame"
 msgstr "Tunjuk bingkai"
 
-#: ../panel-plugin/properties.cc:207
+#: ../panel-plugin/properties.cc:223
 msgid "Show border"
 msgstr "Tunjuk sempadan"
 
-#: ../panel-plugin/properties.cc:218
+#: ../panel-plugin/properties.cc:234
 msgid "Appearance"
 msgstr "Penampilan"
 
-#: ../panel-plugin/properties.cc:219
+#: ../panel-plugin/properties.cc:235
 msgid "Advanced"
 msgstr "Lanjutan"
 
-#: ../panel-plugin/properties.cc:220
+#: ../panel-plugin/properties.cc:236
 msgid "Stats"
 msgstr "Stat"
 
-#: ../panel-plugin/properties.cc:321
+#: ../panel-plugin/properties.cc:367
 msgid "Fastest (~250ms)"
 msgstr "Terpantas (~250ms)"
 
-#: ../panel-plugin/properties.cc:322
+#: ../panel-plugin/properties.cc:368
 msgid "Fast (~500ms)"
 msgstr "Pantas (~500ms)"
 
-#: ../panel-plugin/properties.cc:323
+#: ../panel-plugin/properties.cc:369
 msgid "Normal (~750ms)"
 msgstr "Biasa (~750ms)"
 
-#: ../panel-plugin/properties.cc:324
+#: ../panel-plugin/properties.cc:370
 msgid "Slow (~1s)"
 msgstr "Perlahan (~1s)"
 
-#: ../panel-plugin/properties.cc:325
+#: ../panel-plugin/properties.cc:371
 msgid "Slowest (~3s)"
 msgstr "Terlembab (~3s)"
 
-#: ../panel-plugin/properties.cc:328
+#: ../panel-plugin/properties.cc:374
 msgid "Update Interval:"
 msgstr "Sela Kemaskini:"
 
-#: ../panel-plugin/properties.cc:340
+#: ../panel-plugin/properties.cc:386
 msgid "All"
 msgstr "Semua"
 
-#: ../panel-plugin/properties.cc:344
+#: ../panel-plugin/properties.cc:390
 msgid "Tracked Core:"
 msgstr "Teras Dijejak:"
 
-#: ../panel-plugin/properties.cc:360
+#: ../panel-plugin/properties.cc:406
 msgid "Width:"
 msgstr "Lebar:"
 
-#: ../panel-plugin/properties.cc:362
+#: ../panel-plugin/properties.cc:408
 msgid "Height:"
 msgstr "Tinggi:"
 
-#: ../panel-plugin/properties.cc:375
+#: ../panel-plugin/properties.cc:421
 msgid "Threshold (%):"
 msgstr "Ambang (%):"
 
-#: ../panel-plugin/properties.cc:387
+#: ../panel-plugin/properties.cc:433
 msgid "Spacing:"
 msgstr "Jarak:"
 
-#: ../panel-plugin/properties.cc:390
+#: ../panel-plugin/properties.cc:436
 msgid "Spacing between per-core history graphs"
 msgstr "Jarak antara graf sejarah per-teras"
 
-#: ../panel-plugin/properties.cc:401
+#: ../panel-plugin/properties.cc:447
 msgid "Associated command:"
 msgstr "Perintah berkaitan:"
 
-#: ../panel-plugin/properties.cc:409
+#: ../panel-plugin/properties.cc:455
 msgid "The command to run when the plugin is left-clicked."
 msgstr "Perintah yang dijalankan ketika pemalam diklik-kiri"
 
-#: ../panel-plugin/properties.cc:410
+#: ../panel-plugin/properties.cc:456
 msgid "If not specified, it defaults to xfce4-taskmanager, htop or top."
 msgstr "Jika tidak dinyatrakan, lalainya adalah xfce4-taskmanager, htop atau top."
 
-#: ../panel-plugin/properties.cc:438
+#: ../panel-plugin/properties.cc:484
 msgid "Disabled"
 msgstr "Dilumpuhkan"
 
-#: ../panel-plugin/properties.cc:439
+#: ../panel-plugin/properties.cc:485
 msgid "Normal"
 msgstr "Biasa"
 
-#: ../panel-plugin/properties.cc:440
+#: ../panel-plugin/properties.cc:486
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.cc:441
+#: ../panel-plugin/properties.cc:487
 msgid "No history"
 msgstr "Tiada sejarah"
 
-#: ../panel-plugin/properties.cc:442
+#: ../panel-plugin/properties.cc:488
 msgid "Grid"
 msgstr "Grid"
 
-#: ../panel-plugin/properties.cc:455
+#: ../panel-plugin/properties.cc:501
 msgid "Mode:"
 msgstr "Mod:"
 
-#: ../panel-plugin/properties.cc:487
+#: ../panel-plugin/properties.cc:533
 msgid "Solid"
 msgstr "Tegar"
 
-#: ../panel-plugin/properties.cc:488
+#: ../panel-plugin/properties.cc:534
 msgid "Gradient"
 msgstr "Gradien"
 
-#: ../panel-plugin/properties.cc:489
+#: ../panel-plugin/properties.cc:535
 msgid "Fire"
 msgstr "Fire"
 
-#: ../panel-plugin/properties.cc:493
+#: ../panel-plugin/properties.cc:537
+msgid "Detailed"
+msgstr ""
+
+#: ../panel-plugin/properties.cc:542
 msgid "Color mode: "
 msgstr "Mod warna:"
 
-#: ../panel-plugin/properties.cc:553
+#: ../panel-plugin/properties.cc:652
 msgid "SMT detected: Yes"
 msgstr "SMT dikesan: Ya"
 
-#: ../panel-plugin/properties.cc:553
+#: ../panel-plugin/properties.cc:652
 msgid "SMT detected: No"
 msgstr "SMT dikesan: Tidak"
 
-#: ../panel-plugin/properties.cc:578
+#: ../panel-plugin/properties.cc:677
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
 msgstr "Bilangan insiden penjadualan SMT: %u"
 
-#: ../panel-plugin/properties.cc:583
+#: ../panel-plugin/properties.cc:682
 msgid "Estimated performance impact:"
 msgstr "Impak prestasi anggaran:"
 
-#: ../panel-plugin/properties.cc:584
+#: ../panel-plugin/properties.cc:683
 #, c-format
 msgid "Overall: %.3g%%"
 msgstr "Keseluruhan: %.3g%%"
 
-#: ../panel-plugin/properties.cc:585
+#: ../panel-plugin/properties.cc:684
 #, c-format
 msgid "Hotspots: %.3g%%"
 msgstr "Kawasan Khas: %.3g%%"
 
-#: ../panel-plugin/properties.cc:597
+#: ../panel-plugin/properties.cc:696
 msgid "SMT detected: N/A"
 msgstr "SMT dikesan: T/A"
 
