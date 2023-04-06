@@ -9,95 +9,111 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-03 00:50+0200\n"
-"PO-Revision-Date: 2021-11-13 19:41+0000\n"
-"Last-Translator: Elishai Eliyahu <elishai@mailfence.com>\n"
-"Language-Team: Hebrew (http://www.transifex.com/xfce/xfce-panel-plugins/language/he/)\n"
+"POT-Creation-Date: 2023-04-06 00:51+0200\n"
+"PO-Revision-Date: 2013-07-03 18:54+0000\n"
+"Last-Translator: Elishai Eliyahu <elishai@mailfence.com>, 2020-2021\n"
+"Language-Team: Hebrew (http://app.transifex.com/xfce/xfce-panel-plugins/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: he\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;\n"
 
-#: ../panel-plugin/cpu.cc:167 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.cc:168 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "תיאור גרפי של עומס המעבד"
 
-#: ../panel-plugin/cpu.cc:169
+#: ../panel-plugin/cpu.cc:170
 msgid "Copyright (c) 2003-2021\n"
 msgstr "זכויות יוצרים (c) 2003-2021\n"
 
-#: ../panel-plugin/cpu.cc:642
+#: ../panel-plugin/cpu.cc:648
 #, c-format
-msgid "Usage: %u%%"
-msgstr "שימוש: %u%% "
+msgid "CPU usage: %.1f%%"
+msgstr ""
 
-#: ../panel-plugin/properties.cc:70
+#: ../panel-plugin/properties.cc:72
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
 msgstr "'כולל' מציג את ההשפעה על הביצועים הכלליים של המכונה."
 
-#: ../panel-plugin/properties.cc:71
+#: ../panel-plugin/properties.cc:73
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
 msgstr "'נקודות חמות' מציג את ההשפעה הרגעית על הביצועים רק של הליכי המשנה המעורבים בהחלטות תזמון ריבוי הליכי משנה בו זמניים תת מיטביות."
 
-#: ../panel-plugin/properties.cc:104
+#: ../panel-plugin/properties.cc:108
 msgid "CPU Graph Properties"
 msgstr "מאפייני גרף מעבד"
 
-#: ../panel-plugin/properties.cc:108
+#: ../panel-plugin/properties.cc:112
 msgid "_Close"
 msgstr "_סגור"
 
-#: ../panel-plugin/properties.cc:136
+#: ../panel-plugin/properties.cc:140
 msgid "Run in terminal"
 msgstr "הפעל במסוף"
 
-#: ../panel-plugin/properties.cc:142
+#: ../panel-plugin/properties.cc:146
 msgid "Use startup notification"
 msgstr "השתמש בהודעת התחלה"
 
-#: ../panel-plugin/properties.cc:149
+#: ../panel-plugin/properties.cc:153
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
 msgstr "צבע המשמש להדגשת מיקום תת מיטבי אפשרי\n של הליכי משנה במעבדים עם ריבוי הליכי משנה בו זמניים"
 
-#: ../panel-plugin/properties.cc:152
+#: ../panel-plugin/properties.cc:156
 msgid "Highlight suboptimal SMT scheduling"
 msgstr "הדגש תזמון ריבוי הליכי משנה בו זמניים תת מיטבי"
 
-#: ../panel-plugin/properties.cc:158
+#: ../panel-plugin/properties.cc:162
 msgid "SMT issues color:"
 msgstr "צבע בעיות ריבוי הליכי משנה בו זמניים:"
 
-#: ../panel-plugin/properties.cc:163
+#: ../panel-plugin/properties.cc:167
 msgid "Use non-linear time-scale"
 msgstr "השתמש בסקאלת זמן לא לינארית"
 
-#: ../panel-plugin/properties.cc:168
+#: ../panel-plugin/properties.cc:172
 msgid "Per-core history graphs"
 msgstr "גרפים של היסטוריה לפי ליבת מעבד"
 
-#: ../panel-plugin/properties.cc:176
+#: ../panel-plugin/properties.cc:180
 msgid "Color 1:"
 msgstr "צבע 1:"
 
-#: ../panel-plugin/properties.cc:179
+#: ../panel-plugin/properties.cc:183
 msgid "Color 2:"
 msgstr "צבע 2:"
 
-#: ../panel-plugin/properties.cc:182
+#: ../panel-plugin/properties.cc:186
 msgid "Color 3:"
 msgstr "צבע 3:"
 
-#: ../panel-plugin/properties.cc:185
+#: ../panel-plugin/properties.cc:189
+msgid "System:"
+msgstr ""
+
+#: ../panel-plugin/properties.cc:192
+msgid "User:"
+msgstr ""
+
+#: ../panel-plugin/properties.cc:195
+msgid "Nice:"
+msgstr ""
+
+#: ../panel-plugin/properties.cc:198
+msgid "IO wait:"
+msgstr ""
+
+#: ../panel-plugin/properties.cc:201
 msgid "Background:"
 msgstr "רקע:"
 
-#: ../panel-plugin/properties.cc:191
+#: ../panel-plugin/properties.cc:207
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "הצג סרגל שימוש נוכחי"
@@ -105,162 +121,166 @@ msgstr[1] "הצג סרגלי שימוש נוכחי"
 msgstr[2] "הצג סרגלי שימוש נוכחי"
 msgstr[3] "הצג סרגלי שימוש נוכחי"
 
-#: ../panel-plugin/properties.cc:197
+#: ../panel-plugin/properties.cc:213
 msgid "Bars color:"
 msgstr "צבע סרגלים:"
 
-#: ../panel-plugin/properties.cc:202
+#: ../panel-plugin/properties.cc:218
 msgid "Show frame"
 msgstr "הצג מסגרת"
 
-#: ../panel-plugin/properties.cc:207
+#: ../panel-plugin/properties.cc:223
 msgid "Show border"
 msgstr "הצג גבול"
 
-#: ../panel-plugin/properties.cc:218
+#: ../panel-plugin/properties.cc:234
 msgid "Appearance"
 msgstr "מראה"
 
-#: ../panel-plugin/properties.cc:219
+#: ../panel-plugin/properties.cc:235
 msgid "Advanced"
 msgstr "מתקדם"
 
-#: ../panel-plugin/properties.cc:220
+#: ../panel-plugin/properties.cc:236
 msgid "Stats"
 msgstr "נתונים סטטיסטיים"
 
-#: ../panel-plugin/properties.cc:321
+#: ../panel-plugin/properties.cc:367
 msgid "Fastest (~250ms)"
 msgstr "המהיר ביותר (~250 מילישנייה)"
 
-#: ../panel-plugin/properties.cc:322
+#: ../panel-plugin/properties.cc:368
 msgid "Fast (~500ms)"
 msgstr "מהר (~500 מילישנייה)"
 
-#: ../panel-plugin/properties.cc:323
+#: ../panel-plugin/properties.cc:369
 msgid "Normal (~750ms)"
 msgstr "רגיל (~750 מילישנייה)"
 
-#: ../panel-plugin/properties.cc:324
+#: ../panel-plugin/properties.cc:370
 msgid "Slow (~1s)"
 msgstr "איטי (~1 שנייה)"
 
-#: ../panel-plugin/properties.cc:325
+#: ../panel-plugin/properties.cc:371
 msgid "Slowest (~3s)"
 msgstr "איטי ביותר (~3שניות)"
 
-#: ../panel-plugin/properties.cc:328
+#: ../panel-plugin/properties.cc:374
 msgid "Update Interval:"
 msgstr "מרווח עדכון:"
 
-#: ../panel-plugin/properties.cc:340
+#: ../panel-plugin/properties.cc:386
 msgid "All"
 msgstr "הכל"
 
-#: ../panel-plugin/properties.cc:344
+#: ../panel-plugin/properties.cc:390
 msgid "Tracked Core:"
 msgstr "ליבה במעקב:"
 
-#: ../panel-plugin/properties.cc:360
+#: ../panel-plugin/properties.cc:406
 msgid "Width:"
 msgstr "רוחב:"
 
-#: ../panel-plugin/properties.cc:362
+#: ../panel-plugin/properties.cc:408
 msgid "Height:"
 msgstr "גובה:"
 
-#: ../panel-plugin/properties.cc:375
+#: ../panel-plugin/properties.cc:421
 msgid "Threshold (%):"
 msgstr "סף (%):"
 
-#: ../panel-plugin/properties.cc:387
+#: ../panel-plugin/properties.cc:433
 msgid "Spacing:"
 msgstr "מרווח:"
 
-#: ../panel-plugin/properties.cc:390
+#: ../panel-plugin/properties.cc:436
 msgid "Spacing between per-core history graphs"
 msgstr "מרווח בין גרפים של היסטוריה לפי ליבת מעבד"
 
-#: ../panel-plugin/properties.cc:401
+#: ../panel-plugin/properties.cc:447
 msgid "Associated command:"
 msgstr "פקודה משויכת:"
 
-#: ../panel-plugin/properties.cc:409
+#: ../panel-plugin/properties.cc:455
 msgid "The command to run when the plugin is left-clicked."
 msgstr "הפקודה להרצה בקליק שמאלי של התוסף."
 
-#: ../panel-plugin/properties.cc:410
+#: ../panel-plugin/properties.cc:456
 msgid "If not specified, it defaults to xfce4-taskmanager, htop or top."
 msgstr "אם לא מוגדר, ברירת מחדל ל-xfce4-taskmanager, htop, או top."
 
-#: ../panel-plugin/properties.cc:438
+#: ../panel-plugin/properties.cc:484
 msgid "Disabled"
 msgstr "מכובה"
 
-#: ../panel-plugin/properties.cc:439
+#: ../panel-plugin/properties.cc:485
 msgid "Normal"
 msgstr "רגיל"
 
-#: ../panel-plugin/properties.cc:440
+#: ../panel-plugin/properties.cc:486
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.cc:441
+#: ../panel-plugin/properties.cc:487
 msgid "No history"
 msgstr "בלי היסטוריה"
 
-#: ../panel-plugin/properties.cc:442
+#: ../panel-plugin/properties.cc:488
 msgid "Grid"
 msgstr "רשת"
 
-#: ../panel-plugin/properties.cc:455
+#: ../panel-plugin/properties.cc:501
 msgid "Mode:"
 msgstr "מצב:"
 
-#: ../panel-plugin/properties.cc:487
+#: ../panel-plugin/properties.cc:533
 msgid "Solid"
 msgstr "מלא"
 
-#: ../panel-plugin/properties.cc:488
+#: ../panel-plugin/properties.cc:534
 msgid "Gradient"
 msgstr "גרדיאנט"
 
-#: ../panel-plugin/properties.cc:489
+#: ../panel-plugin/properties.cc:535
 msgid "Fire"
 msgstr "אש"
 
-#: ../panel-plugin/properties.cc:493
+#: ../panel-plugin/properties.cc:537
+msgid "Detailed"
+msgstr ""
+
+#: ../panel-plugin/properties.cc:542
 msgid "Color mode: "
 msgstr "מצב צבע:"
 
-#: ../panel-plugin/properties.cc:553
+#: ../panel-plugin/properties.cc:652
 msgid "SMT detected: Yes"
 msgstr "גילוי ריבוי הליכי משנה בו זמניים: כן"
 
-#: ../panel-plugin/properties.cc:553
+#: ../panel-plugin/properties.cc:652
 msgid "SMT detected: No"
 msgstr "גילוי ריבוי הליכי משנה בו זמניים: לא"
 
-#: ../panel-plugin/properties.cc:578
+#: ../panel-plugin/properties.cc:677
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
 msgstr "מספר תקריות תזמון ריבוי הליכי משנה בו זמניים:%u"
 
-#: ../panel-plugin/properties.cc:583
+#: ../panel-plugin/properties.cc:682
 msgid "Estimated performance impact:"
 msgstr "השפעה מוערכת על הביצועים:"
 
-#: ../panel-plugin/properties.cc:584
+#: ../panel-plugin/properties.cc:683
 #, c-format
 msgid "Overall: %.3g%%"
 msgstr "כולל:%.3g%%"
 
-#: ../panel-plugin/properties.cc:585
+#: ../panel-plugin/properties.cc:684
 #, c-format
 msgid "Hotspots: %.3g%%"
 msgstr "נקודות חמות:%.3g%%"
 
-#: ../panel-plugin/properties.cc:597
+#: ../panel-plugin/properties.cc:696
 msgid "SMT detected: N/A"
 msgstr "גילוי ריבוי הליכי משנה בו זמניים: לא זמין"
 
