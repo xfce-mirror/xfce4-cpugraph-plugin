@@ -5,13 +5,14 @@
 # Translators:
 # Algimantas Margevičius <margevicius.algimantas@gmail.com>, 2012
 # Moo, 2015-2016,2018-2021
+# Moo, 2023
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-06 00:51+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
-"Last-Translator: Moo, 2015-2016,2018-2021\n"
+"Last-Translator: Moo, 2023\n"
 "Language-Team: Lithuanian (http://app.transifex.com/xfce/xfce-panel-plugins/language/lt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,7 +31,7 @@ msgstr "Autorių teisės (c) 2003-2021\n"
 #: ../panel-plugin/cpu.cc:648
 #, c-format
 msgid "CPU usage: %.1f%%"
-msgstr ""
+msgstr "Procesoriaus apkrova: %.1f%%"
 
 #: ../panel-plugin/properties.cc:72
 msgid ""
@@ -95,19 +96,19 @@ msgstr "Spalva 3:"
 
 #: ../panel-plugin/properties.cc:189
 msgid "System:"
-msgstr ""
+msgstr "Sistema:"
 
 #: ../panel-plugin/properties.cc:192
 msgid "User:"
-msgstr ""
+msgstr "Naudotojas:"
 
 #: ../panel-plugin/properties.cc:195
 msgid "Nice:"
-msgstr ""
+msgstr "Nice:"
 
 #: ../panel-plugin/properties.cc:198
 msgid "IO wait:"
-msgstr ""
+msgstr "IO laukimas:"
 
 #: ../panel-plugin/properties.cc:201
 msgid "Background:"
@@ -118,8 +119,8 @@ msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Rodyti dabartinę apkrovos juostą"
 msgstr[1] "Rodyti dabartines apkrovos juostas"
-msgstr[2] "Rodyti dabartinių apkrovos juostų"
-msgstr[3] "Rodyti dabartinių apkrovos juostų"
+msgstr[2] "Rodyti dabartines apkrovos juostas"
+msgstr[3] "Rodyti dabartines apkrovos juostas"
 
 #: ../panel-plugin/properties.cc:213
 msgid "Bars color:"
@@ -247,7 +248,7 @@ msgstr "Ugnis"
 
 #: ../panel-plugin/properties.cc:537
 msgid "Detailed"
-msgstr ""
+msgstr "Išsami"
 
 #: ../panel-plugin/properties.cc:542
 msgid "Color mode: "
