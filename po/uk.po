@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Dmitry Nikitin <luckas_fb@mail.ru>, 2007-2008
+# Gordon Freeman, 2023
 # Yarema aka Knedlyk <yupadmin@gmail.com>, 2019,2022
 # f977cb811fcf66493f48eac227fd7473_b98aa5d <2419f1d8d12d92441152e78ae3e3bde0_722180>, 2021
 msgid ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-06 00:51+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
-"Last-Translator: Yarema aka Knedlyk <yupadmin@gmail.com>, 2019,2022\n"
+"Last-Translator: Gordon Freeman, 2023\n"
 "Language-Team: Ukrainian (http://app.transifex.com/xfce/xfce-panel-plugins/language/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,7 +32,7 @@ msgstr "Авторські права (c) 2003-2021\n"
 #: ../panel-plugin/cpu.cc:648
 #, c-format
 msgid "CPU usage: %.1f%%"
-msgstr ""
+msgstr "Використання ЦП: %.1f%%"
 
 #: ../panel-plugin/properties.cc:72
 msgid ""
@@ -96,11 +97,11 @@ msgstr "Колір 3:"
 
 #: ../panel-plugin/properties.cc:189
 msgid "System:"
-msgstr ""
+msgstr "Система:"
 
 #: ../panel-plugin/properties.cc:192
 msgid "User:"
-msgstr ""
+msgstr "Користувач:"
 
 #: ../panel-plugin/properties.cc:195
 msgid "Nice:"
@@ -108,7 +109,7 @@ msgstr ""
 
 #: ../panel-plugin/properties.cc:198
 msgid "IO wait:"
-msgstr ""
+msgstr "Очікування вводу-виводу:"
 
 #: ../panel-plugin/properties.cc:201
 msgid "Background:"
@@ -248,7 +249,7 @@ msgstr "Вогняний"
 
 #: ../panel-plugin/properties.cc:537
 msgid "Detailed"
-msgstr ""
+msgstr "Детальний"
 
 #: ../panel-plugin/properties.cc:542
 msgid "Color mode: "
