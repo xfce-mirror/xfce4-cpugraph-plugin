@@ -29,7 +29,7 @@ msgstr "Права умножавања (c) 2003-2021\n"
 #: ../panel-plugin/cpu.cc:648
 #, c-format
 msgid "CPU usage: %.1f%%"
-msgstr ""
+msgstr "Употреба процесора: %.1f%%"
 
 #: ../panel-plugin/properties.cc:72
 msgid ""
@@ -94,19 +94,19 @@ msgstr "Боја 3:"
 
 #: ../panel-plugin/properties.cc:189
 msgid "System:"
-msgstr ""
+msgstr "Систем:"
 
 #: ../panel-plugin/properties.cc:192
 msgid "User:"
-msgstr ""
+msgstr "Корисник:"
 
 #: ../panel-plugin/properties.cc:195
 msgid "Nice:"
-msgstr ""
+msgstr "Лепо:"
 
 #: ../panel-plugin/properties.cc:198
 msgid "IO wait:"
-msgstr ""
+msgstr "УИ задршка:"
 
 #: ../panel-plugin/properties.cc:201
 msgid "Background:"
@@ -153,7 +153,7 @@ msgstr "брзо (~500ms)"
 
 #: ../panel-plugin/properties.cc:369
 msgid "Normal (~750ms)"
-msgstr "нормалнo (~750ms)"
+msgstr "обично (~750ms)"
 
 #: ../panel-plugin/properties.cc:370
 msgid "Slow (~1s)"
@@ -245,7 +245,7 @@ msgstr "ватра"
 
 #: ../panel-plugin/properties.cc:537
 msgid "Detailed"
-msgstr ""
+msgstr "Подробно"
 
 #: ../panel-plugin/properties.cc:542
 msgid "Color mode: "
