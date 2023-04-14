@@ -25,7 +25,7 @@ msgstr "Graphical representation of the CPU load"
 
 #: ../panel-plugin/cpu.cc:170
 msgid "Copyright (c) 2003-2021\n"
-msgstr ""
+msgstr "Copyright (c) 2003-2021\n"
 
 #: ../panel-plugin/cpu.cc:648
 #, c-format
