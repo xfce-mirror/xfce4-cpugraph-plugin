@@ -167,7 +167,7 @@ about_cb ()
         "program-name", PACKAGE_NAME,
         "comments", _("Graphical representation of the CPU load"),
         "website", "https://docs.xfce.org/panel-plugins/xfce4-cpugraph-plugin",
-        "copyright", _("Copyright (c) 2003-2021\n"),
+        "copyright", "Copyright \302\251 2004-2023 The Xfce development team",
         "authors", auth, NULL);
 }
 
