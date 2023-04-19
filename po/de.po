@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-06 00:51+0200\n"
+"POT-Creation-Date: 2023-04-19 01:16+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
 "Last-Translator: Andreas Eitel <github-aneitel@online.de>, 2019-2021,2023\n"
 "Language-Team: German (http://app.transifex.com/xfce/xfce-panel-plugins/language/de/)\n"
@@ -23,10 +23,6 @@ msgstr ""
 #: ../panel-plugin/cpu.cc:168 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Grafische Darstellung der CPU-Last"
-
-#: ../panel-plugin/cpu.cc:170
-msgid "Copyright (c) 2003-2021\n"
-msgstr "Urheberrecht (c) 2003-2021\n"
 
 #: ../panel-plugin/cpu.cc:648
 #, c-format
