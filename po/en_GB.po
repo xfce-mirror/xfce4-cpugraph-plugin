@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Andi Chandler <andi@gowling.com>, 2023
 # Jackson Doak <noskcaj@ubuntu.com>, 2013
 # Jeff Bailes <thepizzaking@gmail.com>, 2007
 msgid ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-19 01:16+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
-"Last-Translator: Jackson Doak <noskcaj@ubuntu.com>, 2013\n"
+"Last-Translator: Andi Chandler <andi@gowling.com>, 2023\n"
 "Language-Team: English (United Kingdom) (http://app.transifex.com/xfce/xfce-panel-plugins/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,18 +27,18 @@ msgstr "Graphical representation of the CPU load"
 #: ../panel-plugin/cpu.cc:648
 #, c-format
 msgid "CPU usage: %.1f%%"
-msgstr ""
+msgstr "CPU usage: %.1f%%"
 
 #: ../panel-plugin/properties.cc:72
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
-msgstr ""
+msgstr "'Overall' is showing the impact on the overall performance of the machine."
 
 #: ../panel-plugin/properties.cc:73
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
-msgstr ""
+msgstr "'Hotspots' is showing the momentary performance impact on just the threads involved in suboptimal SMT scheduling decisions."
 
 #: ../panel-plugin/properties.cc:108
 msgid "CPU Graph Properties"
@@ -59,15 +60,15 @@ msgstr "Use startup notification"
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
-msgstr ""
+msgstr "Colour used to highlight potentially suboptimal\nplacement of threads on CPUs with SMT"
 
 #: ../panel-plugin/properties.cc:156
 msgid "Highlight suboptimal SMT scheduling"
-msgstr ""
+msgstr "Highlight suboptimal SMT scheduling"
 
 #: ../panel-plugin/properties.cc:162
 msgid "SMT issues color:"
-msgstr ""
+msgstr "SMT issues colour:"
 
 #: ../panel-plugin/properties.cc:167
 msgid "Use non-linear time-scale"
@@ -75,7 +76,7 @@ msgstr "Use non-linear time-scale"
 
 #: ../panel-plugin/properties.cc:172
 msgid "Per-core history graphs"
-msgstr ""
+msgstr "Per-core history graphs"
 
 #: ../panel-plugin/properties.cc:180
 msgid "Color 1:"
@@ -91,19 +92,19 @@ msgstr "Colour 3:"
 
 #: ../panel-plugin/properties.cc:189
 msgid "System:"
-msgstr ""
+msgstr "System:"
 
 #: ../panel-plugin/properties.cc:192
 msgid "User:"
-msgstr ""
+msgstr "User:"
 
 #: ../panel-plugin/properties.cc:195
 msgid "Nice:"
-msgstr ""
+msgstr "Nice:"
 
 #: ../panel-plugin/properties.cc:198
 msgid "IO wait:"
-msgstr ""
+msgstr "IO wait:"
 
 #: ../panel-plugin/properties.cc:201
 msgid "Background:"
@@ -137,7 +138,7 @@ msgstr "Advanced"
 
 #: ../panel-plugin/properties.cc:236
 msgid "Stats"
-msgstr ""
+msgstr "Stats"
 
 #: ../panel-plugin/properties.cc:367
 msgid "Fastest (~250ms)"
@@ -157,7 +158,7 @@ msgstr "Slow (~1s)"
 
 #: ../panel-plugin/properties.cc:371
 msgid "Slowest (~3s)"
-msgstr ""
+msgstr "Slowest (~3s)"
 
 #: ../panel-plugin/properties.cc:374
 msgid "Update Interval:"
@@ -181,15 +182,15 @@ msgstr "Height:"
 
 #: ../panel-plugin/properties.cc:421
 msgid "Threshold (%):"
-msgstr ""
+msgstr "Threshold (%):"
 
 #: ../panel-plugin/properties.cc:433
 msgid "Spacing:"
-msgstr ""
+msgstr "Spacing:"
 
 #: ../panel-plugin/properties.cc:436
 msgid "Spacing between per-core history graphs"
-msgstr ""
+msgstr "Spacing between per-core history graphs"
 
 #: ../panel-plugin/properties.cc:447
 msgid "Associated command:"
@@ -197,15 +198,15 @@ msgstr "Associated command:"
 
 #: ../panel-plugin/properties.cc:455
 msgid "The command to run when the plugin is left-clicked."
-msgstr ""
+msgstr "The command to run when the plugin is left-clicked."
 
 #: ../panel-plugin/properties.cc:456
 msgid "If not specified, it defaults to xfce4-taskmanager, htop or top."
-msgstr ""
+msgstr "If not specified, it defaults to xfce4-taskmanager, htop or top."
 
 #: ../panel-plugin/properties.cc:484
 msgid "Disabled"
-msgstr ""
+msgstr "Disabled"
 
 #: ../panel-plugin/properties.cc:485
 msgid "Normal"
@@ -241,7 +242,7 @@ msgstr "Fire"
 
 #: ../panel-plugin/properties.cc:537
 msgid "Detailed"
-msgstr ""
+msgstr "Detailed"
 
 #: ../panel-plugin/properties.cc:542
 msgid "Color mode: "
@@ -249,34 +250,34 @@ msgstr "Colour mode: "
 
 #: ../panel-plugin/properties.cc:652
 msgid "SMT detected: Yes"
-msgstr ""
+msgstr "SMT detected: Yes"
 
 #: ../panel-plugin/properties.cc:652
 msgid "SMT detected: No"
-msgstr ""
+msgstr "SMT detected: No"
 
 #: ../panel-plugin/properties.cc:677
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
-msgstr ""
+msgstr "Number of SMT scheduling incidents: %u"
 
 #: ../panel-plugin/properties.cc:682
 msgid "Estimated performance impact:"
-msgstr ""
+msgstr "Estimated performance impact:"
 
 #: ../panel-plugin/properties.cc:683
 #, c-format
 msgid "Overall: %.3g%%"
-msgstr ""
+msgstr "Overall: %.3g%%"
 
 #: ../panel-plugin/properties.cc:684
 #, c-format
 msgid "Hotspots: %.3g%%"
-msgstr ""
+msgstr "Hotspots: %.3g%%"
 
 #: ../panel-plugin/properties.cc:696
 msgid "SMT detected: N/A"
-msgstr ""
+msgstr "SMT detected: N/A"
 
 #: ../panel-plugin/cpugraph.desktop.in.h:1
 msgid "CPU Graph"
