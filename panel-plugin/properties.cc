@@ -500,9 +500,7 @@ setup_mode_option (GtkBox *vbox, GtkSizeGroup *sg, const Ptr<CPUGraphOptions> &d
 
     data->mode_combobox = create_drop_down (vbox, sg, _("Mode:"), items, selected,
         [data](GtkComboBox *combo) {
-            /* 'Disabled' mode was introduced in 1.1.0 as '-1'
-             * for this reason we need to decrement the selected value */
-            gint active = gtk_combo_box_get_active (combo) - 1;
+            gint active = gtk_combo_box_get_active (combo);
             CPUGraphMode mode;
 
             switch (active)
@@ -626,9 +624,9 @@ update_sensitivity (const Ptr<CPUGraphOptions> &data, bool initial)
     {
         const bool is_detailed = (data->base->color_mode == COLOR_MODE_DETAILED);
         GtkTreeIter iter;
-        if (gtk_tree_model_iter_nth_child (model, &iter, nullptr, MODE_LED + 1))
+        if (gtk_tree_model_iter_nth_child (model, &iter, nullptr, MODE_LED))
             gtk_list_store_set (GTK_LIST_STORE (model), &iter, 1, !is_detailed, -1);
-        if (gtk_tree_model_iter_nth_child (model, &iter, nullptr, MODE_GRID + 1))
+        if (gtk_tree_model_iter_nth_child (model, &iter, nullptr, MODE_GRID))
             gtk_list_store_set (GTK_LIST_STORE (model), &iter, 1, !is_detailed, -1);
     }
     if (GtkTreeModel *model = gtk_combo_box_get_model (GTK_COMBO_BOX (data->color_mode_combobox)))

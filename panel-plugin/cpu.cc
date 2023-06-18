@@ -64,6 +64,8 @@ cpugraph_construct (XfcePanelPlugin *plugin)
 
     Ptr<CPUGraph> base = create_gui (plugin);
 
+    Settings::init(plugin, base);
+
     Settings::read (plugin, base);
 
     xfce_panel_plugin_menu_show_about (plugin);
@@ -203,6 +205,8 @@ CPUGraph::~CPUGraph()
     g_info ("%s", __PRETTY_FUNCTION__);
     for (auto hist_data : history.data)
         g_free (hist_data);
+    if (channel)
+        g_object_unref (channel);
 }
 
 static void
