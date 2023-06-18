@@ -64,14 +64,14 @@ cpugraph_construct (XfcePanelPlugin *plugin)
 
     Ptr<CPUGraph> base = create_gui (plugin);
 
-    read_settings (plugin, base);
+    Settings::read (plugin, base);
 
     xfce_panel_plugin_menu_show_about (plugin);
     xfce_panel_plugin_menu_show_configure (plugin);
 
     xfce4::connect_about           (plugin, [base](XfcePanelPlugin *p) { about_cb(); });
     xfce4::connect_free_data       (plugin, [base](XfcePanelPlugin *p) { shutdown(base); });
-    xfce4::connect_save            (plugin, [base](XfcePanelPlugin *p) { write_settings(p, base); });
+    xfce4::connect_save            (plugin, [base](XfcePanelPlugin *p) { Settings::write(p, base); });
     xfce4::connect_configure_plugin(plugin, [base](XfcePanelPlugin *p) { create_options(p, base); });
     xfce4::connect_mode_changed    (plugin, [base](XfcePanelPlugin *p, XfcePanelPluginMode mode) { mode_cb(p, base); });
     xfce4::connect_size_changed    (plugin, [base](XfcePanelPlugin *p, guint size) { return size_cb(p, size, base); });

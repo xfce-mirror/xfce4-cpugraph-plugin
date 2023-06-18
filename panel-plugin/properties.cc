@@ -122,7 +122,7 @@ create_options (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
     xfce4::connect_response (GTK_DIALOG (dlg), [base, dlg](GtkDialog*, gint response) {
         gtk_widget_destroy (dlg);
         xfce_panel_plugin_unblock_menu (base->plugin);
-        write_settings (base->plugin, base);
+        Settings::write (base->plugin, base);
     });
 
     gtk_window_set_icon_name (GTK_WINDOW (dlg), "org.xfce.panel.cpugraph");

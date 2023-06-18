@@ -60,7 +60,7 @@ static const gchar *const color_keys[NUM_COLORS] =
 };
 
 void
-read_settings (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
+Settings::read (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
 {
     CPUGraphUpdateRate rate = RATE_NORMAL;
     CPUGraphMode mode = MODE_NORMAL;
@@ -183,7 +183,7 @@ read_settings (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
 }
 
 void
-write_settings (XfcePanelPlugin *plugin, const Ptr<const CPUGraph> &base)
+Settings::write (XfcePanelPlugin *plugin, const Ptr<const CPUGraph> &base)
 {
     char *file;
 
