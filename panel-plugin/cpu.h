@@ -29,6 +29,7 @@
 #endif
 
 #include <libxfce4panel/libxfce4panel.h>
+#include <xfconf/xfconf.h>
 #include <string>
 #include <vector>
 #include "xfce4++/util.h"
@@ -51,11 +52,11 @@ using xfce4::Ptr0;
 
 enum CPUGraphMode
 {
-    MODE_DISABLED = -1,
-    MODE_NORMAL = 0,
-    MODE_LED = 1,
-    MODE_NO_HISTORY = 2,
-    MODE_GRID = 3,
+    MODE_DISABLED = 0,
+    MODE_NORMAL = 1,
+    MODE_LED = 2,
+    MODE_NO_HISTORY = 3,
+    MODE_GRID = 4,
 };
 
 enum CPUGraphColorMode
@@ -125,6 +126,7 @@ struct CPUGraph
     GtkWidget *tooltip_text;
 
     /* Settings */
+    XfconfChannel *channel;
     CPUGraphUpdateRate update_interval;
     guint size;
     CPUGraphMode mode;
