@@ -6,7 +6,8 @@ AM_CPPFLAGS = -I${top_srcdir}
 libcpugraph_la_CFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\"$(localedir)\" \
 	@LIBXFCE4UI_CFLAGS@ \
-	@LIBXFCE4PANEL_CFLAGS@
+	@LIBXFCE4PANEL_CFLAGS@ \
+	@XFCONF_CFLAGS@
 
 libcpugraph_la_CXXFLAGS = $(libcpugraph_la_CFLAGS)
 
@@ -14,7 +15,8 @@ libcpugraph_la_LIBADD = \
 	$(top_builddir)/xfce4++/util/libxfce4util_pp.la \
 	@LIBXFCE4UI_LIBS@ \
 	@LIBXFCE4PANEL_LIBS@ \
-	-lm
+	-lm \
+	@XFCONF_LIBS@
 
 libcpugraph_la_SOURCES = \
 	mode.cc \
