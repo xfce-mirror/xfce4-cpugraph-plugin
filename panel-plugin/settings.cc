@@ -29,9 +29,10 @@
 
 #include "settings.h"
 #include "xfce4++/util.h"
-#include <math.h>
+#include <xfconf/xfconf.h>
+#include <cmath>
 
-static const xfce4::RGBA default_colors[NUM_COLORS] =
+static const xfce4::RGBA g_default_colors[NUM_COLORS] =
 {
     [BG_COLOR]         = {1.0, 1.0, 1.0, 0.0},
     [FG_COLOR1]        = {0.0, 1.0, 0.0, 1.0},
@@ -45,19 +46,48 @@ static const xfce4::RGBA default_colors[NUM_COLORS] =
     [FG_COLOR_IOWAIT]  = {0.2, 0.9, 0.4, 1.0},
 };
 
-static const gchar *const color_keys[NUM_COLORS] =
+static const gchar *const g_color_keys[NUM_COLORS][2] =
 {
-    [BG_COLOR]         = "Background",
-    [FG_COLOR1]        = "Foreground1",
-    [FG_COLOR2]        = "Foreground2",
-    [FG_COLOR3]        = "Foreground3",
-    [BARS_COLOR]       = "BarsColor",
-    [SMT_ISSUES_COLOR] = "SmtIssuesColor",
-    [FG_COLOR_SYSTEM]  = "ForegroundSystem",
-    [FG_COLOR_USER]    = "ForegroundUser",
-    [FG_COLOR_NICE]    = "ForegroundNice",
-    [FG_COLOR_IOWAIT]  = "ForegroundIOwait",
+    [BG_COLOR]         = {"/background", "Background"},
+    [FG_COLOR1]        = {"/foreground-1", "Foreground1"},
+    [FG_COLOR2]        = {"/foreground-2", "Foreground2"},
+    [FG_COLOR3]        = {"/foreground-3", "Foreground3"},
+    [BARS_COLOR]       = {"/bars-color", "BarsColor"},
+    [SMT_ISSUES_COLOR] = {"/smt-issues-color", "SmtIssuesColor"},
+    [FG_COLOR_SYSTEM]  = {"/foreground-system", "ForegroundSystem"},
+    [FG_COLOR_USER]    = {"/foreground-user", "ForegroundUser"},
+    [FG_COLOR_NICE]    = {"/foreground-nice", "ForegroundNice"},
+    [FG_COLOR_IOWAIT]  = {"/foreground-iowait", "ForegroundIOwait"},
 };
+
+constexpr auto g_update_interval = "/update-interval";
+constexpr auto g_time_scale = "/time-scale";
+constexpr auto g_size = "/size";
+constexpr auto g_mode = "/mode";
+constexpr auto g_color_mode = "/color-mode";
+constexpr auto g_frame = "/frame";
+constexpr auto g_border = "/border";
+constexpr auto g_bars = "/bars";
+constexpr auto g_per_core = "/per-core";
+constexpr auto g_tracked_core = "/tracked-core";
+constexpr auto g_in_terminal = "/in-terminal";
+constexpr auto g_startup_notification = "/startup-notification";
+constexpr auto g_load_threshold = "/load-threshold";
+constexpr auto g_smt_issues = "/smt-issues";
+constexpr auto g_per_core_spacing = "/per-core-spacing";
+constexpr auto g_command = "/command";
+
+void
+Settings::init (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
+{
+    if (!xfconf_init (nullptr))
+        return;
+
+    base->channel = xfconf_channel_new_with_property_base (
+        "xfce4-panel",
+        xfce_panel_plugin_get_property_base (plugin)
+    );
+}
 
 void
 Settings::read (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
@@ -81,51 +111,102 @@ Settings::read (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
     guint load_threshold = 0;
 
     for (guint i = 0; i < NUM_COLORS; i++)
-        colors[i] = default_colors[i];
+        colors[i] = g_default_colors[i];
 
     gint size = xfce_panel_plugin_get_size (plugin);
 
-    char *file;
-    if ((file = xfce_panel_plugin_lookup_rc_file (plugin)) != NULL)
+    if (const auto chn = base->channel)
     {
-        const auto rc = xfce4::Rc::simple_open (file, true);
-        g_free (file);
+        bool migrate = false;
 
-        if (rc)
+        // Migrate settings if new settings are empty, but old settings exists
+        if (const auto rc_file = xfce_panel_plugin_lookup_rc_file (plugin))
         {
-            Ptr0<std::string> value;
+            migrate = true;
+            if (auto table = xfconf_channel_get_properties (chn, nullptr))
+            {
+                migrate = (g_hash_table_size (table) <= 1);
+                g_hash_table_unref (table);
+            }
+            if (migrate)
+            {
+                if (const auto rc = xfce4::Rc::simple_open (rc_file, true))
+                {
+                    Ptr0<std::string> value;
 
-            rate = (CPUGraphUpdateRate) rc->read_int_entry ("UpdateInterval", rate);
-            nonlinear = rc->read_int_entry ("TimeScale", nonlinear);
-            size = rc->read_int_entry ("Size", size);
-            mode = (CPUGraphMode) rc->read_int_entry ("Mode", mode);
-            color_mode = rc->read_int_entry ("ColorMode", color_mode);
-            frame = rc->read_int_entry ("Frame", frame);
-            in_terminal = rc->read_int_entry ("InTerminal", in_terminal);
-            startup_notification = rc->read_int_entry ("StartupNotification", startup_notification);
-            border = rc->read_int_entry ("Border", border);
-            bars = rc->read_int_entry ("Bars", bars);
-            highlight_smt = rc->read_int_entry ("SmtIssues", highlight_smt);
-            per_core = rc->read_int_entry ("PerCore", per_core);
-            per_core_spacing = rc->read_int_entry ("PerCoreSpacing", per_core_spacing);
-            tracked_core = rc->read_int_entry ("TrackedCore", tracked_core);
-            load_threshold = rc->read_int_entry ("LoadThreshold", load_threshold);
+                    rate = (CPUGraphUpdateRate) rc->read_int_entry ("UpdateInterval", rate);
+                    nonlinear = rc->read_int_entry ("TimeScale", nonlinear);
+                    size = rc->read_int_entry ("Size", size);
+                    mode = (CPUGraphMode) (rc->read_int_entry ("Mode", mode - 1) + 1); // 'Disabled' mode was introduced in 1.1.0 as '-1', in 1.2.8 it was changed to 0.
+                    color_mode = rc->read_int_entry ("ColorMode", color_mode);
+                    frame = rc->read_int_entry ("Frame", frame);
+                    in_terminal = rc->read_int_entry ("InTerminal", in_terminal);
+                    startup_notification = rc->read_int_entry ("StartupNotification", startup_notification);
+                    border = rc->read_int_entry ("Border", border);
+                    bars = rc->read_int_entry ("Bars", bars);
+                    highlight_smt = rc->read_int_entry ("SmtIssues", highlight_smt);
+                    per_core = rc->read_int_entry ("PerCore", per_core);
+                    per_core_spacing = rc->read_int_entry ("PerCoreSpacing", per_core_spacing);
+                    tracked_core = rc->read_int_entry ("TrackedCore", tracked_core);
+                    load_threshold = rc->read_int_entry ("LoadThreshold", load_threshold);
 
-            if ((value = rc->read_entry ("Command", NULL))) {
-                command = *value;
+                    if ((value = rc->read_entry ("Command", nullptr)))
+                    {
+                        command = *value;
+                    }
+
+                    for (guint i = 0; i < NUM_COLORS; i++)
+                    {
+                        if ((value = rc->read_entry (g_color_keys[i][1], nullptr)))
+                        {
+                            xfce4::RGBA::parse (colors[i], *value);
+                            if (i == BARS_COLOR)
+                                base->has_barcolor = true;
+                        }
+                    }
+                }
+                else
+                {
+                    migrate = false;
+                }
+            }
+            g_free (rc_file);
+        }
+
+        if (!migrate)
+        {
+            rate = (CPUGraphUpdateRate) xfconf_channel_get_int (chn, g_update_interval, rate);
+            nonlinear = xfconf_channel_get_int (chn, g_time_scale, nonlinear);
+            size = xfconf_channel_get_int (chn, g_size, size);
+            mode = (CPUGraphMode) xfconf_channel_get_int (chn, g_mode, mode);
+            color_mode = xfconf_channel_get_int (chn, g_color_mode, color_mode);
+            frame = xfconf_channel_get_int (chn, g_frame, frame);
+            border = xfconf_channel_get_int (chn, g_border, border);
+            bars = xfconf_channel_get_int (chn, g_bars, bars);
+            per_core = xfconf_channel_get_int (chn, g_per_core, per_core);
+            tracked_core = xfconf_channel_get_int (chn, g_tracked_core, tracked_core);
+            in_terminal = xfconf_channel_get_int (chn, g_in_terminal, in_terminal);
+            startup_notification = xfconf_channel_get_int (chn, g_startup_notification, startup_notification);
+            load_threshold = xfconf_channel_get_int (chn, g_load_threshold, load_threshold);
+            highlight_smt = xfconf_channel_get_int (chn, g_smt_issues, highlight_smt);
+            per_core_spacing = xfconf_channel_get_int (chn, g_per_core_spacing, per_core_spacing);
+
+            if (auto value = xfconf_channel_get_string (chn, g_command, nullptr))
+            {
+                command = value;
+                g_free (value);
             }
 
             for (guint i = 0; i < NUM_COLORS; i++)
             {
-                if ((value = rc->read_entry (color_keys[i], NULL)))
+                if (auto value = xfconf_channel_get_string (chn, g_color_keys[i][0], nullptr))
                 {
-                    xfce4::RGBA::parse (colors[i], *value);
+                    xfce4::RGBA::parse (colors[i], value);
                     if (i == BARS_COLOR)
                         base->has_barcolor = true;
+                    g_free (value);
                 }
             }
-
-            rc->close ();
         }
     }
 
@@ -185,50 +266,34 @@ Settings::read (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
 void
 Settings::write (XfcePanelPlugin *plugin, const Ptr<const CPUGraph> &base)
 {
-    char *file;
-
-    if (!(file = xfce_panel_plugin_save_location (plugin, TRUE)))
+    const auto chn = base->channel;
+    if (!chn)
         return;
 
-    const auto rc = xfce4::Rc::simple_open (file, false);
-    g_free (file);
-    file = NULL;
+    xfconf_channel_set_int (chn, g_update_interval, base->update_interval);
+    xfconf_channel_set_int (chn, g_time_scale, base->non_linear);
+    xfconf_channel_set_int (chn, g_size, base->size);
+    xfconf_channel_set_int (chn, g_mode, base->mode);
+    xfconf_channel_set_int (chn, g_color_mode, base->color_mode);
+    xfconf_channel_set_int (chn, g_frame, base->has_frame);
+    xfconf_channel_set_int (chn, g_border, base->has_border);
+    xfconf_channel_set_int (chn, g_bars, base->has_bars);
+    xfconf_channel_set_int (chn, g_per_core, base->per_core);
+    xfconf_channel_set_int (chn, g_tracked_core, base->tracked_core);
+    xfconf_channel_set_int (chn, g_in_terminal, base->command_in_terminal);
+    xfconf_channel_set_int (chn, g_startup_notification, base->command_startup_notification);
+    xfconf_channel_set_int (chn, g_load_threshold, std::round (100.0f * base->load_threshold));
+    xfconf_channel_set_int (chn, g_smt_issues, base->highlight_smt);
+    xfconf_channel_set_int (chn, g_per_core_spacing, base->per_core_spacing);
 
-    if (!rc)
-        return;
-
-    rc->write_default_int_entry ("UpdateInterval", base->update_interval, RATE_NORMAL);
-    rc->write_int_entry ("TimeScale", base->non_linear ? 1 : 0);
-    rc->write_int_entry ("Size", base->size);
-    rc->write_default_int_entry ("Mode", base->mode, MODE_NORMAL);
-    rc->write_int_entry ("Frame", base->has_frame ? 1 : 0);
-    rc->write_int_entry ("Border", base->has_border ? 1 : 0);
-    rc->write_int_entry ("Bars", base->has_bars ? 1 : 0);
-    rc->write_int_entry ("PerCore", base->per_core ? 1 : 0);
-    rc->write_int_entry ("TrackedCore", base->tracked_core);
-    rc->write_default_entry ("Command", base->command, "");
-    rc->write_int_entry ("InTerminal", base->command_in_terminal ? 1 : 0);
-    rc->write_int_entry ("StartupNotification", base->command_startup_notification ? 1 : 0);
-    rc->write_int_entry ("ColorMode", base->color_mode);
-    rc->write_default_int_entry ("LoadThreshold", gint (roundf (100 * base->load_threshold)), 0);
+    xfconf_channel_set_string (chn, g_command, base->command.c_str());
 
     for (guint i = 0; i < NUM_COLORS; i++)
     {
-        const gchar *key = color_keys[i];
-
-        if(i == BARS_COLOR && !base->has_barcolor)
-            key = NULL;
-
-        if (key)
+        if (i != BARS_COLOR || base->has_barcolor)
         {
-            auto rgba = (std::string) base->colors[i];
-            auto rgba_default = (std::string) default_colors[i];
-            rc->write_default_entry (key, rgba, rgba_default);
+            const std::string rgba = base->colors[i];
+            xfconf_channel_set_string (chn, g_color_keys[i][0], rgba.c_str());
         }
     }
-
-    rc->write_default_int_entry ("SmtIssues", base->highlight_smt ? 1 : 0, HIGHLIGHT_SMT_BY_DEFAULT);
-    rc->write_default_int_entry ("PerCoreSpacing", base->per_core_spacing, PER_CORE_SPACING_DEFAULT);
-
-    rc->close ();
 }
