@@ -40,6 +40,7 @@ using xfce4::Ptr;
 using xfce4::Ptr0;
 
 #define BORDER 8
+#define STATS_SMT_BY_DEFAULT false
 #define HIGHLIGHT_SMT_BY_DEFAULT false
 #define MAX_HISTORY_SIZE (100*1000)
 #define MAX_LOAD_THRESHOLD 0.2
@@ -144,6 +145,7 @@ struct CPUGraph
     bool has_bars:1;
     bool has_border:1;
     bool has_frame:1;
+    bool stats_smt:1;
     bool highlight_smt:1;
     bool non_linear:1;
     bool per_core:1;
@@ -166,6 +168,11 @@ struct CPUGraph
 
     ~CPUGraph();
 
+    bool
+    isSmtEnabled () const {
+        return stats_smt || (has_bars && highlight_smt);
+    }
+
     static void set_bars                 (const Ptr<CPUGraph> &base, bool bars);
     static void set_border               (const Ptr<CPUGraph> &base, bool border);
     static void set_color                (const Ptr<CPUGraph> &base, CPUGraphColorNumber number, const xfce4::RGBA &color);
@@ -179,10 +186,12 @@ struct CPUGraph
     static void set_per_core             (const Ptr<CPUGraph> &base, bool per_core);
     static void set_per_core_spacing     (const Ptr<CPUGraph> &base, guint spacing);
     static void set_size                 (const Ptr<CPUGraph> &base, guint width);
+    static void set_stats_smt            (const Ptr<CPUGraph> &base, bool stats_smt);
     static void set_smt                  (const Ptr<CPUGraph> &base, bool highlight_smt);
     static void set_startup_notification (const Ptr<CPUGraph> &base, bool startup_notification);
     static void set_tracked_core         (const Ptr<CPUGraph> &base, guint core);
     static void set_update_rate          (const Ptr<CPUGraph> &base, CPUGraphUpdateRate rate);
+    static void maybe_clear_smt_stats    (const Ptr<CPUGraph> &base);
 };
 
 guint get_update_interval_ms (CPUGraphUpdateRate rate);
