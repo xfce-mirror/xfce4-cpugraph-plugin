@@ -135,6 +135,7 @@ create_gui (XfcePanelPlugin *plugin)
     base->has_bars = false;
     base->has_barcolor = false;
     base->bars.orientation = orientation;
+    base->stats_smt = STATS_SMT_BY_DEFAULT;
     base->highlight_smt = HIGHLIGHT_SMT_BY_DEFAULT;
     base->per_core_spacing = PER_CORE_SPACING_DEFAULT;
 
@@ -394,7 +395,7 @@ detect_smt_issues (const Ptr<CPUGraph> &base)
             g_info ("actual_load[%u] = %g", i, actual_load[i]);
     }
 
-    if (base->topology && base->topology->smt)
+    if (G_LIKELY (base->topology && base->topology->smt))
     {
         /* Use <Topology> instead of <const Topology>.
          * The non-const version results in less efficient C++ code,
@@ -622,7 +623,8 @@ update_cb (const Ptr<CPUGraph> &base)
     if (!read_cpu_data (base->cpu_data))
         return xfce4::TIMEOUT_AGAIN;
 
-    detect_smt_issues (base);
+    if (base->topology && base->topology->smt && base->isSmtIssuesEnabled ())
+        detect_smt_issues (base);
 
     if (!base->history.data.empty())
     {
@@ -996,6 +998,12 @@ CPUGraph::set_per_core_spacing (const Ptr<CPUGraph> &base, guint spacing)
 }
 
 void
+CPUGraph::set_stats_smt (const Ptr<CPUGraph> &base, bool stats_smt)
+{
+    base->stats_smt = stats_smt;
+}
+
+void
 CPUGraph::set_smt (const Ptr<CPUGraph> &base, bool highlight_smt)
 {
     base->highlight_smt = highlight_smt;
@@ -1019,6 +1027,13 @@ CPUGraph::set_update_rate (const Ptr<CPUGraph> &base, CPUGraphUpdateRate rate)
         if (change && !init)
             queue_draw (base);
     }
+}
+
+void
+CPUGraph::maybe_clear_smt_stats (const Ptr<CPUGraph> &base)
+{
+    if (!base->isSmtIssuesEnabled ())
+        base->stats = {};
 }
 
 void

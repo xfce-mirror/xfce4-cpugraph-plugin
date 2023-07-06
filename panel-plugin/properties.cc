@@ -43,12 +43,14 @@ struct CPUGraphOptions
     GtkColorButton  *color_buttons[NUM_COLORS] = {};
     GtkWidget       *mode_combobox = NULL;
     GtkWidget       *color_mode_combobox = NULL;
+    GtkBox          *hbox_stats_smt = nullptr;
     GtkBox          *hbox_highlight_smt = NULL;
     GtkBox          *hbox_in_terminal = NULL;
     GtkBox          *hbox_per_core_spacing = NULL;
     GtkBox          *hbox_startup_notification = NULL;
     GtkToggleButton *per_core = NULL, *show_bars_checkbox = NULL;
     GtkLabel        *smt_stats = NULL;
+    GtkWidget       *notebook = nullptr;
     guint           timeout_id = 0;
 
     CPUGraphOptions(const Ptr<CPUGraph> &_base) : base(_base) {}
@@ -97,7 +99,7 @@ static GtkBox*    setup_per_core_spacing_option (GtkBox *vbox, GtkSizeGroup *sg,
 static void       change_color (GtkColorButton  *button, const Ptr<CPUGraph> &base, CPUGraphColorNumber number);
 static void       update_sensitivity (const Ptr<CPUGraphOptions> &data, bool initial = false);
 
-static xfce4::TimeoutResponse update_cb (const Ptr<CPUGraphOptions> &data);
+static void       update_stats_smt_cb (const Ptr<CPUGraphOptions> &data);
 
 void
 create_options (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
@@ -152,12 +154,36 @@ create_options (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
 
     const gchar *smt_issues_tooltip = _("Color used to highlight potentially suboptimal\nplacement of threads on CPUs with SMT");
 
+    auto startSmtStatsTimer = [dlg_data] {
+        gtk_widget_set_visible (gtk_notebook_get_nth_page (GTK_NOTEBOOK (dlg_data->notebook), 2), true);
+        update_stats_smt_cb (dlg_data);
+        dlg_data->timeout_id = xfce4::timeout_add (250, [dlg_data] {
+            update_stats_smt_cb (dlg_data);
+            return xfce4::TIMEOUT_AGAIN;
+        });
+    };
+    auto stopSmtStatsTimer = [dlg_data] {
+        gtk_widget_set_visible (gtk_notebook_get_nth_page (GTK_NOTEBOOK (dlg_data->notebook), 2), false);
+        dlg_data->removeTimer ();
+    };
+
     gtk_box_pack_start (vbox, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, BORDER/2);
+    dlg_data->hbox_stats_smt = create_check_box (vbox, sg, _("Display SMT statistics"),
+        base->stats_smt, NULL,
+        [dlg_data, startSmtStatsTimer, stopSmtStatsTimer](GtkToggleButton *button) {
+            CPUGraph::set_stats_smt (dlg_data->base, gtk_toggle_button_get_active (button));
+            if (dlg_data->base->stats_smt)
+                startSmtStatsTimer ();
+            else
+                stopSmtStatsTimer ();
+            dlg_data->base->maybe_clear_smt_stats (dlg_data->base);
+        });
     dlg_data->hbox_highlight_smt = create_check_box (vbox, sg, _("Highlight suboptimal SMT scheduling"),
         base->highlight_smt, NULL,
         [dlg_data](GtkToggleButton *button) {
             CPUGraph::set_smt (dlg_data->base, gtk_toggle_button_get_active (button));
             update_sensitivity (dlg_data);
+            dlg_data->base->maybe_clear_smt_stats (dlg_data->base);
         });
     setup_color_option (vbox, sg, dlg_data, SMT_ISSUES_COLOR, _("SMT issues color:"), smt_issues_tooltip, [base](GtkColorButton *button) {
         change_color (button, base, SMT_ISSUES_COLOR);
@@ -229,19 +255,22 @@ create_options (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
     GtkBox *vbox3 = create_tab ();
     dlg_data->smt_stats = create_label_line (vbox3, "");
 
-    GtkWidget *notebook = gtk_notebook_new ();
-    gtk_container_set_border_width (GTK_CONTAINER (notebook), BORDER - 2);
-    gtk_notebook_append_page (GTK_NOTEBOOK (notebook), GTK_WIDGET (vbox2), gtk_label_new (_("Appearance")));
-    gtk_notebook_append_page (GTK_NOTEBOOK (notebook), GTK_WIDGET (vbox), gtk_label_new (_("Advanced")));
-    gtk_notebook_append_page (GTK_NOTEBOOK (notebook), GTK_WIDGET (vbox3), gtk_label_new (_("Stats")));
+    dlg_data->notebook = gtk_notebook_new ();
+    gtk_container_set_border_width (GTK_CONTAINER (dlg_data->notebook), BORDER - 2);
+    gtk_notebook_append_page (GTK_NOTEBOOK (dlg_data->notebook), GTK_WIDGET (vbox2), gtk_label_new (_("Appearance")));
+    gtk_notebook_append_page (GTK_NOTEBOOK (dlg_data->notebook), GTK_WIDGET (vbox), gtk_label_new (_("Advanced")));
+    gtk_notebook_append_page (GTK_NOTEBOOK (dlg_data->notebook), GTK_WIDGET (vbox3), gtk_label_new (_("Stats")));
 
     GtkWidget *content = gtk_dialog_get_content_area (GTK_DIALOG (dlg));
-    gtk_container_add (GTK_CONTAINER (content), notebook);
+    gtk_container_add (GTK_CONTAINER (content), dlg_data->notebook);
 
-    update_cb (dlg_data);
-    dlg_data->timeout_id = xfce4::timeout_add (100, [dlg_data]() { return update_cb(dlg_data); });
+    gtk_widget_show_all (dlg_data->notebook);
 
-    gtk_widget_show_all (notebook);
+    if (base->stats_smt)
+        startSmtStatsTimer ();
+    else
+        stopSmtStatsTimer ();
+
     update_sensitivity (dlg_data, true);
     gtk_widget_show (dlg);
 }
@@ -638,8 +667,8 @@ update_sensitivity (const Ptr<CPUGraphOptions> &data, bool initial)
     }
 }
 
-static xfce4::TimeoutResponse
-update_cb (const Ptr<CPUGraphOptions> &data)
+static void
+update_stats_smt_cb (const Ptr<CPUGraphOptions> &data)
 {
     const Ptr<CPUGraph> base = data->base;
     std::string smt_text;
@@ -699,6 +728,4 @@ update_cb (const Ptr<CPUGraphOptions> &data)
         gtk_label_set_text (data->smt_stats, smt_text.c_str());
         gtk_widget_set_tooltip_text (GTK_WIDGET (data->smt_stats), show_tooltip ? data->smt_stats_tooltip().c_str() : "");
     }
-
-    return xfce4::TIMEOUT_AGAIN;
 }

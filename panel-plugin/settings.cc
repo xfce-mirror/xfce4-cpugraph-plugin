@@ -73,6 +73,7 @@ constexpr auto g_tracked_core = "/tracked-core";
 constexpr auto g_in_terminal = "/in-terminal";
 constexpr auto g_startup_notification = "/startup-notification";
 constexpr auto g_load_threshold = "/load-threshold";
+constexpr auto g_smt_stats = "/smt-stats";
 constexpr auto g_smt_issues = "/smt-issues";
 constexpr auto g_per_core_spacing = "/per-core-spacing";
 constexpr auto g_command = "/command";
@@ -106,6 +107,7 @@ Settings::read (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
     bool bars = true;
     bool border = true;
     bool frame = false;
+    bool stats_smt = STATS_SMT_BY_DEFAULT;
     bool highlight_smt = HIGHLIGHT_SMT_BY_DEFAULT;
     bool nonlinear = false;
     bool per_core = false;
@@ -196,6 +198,7 @@ Settings::read (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
             in_terminal = xfconf_channel_get_int (chn, g_in_terminal, in_terminal);
             startup_notification = xfconf_channel_get_int (chn, g_startup_notification, startup_notification);
             load_threshold = xfconf_channel_get_int (chn, g_load_threshold, load_threshold);
+            stats_smt = xfconf_channel_get_int (chn, g_smt_stats, stats_smt);
             highlight_smt = xfconf_channel_get_int (chn, g_smt_issues, highlight_smt);
             per_core_spacing = xfconf_channel_get_int (chn, g_per_core_spacing, per_core_spacing);
 
@@ -265,6 +268,7 @@ Settings::read (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
     CPUGraph::set_per_core (base, per_core);
     CPUGraph::set_per_core_spacing (base, per_core_spacing);
     CPUGraph::set_size (base, size);
+    CPUGraph::set_stats_smt (base, stats_smt);
     CPUGraph::set_smt (base, highlight_smt);
     CPUGraph::set_startup_notification (base, startup_notification);
     CPUGraph::set_tracked_core (base, tracked_core);
@@ -291,6 +295,7 @@ Settings::write (XfcePanelPlugin *plugin, const Ptr<const CPUGraph> &base)
     xfconf_channel_set_int (chn, g_in_terminal, base->command_in_terminal);
     xfconf_channel_set_int (chn, g_startup_notification, base->command_startup_notification);
     xfconf_channel_set_int (chn, g_load_threshold, std::round (100.0f * base->load_threshold));
+    xfconf_channel_set_int (chn, g_smt_stats, base->stats_smt);
     xfconf_channel_set_int (chn, g_smt_issues, base->highlight_smt);
     xfconf_channel_set_int (chn, g_per_core_spacing, base->per_core_spacing);
 
