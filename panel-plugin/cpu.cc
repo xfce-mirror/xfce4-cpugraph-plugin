@@ -156,6 +156,7 @@ about_cb ()
         "Agustin Ferrin Pozuelo <gatoguan-os@yahoo.com>",
         "Alexander Nordfelth <alex.nordfelth@telia.com>",
         "Angelo Miguel Arrifano <miknix@gmail.com>",
+        "Błażej Szczygieł <mumei6102@gmail.com>",
         "Florian Rivoal <frivoal@gmail.com>",
         "Jan Ziak <0xe2.0x9a.0x9b@xfce.org>",
         "Ludovic Mercier <lidiriel@coriolys.org>",
