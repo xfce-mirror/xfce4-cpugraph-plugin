@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-19 01:16+0200\n"
+"POT-Creation-Date: 2023-07-07 00:50+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
 "Last-Translator: Gordon Freeman, 2023\n"
 "Language-Team: Ukrainian (http://app.transifex.com/xfce/xfce-panel-plugins/language/uk/)\n"
@@ -21,97 +21,101 @@ msgstr ""
 "Language: uk\n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
-#: ../panel-plugin/cpu.cc:168 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.cc:172 ../panel-plugin/cpugraph.desktop.in.h:2
 msgid "Graphical representation of the CPU load"
 msgstr "Графічне представлення завантаження процесора"
 
-#: ../panel-plugin/cpu.cc:648
+#: ../panel-plugin/cpu.cc:658
 #, c-format
 msgid "CPU usage: %.1f%%"
 msgstr "Використання ЦП: %.1f%%"
 
-#: ../panel-plugin/properties.cc:72
+#: ../panel-plugin/properties.cc:74
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
 msgstr "'Загалом' показує вплив загальної продуктивності машини."
 
-#: ../panel-plugin/properties.cc:73
+#: ../panel-plugin/properties.cc:75
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
 msgstr "'Гарячі точки' показує моментний вплив на продуктивність задіяних потоків у неоптимальних запланованих рішеннях SMT."
 
-#: ../panel-plugin/properties.cc:108
+#: ../panel-plugin/properties.cc:110
 msgid "CPU Graph Properties"
 msgstr "Налаштування шкали ЦП"
 
-#: ../panel-plugin/properties.cc:112
+#: ../panel-plugin/properties.cc:114
 msgid "_Close"
 msgstr "_Закрити"
 
-#: ../panel-plugin/properties.cc:140
+#: ../panel-plugin/properties.cc:142
 msgid "Run in terminal"
 msgstr "Запустити в терміналі"
 
-#: ../panel-plugin/properties.cc:146
+#: ../panel-plugin/properties.cc:148
 msgid "Use startup notification"
 msgstr "Використовувати повідомлення при старті"
 
-#: ../panel-plugin/properties.cc:153
+#: ../panel-plugin/properties.cc:155
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
 msgstr "Колір для виділення потенційно неоптимальних\nрозміщень потоків у процесорах з SMT"
 
-#: ../panel-plugin/properties.cc:156
+#: ../panel-plugin/properties.cc:171
+msgid "Display SMT statistics"
+msgstr "Показувати статистику SMT"
+
+#: ../panel-plugin/properties.cc:181
 msgid "Highlight suboptimal SMT scheduling"
 msgstr "Виділення неоптимального планування SMT"
 
-#: ../panel-plugin/properties.cc:162
+#: ../panel-plugin/properties.cc:188
 msgid "SMT issues color:"
 msgstr "Колір випадків SMT:"
 
-#: ../panel-plugin/properties.cc:167
+#: ../panel-plugin/properties.cc:193
 msgid "Use non-linear time-scale"
 msgstr "Використовувати нелінійну шкалу часу"
 
-#: ../panel-plugin/properties.cc:172
+#: ../panel-plugin/properties.cc:198
 msgid "Per-core history graphs"
 msgstr "Графіки історії для кожного ядра"
 
-#: ../panel-plugin/properties.cc:180
+#: ../panel-plugin/properties.cc:206
 msgid "Color 1:"
 msgstr "Колір 1:"
 
-#: ../panel-plugin/properties.cc:183
+#: ../panel-plugin/properties.cc:209
 msgid "Color 2:"
 msgstr "Колір 2:"
 
-#: ../panel-plugin/properties.cc:186
+#: ../panel-plugin/properties.cc:212
 msgid "Color 3:"
 msgstr "Колір 3:"
 
-#: ../panel-plugin/properties.cc:189
+#: ../panel-plugin/properties.cc:215
 msgid "System:"
 msgstr "Система:"
 
-#: ../panel-plugin/properties.cc:192
+#: ../panel-plugin/properties.cc:218
 msgid "User:"
 msgstr "Користувач:"
 
-#: ../panel-plugin/properties.cc:195
+#: ../panel-plugin/properties.cc:221
 msgid "Nice:"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:198
+#: ../panel-plugin/properties.cc:224
 msgid "IO wait:"
 msgstr "Очікування вводу-виводу:"
 
-#: ../panel-plugin/properties.cc:201
+#: ../panel-plugin/properties.cc:227
 msgid "Background:"
 msgstr "Тло:"
 
-#: ../panel-plugin/properties.cc:207
+#: ../panel-plugin/properties.cc:233
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Показати панель поточного використання"
@@ -119,166 +123,166 @@ msgstr[1] "Показати панелі поточного використан
 msgstr[2] "Показати панелі поточного використання"
 msgstr[3] "Показати панелі поточного використання"
 
-#: ../panel-plugin/properties.cc:213
+#: ../panel-plugin/properties.cc:239
 msgid "Bars color:"
 msgstr "Колір стовпчиків:"
 
-#: ../panel-plugin/properties.cc:218
+#: ../panel-plugin/properties.cc:244
 msgid "Show frame"
 msgstr "Показувати рамку"
 
-#: ../panel-plugin/properties.cc:223
+#: ../panel-plugin/properties.cc:249
 msgid "Show border"
 msgstr "Показувати рамку"
 
-#: ../panel-plugin/properties.cc:234
+#: ../panel-plugin/properties.cc:260
 msgid "Appearance"
 msgstr "Вигляд"
 
-#: ../panel-plugin/properties.cc:235
+#: ../panel-plugin/properties.cc:261
 msgid "Advanced"
 msgstr "Додатково"
 
-#: ../panel-plugin/properties.cc:236
+#: ../panel-plugin/properties.cc:262
 msgid "Stats"
 msgstr "Статистика"
 
-#: ../panel-plugin/properties.cc:367
+#: ../panel-plugin/properties.cc:396
 msgid "Fastest (~250ms)"
 msgstr "Якнайшвидше (~250мс)"
 
-#: ../panel-plugin/properties.cc:368
+#: ../panel-plugin/properties.cc:397
 msgid "Fast (~500ms)"
 msgstr "Швидко (~500мс)"
 
-#: ../panel-plugin/properties.cc:369
+#: ../panel-plugin/properties.cc:398
 msgid "Normal (~750ms)"
 msgstr "Нормально (~750мс)"
 
-#: ../panel-plugin/properties.cc:370
+#: ../panel-plugin/properties.cc:399
 msgid "Slow (~1s)"
 msgstr "Поволі (~1с)"
 
-#: ../panel-plugin/properties.cc:371
+#: ../panel-plugin/properties.cc:400
 msgid "Slowest (~3s)"
 msgstr "Повільніше (~3с)"
 
-#: ../panel-plugin/properties.cc:374
+#: ../panel-plugin/properties.cc:403
 msgid "Update Interval:"
 msgstr "Інтервал поновлення:"
 
-#: ../panel-plugin/properties.cc:386
+#: ../panel-plugin/properties.cc:415
 msgid "All"
 msgstr "Усе"
 
-#: ../panel-plugin/properties.cc:390
+#: ../panel-plugin/properties.cc:419
 msgid "Tracked Core:"
 msgstr "Відстежуване ядро:"
 
-#: ../panel-plugin/properties.cc:406
+#: ../panel-plugin/properties.cc:435
 msgid "Width:"
 msgstr "Ширина:"
 
-#: ../panel-plugin/properties.cc:408
+#: ../panel-plugin/properties.cc:437
 msgid "Height:"
 msgstr "Висота:"
 
-#: ../panel-plugin/properties.cc:421
+#: ../panel-plugin/properties.cc:450
 msgid "Threshold (%):"
 msgstr "Поріг (%):"
 
-#: ../panel-plugin/properties.cc:433
+#: ../panel-plugin/properties.cc:462
 msgid "Spacing:"
 msgstr "Відстань:"
 
-#: ../panel-plugin/properties.cc:436
+#: ../panel-plugin/properties.cc:465
 msgid "Spacing between per-core history graphs"
 msgstr "Відстань між графіками історії для кожного ядра"
 
-#: ../panel-plugin/properties.cc:447
+#: ../panel-plugin/properties.cc:476
 msgid "Associated command:"
 msgstr "Асоційовано з командою:"
 
-#: ../panel-plugin/properties.cc:455
+#: ../panel-plugin/properties.cc:484
 msgid "The command to run when the plugin is left-clicked."
 msgstr "Команда, яка запускається, коли на додаток клацнути лівою кнопкою миші."
 
-#: ../panel-plugin/properties.cc:456
+#: ../panel-plugin/properties.cc:485
 msgid "If not specified, it defaults to xfce4-taskmanager, htop or top."
 msgstr "Якщо не вказано, за замовчуванням буде xfce4-taskmanager, htop або top."
 
-#: ../panel-plugin/properties.cc:484
+#: ../panel-plugin/properties.cc:513
 msgid "Disabled"
 msgstr "Вимкнено"
 
-#: ../panel-plugin/properties.cc:485
+#: ../panel-plugin/properties.cc:514
 msgid "Normal"
 msgstr "Нормально"
 
-#: ../panel-plugin/properties.cc:486
+#: ../panel-plugin/properties.cc:515
 msgid "LED"
 msgstr "Індикатор LED"
 
-#: ../panel-plugin/properties.cc:487
+#: ../panel-plugin/properties.cc:516
 msgid "No history"
 msgstr "Без історії"
 
-#: ../panel-plugin/properties.cc:488
+#: ../panel-plugin/properties.cc:517
 msgid "Grid"
 msgstr "Сітка"
 
-#: ../panel-plugin/properties.cc:501
+#: ../panel-plugin/properties.cc:530
 msgid "Mode:"
 msgstr "Тип:"
 
-#: ../panel-plugin/properties.cc:533
+#: ../panel-plugin/properties.cc:560
 msgid "Solid"
 msgstr "Заповнення"
 
-#: ../panel-plugin/properties.cc:534
+#: ../panel-plugin/properties.cc:561
 msgid "Gradient"
 msgstr "Переливається"
 
-#: ../panel-plugin/properties.cc:535
+#: ../panel-plugin/properties.cc:562
 msgid "Fire"
 msgstr "Вогняний"
 
-#: ../panel-plugin/properties.cc:537
+#: ../panel-plugin/properties.cc:564
 msgid "Detailed"
 msgstr "Детальний"
 
-#: ../panel-plugin/properties.cc:542
+#: ../panel-plugin/properties.cc:569
 msgid "Color mode: "
 msgstr "Тип кольору: "
 
-#: ../panel-plugin/properties.cc:652
+#: ../panel-plugin/properties.cc:679
 msgid "SMT detected: Yes"
 msgstr "SMT виявлено: Так"
 
-#: ../panel-plugin/properties.cc:652
+#: ../panel-plugin/properties.cc:679
 msgid "SMT detected: No"
 msgstr "SMT виявлено: Ні"
 
-#: ../panel-plugin/properties.cc:677
+#: ../panel-plugin/properties.cc:704
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
 msgstr "Кількість запланованих випадків SMT: %u"
 
-#: ../panel-plugin/properties.cc:682
+#: ../panel-plugin/properties.cc:709
 msgid "Estimated performance impact:"
 msgstr "Оцінений вплив на продуктивність:"
 
-#: ../panel-plugin/properties.cc:683
+#: ../panel-plugin/properties.cc:710
 #, c-format
 msgid "Overall: %.3g%%"
 msgstr "Загалом: %.3g%%"
 
-#: ../panel-plugin/properties.cc:684
+#: ../panel-plugin/properties.cc:711
 #, c-format
 msgid "Hotspots: %.3g%%"
 msgstr "Гарячі точки: %.3g%%"
 
-#: ../panel-plugin/properties.cc:696
+#: ../panel-plugin/properties.cc:723
 msgid "SMT detected: N/A"
 msgstr "SMT виявлено: N/A"
 
