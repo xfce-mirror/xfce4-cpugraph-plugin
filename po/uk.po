@@ -105,7 +105,7 @@ msgstr "Користувач:"
 
 #: ../panel-plugin/properties.cc:221
 msgid "Nice:"
-msgstr ""
+msgstr "Пріоритет:"
 
 #: ../panel-plugin/properties.cc:224
 msgid "IO wait:"
