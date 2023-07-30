@@ -20,6 +20,8 @@
 
 #include "gtk.h"
 
+#include <cstdint>
+
 namespace xfce4 {
 
 const PluginSize      RECTANGLE{true}, SQUARE{false};
