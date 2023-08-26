@@ -683,7 +683,10 @@ draw_area_cb (cairo_t *cr, const Ptr<CPUGraph> &base)
         case MODE_DISABLED:
             break;
         case MODE_NORMAL:
-            draw = draw_graph_normal;
+            if (base->size > 1)
+                draw = draw_graph_normal;
+            else
+                draw = draw_graph_no_history;
             break;
         case MODE_LED:
             draw = draw_graph_LED;
