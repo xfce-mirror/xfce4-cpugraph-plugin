@@ -35,34 +35,40 @@
 
 #include <libxfce4ui/libxfce4ui.h>
 #include <math.h>
-#include "xfce4++/util.h"
+#include "xfce4++/connections.hh"
 
-using xfce4::PluginSize;
+#ifdef HAVE_MALLOC_TRIM
+#include <malloc.h>
+#endif
+
+using xfce4::PluginShape;
 using xfce4::Propagation;
 using xfce4::TooltipTime;
 
+using namespace std;
+
 /* vim: !sort -k3 */
 static void          about_cb       ();
-static Propagation   command_cb     (GdkEventButton *event, const Ptr<CPUGraph> &base);
-static void          create_bars    (const Ptr<CPUGraph> &base, GtkOrientation orientation);
-static Ptr<CPUGraph> create_gui     (XfcePanelPlugin *plugin);
-static void          delete_bars    (const Ptr<CPUGraph> &base);
-static Propagation   draw_area_cb   (cairo_t *cr, const Ptr<CPUGraph> &base);
-static Propagation   draw_bars_cb   (cairo_t *cr, const Ptr<CPUGraph> &base);
-static void          mode_cb        (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base);
-static guint         nb_bars        (const Ptr<const CPUGraph> &base);
-static void          set_bars_size  (const Ptr<CPUGraph> &base);
-static void          shutdown       (const Ptr<CPUGraph> &base);
-static PluginSize    size_cb        (XfcePanelPlugin *plugin, guint size, const Ptr<CPUGraph> &base);
-static TooltipTime   tooltip_cb     (GtkTooltip *tooltip, const Ptr<CPUGraph> &base);
-static void          update_tooltip (const Ptr<CPUGraph> &base);
+static Propagation   command_cb     (GdkEventButton *event, const shared_ptr<CPUGraph> &base);
+static void          create_bars    (const shared_ptr<CPUGraph> &base, GtkOrientation orientation);
+static shared_ptr<CPUGraph> create_gui     (XfcePanelPlugin *plugin);
+static void          delete_bars    (const shared_ptr<CPUGraph> &base);
+static Propagation   draw_area_cb   (cairo_t *cr, const shared_ptr<CPUGraph> &base);
+static Propagation   draw_bars_cb   (cairo_t *cr, const shared_ptr<CPUGraph> &base);
+static void          mode_cb        (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base);
+static guint         nb_bars        (const shared_ptr<const CPUGraph> &base);
+static void          set_bars_size  (const shared_ptr<CPUGraph> &base);
+static void          shutdown       (const shared_ptr<CPUGraph> &base);
+static PluginShape    size_cb        (XfcePanelPlugin *plugin, guint size, const shared_ptr<CPUGraph> &base);
+static TooltipTime   tooltip_cb     (GtkTooltip *tooltip, const shared_ptr<CPUGraph> &base);
+static void          update_tooltip (const shared_ptr<CPUGraph> &base);
 
 void
 cpugraph_construct (XfcePanelPlugin *plugin)
 {
     xfce_textdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR, "UTF-8");
 
-    Ptr<CPUGraph> base = create_gui (plugin);
+    auto base = create_gui (plugin);
 
     Settings::init (plugin, base);
 
@@ -80,7 +86,7 @@ cpugraph_construct (XfcePanelPlugin *plugin)
 }
 
 static guint
-init_cpu_data (std::vector<CpuData> &data)
+init_cpu_data (vector<CpuData> &data)
 {
     guint cpuNr = detect_cpu_number ();
     if (cpuNr != 0)
@@ -88,12 +94,12 @@ init_cpu_data (std::vector<CpuData> &data)
     return cpuNr;
 }
 
-static Ptr<CPUGraph>
+static shared_ptr<CPUGraph>
 create_gui (XfcePanelPlugin *plugin)
 {
     GtkWidget *frame, *ebox;
     GtkOrientation orientation;
-    auto base = xfce4::make<CPUGraph>();
+    auto base = make_shared<CPUGraph>();
 
     orientation = xfce_panel_plugin_get_orientation (plugin);
     if ((base->nr_cores = init_cpu_data (base->cpu_data)) == 0)
@@ -176,20 +182,20 @@ about_cb ()
 }
 
 static void
-ebox_revalidate (const Ptr<CPUGraph> &base)
+ebox_revalidate (const shared_ptr<CPUGraph> &base)
 {
     gtk_event_box_set_above_child (GTK_EVENT_BOX (base->ebox), FALSE);
     gtk_event_box_set_above_child (GTK_EVENT_BOX (base->ebox), TRUE);
 }
 
 static guint
-nb_bars (const Ptr<const CPUGraph> &base)
+nb_bars (const shared_ptr<const CPUGraph> &base)
 {
     return base->tracked_core == 0 ? base->nr_cores : 1;
 }
 
 static void
-create_bars (const Ptr<CPUGraph> &base, GtkOrientation orientation)
+create_bars (const shared_ptr<CPUGraph> &base, GtkOrientation orientation)
 {
     base->bars.frame = gtk_frame_new (NULL);
     base->bars.draw_area = gtk_drawing_area_new ();
@@ -215,22 +221,18 @@ CPUGraph::~CPUGraph()
 }
 
 static void
-shutdown (const Ptr<CPUGraph> &base)
+shutdown (const shared_ptr<CPUGraph> &base)
 {
     delete_bars (base);
     gtk_widget_destroy (base->ebox);
     base->ebox = NULL;
     g_object_unref (base->tooltip_text);
     base->tooltip_text = NULL;
-    if (base->timeout_id)
-    {
-        g_source_remove (base->timeout_id);
-        base->timeout_id = 0;
-    }
+    xfce4::source_remove (base->timeout_id);
 }
 
 static void
-queue_draw (const Ptr<CPUGraph> &base)
+queue_draw (const shared_ptr<CPUGraph> &base)
 {
     if (base->mode != MODE_DISABLED)
         gtk_widget_queue_draw (base->draw_area);
@@ -239,7 +241,7 @@ queue_draw (const Ptr<CPUGraph> &base)
 }
 
 static void
-delete_bars (const Ptr<CPUGraph> &base)
+delete_bars (const shared_ptr<CPUGraph> &base)
 {
     if (base->bars.frame)
     {
@@ -250,7 +252,7 @@ delete_bars (const Ptr<CPUGraph> &base)
 }
 
 static void
-resize_history (const Ptr<CPUGraph> &base, gssize history_size)
+resize_history (const shared_ptr<CPUGraph> &base, gssize history_size)
 {
     const guint fastest = get_update_interval_ms (RATE_FASTEST);
     const guint slowest = get_update_interval_ms (RATE_SLOWEST);
@@ -264,7 +266,7 @@ resize_history (const Ptr<CPUGraph> &base, gssize history_size)
 
     if (cap_pow2 != old_cap_pow2)
     {
-        const std::vector<CpuLoad*> old_data = std::move(base->history.data);
+        const vector<CpuLoad*> old_data = move(base->history.data);
         const gssize old_mask = base->history.mask();
         const gssize old_offset = base->history.offset;
 
@@ -282,14 +284,16 @@ resize_history (const Ptr<CPUGraph> &base, gssize history_size)
             }
         }
 
-        xfce4::trim_memory ();
+#ifdef HAVE_MALLOC_TRIM
+        malloc_trim (0);
+#endif
     }
 
     base->history.size = history_size;
 }
 
-static PluginSize
-size_cb (XfcePanelPlugin *plugin, guint plugin_size, const Ptr<CPUGraph> &base)
+static PluginShape
+size_cb (XfcePanelPlugin *plugin, guint plugin_size, const shared_ptr<CPUGraph> &base)
 {
     gint frame_h, frame_v, size;
     gssize history;
@@ -346,11 +350,11 @@ size_cb (XfcePanelPlugin *plugin, guint plugin_size, const Ptr<CPUGraph> &base)
 
     base->set_border (base, base->has_border);
 
-    return xfce4::RECTANGLE;
+    return xfce4::PluginShape::Rectangle();
 }
 
 static void
-set_bars_size (const Ptr<CPUGraph> &base)
+set_bars_size (const shared_ptr<CPUGraph> &base)
 {
     gint h, v;
     gint shadow_width;
@@ -372,7 +376,7 @@ set_bars_size (const Ptr<CPUGraph> &base)
 }
 
 static void
-mode_cb (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
+mode_cb (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
 {
     gtk_orientable_set_orientation (GTK_ORIENTABLE (base->box), xfce_panel_plugin_get_orientation (plugin));
 
@@ -380,7 +384,7 @@ mode_cb (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
 }
 
 static void
-detect_smt_issues (const Ptr<CPUGraph> &base)
+detect_smt_issues (const shared_ptr<CPUGraph> &base)
 {
     const bool debug = false;
     gfloat actual_load[base->nr_cores];
@@ -398,11 +402,7 @@ detect_smt_issues (const Ptr<CPUGraph> &base)
 
     if (G_LIKELY (base->topology && base->topology->smt))
     {
-        /* Use <Topology> instead of <const Topology>.
-         * The non-const version results in less efficient C++ code,
-         * but it is less prone to generate an exception or a crash
-         * than the const version due to an unforseen programming bug. */
-        const Ptr0<Topology> topo = base->topology;
+        const auto topo = base->topology.get();
 
         gfloat optimal_load[base->nr_cores];
         gfloat actual_num_instr_executed[base->nr_cores];
@@ -619,10 +619,10 @@ detect_smt_issues (const Ptr<CPUGraph> &base)
 }
 
 static xfce4::TimeoutResponse
-update_cb (const Ptr<CPUGraph> &base)
+update_cb (const shared_ptr<CPUGraph> &base)
 {
     if (!read_cpu_data (base->cpu_data))
-        return xfce4::TIMEOUT_AGAIN;
+        return xfce4::TimeoutResponse::Again();
 
     if (base->topology && base->topology->smt && base->isSmtIssuesEnabled ())
         detect_smt_issues (base);
@@ -649,11 +649,11 @@ update_cb (const Ptr<CPUGraph> &base)
     queue_draw (base);
     update_tooltip (base);
 
-    return xfce4::TIMEOUT_AGAIN;
+    return xfce4::TimeoutResponse::Again();
 }
 
 static void
-update_tooltip (const Ptr<CPUGraph> &base)
+update_tooltip (const shared_ptr<CPUGraph> &base)
 {
     auto tooltip = xfce4::sprintf (_("CPU usage: %.1f%%"), base->cpu_data[0].load * 100.0f);
     if (gtk_label_get_text (GTK_LABEL (base->tooltip_text)) != tooltip)
@@ -661,18 +661,18 @@ update_tooltip (const Ptr<CPUGraph> &base)
 }
 
 static TooltipTime
-tooltip_cb (GtkTooltip *tooltip, const Ptr<CPUGraph> &base)
+tooltip_cb (GtkTooltip *tooltip, const shared_ptr<CPUGraph> &base)
 {
     gtk_tooltip_set_custom (tooltip, base->tooltip_text);
-    return xfce4::NOW;
+    return xfce4::TooltipTime::Now();
 }
 
 static Propagation
-draw_area_cb (cairo_t *cr, const Ptr<CPUGraph> &base)
+draw_area_cb (cairo_t *cr, const shared_ptr<CPUGraph> &base)
 {
     GtkAllocation alloc;
     gint w, h;
-    void (*draw) (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core) = NULL;
+    void (*draw) (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core) = NULL;
 
     gtk_widget_get_allocation (base->draw_area, &alloc);
     w = alloc.width;
@@ -705,9 +705,9 @@ draw_area_cb (cairo_t *cr, const Ptr<CPUGraph> &base)
         {
             guint core;
 
-            if (!base->colors[BG_COLOR].isTransparent())
+            if (!base->colors[BG_COLOR].is_transparent())
             {
-                xfce4::cairo_set_source (cr, base->colors[BG_COLOR]);
+                xfce4::cairo_set_source_rgba (cr, base->colors[BG_COLOR]);
                 cairo_rectangle (cr, 0, 0, w, h);
                 cairo_fill (cr);
             }
@@ -742,9 +742,9 @@ draw_area_cb (cairo_t *cr, const Ptr<CPUGraph> &base)
                     *(horizontal ? &translation.x : &translation.y) = core * (base->size + base->per_core_spacing);
                     cairo_translate (cr, translation.x, translation.y);
 
-                    if (!base->colors[BG_COLOR].isTransparent())
+                    if (!base->colors[BG_COLOR].is_transparent())
                     {
-                        xfce4::cairo_set_source (cr, base->colors[BG_COLOR]);
+                        xfce4::cairo_set_source_rgba (cr, base->colors[BG_COLOR]);
                         cairo_rectangle (cr, 0, 0, w1, h1);
                         cairo_fill (cr);
                     }
@@ -757,11 +757,11 @@ draw_area_cb (cairo_t *cr, const Ptr<CPUGraph> &base)
             }
         }
     }
-    return xfce4::PROPAGATE;
+    return xfce4::Propagation::Propagate();
 }
 
 static Propagation
-draw_bars_cb (cairo_t *cr, const Ptr<CPUGraph> &base)
+draw_bars_cb (cairo_t *cr, const shared_ptr<CPUGraph> &base)
 {
     GtkAllocation alloc;
     gfloat size;
@@ -769,9 +769,9 @@ draw_bars_cb (cairo_t *cr, const Ptr<CPUGraph> &base)
 
     gtk_widget_get_allocation (base->bars.draw_area, &alloc);
 
-    if (!base->colors[BG_COLOR].isTransparent())
+    if (!base->colors[BG_COLOR].is_transparent())
     {
-        xfce4::cairo_set_source (cr, base->colors[BG_COLOR]);
+        xfce4::cairo_set_source_rgba (cr, base->colors[BG_COLOR]);
         cairo_rectangle (cr, 0, 0, alloc.width, alloc.height);
         cairo_fill (cr);
     }
@@ -784,7 +784,7 @@ draw_bars_cb (cairo_t *cr, const Ptr<CPUGraph> &base)
             usage = 0;
         usage *= size;
 
-        xfce4::cairo_set_source (cr, base->colors[BARS_COLOR]);
+        xfce4::cairo_set_source_rgba (cr, base->colors[BARS_COLOR]);
         if (horizontal)
             cairo_rectangle (cr, 0, size-usage, 4, usage);
         else
@@ -813,7 +813,7 @@ draw_bars_cb (cairo_t *cr, const Ptr<CPUGraph> &base)
                     cairo_fill (cr);
                     fill = false;
                 }
-                xfce4::cairo_set_source (cr, *color);
+                xfce4::cairo_set_source_rgba (cr, *color);
                 active_color = color;
             }
 
@@ -826,7 +826,7 @@ draw_bars_cb (cairo_t *cr, const Ptr<CPUGraph> &base)
         if (fill)
             cairo_fill (cr);
     }
-    return xfce4::PROPAGATE;
+    return xfce4::Propagation::Propagate();
 }
 
 static const gchar*
@@ -859,11 +859,11 @@ default_command (bool *in_terminal, bool *startup_notification)
 }
 
 static Propagation
-command_cb (GdkEventButton *event, const Ptr<CPUGraph> &base)
+command_cb (GdkEventButton *event, const shared_ptr<CPUGraph> &base)
 {
     if (event->button == 1)
     {
-        std::string command;
+        string command;
         bool in_terminal, startup_notification;
 
         if (!base->command.empty())
@@ -881,7 +881,7 @@ command_cb (GdkEventButton *event, const Ptr<CPUGraph> &base)
                                            command.c_str(), in_terminal,
                                            startup_notification, NULL);
     }
-    return xfce4::STOP;
+    return xfce4::Propagation::Stop();
 }
 
 /**
@@ -910,25 +910,25 @@ get_update_interval_ms (CPUGraphUpdateRate rate)
 }
 
 void
-CPUGraph::set_startup_notification (const Ptr<CPUGraph> &base, bool startup_notification)
+CPUGraph::set_startup_notification (const shared_ptr<CPUGraph> &base, bool startup_notification)
 {
     base->command_startup_notification = startup_notification;
 }
 
 void
-CPUGraph::set_in_terminal (const Ptr<CPUGraph> &base, bool in_terminal)
+CPUGraph::set_in_terminal (const shared_ptr<CPUGraph> &base, bool in_terminal)
 {
     base->command_in_terminal = in_terminal;
 }
 
 void
-CPUGraph::set_command (const Ptr<CPUGraph> &base, const std::string &command)
+CPUGraph::set_command (const shared_ptr<CPUGraph> &base, const string &command)
 {
     base->command = xfce4::trim (command);
 }
 
 void
-CPUGraph::set_bars (const Ptr<CPUGraph> &base, bool has_bars)
+CPUGraph::set_bars (const shared_ptr<CPUGraph> &base, bool has_bars)
 {
     if (base->has_bars != has_bars)
     {
@@ -944,7 +944,7 @@ CPUGraph::set_bars (const Ptr<CPUGraph> &base, bool has_bars)
 }
 
 void
-CPUGraph::set_border (const Ptr<CPUGraph> &base, bool has_border)
+CPUGraph::set_border (const shared_ptr<CPUGraph> &base, bool has_border)
 {
     if (base->has_border != has_border)
     {
@@ -954,7 +954,7 @@ CPUGraph::set_border (const Ptr<CPUGraph> &base, bool has_border)
 }
 
 void
-CPUGraph::set_frame (const Ptr<CPUGraph> &base, bool has_frame)
+CPUGraph::set_frame (const shared_ptr<CPUGraph> &base, bool has_frame)
 {
     base->has_frame = has_frame;
     gtk_frame_set_shadow_type (GTK_FRAME (base->frame_widget), has_frame ? GTK_SHADOW_IN : GTK_SHADOW_NONE);
@@ -964,7 +964,7 @@ CPUGraph::set_frame (const Ptr<CPUGraph> &base, bool has_frame)
 }
 
 void
-CPUGraph::set_nonlinear_time (const Ptr<CPUGraph> &base, bool non_linear)
+CPUGraph::set_nonlinear_time (const shared_ptr<CPUGraph> &base, bool non_linear)
 {
     if (base->non_linear != non_linear)
     {
@@ -976,7 +976,7 @@ CPUGraph::set_nonlinear_time (const Ptr<CPUGraph> &base, bool non_linear)
 }
 
 void
-CPUGraph::set_per_core (const Ptr<CPUGraph> &base, bool per_core)
+CPUGraph::set_per_core (const shared_ptr<CPUGraph> &base, bool per_core)
 {
     if (base->per_core != per_core)
     {
@@ -986,7 +986,7 @@ CPUGraph::set_per_core (const Ptr<CPUGraph> &base, bool per_core)
 }
 
 void
-CPUGraph::set_per_core_spacing (const Ptr<CPUGraph> &base, guint spacing)
+CPUGraph::set_per_core_spacing (const shared_ptr<CPUGraph> &base, guint spacing)
 {
     /* Use <=, instead of <, supresses a compiler warning */
     if (G_UNLIKELY (spacing <= PER_CORE_SPACING_MIN))
@@ -1002,30 +1002,29 @@ CPUGraph::set_per_core_spacing (const Ptr<CPUGraph> &base, guint spacing)
 }
 
 void
-CPUGraph::set_stats_smt (const Ptr<CPUGraph> &base, bool stats_smt)
+CPUGraph::set_stats_smt (const shared_ptr<CPUGraph> &base, bool stats_smt)
 {
     base->stats_smt = stats_smt;
 }
 
 void
-CPUGraph::set_smt (const Ptr<CPUGraph> &base, bool highlight_smt)
+CPUGraph::set_smt (const shared_ptr<CPUGraph> &base, bool highlight_smt)
 {
     base->highlight_smt = highlight_smt;
 }
 
 void
-CPUGraph::set_update_rate (const Ptr<CPUGraph> &base, CPUGraphUpdateRate rate)
+CPUGraph::set_update_rate (const shared_ptr<CPUGraph> &base, CPUGraphUpdateRate rate)
 {
     bool change = (base->update_interval != rate);
-    bool init = (base->timeout_id == 0);
+    bool init = base->timeout_id.expired();
 
     if (change || init)
     {
         guint interval = get_update_interval_ms (rate);
 
         base->update_interval = rate;
-        if (base->timeout_id)
-            g_source_remove (base->timeout_id);
+        xfce4::source_remove (base->timeout_id);
         base->timeout_id = xfce4::timeout_add (interval, [base]() { return update_cb(base); });
 
         if (change && !init)
@@ -1034,14 +1033,14 @@ CPUGraph::set_update_rate (const Ptr<CPUGraph> &base, CPUGraphUpdateRate rate)
 }
 
 void
-CPUGraph::maybe_clear_smt_stats (const Ptr<CPUGraph> &base)
+CPUGraph::maybe_clear_smt_stats (const shared_ptr<CPUGraph> &base)
 {
     if (!base->isSmtIssuesEnabled ())
         base->stats = {};
 }
 
 void
-CPUGraph::set_size (const Ptr<CPUGraph> &base, guint size)
+CPUGraph::set_size (const shared_ptr<CPUGraph> &base, guint size)
 {
     if (G_UNLIKELY (size < MIN_SIZE))
         size = MIN_SIZE;
@@ -1053,7 +1052,7 @@ CPUGraph::set_size (const Ptr<CPUGraph> &base, guint size)
 }
 
 void
-CPUGraph::set_color_mode (const Ptr<CPUGraph> &base, guint color_mode)
+CPUGraph::set_color_mode (const shared_ptr<CPUGraph> &base, guint color_mode)
 {
     if (base->color_mode != color_mode)
     {
@@ -1063,7 +1062,7 @@ CPUGraph::set_color_mode (const Ptr<CPUGraph> &base, guint color_mode)
 }
 
 void
-CPUGraph::set_mode (const Ptr<CPUGraph> &base, CPUGraphMode mode)
+CPUGraph::set_mode (const shared_ptr<CPUGraph> &base, CPUGraphMode mode)
 {
     base->mode = mode;
     base->nearest_cache = {};
@@ -1080,9 +1079,9 @@ CPUGraph::set_mode (const Ptr<CPUGraph> &base, CPUGraphMode mode)
 }
 
 void
-CPUGraph::set_color (const Ptr<CPUGraph> &base, CPUGraphColorNumber number, const xfce4::RGBA &color)
+CPUGraph::set_color (const shared_ptr<CPUGraph> &base, CPUGraphColorNumber number, const xfce4::RGBA &color)
 {
-    if (!base->colors[number].equals(color))
+    if (base->colors[number] != color)
     {
         base->colors[number] = color;
         queue_draw (base);
@@ -1090,7 +1089,7 @@ CPUGraph::set_color (const Ptr<CPUGraph> &base, CPUGraphColorNumber number, cons
 }
 
 void
-CPUGraph::set_tracked_core (const Ptr<CPUGraph> &base, guint core)
+CPUGraph::set_tracked_core (const shared_ptr<CPUGraph> &base, guint core)
 {
     if (G_UNLIKELY (core > base->nr_cores + 1))
         core = 0;
@@ -1107,7 +1106,7 @@ CPUGraph::set_tracked_core (const Ptr<CPUGraph> &base, guint core)
 }
 
 void
-CPUGraph::set_load_threshold (const Ptr<CPUGraph> &base, gfloat threshold)
+CPUGraph::set_load_threshold (const shared_ptr<CPUGraph> &base, gfloat threshold)
 {
     if (threshold < 0)
         threshold = 0;
