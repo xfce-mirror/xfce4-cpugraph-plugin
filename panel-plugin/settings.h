@@ -28,10 +28,10 @@
 
 namespace Settings {
 
-void init (XfcePanelPlugin *plugin, const xfce4::Ptr<CPUGraph> &base);
+void init (XfcePanelPlugin *plugin, const std::shared_ptr<CPUGraph> &base);
 void finalize ();
-void read (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base);
-void write (XfcePanelPlugin *plugin, const Ptr<const CPUGraph> &base);
+void read (XfcePanelPlugin *plugin, const std::shared_ptr<CPUGraph> &base);
+void write (XfcePanelPlugin *plugin, const std::shared_ptr<const CPUGraph> &base);
 
 }
 
