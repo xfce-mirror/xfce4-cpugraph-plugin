@@ -251,25 +251,25 @@ Settings::read (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
             size = 10;
     }
 
-    CPUGraph::set_bars (base, bars);
-    CPUGraph::set_border (base, border);
+    base->set_bars (bars);
+    base->set_border (border);
     for (guint i = 0; i < NUM_COLORS; i++)
-        CPUGraph::set_color (base, (CPUGraphColorNumber) i, colors[i]);
-    CPUGraph::set_color_mode (base, color_mode);
-    CPUGraph::set_command (base, command);
-    CPUGraph::set_in_terminal (base, in_terminal);
-    CPUGraph::set_frame (base, frame);
-    CPUGraph::set_load_threshold (base, load_threshold * 0.01f);
-    CPUGraph::set_mode (base, mode);
-    CPUGraph::set_nonlinear_time (base, nonlinear);
-    CPUGraph::set_per_core (base, per_core);
-    CPUGraph::set_per_core_spacing (base, per_core_spacing);
-    CPUGraph::set_size (base, size);
-    CPUGraph::set_stats_smt (base, stats_smt);
-    CPUGraph::set_smt (base, highlight_smt);
-    CPUGraph::set_startup_notification (base, startup_notification);
-    CPUGraph::set_tracked_core (base, tracked_core);
-    CPUGraph::set_update_rate (base, rate);
+        base->set_color ((CPUGraphColorNumber) i, colors[i]);
+    base->set_color_mode (color_mode);
+    base->set_command (command);
+    base->set_in_terminal (in_terminal);
+    base->set_frame (frame);
+    base->set_load_threshold (load_threshold * 0.01f);
+    base->set_mode (mode);
+    base->set_nonlinear_time (nonlinear);
+    base->set_per_core (per_core);
+    base->set_per_core_spacing (per_core_spacing);
+    base->set_size (size);
+    base->set_stats_smt (stats_smt);
+    base->set_smt (highlight_smt);
+    base->set_startup_notification (startup_notification);
+    base->set_tracked_core (tracked_core);
+    base->set_update_rate (rate);
 }
 
 void
