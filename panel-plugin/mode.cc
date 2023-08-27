@@ -32,6 +32,8 @@
 #include <stdlib.h>
 #include "mode.h"
 
+using namespace std;
+
 struct Point
 {
     gfloat x, y;
@@ -42,7 +44,7 @@ struct Point
 static xfce4::RGBA
 mix_colors (gdouble ratio, const xfce4::RGBA &color1, const xfce4::RGBA &color2)
 {
-    return color1 + ratio * (color2 - color1);
+    return color1 + (color2 - color1) * ratio;
 }
 
 template<typename Vector>
@@ -71,7 +73,7 @@ ensure_vector_size (Vector &arr, gint size)
  * The timestampts range from 'timestamp' to timestamp+step*(count-1).
  */
 static void
-nearest_loads (const Ptr<CPUGraph> &base, const guint core, const gint64 start, const gint64 step, const gssize count, const CpuLoad **out)
+nearest_loads (const shared_ptr<CPUGraph> &base, const guint core, const gint64 start, const gint64 step, const gssize count, const CpuLoad **out)
 {
     const gssize history_cap_pow2 = base->history.cap_pow2;
     const CpuLoad *history_data = base->history.data[core];
@@ -211,7 +213,7 @@ nearest_loads (const Ptr<CPUGraph> &base, const guint core, const gint64 start, 
 }
 
 static void
-draw_graph_helper (const Ptr<CPUGraph> &base, const CpuLoad &load, cairo_t *cr, gint x, gint w, gint h)
+draw_graph_helper (const shared_ptr<CPUGraph> &base, const CpuLoad &load, cairo_t *cr, gint x, gint w, gint h)
 {
     if (load.value < base->load_threshold)
         return;
@@ -227,7 +229,7 @@ draw_graph_helper (const Ptr<CPUGraph> &base, const CpuLoad &load, cairo_t *cr, 
         auto draw = [&](gfloat value, CPUGraphColorNumber color) {
             if (value > 0.0f)
             {
-                xfce4::cairo_set_source (cr, base->colors[color]);
+                xfce4::cairo_set_source_rgba (cr, base->colors[color]);
                 cairo_rectangle (cr, x, h - value - y_offset, w, value);
                 cairo_fill (cr);
                 y_offset += value;
@@ -240,7 +242,7 @@ draw_graph_helper (const Ptr<CPUGraph> &base, const CpuLoad &load, cairo_t *cr, 
     }
     else if (base->color_mode == COLOR_MODE_SOLID)
     {
-        xfce4::cairo_set_source (cr, base->colors[FG_COLOR1]);
+        xfce4::cairo_set_source_rgba (cr, base->colors[FG_COLOR1]);
         cairo_rectangle (cr, x, h - usage, w, usage);
         cairo_fill (cr);
     }
@@ -250,7 +252,7 @@ draw_graph_helper (const Ptr<CPUGraph> &base, const CpuLoad &load, cairo_t *cr, 
         for (gint y = h - 1, tmp = 0; y >= h_usage; y--, tmp++)
         {
             gfloat t = tmp / (base->color_mode == COLOR_MODE_GRADIENT ? (gfloat) h : usage);
-            xfce4::cairo_set_source (cr, mix_colors (t, base->colors[FG_COLOR1], base->colors[FG_COLOR2]));
+            xfce4::cairo_set_source_rgba (cr, mix_colors (t, base->colors[FG_COLOR1], base->colors[FG_COLOR2]));
             cairo_rectangle (cr, x, y, w, 1);
             cairo_fill (cr);
         }
@@ -258,7 +260,7 @@ draw_graph_helper (const Ptr<CPUGraph> &base, const CpuLoad &load, cairo_t *cr, 
 }
 
 void
-draw_graph_normal (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core)
+draw_graph_normal (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core)
 {
     if (G_UNLIKELY (core >= base->history.data.size()))
         return;
@@ -278,7 +280,7 @@ draw_graph_normal (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint
 }
 
 void
-draw_graph_LED (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core)
+draw_graph_LED (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core)
 {
     if (G_UNLIKELY (core >= base->history.data.size()))
         return;
@@ -312,7 +314,7 @@ draw_graph_LED (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint co
             if (base->color_mode != COLOR_MODE_SOLID && y < limit)
             {
                 gfloat t = y / (gfloat) (base->color_mode == COLOR_MODE_GRADIENT ? nry : limit);
-                xfce4::cairo_set_source (cr, mix_colors (t, base->colors[FG_COLOR3], base->colors[FG_COLOR2]));
+                xfce4::cairo_set_source_rgba (cr, mix_colors (t, base->colors[FG_COLOR3], base->colors[FG_COLOR2]));
                 active_color = NULL;
             }
             else
@@ -320,7 +322,7 @@ draw_graph_LED (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint co
                 const xfce4::RGBA *color = (y >= limit ? &base->colors[FG_COLOR1] : &base->colors[FG_COLOR2]);
                 if (active_color != color)
                 {
-                    xfce4::cairo_set_source (cr, *color);
+                    xfce4::cairo_set_source_rgba (cr, *color);
                     active_color = color;
                 }
             }
@@ -333,7 +335,7 @@ draw_graph_LED (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint co
 }
 
 void
-draw_graph_no_history (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core)
+draw_graph_no_history (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core)
 {
     if (G_UNLIKELY (core >= base->history.data.size()))
         return;
@@ -343,7 +345,7 @@ draw_graph_no_history (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, g
 }
 
 void
-draw_graph_grid (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core)
+draw_graph_grid (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core)
 {
     if (G_UNLIKELY (core >= base->history.data.size()))
         return;
@@ -362,7 +364,7 @@ draw_graph_grid (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint c
     if (G_LIKELY (!base->colors[FG_COLOR1].isTransparent())) {
         cairo_save (cr);
         cairo_set_line_width (cr, 1);
-        xfce4::cairo_set_source (cr, base->colors[FG_COLOR1]);
+        xfce4::cairo_set_source_rgba (cr, base->colors[FG_COLOR1]);
         for (gint x = 0; x < w; x += 6)
         {
             gint x1 = x;
@@ -394,7 +396,7 @@ draw_graph_grid (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint c
 
         cairo_save (cr);
         cairo_set_line_width (cr, thickness);
-        xfce4::cairo_set_source (cr, base->colors[2]);
+        xfce4::cairo_set_source_rgba (cr, base->colors[2]);
         for (gint x = 0; x < w; x++)
         {
             gfloat usage = 0.0f;

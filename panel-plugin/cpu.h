@@ -32,12 +32,10 @@
 #include <xfconf/xfconf.h>
 #include <string>
 #include <vector>
-#include "xfce4++/util.h"
+#include "xfce4++/rgba.hh"
+#include "xfce4++/timer.hh"
 
 #include "os.h"
-
-using xfce4::Ptr;
-using xfce4::Ptr0;
 
 #define BORDER 8
 #define STATS_SMT_BY_DEFAULT false
@@ -152,7 +150,7 @@ struct CPUGraph
 
     /* Runtime data */
     guint nr_cores;
-    guint timeout_id;
+    xfce4::SourceTag timeout_id;
     struct {
         gssize cap_pow2;            /* Capacity. A power of 2. */
         gssize size;                /* size <= cap_pow2 */
@@ -161,7 +159,7 @@ struct CPUGraph
         gssize mask() const         { return cap_pow2 - 1; }
     } history;
     std::vector<CpuData> cpu_data;  /* size == nr_cores+1 */
-    Ptr0<Topology> topology;
+    std::unique_ptr<Topology> topology;
     CpuStats stats;
     std::vector<const CpuLoad *> nearest_cache;
     std::vector<CpuLoad> non_linear_cache;
@@ -173,25 +171,25 @@ struct CPUGraph
         return stats_smt || (has_bars && highlight_smt);
     }
 
-    static void set_bars                 (const Ptr<CPUGraph> &base, bool bars);
-    static void set_border               (const Ptr<CPUGraph> &base, bool border);
-    static void set_color                (const Ptr<CPUGraph> &base, CPUGraphColorNumber number, const xfce4::RGBA &color);
-    static void set_color_mode           (const Ptr<CPUGraph> &base, guint color_mode);
-    static void set_command              (const Ptr<CPUGraph> &base, const std::string &command);
-    static void set_frame                (const Ptr<CPUGraph> &base, bool frame);
-    static void set_in_terminal          (const Ptr<CPUGraph> &base, bool in_terminal);
-    static void set_load_threshold       (const Ptr<CPUGraph> &base, gfloat threshold);
-    static void set_mode                 (const Ptr<CPUGraph> &base, CPUGraphMode mode);
-    static void set_nonlinear_time       (const Ptr<CPUGraph> &base, bool nonlinear);
-    static void set_per_core             (const Ptr<CPUGraph> &base, bool per_core);
-    static void set_per_core_spacing     (const Ptr<CPUGraph> &base, guint spacing);
-    static void set_size                 (const Ptr<CPUGraph> &base, guint width);
-    static void set_stats_smt            (const Ptr<CPUGraph> &base, bool stats_smt);
-    static void set_smt                  (const Ptr<CPUGraph> &base, bool highlight_smt);
-    static void set_startup_notification (const Ptr<CPUGraph> &base, bool startup_notification);
-    static void set_tracked_core         (const Ptr<CPUGraph> &base, guint core);
-    static void set_update_rate          (const Ptr<CPUGraph> &base, CPUGraphUpdateRate rate);
-    static void maybe_clear_smt_stats    (const Ptr<CPUGraph> &base);
+    static void set_bars                 (const std::shared_ptr<CPUGraph> &base, bool bars);
+    static void set_border               (const std::shared_ptr<CPUGraph> &base, bool border);
+    static void set_color                (const std::shared_ptr<CPUGraph> &base, CPUGraphColorNumber number, const xfce4::RGBA &color);
+    static void set_color_mode           (const std::shared_ptr<CPUGraph> &base, guint color_mode);
+    static void set_command              (const std::shared_ptr<CPUGraph> &base, const std::string &command);
+    static void set_frame                (const std::shared_ptr<CPUGraph> &base, bool frame);
+    static void set_in_terminal          (const std::shared_ptr<CPUGraph> &base, bool in_terminal);
+    static void set_load_threshold       (const std::shared_ptr<CPUGraph> &base, gfloat threshold);
+    static void set_mode                 (const std::shared_ptr<CPUGraph> &base, CPUGraphMode mode);
+    static void set_nonlinear_time       (const std::shared_ptr<CPUGraph> &base, bool nonlinear);
+    static void set_per_core             (const std::shared_ptr<CPUGraph> &base, bool per_core);
+    static void set_per_core_spacing     (const std::shared_ptr<CPUGraph> &base, guint spacing);
+    static void set_size                 (const std::shared_ptr<CPUGraph> &base, guint width);
+    static void set_stats_smt            (const std::shared_ptr<CPUGraph> &base, bool stats_smt);
+    static void set_smt                  (const std::shared_ptr<CPUGraph> &base, bool highlight_smt);
+    static void set_startup_notification (const std::shared_ptr<CPUGraph> &base, bool startup_notification);
+    static void set_tracked_core         (const std::shared_ptr<CPUGraph> &base, guint core);
+    static void set_update_rate          (const std::shared_ptr<CPUGraph> &base, CPUGraphUpdateRate rate);
+    static void maybe_clear_smt_stats    (const std::shared_ptr<CPUGraph> &base);
 };
 
 guint get_update_interval_ms (CPUGraphUpdateRate rate);
