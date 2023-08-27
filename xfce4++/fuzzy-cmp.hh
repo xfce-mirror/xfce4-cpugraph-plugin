@@ -1,7 +1,7 @@
 /*
  *  This file is part of Xfce (https://gitlab.xfce.org).
  *
- *  Copyright (c) 2021 Jan Ziak <0xe2.0x9a.0x9b@xfce.org>
+ *  Copyright (c) 2023 Błażej Szczygieł
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,26 +18,25 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "io.h"
+#pragma once
 
-#include <glib.h>
+#include <algorithm>
+#include <cmath>
 
 namespace xfce4 {
 
-bool is_directory(const std::string &path) {
-    return g_file_test(path.c_str(), G_FILE_TEST_IS_DIR);
+using namespace std;
+
+constexpr static inline bool
+fuzzy_cmp (double p1, double p2)
+{
+    return (abs (p1 - p2) <= 0.000000000001 * min (abs (p1), abs (p2)));
 }
 
-bool read_file(const std::string &path, std::string &data) {
-    gchar *contents = NULL;
-    if(g_file_get_contents(path.c_str(), &contents, NULL, NULL)) {
-        data = *contents;
-        g_free(contents);
-        return true;
-    }
-    else {
-        return false;
-    }
+constexpr static inline bool
+fuzzy_cmp (float p1, float p2)
+{
+    return (abs (p1 - p2) <= 0.00001f * min (abs (p1), abs (p2)));
 }
 
 } /* namespace xfce4 */
