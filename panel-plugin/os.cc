@@ -29,6 +29,8 @@
 #endif
 
 #include "os.h"
+#include "../xfce4pp/string-utils.hh"
+#include "../xfce4pp/io.hh"
 
 #include <errno.h>
 #include <stdio.h>
@@ -38,7 +40,7 @@
 #include <unordered_set>
 #include <vector>
 
-using xfce4::parse_ulong;
+using namespace std;
 
 #if defined (__linux__) || defined (__FreeBSD_kernel__)
 #define PROC_STAT "/proc/stat"
@@ -94,7 +96,7 @@ detect_cpu_number ()
         gchar *s = cpuStr + 3;
         if (!g_ascii_isspace (*s))
         {
-            gulong cpu = parse_ulong(&s);
+            auto cpu = g_ascii_strtoull (s, nullptr, 0);
             nb_cpu = MAX(nb_cpu, cpu + 1);
         }
     }
@@ -104,7 +106,7 @@ detect_cpu_number ()
 }
 
 bool
-read_cpu_data (std::vector<CpuData> &data)
+read_cpu_data (vector<CpuData> &data)
 {
     if (G_UNLIKELY(data.size() == 0))
         return false;
@@ -133,15 +135,15 @@ read_cpu_data (std::vector<CpuData> &data)
         if (g_ascii_isspace (*s))
             cpu = 0;
         else
-            cpu = 1 + parse_ulong (&s);
+            cpu = 1 + g_ascii_strtoull (s, &s, 0);
 
-        gulong user = parse_ulong (&s);
-        gulong nice = parse_ulong (&s);
-        gulong system = parse_ulong (&s);
-        gulong idle = parse_ulong (&s);
-        gulong iowait = parse_ulong (&s);
-        gulong irq = parse_ulong (&s);
-        gulong softirq = parse_ulong (&s);
+        gulong user = g_ascii_strtoull (s, &s, 0);
+        gulong nice = g_ascii_strtoull (s, &s, 0);
+        gulong system = g_ascii_strtoull (s, &s, 0);
+        gulong idle = g_ascii_strtoull (s, &s, 0);
+        gulong iowait = g_ascii_strtoull (s, &s, 0);
+        gulong irq = g_ascii_strtoull (s, &s, 0);
+        gulong softirq = g_ascii_strtoull (s, &s, 0);
 
         if (G_LIKELY (cpu < nb_cpu))
         {
@@ -201,7 +203,7 @@ detect_cpu_number ()
 }
 
 bool
-read_cpu_data (std::vector<CpuData> &data)
+read_cpu_data (vector<CpuData> &data)
 {
     if (G_UNLIKELY(data.size() == 0))
         return false;
@@ -266,7 +268,7 @@ detect_cpu_number ()
 }
 
 bool
-read_cpu_data (std::vector<CpuData> &data)
+read_cpu_data (vector<CpuData> &data)
 {
     if (G_UNLIKELY(data.size() == 0))
         return false;
@@ -316,7 +318,7 @@ detect_cpu_number ()
 }
 
 bool
-read_cpu_data (std::vector<CpuData> &data)
+read_cpu_data (vector<CpuData> &data)
 {
     if (G_UNLIKELY(data.size() == 0))
         return false;
@@ -377,7 +379,7 @@ detect_cpu_number ()
 }
 
 bool
-read_cpu_data (std::vector<CpuData> &data)
+read_cpu_data (vector<CpuData> &data)
 {
     if (G_UNLIKELY(data.size() == 0))
         return false;
@@ -428,11 +430,11 @@ read_cpu_data (std::vector<CpuData> &data)
 
 
 
-static Ptr0<Topology>
+static unique_ptr<Topology>
 read_topology_linux ()
 {
-    std::unordered_set<gint> core_ids;
-    std::unordered_map<guint, gint> logical_cpu_2_core;
+    unordered_set<gint> core_ids;
+    unordered_map<guint, gint> logical_cpu_2_core;
     gint max_core_id = -1;
 
     guint num_online_logical_cpus = 0;
@@ -445,26 +447,22 @@ read_topology_linux ()
         if (!xfce4::is_directory (xfce4::sprintf ("%s/cpu%d", sysfs_base, logical_cpu)))
             break;
 
-        std::string file_contents;
+        xfce4::g_string_view file_contents;
         if (xfce4::read_file (xfce4::sprintf ("%s/cpu%d/topology/core_id", sysfs_base, logical_cpu), file_contents))
         {
-            auto core_id_opt = xfce4::parse_long (file_contents, 10);
-            if (core_id_opt.has_value())
+            const auto core_id = xfce4::parse_long (file_contents, 10);
+            if (core_id.has_value() && G_LIKELY (core_id.value() >= 0 && core_id.value() <= G_MAXINT))
             {
-                auto core_id = core_id_opt.value();
-                if (G_LIKELY (core_id >= 0 && core_id <= G_MAXINT))
-                {
-                    num_online_logical_cpus++;
-                    core_ids.insert(core_id);
-                    logical_cpu_2_core[logical_cpu] = core_id;
-                    if (max_core_id < core_id)
-                        max_core_id = core_id;
-                }
-                else
-                    return nullptr;
+                num_online_logical_cpus++;
+                core_ids.insert(core_id.value());
+                logical_cpu_2_core[logical_cpu] = core_id.value();
+                if (max_core_id < core_id)
+                    max_core_id = core_id.value();
             }
             else
+            {
                 return nullptr;
+            }
         }
         else
         {
@@ -482,7 +480,7 @@ read_topology_linux ()
 
     if (!logical_cpu_2_core.empty())
     {
-        auto t = xfce4::make<Topology>();
+        auto t = make_unique<Topology>();
 
         /* Fill-in the topology data */
 
@@ -530,7 +528,7 @@ read_topology_linux ()
         return nullptr;
 }
 
-Ptr0<Topology>
+unique_ptr<Topology>
 read_topology ()
 {
     bool is_linux = false;
