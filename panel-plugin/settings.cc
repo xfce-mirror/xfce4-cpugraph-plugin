@@ -28,9 +28,11 @@
 #endif
 
 #include "settings.h"
-#include "xfce4++/util.h"
+#include "xfce4++/rc.hh"
 #include <xfconf/xfconf.h>
 #include <cmath>
+
+using namespace std;
 
 static const xfce4::RGBA g_default_colors[NUM_COLORS] =
 {
@@ -79,7 +81,7 @@ constexpr auto g_per_core_spacing = "/per-core-spacing";
 constexpr auto g_command = "/command";
 
 void
-Settings::init (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
+Settings::init (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
 {
     if (!xfconf_init (nullptr))
     {
@@ -99,7 +101,7 @@ void Settings::finalize()
 }
 
 void
-Settings::read (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
+Settings::read (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
 {
     CPUGraphUpdateRate rate = RATE_NORMAL;
     CPUGraphMode mode = MODE_NORMAL;
@@ -115,7 +117,7 @@ Settings::read (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
     guint tracked_core = 0;
 
     xfce4::RGBA colors[NUM_COLORS];
-    std::string command;
+    string command;
     bool in_terminal = true;
     bool startup_notification = false;
     guint load_threshold = 0;
@@ -142,8 +144,6 @@ Settings::read (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
             {
                 if (const auto rc = xfce4::Rc::simple_open (rc_file, true))
                 {
-                    Ptr0<std::string> value;
-
                     rate = (CPUGraphUpdateRate) rc->read_int_entry ("UpdateInterval", rate);
                     nonlinear = rc->read_int_entry ("TimeScale", nonlinear);
                     size = rc->read_int_entry ("Size", size);
@@ -160,16 +160,13 @@ Settings::read (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
                     tracked_core = rc->read_int_entry ("TrackedCore", tracked_core);
                     load_threshold = rc->read_int_entry ("LoadThreshold", load_threshold);
 
-                    if ((value = rc->read_entry ("Command", nullptr)))
-                    {
-                        command = *value;
-                    }
+                    command = rc->read_entry ("Command");
 
                     for (guint i = 0; i < NUM_COLORS; i++)
                     {
-                        if ((value = rc->read_entry (g_color_keys[i][1], nullptr)))
+                        if (const auto value = rc->read_entry (g_color_keys[i][1]); !value.empty())
                         {
-                            xfce4::RGBA::parse (colors[i], *value);
+                            xfce4::RGBA::parse (colors[i], value);
                             if (i == BARS_COLOR)
                                 base->has_barcolor = true;
                         }
@@ -211,7 +208,7 @@ Settings::read (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
             for (guint i = 0; i < NUM_COLORS; i++)
             {
                 xfce4::RGBA rgba;
-                if (xfconf_channel_get_array (chn, g_color_keys[i][0], G_TYPE_DOUBLE, &rgba.R, G_TYPE_DOUBLE, &rgba.G, G_TYPE_DOUBLE, &rgba.B, G_TYPE_DOUBLE, &rgba.A, G_TYPE_INVALID))
+                if (xfconf_channel_get_array (chn, g_color_keys[i][0], G_TYPE_DOUBLE, &rgba.red, G_TYPE_DOUBLE, &rgba.green, G_TYPE_DOUBLE, &rgba.blue, G_TYPE_DOUBLE, &rgba.alpha, G_TYPE_INVALID))
                 {
                     colors[i] = rgba;
                     if (i == BARS_COLOR)
@@ -254,29 +251,29 @@ Settings::read (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base)
             size = 10;
     }
 
-    CPUGraph::set_bars (base, bars);
-    CPUGraph::set_border (base, border);
+    base->set_bars (bars);
+    base->set_border (border);
     for (guint i = 0; i < NUM_COLORS; i++)
-        CPUGraph::set_color (base, (CPUGraphColorNumber) i, colors[i]);
-    CPUGraph::set_color_mode (base, color_mode);
-    CPUGraph::set_command (base, command);
-    CPUGraph::set_in_terminal (base, in_terminal);
-    CPUGraph::set_frame (base, frame);
-    CPUGraph::set_load_threshold (base, load_threshold * 0.01f);
-    CPUGraph::set_mode (base, mode);
-    CPUGraph::set_nonlinear_time (base, nonlinear);
-    CPUGraph::set_per_core (base, per_core);
-    CPUGraph::set_per_core_spacing (base, per_core_spacing);
-    CPUGraph::set_size (base, size);
-    CPUGraph::set_stats_smt (base, stats_smt);
-    CPUGraph::set_smt (base, highlight_smt);
-    CPUGraph::set_startup_notification (base, startup_notification);
-    CPUGraph::set_tracked_core (base, tracked_core);
-    CPUGraph::set_update_rate (base, rate);
+        base->set_color ((CPUGraphColorNumber) i, colors[i]);
+    base->set_color_mode (color_mode);
+    base->set_command (command);
+    base->set_in_terminal (in_terminal);
+    base->set_frame (frame);
+    base->set_load_threshold (load_threshold * 0.01f);
+    base->set_mode (mode);
+    base->set_nonlinear_time (nonlinear);
+    base->set_per_core (per_core);
+    base->set_per_core_spacing (per_core_spacing);
+    base->set_size (size);
+    base->set_stats_smt (stats_smt);
+    base->set_smt (highlight_smt);
+    base->set_startup_notification (startup_notification);
+    base->set_tracked_core (tracked_core);
+    base->set_update_rate (rate);
 }
 
 void
-Settings::write (XfcePanelPlugin *plugin, const Ptr<const CPUGraph> &base)
+Settings::write (XfcePanelPlugin *plugin, const shared_ptr<const CPUGraph> &base)
 {
     const auto chn = base->channel;
     if (!chn)
@@ -294,7 +291,7 @@ Settings::write (XfcePanelPlugin *plugin, const Ptr<const CPUGraph> &base)
     xfconf_channel_set_int (chn, g_tracked_core, base->tracked_core);
     xfconf_channel_set_int (chn, g_in_terminal, base->command_in_terminal);
     xfconf_channel_set_int (chn, g_startup_notification, base->command_startup_notification);
-    xfconf_channel_set_int (chn, g_load_threshold, std::round (100.0f * base->load_threshold));
+    xfconf_channel_set_int (chn, g_load_threshold, round (100.0f * base->load_threshold));
     xfconf_channel_set_int (chn, g_smt_stats, base->stats_smt);
     xfconf_channel_set_int (chn, g_smt_issues, base->highlight_smt);
     xfconf_channel_set_int (chn, g_per_core_spacing, base->per_core_spacing);
@@ -306,7 +303,7 @@ Settings::write (XfcePanelPlugin *plugin, const Ptr<const CPUGraph> &base)
         if (i != BARS_COLOR || base->has_barcolor)
         {
             const auto rgba = base->colors[i];
-            xfconf_channel_set_array (chn, g_color_keys[i][0], G_TYPE_DOUBLE, &rgba.R, G_TYPE_DOUBLE, &rgba.G, G_TYPE_DOUBLE, &rgba.B, G_TYPE_DOUBLE, &rgba.A, G_TYPE_INVALID);
+            xfconf_channel_set_array (chn, g_color_keys[i][0], G_TYPE_DOUBLE, &rgba.red, G_TYPE_DOUBLE, &rgba.green, G_TYPE_DOUBLE, &rgba.blue, G_TYPE_DOUBLE, &rgba.alpha, G_TYPE_INVALID);
         }
     }
 }

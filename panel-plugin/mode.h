@@ -26,9 +26,9 @@
 
 #include "cpu.h"
 
-void draw_graph_normal     (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core);
-void draw_graph_LED        (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core);
-void draw_graph_no_history (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core);
-void draw_graph_grid       (const Ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core);
+void draw_graph_normal     (const std::shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core);
+void draw_graph_LED        (const std::shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core);
+void draw_graph_no_history (const std::shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core);
+void draw_graph_grid       (const std::shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core);
 
 #endif /* _XFCE_CPUGRAPH_MODE_H_ */

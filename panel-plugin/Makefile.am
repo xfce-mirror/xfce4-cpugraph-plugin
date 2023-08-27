@@ -12,7 +12,6 @@ libcpugraph_la_CFLAGS = \
 libcpugraph_la_CXXFLAGS = $(libcpugraph_la_CFLAGS)
 
 libcpugraph_la_LIBADD = \
-	$(top_builddir)/xfce4++/util/libxfce4util_pp.la \
 	@LIBXFCE4UI_LIBS@ \
 	@LIBXFCE4PANEL_LIBS@ \
 	-lm \
