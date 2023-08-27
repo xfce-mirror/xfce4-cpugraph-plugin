@@ -26,6 +26,6 @@
 
 #include "cpu.h"
 
-void create_options (XfcePanelPlugin *plugin, const Ptr<CPUGraph> &base);
+void create_options (XfcePanelPlugin *plugin, const std::shared_ptr<CPUGraph> &base);
 
 #endif /* _XFCE_CPUGRAPH_PROPERTIES_H_ */
