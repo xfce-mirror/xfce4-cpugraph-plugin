@@ -2,6 +2,7 @@
  *  This file is part of Xfce (https://gitlab.xfce.org).
  *
  *  Copyright (c) 2021 Jan Ziak <0xe2.0x9a.0x9b@xfce.org>
+ *  Copyright (c) 2023 Błażej Szczygieł
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,28 +19,32 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef _XFCE4PP_UTIL_COLLECTIONUTILS_H_
-#define _XFCE4PP_UTIL_COLLECTIONUTILS_H_
+#pragma once
 
-#include <map>
-#include <utility>
+#include <glib.h>
+#include "string-utils.hh"
 
 namespace xfce4 {
 
-template<typename K, typename V>
-void put(std::map<K, V> &map, const K &key, const V &value) {
-    auto result = map.emplace(key, value);
-    if(!result.second)
-        result.first->second = value;
+using namespace std;
+
+static inline bool
+is_directory (string_view path)
+{
+    return g_file_test (path.data(), G_FILE_TEST_IS_DIR);
 }
 
-template<typename K, typename V>
-void put(std::map<K, V> &map, K &&key, const V &value) {
-    auto result = map.emplace(std::move(key), value);
-    if(!result.second)
-        result.first->second = value;
+static inline bool
+read_file (string_view path, g_string_view &data)
+{
+    gchar *contents = nullptr;
+    gsize length = 0;
+    if (g_file_get_contents (path.data(), &contents, &length, nullptr))
+    {
+        data = g_string_view (contents, length);
+        return true;
+    }
+    return false;
 }
 
 } /* namespace xfce4 */
-
-#endif /* _XFCE4PP_UTIL_COLLECTIONUTILS_H_*/
