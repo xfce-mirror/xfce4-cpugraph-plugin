@@ -32,24 +32,22 @@
 #include <xfconf/xfconf.h>
 #include <string>
 #include <vector>
-#include "xfce4++/util.h"
+#include "../xfce4pp/rgba.hh"
+#include "../xfce4pp/timer.hh"
 
 #include "os.h"
 
-using xfce4::Ptr;
-using xfce4::Ptr0;
-
-#define BORDER 8
-#define STATS_SMT_BY_DEFAULT false
-#define HIGHLIGHT_SMT_BY_DEFAULT false
-#define MAX_HISTORY_SIZE (100*1000)
-#define MAX_LOAD_THRESHOLD 0.2
-#define MAX_SIZE 128
-#define MIN_SIZE 1
-#define NONLINEAR_MODE_BASE 1.04
-#define PER_CORE_SPACING_DEFAULT 1
-#define PER_CORE_SPACING_MAX 3
-#define PER_CORE_SPACING_MIN 0
+constexpr auto BORDER = 8;
+constexpr auto STATS_SMT_BY_DEFAULT = false;
+constexpr auto HIGHLIGHT_SMT_BY_DEFAULT = false;
+constexpr auto MAX_HISTORY_SIZE = 100 * 1000;
+constexpr auto MAX_LOAD_THRESHOLD = 0.2;
+constexpr auto MAX_SIZE = 128;
+constexpr auto MIN_SIZE = 1;
+constexpr auto NONLINEAR_MODE_BASE = 1.04;
+constexpr auto PER_CORE_SPACING_DEFAULT = 1;
+constexpr auto PER_CORE_SPACING_MAX = 3;
+constexpr auto PER_CORE_SPACING_MIN = 0;
 
 enum CPUGraphMode
 {
@@ -110,7 +108,7 @@ struct CpuLoad
     gfloat iowait;
 } __attribute__((packed));
 
-struct CPUGraph
+struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
 {
     /* GUI components */
     XfcePanelPlugin *plugin;
@@ -139,20 +137,20 @@ struct CPUGraph
     guint per_core_spacing;
 
     /* Boolean settings */
-    bool command_in_terminal:1;
-    bool command_startup_notification:1;
-    bool has_barcolor:1;
-    bool has_bars:1;
-    bool has_border:1;
-    bool has_frame:1;
-    bool stats_smt:1;
-    bool highlight_smt:1;
-    bool non_linear:1;
-    bool per_core:1;
+    bool command_in_terminal;
+    bool command_startup_notification;
+    bool has_barcolor;
+    bool has_bars;
+    bool has_border;
+    bool has_frame;
+    bool stats_smt;
+    bool highlight_smt;
+    bool non_linear;
+    bool per_core;
 
     /* Runtime data */
     guint nr_cores;
-    guint timeout_id;
+    xfce4::SourceTag timeout_id;
     struct {
         gssize cap_pow2;            /* Capacity. A power of 2. */
         gssize size;                /* size <= cap_pow2 */
@@ -161,37 +159,41 @@ struct CPUGraph
         gssize mask() const         { return cap_pow2 - 1; }
     } history;
     std::vector<CpuData> cpu_data;  /* size == nr_cores+1 */
-    Ptr0<Topology> topology;
+    std::unique_ptr<Topology> topology;
     CpuStats stats;
     std::vector<const CpuLoad *> nearest_cache;
     std::vector<CpuLoad> non_linear_cache;
 
     ~CPUGraph();
 
-    bool
-    isSmtIssuesEnabled () const {
-        return stats_smt || (has_bars && highlight_smt);
-    }
+    // Called outside of "cpu.cc"
+    void set_bars                 (bool has_bars_arg);
+    void set_border               (bool has_border_arg);
+    void set_color                (CPUGraphColorNumber number, const xfce4::RGBA &color);
+    void set_color_mode           (guint color_mode_arg);
+    void set_command              (const std::string_view &command_arg);
+    void set_frame                (bool has_frame_arg);
+    void set_in_terminal          (bool in_terminal);
+    void set_load_threshold       (gfloat threshold);
+    void set_mode                 (CPUGraphMode mode_arg);
+    void set_nonlinear_time       (bool non_linear_arg);
+    void set_per_core             (bool per_core_arg);
+    void set_per_core_spacing     (guint spacing);
+    void set_size                 (guint size_arg);
+    void set_stats_smt            (bool stats_smt_arg);
+    void set_smt                  (bool highlight_smt_arg);
+    void set_startup_notification (bool startup_notification);
+    void set_tracked_core         (guint core);
+    void set_update_rate          (CPUGraphUpdateRate rate);
+    void maybe_clear_smt_stats    ();
 
-    static void set_bars                 (const Ptr<CPUGraph> &base, bool bars);
-    static void set_border               (const Ptr<CPUGraph> &base, bool border);
-    static void set_color                (const Ptr<CPUGraph> &base, CPUGraphColorNumber number, const xfce4::RGBA &color);
-    static void set_color_mode           (const Ptr<CPUGraph> &base, guint color_mode);
-    static void set_command              (const Ptr<CPUGraph> &base, const std::string &command);
-    static void set_frame                (const Ptr<CPUGraph> &base, bool frame);
-    static void set_in_terminal          (const Ptr<CPUGraph> &base, bool in_terminal);
-    static void set_load_threshold       (const Ptr<CPUGraph> &base, gfloat threshold);
-    static void set_mode                 (const Ptr<CPUGraph> &base, CPUGraphMode mode);
-    static void set_nonlinear_time       (const Ptr<CPUGraph> &base, bool nonlinear);
-    static void set_per_core             (const Ptr<CPUGraph> &base, bool per_core);
-    static void set_per_core_spacing     (const Ptr<CPUGraph> &base, guint spacing);
-    static void set_size                 (const Ptr<CPUGraph> &base, guint width);
-    static void set_stats_smt            (const Ptr<CPUGraph> &base, bool stats_smt);
-    static void set_smt                  (const Ptr<CPUGraph> &base, bool highlight_smt);
-    static void set_startup_notification (const Ptr<CPUGraph> &base, bool startup_notification);
-    static void set_tracked_core         (const Ptr<CPUGraph> &base, guint core);
-    static void set_update_rate          (const Ptr<CPUGraph> &base, CPUGraphUpdateRate rate);
-    static void maybe_clear_smt_stats    (const Ptr<CPUGraph> &base);
+    // Called inside "cpu.cc"
+    bool  is_smt_issues_enabled   () const;
+    void  create_bars             (GtkOrientation orientation);
+    void  delete_bars             ();
+    void  set_bars_size           ();
+    guint nb_bars                 ();
+    void  ebox_revalidate         ();
 };
 
 guint get_update_interval_ms (CPUGraphUpdateRate rate);
