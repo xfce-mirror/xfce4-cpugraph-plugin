@@ -104,11 +104,11 @@ msgstr "Bruger:"
 
 #: ../panel-plugin/properties.cc:221
 msgid "Nice:"
-msgstr ""
+msgstr "Nice:"
 
 #: ../panel-plugin/properties.cc:224
 msgid "IO wait:"
-msgstr ""
+msgstr "IO-ventning:"
 
 #: ../panel-plugin/properties.cc:227
 msgid "Background:"
