@@ -27,9 +27,7 @@
 #include <glib.h>
 #include <unordered_map>
 #include <vector>
-#include "xfce4++/util.h"
-
-using xfce4::Ptr0;
+#include <memory>
 
 struct CpuData
 {
@@ -90,6 +88,6 @@ struct Topology
 
 guint detect_cpu_number ();
 bool read_cpu_data (std::vector<CpuData> &data);
-Ptr0<Topology> read_topology ();
+std::unique_ptr<Topology> read_topology ();
 
 #endif /* _XFCE_CPUGRAPH_OS_H */
