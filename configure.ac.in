@@ -29,7 +29,7 @@ AC_PROG_CC()
 AC_PROG_CXX()
 LT_PATH_LD([])
 AC_PROG_INSTALL
-AX_CXX_COMPILE_STDCXX_11()
+AX_CXX_COMPILE_STDCXX_17()
 IT_PROG_INTLTOOL([0.35.0])
 LT_PREREQ([2.2.6])
 LT_INIT([disable-static])
@@ -52,8 +52,6 @@ XDT_FEATURE_DEBUG()
 AC_CONFIG_FILES([
 Makefile
 panel-plugin/Makefile
-xfce4++/Makefile
-xfce4++/util/Makefile
 icons/Makefile
 icons/16x16/Makefile
 icons/24x24/Makefile
