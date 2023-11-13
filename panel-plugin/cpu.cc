@@ -81,13 +81,22 @@ cpugraph_construct (XfcePanelPlugin *plugin)
     xfce4::connect_size_changed    (plugin, [base](XfcePanelPlugin *p, guint size) { return size_cb (p, size, base); });
 }
 
-static guint
-init_cpu_data (vector<CpuData> &data)
+static void
+init_cpu_data (const shared_ptr<CPUGraph> &base)
 {
-    guint cpuNr = detect_cpu_number ();
-    if (cpuNr != 0)
-        data.resize(cpuNr+1);
-    return cpuNr;
+    base->nr_cores = detect_cpu_number ();
+    if (base->nr_cores != 0)
+        base->cpu_data.resize(base->nr_cores + 1);
+    else
+        fprintf (stderr, "Cannot init cpu data !\n");
+
+    /* Read CPU data twice in order to initialize
+     * cpu_data[].previous_used and cpu_data[].previous_total
+     * with the current HWMs. HWM = High Water Mark. */
+    read_cpu_data (base->cpu_data);
+    read_cpu_data (base->cpu_data);
+
+    base->topology = read_topology ();
 }
 
 static shared_ptr<CPUGraph>
@@ -98,16 +107,8 @@ create_gui (XfcePanelPlugin *plugin)
     auto base = make_shared<CPUGraph>();
 
     orientation = xfce_panel_plugin_get_orientation (plugin);
-    if ((base->nr_cores = init_cpu_data (base->cpu_data)) == 0)
-        fprintf (stderr,"Cannot init cpu data !\n");
 
-    /* Read CPU data twice in order to initialize
-     * cpu_data[].previous_used and cpu_data[].previous_total
-     * with the current HWMs. HWM = High Water Mark. */
-    read_cpu_data (base->cpu_data);
-    read_cpu_data (base->cpu_data);
-
-    base->topology = read_topology ();
+    init_cpu_data (base);
 
     base->plugin = plugin;
 
@@ -623,8 +624,27 @@ detect_smt_issues (const shared_ptr<CPUGraph> &base)
 static xfce4::TimeoutResponse
 update_cb (const shared_ptr<CPUGraph> &base)
 {
-    if (!read_cpu_data (base->cpu_data))
+    const auto readCpuResult = read_cpu_data (base->cpu_data);
+
+    if (readCpuResult == ReadCpuResult::Error)
+    {
         return xfce4::TimeoutResponse::Again();
+    }
+    else if (readCpuResult == ReadCpuResult::CpuCountChanged)
+    {
+        // Reset all data
+        base->history = {};
+        base->cpu_data = {};
+        base->topology.reset();
+        base->nearest_cache = {};
+        base->non_linear_cache = {};
+
+        // Init CPU data
+        init_cpu_data (base);
+
+        // Init history and GUI
+        size_cb (base->plugin, xfce_panel_plugin_get_size (base->plugin), base);
+    }
 
     if (base->topology && base->topology->smt && base->is_smt_issues_enabled ())
         detect_smt_issues (base);
