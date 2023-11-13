@@ -879,9 +879,9 @@ command_cb (GdkEventButton *event, const shared_ptr<CPUGraph> &base)
             command = default_command (&in_terminal, &startup_notification);
         }
 
-        xfce_spawn_command_line_on_screen (gdk_screen_get_default (),
-                                           command.c_str(), in_terminal,
-                                           startup_notification, nullptr);
+        xfce_spawn_command_line (gdk_screen_get_default (),
+                                 command.c_str(), in_terminal,
+                                 startup_notification, true, nullptr);
     }
     return xfce4::Propagation::Stop();
 }
