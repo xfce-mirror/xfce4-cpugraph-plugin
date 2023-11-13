@@ -96,8 +96,7 @@ detect_cpu_number ()
         gchar *s = cpuStr + 3;
         if (!g_ascii_isspace (*s))
         {
-            auto cpu = g_ascii_strtoull (s, nullptr, 0);
-            nb_cpu = MAX(nb_cpu, cpu + 1);
+            nb_cpu += 1;
         }
     }
 
@@ -105,17 +104,19 @@ detect_cpu_number ()
     return nb_cpu;
 }
 
-bool
+ReadCpuResult
 read_cpu_data (vector<CpuData> &data)
 {
     if (G_UNLIKELY(data.size() == 0))
-        return false;
+        return ReadCpuResult::Error;
 
     const size_t nb_cpu = data.size(); /* Number of CPU threads + 1 (index 0 - overall usage) */
     FILE *fStat;
 
     if (!(fStat = fopen (PROC_STAT, "r")))
-        return false;
+        return ReadCpuResult::Error;
+
+    guint cpuIt = 0;
 
     while (true)
     {
@@ -123,7 +124,7 @@ read_cpu_data (vector<CpuData> &data)
         if (!fgets (cpuStr, PROCMAXLNLEN, fStat))
         {
             fclose (fStat);
-            return false;
+            return ReadCpuResult::Error;
         }
 
         if (strncmp (cpuStr, "cpu", 3) != 0)
@@ -133,9 +134,15 @@ read_cpu_data (vector<CpuData> &data)
 
         guint cpu;
         if (g_ascii_isspace (*s))
+        {
             cpu = 0;
+        }
         else
-            cpu = 1 + g_ascii_strtoull (s, &s, 0);
+        {
+            while (*s != '\0' && !g_ascii_isspace (*s)) // Skip CPU number
+                ++s;
+            cpu = ++cpuIt;
+        }
 
         gulong user = g_ascii_strtoull (s, &s, 0);
         gulong nice = g_ascii_strtoull (s, &s, 0);
@@ -185,7 +192,14 @@ read_cpu_data (vector<CpuData> &data)
 
     fclose (fStat);
 
-    return true;
+    if (data.size() != cpuIt + 1)
+    {
+        if (!data.empty())
+            fprintf(stderr, "Number of CPUs changed: %lu -> %u\n", data.size() - 1, cpuIt);
+        return ReadCpuResult::CpuCountChanged;
+    }
+
+    return ReadCpuResult::Ok;
 }
 
 #elif defined (__FreeBSD__)
@@ -202,11 +216,11 @@ detect_cpu_number ()
         return ncpu;
 }
 
-bool
+ReadCpuResult
 read_cpu_data (vector<CpuData> &data)
 {
     if (G_UNLIKELY(data.size() == 0))
-        return false;
+        return ReadCpuResult::Error;
 
     const size_t nb_cpu = data.size()-1;
     glong used, total;
@@ -218,17 +232,17 @@ read_cpu_data (vector<CpuData> &data)
 
     data[0].load = 0;
     if (sysctlbyname ("kern.smp.maxid", &max_cpu, &len, NULL, 0) < 0)
-        return false;
+        return ReadCpuResult::Error;
 
     max_cpu++; /* max_cpu is 0-based */
     if (max_cpu < nb_cpu)
-        return false; /* should not happen */
+        return ReadCpuResult::Error; /* should not happen */
     len = sizeof (glong) * max_cpu * CPUSTATES;
     cp_time = (glong *) g_malloc (len);
 
     if (sysctlbyname ("kern.cp_times", cp_time, &len, NULL, 0) < 0) {
         g_free (cp_time);
-        return false;
+        return ReadCpuResult::Error;
     }
 
     for (i = 1; i <= nb_cpu; i++)
@@ -250,7 +264,7 @@ read_cpu_data (vector<CpuData> &data)
 
     data[0].load /= nb_cpu;
     g_free (cp_time);
-    return true;
+    return ReadCpuResult::Ok;
 }
 
 #elif defined (__NetBSD__)
@@ -267,11 +281,11 @@ detect_cpu_number ()
         return ncpu;
 }
 
-bool
+ReadCpuResult
 read_cpu_data (vector<CpuData> &data)
 {
     if (G_UNLIKELY(data.size() == 0))
-        return false;
+        return ReadCpuResult::Error;
 
     const size_t nb_cpu = data.size()-1;
     guint64 cp_time[CPUSTATES * nb_cpu];
@@ -279,7 +293,7 @@ read_cpu_data (vector<CpuData> &data)
     gint mib[] = {CTL_KERN, KERN_CP_TIME};
 
     if (sysctl (mib, 2, &cp_time, &len, NULL, 0) < 0)
-        return false;
+        return ReadCpuResult::Error;
 
     data[0].load = 0;
     for (guint i = 1; i <= nb_cpu; i++)
@@ -300,7 +314,7 @@ read_cpu_data (vector<CpuData> &data)
     }
 
     data[0].load /= nb_cpu;
-    return true;
+    return ReadCpuResult::Ok;
 }
 
 #elif defined (__OpenBSD__)
@@ -317,11 +331,11 @@ detect_cpu_number ()
         return ncpu;
 }
 
-bool
+ReadCpuResult
 read_cpu_data (vector<CpuData> &data)
 {
     if (G_UNLIKELY(data.size() == 0))
-        return false;
+        return ReadCpuResult::Error;
 
     const size_t nb_cpu = data.size()-1;
     guint64 cp_time[CPUSTATES];
@@ -333,7 +347,7 @@ read_cpu_data (vector<CpuData> &data)
         gint mib[] = {CTL_KERN, KERN_CPTIME2, gint(i) - 1};
 
         if (sysctl (mib, 3, &cp_time, &len, NULL, 0) < 0)
-            return false;
+            return ReadCpuResult::Error;
 
         guint64 used = cp_time[CP_USER] + cp_time[CP_NICE] + cp_time[CP_SYS] + cp_time[CP_INTR];
         guint64 total = used + cp_time[CP_IDLE];
@@ -350,7 +364,7 @@ read_cpu_data (vector<CpuData> &data)
     }
 
     data[0].load /= nb_cpu;
-    return true;
+    return ReadCpuResult::Ok;
 }
 
 #elif defined (__sun__)
@@ -378,11 +392,11 @@ detect_cpu_number ()
     return knp->value.ui32;
 }
 
-bool
+ReadCpuResult
 read_cpu_data (vector<CpuData> &data)
 {
     if (G_UNLIKELY(data.size() == 0))
-        return false;
+        return ReadCpuResult::Error;
 
     const size_t nb_cpu = data.size()-1;
     kstat_t *ksp;
@@ -422,7 +436,7 @@ read_cpu_data (vector<CpuData> &data)
     }
 
     data[0].load /= nb_cpu;
-    return true;
+    return ReadCpuResult::Ok;
 }
 #else
 #error "Your OS is not supported."
