@@ -86,8 +86,15 @@ struct Topology
     gdouble smt_ratio;  /* Equals to (num_online_logical_cpus / num_online_cores), >= 1.0 */
 };
 
+enum class ReadCpuResult
+{
+    CpuCountChanged = -1,
+    Error = 0,
+    Ok = 1,
+};
+
 guint detect_cpu_number ();
-bool read_cpu_data (std::vector<CpuData> &data);
+ReadCpuResult read_cpu_data (std::vector<CpuData> &data);
 std::unique_ptr<Topology> read_topology ();
 
 #endif /* _XFCE_CPUGRAPH_OS_H */
