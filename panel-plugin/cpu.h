@@ -149,16 +149,19 @@ struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
     bool per_core;
 
     /* Runtime data */
+    std::unordered_map<guint, guint> cpu_to_index_cache;
+    std::unordered_map<guint, guint> cpu_to_index;
+    std::unordered_map<guint, guint> index_to_cpu;
     guint nr_cores;
     xfce4::SourceTag timeout_id;
     struct {
         gssize cap_pow2;            /* Capacity. A power of 2. */
         gssize size;                /* size <= cap_pow2 */
         gssize offset;              /* Circular buffer position. Range: from 0 to (cap_pow2 - 1) */
-        std::vector<CpuLoad*> data; /* Circular buffers */
+        std::vector<std::unique_ptr<CpuLoad[]>> data; /* Circular buffers */
         gssize mask() const         { return cap_pow2 - 1; }
     } history;
-    std::vector<CpuData> cpu_data;  /* size == nr_cores+1 */
+    std::unordered_map<guint, CpuData> cpu_data;  /* size == nr_cores+1 */
     std::unique_ptr<Topology> topology;
     CpuStats stats;
     std::vector<const CpuLoad *> nearest_cache;

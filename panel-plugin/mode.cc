@@ -76,7 +76,7 @@ static void
 nearest_loads (const shared_ptr<CPUGraph> &base, const guint core, const gint64 start, const gint64 step, const gssize count, const CpuLoad **out)
 {
     const gssize history_cap_pow2 = base->history.cap_pow2;
-    const CpuLoad *history_data = base->history.data[core];
+    const CpuLoad *history_data = base->history.data[core].get();
     const gssize history_mask = base->history.mask();
     const gssize history_offset = base->history.offset;
 
