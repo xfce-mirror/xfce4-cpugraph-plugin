@@ -57,6 +57,7 @@ static void                 mode_cb        (XfcePanelPlugin *plugin, const share
 static void                 shutdown       (const shared_ptr<CPUGraph> &base);
 static PluginShape          size_cb        (XfcePanelPlugin *plugin, guint size, const shared_ptr<CPUGraph> &base);
 static TooltipTime          tooltip_cb     (GtkTooltip *tooltip, const shared_ptr<CPUGraph> &base);
+static void                 update_tooltip (const shared_ptr<CPUGraph> &base);
 
 void
 cpugraph_construct (XfcePanelPlugin *plugin)
@@ -153,7 +154,6 @@ create_gui (XfcePanelPlugin *plugin)
     mode_cb (plugin, base);
     gtk_widget_show_all (ebox);
 
-    base->tooltip_last_percent = -1.0f;
     base->tooltip_text = gtk_label_new (nullptr);
     g_object_ref (base->tooltip_text);
 
@@ -701,20 +701,22 @@ update_cb (const shared_ptr<CPUGraph> &base)
     }
 
     queue_draw (base);
+    update_tooltip (base);
 
     return xfce4::TimeoutResponse::Again();
+}
+
+static void
+update_tooltip (const shared_ptr<CPUGraph> &base)
+{
+    auto tooltip = xfce4::sprintf (_("CPU usage: %.1f%%"), base->cpu_data[0].load * 100.0f);
+    if (gtk_label_get_text (GTK_LABEL (base->tooltip_text)) != tooltip)
+        gtk_label_set_text (GTK_LABEL (base->tooltip_text), tooltip.c_str());
 }
 
 static TooltipTime
 tooltip_cb (GtkTooltip *tooltip, const shared_ptr<CPUGraph> &base)
 {
-    const gfloat load = base->cpu_data[0].load;
-    if (!xfce4::fuzzy_cmp (base->tooltip_last_percent, load))
-    {
-        const auto tooltip_str = xfce4::sprintf (_("CPU usage: %.1f%%"), load * 100.0f);
-        gtk_label_set_text (GTK_LABEL (base->tooltip_text), tooltip_str.c_str());
-        base->tooltip_last_percent = load;
-    }
     gtk_tooltip_set_custom (tooltip, base->tooltip_text);
     return xfce4::TooltipTime::Now();
 }
