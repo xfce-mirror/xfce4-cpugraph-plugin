@@ -81,19 +81,28 @@ cpugraph_construct (XfcePanelPlugin *plugin)
 }
 
 static void
-init_cpu_data (const shared_ptr<CPUGraph> &base)
+init_cpu_data (const shared_ptr<CPUGraph> &base, bool read)
 {
-    base->nr_cores = detect_cpu_number ();
-    if (base->nr_cores != 0)
-        base->cpu_data.resize(base->nr_cores + 1);
-    else
-        fprintf (stderr, "Cannot init cpu data !\n");
+    if (read)
+    {
+        read_cpu_data (base->cpu_data, base->cpu_to_index);
 
-    /* Read CPU data twice in order to initialize
-     * cpu_data[].previous_used and cpu_data[].previous_total
-     * with the current HWMs. HWM = High Water Mark. */
-    read_cpu_data (base->cpu_data);
-    read_cpu_data (base->cpu_data);
+        /* Read CPU data twice in order to initialize
+         * cpu_data[].previous_used and cpu_data[].previous_total
+         * with the current HWMs. HWM = High Water Mark. */
+        read_cpu_data (base->cpu_data, base->cpu_to_index);
+    }
+
+    base->nr_cores = base->cpu_to_index.size();
+
+    base->index_to_cpu.clear();
+    for (const auto [cpu, idx] : base->cpu_to_index)
+        base->index_to_cpu[idx] = cpu;
+    // CPU at index 0 (overall usage) has always index 0 - no need to map it:
+    // base->cpu_data[0] is always the same as base->cpu_data[base->index_to_cpu[0]]
+
+    if (base->nr_cores == 0)
+        fprintf (stderr, "Cannot init cpu data !\n");
 
     base->topology = read_topology ();
 }
@@ -107,7 +116,7 @@ create_gui (XfcePanelPlugin *plugin)
 
     orientation = xfce_panel_plugin_get_orientation (plugin);
 
-    init_cpu_data (base);
+    init_cpu_data (base, true);
 
     base->plugin = plugin;
 
@@ -208,8 +217,6 @@ CPUGraph::create_bars (GtkOrientation orientation)
 CPUGraph::~CPUGraph ()
 {
     g_info ("%s", __PRETTY_FUNCTION__);
-    for (auto hist_data : history.data)
-        g_free (hist_data);
     if (channel)
     {
         g_object_unref (channel);
@@ -269,7 +276,7 @@ resize_history (const shared_ptr<CPUGraph> &base, gssize history_size)
 
     if (cap_pow2 != old_cap_pow2)
     {
-        const vector<CpuLoad*> old_data = move(base->history.data);
+        const auto old_data = move(base->history.data);
         const gssize old_mask = base->history.mask();
         const gssize old_offset = base->history.offset;
 
@@ -278,12 +285,11 @@ resize_history (const shared_ptr<CPUGraph> &base, gssize history_size)
         base->history.offset = 0;
         for (guint core = 0; core < base->nr_cores + 1; core++)
         {
-            base->history.data[core] = (CpuLoad*) g_malloc0 (cap_pow2 * sizeof (CpuLoad));
+            base->history.data[core] = make_unique<CpuLoad[]> (cap_pow2);
             if (!old_data.empty())
             {
                 for (gssize i = 0; i < old_cap_pow2 && i < cap_pow2; i++)
                     base->history.data[core][i] = old_data[core][(old_offset + i) & old_mask];
-                g_free (old_data[core]);
             }
         }
 
@@ -396,7 +402,7 @@ detect_smt_issues (const shared_ptr<CPUGraph> &base)
 
     for (guint i = 0; i < base->nr_cores; i++)
     {
-        actual_load[i] = base->cpu_data[i+1].load;
+        actual_load[i] = base->cpu_data[base->index_to_cpu[i+1]].load;
         suboptimal[i] = false;
         movement[i] = false;
         if (debug)
@@ -618,44 +624,57 @@ detect_smt_issues (const shared_ptr<CPUGraph> &base)
     }
 
     for (guint i = 0; i < base->nr_cores; i++)
-        base->cpu_data[i+1].smt_highlight = suboptimal[i];
+        base->cpu_data[base->index_to_cpu[i+1]].smt_highlight = suboptimal[i];
 }
 
 static xfce4::TimeoutResponse
 update_cb (const shared_ptr<CPUGraph> &base)
 {
-    const auto readCpuResult = read_cpu_data (base->cpu_data);
+    read_cpu_data (base->cpu_data, base->cpu_to_index_cache);
 
-    if (readCpuResult == ReadCpuResult::Error)
+    if (base->cpu_to_index_cache.empty()) // Read Error
     {
         return xfce4::TimeoutResponse::Again();
     }
-    else if (readCpuResult == ReadCpuResult::CpuCountChanged)
+    else if (base->cpu_to_index_cache != base->cpu_to_index) // CPU layout changed
     {
-        // Clear per-core history
-        if (!base->history.data.empty())
-        {
-            for (guint core = 1; core < base->nr_cores + 1; core++)
-                g_free(base->history.data[core]);
-            base->history.data.erase(base->history.data.begin() + 1, base->history.data.end());
-        }
-
-        // Clear data
-        base->cpu_data = {};
-        base->topology.reset();
+        const auto old_cpus = move (base->cpu_to_index);
 
         // Init CPU data
-        init_cpu_data (base);
+        base->cpu_to_index = move (base->cpu_to_index_cache);
+        init_cpu_data (base, false);
 
-        // Init per-core history
-        if (!base->history.data.empty())
+        if (!base->history.data.empty () && old_cpus != base->cpu_to_index)
         {
-            base->history.data.resize(base->nr_cores + 1);
-            for (guint core = 1; core < base->nr_cores + 1; core++)
-                base->history.data[core] = (CpuLoad *) g_malloc0 (base->history.cap_pow2 * sizeof (CpuLoad));
+            // There are changes in CPU layout - (reorder / allocate new / free old) per-core history
+
+            auto old_history_data = move (base->history.data);
+
+            base->history.data.resize (base->nr_cores + 1);
+
+            // Copy old history pointer for overall CPU usage
+            base->history.data[0] = move(old_history_data[0]);
+
+            // Copy old history pointers to the new CPU layout with the new CPUs order
+            for (const auto [cpu, idx] : base->cpu_to_index)
+            {
+                const auto old_it = old_cpus.find (cpu);
+                if (old_it == old_cpus.end ())
+                    continue; // CPU disappeared, ignore
+
+                const auto old_idx = old_it->second;
+                base->history.data[idx] = move(old_history_data[old_idx]);
+            }
+
+            // Allocate memory for all new CPUs
+            for (auto &&data : base->history.data)
+            {
+                if (!data)
+                    data = make_unique<CpuLoad[]> (base->history.cap_pow2);
+            }
         }
 
-        // Init history and GUI
+        // Update GUI and init history if necessary
         size_cb (base->plugin, xfce_panel_plugin_get_size (base->plugin), base);
     }
 
@@ -670,7 +689,7 @@ update_cb (const shared_ptr<CPUGraph> &base)
         base->history.offset = (base->history.offset - 1) & base->history.mask();
         for (guint core = 0; core < base->nr_cores + 1; core++)
         {
-            const CpuData &cpu_core_data = base->cpu_data[core];
+            const CpuData &cpu_core_data = base->cpu_data[base->index_to_cpu[core]];
             CpuLoad &load = base->history.data[core][base->history.offset];
             load.timestamp = timestamp;
             load.value = cpu_core_data.load;
@@ -830,9 +849,11 @@ draw_bars_cb (cairo_t *cr, const shared_ptr<CPUGraph> &base)
         bool fill = false;
         for (guint i = 0; i < base->nr_cores; i++)
         {
-            const bool highlight = base->highlight_smt && base->cpu_data[i+1].smt_highlight;
+            const auto &cpu_data_i_plus_1 = base->cpu_data[base->index_to_cpu[i+1]];
 
-            gfloat usage = base->cpu_data[i+1].load;
+            const bool highlight = base->highlight_smt && cpu_data_i_plus_1.smt_highlight;
+
+            gfloat usage = cpu_data_i_plus_1.load;
             if (usage < base->load_threshold)
                 usage = 0;
             usage *= size;
