@@ -122,6 +122,7 @@ struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
         GtkWidget *draw_area;
         GtkOrientation orientation;
     } bars;
+    gint tooltip_last_value;
     GtkWidget *tooltip_text;
 
     /* Settings */
