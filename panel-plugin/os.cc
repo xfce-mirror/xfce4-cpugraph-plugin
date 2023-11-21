@@ -79,42 +79,16 @@ static kstat_ctl_t *kc;
 #endif
 
 #if defined (__linux__) || defined (__FreeBSD_kernel__)
-guint
-detect_cpu_number ()
+void
+read_cpu_data (unordered_map<guint, CpuData> &data, unordered_map<guint, guint> &cpu_to_index)
 {
-    FILE *fstat = NULL;
-    if (!(fstat = fopen (PROC_STAT, "r")))
-        return 0;
-
-    guint nb_cpu = 0;
-    gchar cpuStr[PROCMAXLNLEN];
-    while (fgets (cpuStr, PROCMAXLNLEN, fstat))
-    {
-        if (strncmp (cpuStr, "cpu", 3) != 0)
-            break;
-
-        gchar *s = cpuStr + 3;
-        if (!g_ascii_isspace (*s))
-        {
-            nb_cpu += 1;
-        }
-    }
-
-    fclose (fstat);
-    return nb_cpu;
-}
-
-ReadCpuResult
-read_cpu_data (vector<CpuData> &data)
-{
-    if (G_UNLIKELY(data.size() == 0))
-        return ReadCpuResult::Error;
-
-    const size_t nb_cpu = data.size(); /* Number of CPU threads + 1 (index 0 - overall usage) */
     FILE *fStat;
 
+    cpu_to_index.clear();
+
     if (!(fStat = fopen (PROC_STAT, "r")))
-        return ReadCpuResult::Error;
+        return;
+
 
     guint cpuIt = 0;
 
@@ -124,7 +98,8 @@ read_cpu_data (vector<CpuData> &data)
         if (!fgets (cpuStr, PROCMAXLNLEN, fStat))
         {
             fclose (fStat);
-            return ReadCpuResult::Error;
+            cpu_to_index.clear();
+            return;
         }
 
         if (strncmp (cpuStr, "cpu", 3) != 0)
@@ -139,9 +114,8 @@ read_cpu_data (vector<CpuData> &data)
         }
         else
         {
-            while (*s != '\0' && !g_ascii_isspace (*s)) // Skip CPU number
-                ++s;
-            cpu = ++cpuIt;
+            cpu = g_ascii_strtoull (s, &s, 0) + 1;
+            cpu_to_index[cpu] = ++cpuIt; // Map logical system CPU to array index
         }
 
         gulong user = g_ascii_strtoull (s, &s, 0);
@@ -152,58 +126,48 @@ read_cpu_data (vector<CpuData> &data)
         gulong irq = g_ascii_strtoull (s, &s, 0);
         gulong softirq = g_ascii_strtoull (s, &s, 0);
 
-        if (G_LIKELY (cpu < nb_cpu))
-        {
-            system += irq + softirq;
-            gulong total = system + user + nice + iowait + idle;
+        auto &dataCpu = data[cpu];
 
-            const bool total_greater = total > data[cpu].previous_total;
-            const gfloat divider = (gfloat) (total - data[cpu].previous_total);
+        system += irq + softirq;
+        gulong total = system + user + nice + iowait + idle;
 
-            if (total_greater && system >= data[cpu].previous_system)
-                data[cpu].system = (system - data[cpu].previous_system) / divider;
-            else
-                data[cpu].system = 0.0f;
+        const bool total_greater = total > dataCpu.previous_total;
+        const gfloat divider = (gfloat) (total - dataCpu.previous_total);
 
-            if (total_greater && user >= data[cpu].previous_user)
-                data[cpu].user = (user - data[cpu].previous_user) / divider;
-            else
-                data[cpu].user = 0.0f;
+        if (total_greater && system >= dataCpu.previous_system)
+            dataCpu.system = (system - dataCpu.previous_system) / divider;
+        else
+            dataCpu.system = 0.0f;
 
-            if (total_greater && nice >= data[cpu].previous_nice)
-                data[cpu].nice = (nice - data[cpu].previous_nice) / divider;
-            else
-                data[cpu].nice = 0.0f;
+        if (total_greater && user >= dataCpu.previous_user)
+            dataCpu.user = (user - dataCpu.previous_user) / divider;
+        else
+            dataCpu.user = 0.0f;
 
-            if (total_greater && iowait >= data[cpu].previous_iowait)
-                data[cpu].iowait = (iowait - data[cpu].previous_iowait) / divider;
-            else
-                data[cpu].iowait = 0.0f;
+        if (total_greater && nice >= dataCpu.previous_nice)
+            dataCpu.nice = (nice - dataCpu.previous_nice) / divider;
+        else
+            dataCpu.nice = 0.0f;
 
-            data[cpu].load = data[cpu].user + data[cpu].system + data[cpu].nice;
+        if (total_greater && iowait >= dataCpu.previous_iowait)
+            dataCpu.iowait = (iowait - dataCpu.previous_iowait) / divider;
+        else
+            dataCpu.iowait = 0.0f;
 
-            data[cpu].previous_system = system;
-            data[cpu].previous_user = user;
-            data[cpu].previous_nice = nice;
-            data[cpu].previous_iowait = iowait;
-            data[cpu].previous_total = total;
-        }
+        dataCpu.load = dataCpu.user + dataCpu.system + dataCpu.nice;
+
+        dataCpu.previous_system = system;
+        dataCpu.previous_user = user;
+        dataCpu.previous_nice = nice;
+        dataCpu.previous_iowait = iowait;
+        dataCpu.previous_total = total;
     }
 
     fclose (fStat);
-
-    if (data.size() != cpuIt + 1)
-    {
-        if (!data.empty())
-            fprintf(stderr, "Number of CPUs changed: %lu -> %u\n", data.size() - 1, cpuIt);
-        return ReadCpuResult::CpuCountChanged;
-    }
-
-    return ReadCpuResult::Ok;
 }
 
 #elif defined (__FreeBSD__)
-guint
+static guint
 detect_cpu_number ()
 {
     static gint mib[] = {CTL_HW, HW_NCPU};
@@ -216,11 +180,11 @@ detect_cpu_number ()
         return ncpu;
 }
 
-ReadCpuResult
-read_cpu_data (vector<CpuData> &data)
+static bool
+read_cpu_data (unordered_map<guint, CpuData> &data)
 {
     if (G_UNLIKELY(data.size() == 0))
-        return ReadCpuResult::Error;
+        return false;
 
     const size_t nb_cpu = data.size()-1;
     glong used, total;
@@ -232,17 +196,17 @@ read_cpu_data (vector<CpuData> &data)
 
     data[0].load = 0;
     if (sysctlbyname ("kern.smp.maxid", &max_cpu, &len, NULL, 0) < 0)
-        return ReadCpuResult::Error;
+        return false;
 
     max_cpu++; /* max_cpu is 0-based */
     if (max_cpu < nb_cpu)
-        return ReadCpuResult::Error; /* should not happen */
+        return false; /* should not happen */
     len = sizeof (glong) * max_cpu * CPUSTATES;
     cp_time = (glong *) g_malloc (len);
 
     if (sysctlbyname ("kern.cp_times", cp_time, &len, NULL, 0) < 0) {
         g_free (cp_time);
-        return ReadCpuResult::Error;
+        return false;
     }
 
     for (i = 1; i <= nb_cpu; i++)
@@ -264,11 +228,11 @@ read_cpu_data (vector<CpuData> &data)
 
     data[0].load /= nb_cpu;
     g_free (cp_time);
-    return ReadCpuResult::Ok;
+    return true;
 }
 
 #elif defined (__NetBSD__)
-guint
+static guint
 detect_cpu_number ()
 {
     static gint mib[] = {CTL_HW, HW_NCPU};
@@ -281,11 +245,11 @@ detect_cpu_number ()
         return ncpu;
 }
 
-ReadCpuResult
-read_cpu_data (vector<CpuData> &data)
+static bool
+read_cpu_data (unordered_map<guint, CpuData> &data)
 {
     if (G_UNLIKELY(data.size() == 0))
-        return ReadCpuResult::Error;
+        return false;
 
     const size_t nb_cpu = data.size()-1;
     guint64 cp_time[CPUSTATES * nb_cpu];
@@ -293,7 +257,7 @@ read_cpu_data (vector<CpuData> &data)
     gint mib[] = {CTL_KERN, KERN_CP_TIME};
 
     if (sysctl (mib, 2, &cp_time, &len, NULL, 0) < 0)
-        return ReadCpuResult::Error;
+        return false;
 
     data[0].load = 0;
     for (guint i = 1; i <= nb_cpu; i++)
@@ -314,11 +278,11 @@ read_cpu_data (vector<CpuData> &data)
     }
 
     data[0].load /= nb_cpu;
-    return ReadCpuResult::Ok;
+    return true;
 }
 
 #elif defined (__OpenBSD__)
-guint
+static guint
 detect_cpu_number ()
 {
     static gint mib[] = {CTL_HW, HW_NCPU};
@@ -331,11 +295,11 @@ detect_cpu_number ()
         return ncpu;
 }
 
-ReadCpuResult
-read_cpu_data (vector<CpuData> &data)
+static bool
+read_cpu_data (unordered_map<guint, CpuData> &data)
 {
     if (G_UNLIKELY(data.size() == 0))
-        return ReadCpuResult::Error;
+        return false;
 
     const size_t nb_cpu = data.size()-1;
     guint64 cp_time[CPUSTATES];
@@ -347,7 +311,7 @@ read_cpu_data (vector<CpuData> &data)
         gint mib[] = {CTL_KERN, KERN_CPTIME2, gint(i) - 1};
 
         if (sysctl (mib, 3, &cp_time, &len, NULL, 0) < 0)
-            return ReadCpuResult::Error;
+            return false;
 
         guint64 used = cp_time[CP_USER] + cp_time[CP_NICE] + cp_time[CP_SYS] + cp_time[CP_INTR];
         guint64 total = used + cp_time[CP_IDLE];
@@ -364,7 +328,7 @@ read_cpu_data (vector<CpuData> &data)
     }
 
     data[0].load /= nb_cpu;
-    return ReadCpuResult::Ok;
+    return true;
 }
 
 #elif defined (__sun__)
@@ -374,7 +338,7 @@ init_stats ()
     kc = kstat_open ();
 }
 
-guint
+static guint
 detect_cpu_number ()
 {
     kstat_t *ksp;
@@ -392,11 +356,11 @@ detect_cpu_number ()
     return knp->value.ui32;
 }
 
-ReadCpuResult
-read_cpu_data (vector<CpuData> &data)
+static bool
+read_cpu_data (unordered_map<guint, CpuData> &data)
 {
     if (G_UNLIKELY(data.size() == 0))
-        return ReadCpuResult::Error;
+        return false;
 
     const size_t nb_cpu = data.size()-1;
     kstat_t *ksp;
@@ -436,12 +400,45 @@ read_cpu_data (vector<CpuData> &data)
     }
 
     data[0].load /= nb_cpu;
-    return ReadCpuResult::Ok;
+    return true;
 }
 #else
 #error "Your OS is not supported."
 #endif
 
+
+#if !(defined (__linux__) || defined (__FreeBSD_kernel__))
+void
+read_cpu_data (unordered_map<guint, CpuData> &data, unordered_map<guint, guint> &cpu_to_index)
+{
+    static guint n_cpus = detect_cpu_number ();
+
+    if (data.empty())
+    {
+        data.reserve (n_cpus + 1);
+        for (guint i = 0; i < n_cpus + 1; ++i)
+        {
+            data[i] = CpuData ();
+        }
+    }
+
+    if (read_cpu_data (data))
+    {
+        if (cpu_to_index.empty ())
+        {
+            cpu_to_index.reserve (n_cpus);
+            for (guint i = 0; i < n_cpus; ++i)
+            {
+                cpu_to_index[i] = i;
+            }
+        }
+    }
+    else
+    {
+        cpu_to_index.clear();
+    }
+}
+#endif
 
 
 static unique_ptr<Topology>
