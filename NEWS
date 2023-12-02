@@ -1,3 +1,17 @@
+1.2.9 (2023-12-03)
+=====
+- Don't update tooltip string when tooltip is not visible
+- Improve CPU hotplugging on Linux
+- Use "xfce_spawn_command_line()"
+- Code refactor
+- Update source code for the new xfce4cpp library
+- Rework of xfce4cpp library
+- Reduce the minimum width from 10 to 1
+- Add missing include
+- Translation Updates:
+  Catalan, Chinese (China), Danish, Finnish, Hebrew, Korean, Slovenian,
+  Spanish, Ukrainian
+
 1.2.8 (2023-07-22)
 =====
 - Update authors
