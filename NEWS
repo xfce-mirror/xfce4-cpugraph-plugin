@@ -1,3 +1,8 @@
+1.2.10 (2023-12-03)
+======
+- Add xfce4cpp to EXTRA_DIST
+
+
 1.2.9 (2023-12-03)
 =====
 - Don't update tooltip string when tooltip is not visible
