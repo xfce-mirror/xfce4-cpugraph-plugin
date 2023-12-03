@@ -24,6 +24,7 @@ ChangeLog: Makefile
 dist-hook: ChangeLog
 
 EXTRA_DIST = \
+	xfce4cpp \
 	README.md \
 	intltool-extract.in \
 	intltool-merge.in \
