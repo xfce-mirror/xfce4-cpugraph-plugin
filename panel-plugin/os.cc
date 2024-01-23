@@ -38,7 +38,7 @@
 #include <string.h>
 #include <unordered_map>
 #include <unordered_set>
-#include <vector>
+#include <memory>
 
 using namespace std;
 
@@ -79,15 +79,22 @@ static kstat_ctl_t *kc;
 #endif
 
 #if defined (__linux__) || defined (__FreeBSD_kernel__)
+static unique_ptr<FILE, decltype(&fclose)> g_fStat(nullptr, fclose);
+
 void
 read_cpu_data (unordered_map<guint, CpuData> &data, unordered_map<guint, guint> &cpu_to_index)
 {
-    FILE *fStat;
+    static FILE *fStat = [] {
+        g_fStat.reset (fopen (PROC_STAT, "r"));
+        return g_fStat.get ();
+    }();
 
     cpu_to_index.clear();
 
-    if (!(fStat = fopen (PROC_STAT, "r")))
+    if (!fStat)
         return;
+
+    fseek (fStat, 0, SEEK_SET);
 
     guint cpu_it = 0;
 
@@ -96,7 +103,6 @@ read_cpu_data (unordered_map<guint, CpuData> &data, unordered_map<guint, guint> 
         gchar cpuStr[PROCMAXLNLEN];
         if (!fgets (cpuStr, PROCMAXLNLEN, fStat))
         {
-            fclose (fStat);
             cpu_to_index.clear();
             return;
         }
@@ -161,8 +167,6 @@ read_cpu_data (unordered_map<guint, CpuData> &data, unordered_map<guint, guint> 
         data_cpu.previous_iowait = iowait;
         data_cpu.previous_total = total;
     }
-
-    fclose (fStat);
 }
 
 #elif defined (__FreeBSD__)
