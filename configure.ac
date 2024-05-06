@@ -5,18 +5,14 @@ dnl 2004 Alexander Nordfelth <alex.nordfelth@telia.com>
 dnl
 
 dnl Version information
-AC_CONFIG_MACRO_DIRS([m4])
-m4_define([cpugraph_version_major], [1])
-m4_define([cpugraph_version_minor], [2])
-m4_define([cpugraph_version_micro], [10])
-m4_define([cpugraph_version_build], [@REVISION@])
-m4_define([cpugraph_version_tag], [git])
-m4_define([cpugraph_version], [cpugraph_version_major().cpugraph_version_minor().cpugraph_version_micro()ifelse(cpugraph_version_tag(), [git], [cpugraph_version_tag()-cpugraph_version_build()], [cpugraph_version_tag()])])
+XDT_VERSION_INIT([1.2.10], [git])
 
 dnl Initialize autoconf
 AC_COPYRIGHT([Copyright (c) 2004-2023 The Xfce development team. All rights reserved.])
-AC_INIT([xfce4-cpugraph-plugin],[cpugraph_version],[https://gitlab.xfce.org/panel-plugins/xfce4-cpugraph-plugin/],[xfce4-cpugraph-plugin])
-AC_PREREQ([2.60])
+AC_INIT([xfce4-cpugraph-plugin],[xdt_version],[https://gitlab.xfce.org/panel-plugins/xfce4-cpugraph-plugin/],[xfce4-cpugraph-plugin])
+AC_PREREQ([2.69])
+AC_CONFIG_MACRO_DIRS([m4])
+AC_REVISION([xdt_version_build])
 
 dnl Initialize automake
 AM_INIT_AUTOMAKE([1.11 dist-bzip2 tar-ustar no-dist-gzip foreign])
@@ -30,7 +26,6 @@ AC_PROG_CXX()
 LT_PATH_LD([])
 AC_PROG_INSTALL
 AX_CXX_COMPILE_STDCXX_17()
-IT_PROG_INTLTOOL([0.35.0])
 LT_PREREQ([2.2.6])
 LT_INIT([disable-static])
 
@@ -44,10 +39,14 @@ XDT_CHECK_PACKAGE([LIBXFCE4UTIL], [libxfce4util-1.0], [4.17.2])
 XDT_CHECK_PACKAGE([XFCONF], [libxfconf-0], [4.12.0])
 
 dnl translations
-XDT_I18N([@LINGUAS@])
+GETTEXT_PACKAGE="$PACKAGE"
+AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["$GETTEXT_PACKAGE"], [Name of default gettext domain])
+AC_SUBST([GETTEXT_PACKAGE])
+AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION([0.19.8])
 
 dnl Check for debugging support
-XDT_FEATURE_DEBUG()
+XDT_FEATURE_DEBUG([xdt_debug_default])
 
 AC_CONFIG_FILES([
 Makefile

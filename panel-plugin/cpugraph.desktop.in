@@ -1,8 +1,8 @@
 [Xfce Panel]
 Type=X-XFCE-PanelPlugin
 Encoding=UTF-8
-_Name=CPU Graph
-_Comment=Graphical representation of the CPU load
+Name=CPU Graph
+Comment=Graphical representation of the CPU load
 Icon=org.xfce.panel.cpugraph
 X-XFCE-Module=cpugraph
 X-XFCE-Unique=FALSE
