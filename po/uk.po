@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-07 00:50+0200\n"
+"POT-Creation-Date: 2024-05-07 00:58+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
 "Last-Translator: Gordon Freeman, 2023\n"
 "Language-Team: Ukrainian (http://app.transifex.com/xfce/xfce-panel-plugins/language/uk/)\n"
@@ -21,11 +21,11 @@ msgstr ""
 "Language: uk\n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
-#: ../panel-plugin/cpu.cc:172 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.cc:185
 msgid "Graphical representation of the CPU load"
 msgstr "Графічне представлення завантаження процесора"
 
-#: ../panel-plugin/cpu.cc:658
+#: ../panel-plugin/cpu.cc:716
 #, c-format
 msgid "CPU usage: %.1f%%"
 msgstr "Використання ЦП: %.1f%%"
@@ -285,7 +285,3 @@ msgstr "Гарячі точки: %.3g%%"
 #: ../panel-plugin/properties.cc:723
 msgid "SMT detected: N/A"
 msgstr "SMT виявлено: N/A"
-
-#: ../panel-plugin/cpugraph.desktop.in.h:1
-msgid "CPU Graph"
-msgstr "Шкала ЦП"
