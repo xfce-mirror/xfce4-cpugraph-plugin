@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-07 00:50+0200\n"
+"POT-Creation-Date: 2024-05-07 00:58+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
 "Last-Translator: Arnold Marko <arnold.marko@gmail.com>, 2019-2021,2023\n"
 "Language-Team: Slovenian (http://app.transifex.com/xfce/xfce-panel-plugins/language/sl/)\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Language: sl\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);\n"
 
-#: ../panel-plugin/cpu.cc:172 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.cc:185
 msgid "Graphical representation of the CPU load"
 msgstr "Grafična predstavitev obremenitve procesorja"
 
-#: ../panel-plugin/cpu.cc:658
+#: ../panel-plugin/cpu.cc:716
 #, c-format
 msgid "CPU usage: %.1f%%"
 msgstr "CPE raba: %.1f%%"
@@ -282,7 +282,3 @@ msgstr "Žarišča: %.3g%%"
 #: ../panel-plugin/properties.cc:723
 msgid "SMT detected: N/A"
 msgstr "Zaznan SMT: ni na voljo"
-
-#: ../panel-plugin/cpugraph.desktop.in.h:1
-msgid "CPU Graph"
-msgstr "Graf procesorja"
