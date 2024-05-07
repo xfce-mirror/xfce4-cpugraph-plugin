@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-06 00:51+0200\n"
+"POT-Creation-Date: 2024-05-07 00:58+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>, 2010,2020\n"
 "Language-Team: Kazakh (http://app.transifex.com/xfce/xfce-panel-plugins/language/kk/)\n"
@@ -18,269 +18,265 @@ msgstr ""
 "Language: kk\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-#: ../panel-plugin/cpu.cc:168 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.cc:185
 msgid "Graphical representation of the CPU load"
 msgstr "Процессор жүктелудің графикалық бейнелеуі"
 
-#: ../panel-plugin/cpu.cc:170
-msgid "Copyright (c) 2003-2021\n"
-msgstr ""
-
-#: ../panel-plugin/cpu.cc:648
+#: ../panel-plugin/cpu.cc:716
 #, c-format
 msgid "CPU usage: %.1f%%"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:72
+#: ../panel-plugin/properties.cc:74
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
 msgstr ""
 
-#: ../panel-plugin/properties.cc:73
+#: ../panel-plugin/properties.cc:75
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
 msgstr ""
 
-#: ../panel-plugin/properties.cc:108
+#: ../panel-plugin/properties.cc:110
 msgid "CPU Graph Properties"
 msgstr "CPU Graph модуль қасиеттері "
 
-#: ../panel-plugin/properties.cc:112
+#: ../panel-plugin/properties.cc:114
 msgid "_Close"
 msgstr "_Жабу"
 
-#: ../panel-plugin/properties.cc:140
+#: ../panel-plugin/properties.cc:142
 msgid "Run in terminal"
 msgstr "Терминалда орындау"
 
-#: ../panel-plugin/properties.cc:146
+#: ../panel-plugin/properties.cc:148
 msgid "Use startup notification"
 msgstr "Қосылу ескертуін қолдану"
 
-#: ../panel-plugin/properties.cc:153
+#: ../panel-plugin/properties.cc:155
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:156
+#: ../panel-plugin/properties.cc:171
+msgid "Display SMT statistics"
+msgstr ""
+
+#: ../panel-plugin/properties.cc:181
 msgid "Highlight suboptimal SMT scheduling"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:162
+#: ../panel-plugin/properties.cc:188
 msgid "SMT issues color:"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:167
+#: ../panel-plugin/properties.cc:193
 msgid "Use non-linear time-scale"
 msgstr "Сызықты емес уақыт шкаласы"
 
-#: ../panel-plugin/properties.cc:172
+#: ../panel-plugin/properties.cc:198
 msgid "Per-core history graphs"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:180
+#: ../panel-plugin/properties.cc:206
 msgid "Color 1:"
 msgstr "Түс 1:"
 
-#: ../panel-plugin/properties.cc:183
+#: ../panel-plugin/properties.cc:209
 msgid "Color 2:"
 msgstr "Түс 2:"
 
-#: ../panel-plugin/properties.cc:186
+#: ../panel-plugin/properties.cc:212
 msgid "Color 3:"
 msgstr "Түс 3:"
 
-#: ../panel-plugin/properties.cc:189
+#: ../panel-plugin/properties.cc:215
 msgid "System:"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:192
+#: ../panel-plugin/properties.cc:218
 msgid "User:"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:195
+#: ../panel-plugin/properties.cc:221
 msgid "Nice:"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:198
+#: ../panel-plugin/properties.cc:224
 msgid "IO wait:"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:201
+#: ../panel-plugin/properties.cc:227
 msgid "Background:"
 msgstr "Фон:"
 
-#: ../panel-plugin/properties.cc:207
+#: ../panel-plugin/properties.cc:233
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Қолдану панелін көрсету"
 msgstr[1] "Қолдану панелін көрсету"
 
-#: ../panel-plugin/properties.cc:213
+#: ../panel-plugin/properties.cc:239
 msgid "Bars color:"
 msgstr "Бағандар түстері:"
 
-#: ../panel-plugin/properties.cc:218
+#: ../panel-plugin/properties.cc:244
 msgid "Show frame"
 msgstr "Қоршауын көрсету"
 
-#: ../panel-plugin/properties.cc:223
+#: ../panel-plugin/properties.cc:249
 msgid "Show border"
 msgstr "Шекарасын көрсету"
 
-#: ../panel-plugin/properties.cc:234
+#: ../panel-plugin/properties.cc:260
 msgid "Appearance"
 msgstr "Сыртқы түрі"
 
-#: ../panel-plugin/properties.cc:235
+#: ../panel-plugin/properties.cc:261
 msgid "Advanced"
 msgstr "Кеңейтілген"
 
-#: ../panel-plugin/properties.cc:236
+#: ../panel-plugin/properties.cc:262
 msgid "Stats"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:367
+#: ../panel-plugin/properties.cc:396
 msgid "Fastest (~250ms)"
 msgstr "Ең жылдам (~250ms)"
 
-#: ../panel-plugin/properties.cc:368
+#: ../panel-plugin/properties.cc:397
 msgid "Fast (~500ms)"
 msgstr "Жылдам (~500ms)"
 
-#: ../panel-plugin/properties.cc:369
+#: ../panel-plugin/properties.cc:398
 msgid "Normal (~750ms)"
 msgstr "Қалыпты (~750ms)"
 
-#: ../panel-plugin/properties.cc:370
+#: ../panel-plugin/properties.cc:399
 msgid "Slow (~1s)"
 msgstr "Баяу (~1s)"
 
-#: ../panel-plugin/properties.cc:371
+#: ../panel-plugin/properties.cc:400
 msgid "Slowest (~3s)"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:374
+#: ../panel-plugin/properties.cc:403
 msgid "Update Interval:"
 msgstr "Жаңарту мерзімі:"
 
-#: ../panel-plugin/properties.cc:386
+#: ../panel-plugin/properties.cc:415
 msgid "All"
 msgstr "Барлығы"
 
-#: ../panel-plugin/properties.cc:390
+#: ../panel-plugin/properties.cc:419
 msgid "Tracked Core:"
 msgstr "Бақыланатын ядро:"
 
-#: ../panel-plugin/properties.cc:406
+#: ../panel-plugin/properties.cc:435
 msgid "Width:"
 msgstr "Ені:"
 
-#: ../panel-plugin/properties.cc:408
+#: ../panel-plugin/properties.cc:437
 msgid "Height:"
 msgstr "Биіктігі:"
 
-#: ../panel-plugin/properties.cc:421
+#: ../panel-plugin/properties.cc:450
 msgid "Threshold (%):"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:433
+#: ../panel-plugin/properties.cc:462
 msgid "Spacing:"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:436
+#: ../panel-plugin/properties.cc:465
 msgid "Spacing between per-core history graphs"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:447
+#: ../panel-plugin/properties.cc:476
 msgid "Associated command:"
 msgstr "Сәйкес команда:"
 
-#: ../panel-plugin/properties.cc:455
+#: ../panel-plugin/properties.cc:484
 msgid "The command to run when the plugin is left-clicked."
 msgstr ""
 
-#: ../panel-plugin/properties.cc:456
+#: ../panel-plugin/properties.cc:485
 msgid "If not specified, it defaults to xfce4-taskmanager, htop or top."
 msgstr ""
 
-#: ../panel-plugin/properties.cc:484
+#: ../panel-plugin/properties.cc:513
 msgid "Disabled"
 msgstr "Сөндірілген"
 
-#: ../panel-plugin/properties.cc:485
+#: ../panel-plugin/properties.cc:514
 msgid "Normal"
 msgstr "Қалыпты"
 
-#: ../panel-plugin/properties.cc:486
+#: ../panel-plugin/properties.cc:515
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.cc:487
+#: ../panel-plugin/properties.cc:516
 msgid "No history"
 msgstr "Тарихы"
 
-#: ../panel-plugin/properties.cc:488
+#: ../panel-plugin/properties.cc:517
 msgid "Grid"
 msgstr "Тор"
 
-#: ../panel-plugin/properties.cc:501
+#: ../panel-plugin/properties.cc:530
 msgid "Mode:"
 msgstr "Режимі:"
 
-#: ../panel-plugin/properties.cc:533
+#: ../panel-plugin/properties.cc:560
 msgid "Solid"
 msgstr "Бүтін"
 
-#: ../panel-plugin/properties.cc:534
+#: ../panel-plugin/properties.cc:561
 msgid "Gradient"
 msgstr "Градиент"
 
-#: ../panel-plugin/properties.cc:535
+#: ../panel-plugin/properties.cc:562
 msgid "Fire"
 msgstr "Жалын"
 
-#: ../panel-plugin/properties.cc:537
+#: ../panel-plugin/properties.cc:564
 msgid "Detailed"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:542
+#: ../panel-plugin/properties.cc:569
 msgid "Color mode: "
 msgstr "Түс режимі:"
 
-#: ../panel-plugin/properties.cc:652
+#: ../panel-plugin/properties.cc:679
 msgid "SMT detected: Yes"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:652
+#: ../panel-plugin/properties.cc:679
 msgid "SMT detected: No"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:677
+#: ../panel-plugin/properties.cc:704
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:682
+#: ../panel-plugin/properties.cc:709
 msgid "Estimated performance impact:"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:683
+#: ../panel-plugin/properties.cc:710
 #, c-format
 msgid "Overall: %.3g%%"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:684
+#: ../panel-plugin/properties.cc:711
 #, c-format
 msgid "Hotspots: %.3g%%"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:696
+#: ../panel-plugin/properties.cc:723
 msgid "SMT detected: N/A"
 msgstr ""
-
-#: ../panel-plugin/cpugraph.desktop.in.h:1
-msgid "CPU Graph"
-msgstr "CPU Graph"
