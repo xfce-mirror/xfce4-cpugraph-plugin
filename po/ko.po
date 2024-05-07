@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-07 00:50+0200\n"
+"POT-Creation-Date: 2024-05-07 00:58+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
 "Last-Translator: Seong-ho Cho <darkcircle.0426@gmail.com>, 2012,2017,2019,2021-2023\n"
 "Language-Team: Korean (http://app.transifex.com/xfce/xfce-panel-plugins/language/ko/)\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../panel-plugin/cpu.cc:172 ../panel-plugin/cpugraph.desktop.in.h:2
+#: ../panel-plugin/cpu.cc:185
 msgid "Graphical representation of the CPU load"
 msgstr "CPU 부하를 그래픽으로 표현합니다"
 
-#: ../panel-plugin/cpu.cc:658
+#: ../panel-plugin/cpu.cc:716
 #, c-format
 msgid "CPU usage: %.1f%%"
 msgstr "CPU 사용율: %.1f%%"
@@ -279,7 +279,3 @@ msgstr "활성: %.3g%%"
 #: ../panel-plugin/properties.cc:723
 msgid "SMT detected: N/A"
 msgstr "SMT 감지: 불가능"
-
-#: ../panel-plugin/cpugraph.desktop.in.h:1
-msgid "CPU Graph"
-msgstr "CPU 그래프"
