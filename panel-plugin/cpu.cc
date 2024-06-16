@@ -393,47 +393,51 @@ mode_cb (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
     size_cb (plugin, xfce_panel_plugin_get_size (base->plugin), base);
 }
 
-static void
-detect_smt_issues (const shared_ptr<CPUGraph> &base)
+void
+CPUGraph::detect_smt_issues ()
 {
-    const bool debug = false;
-    gfloat actual_load[base->nr_cores];
-    bool movement[base->nr_cores];
-    bool suboptimal[base->nr_cores];
+    constexpr bool debug = false;
 
-    for (guint i = 0; i < base->nr_cores; i++)
+    auto ensure_resized = [this](auto &&arr) {
+        if (G_UNLIKELY (arr.size() < nr_cores))
+        {
+            arr.clear();
+            arr.resize(nr_cores);
+        }
+    };
+    ensure_resized(smt.movement);
+    ensure_resized(smt.suboptimal);
+    ensure_resized(smt.actual_load);
+    ensure_resized(smt.optimal_load);
+    ensure_resized(smt.actual_num_instr_executed);
+    ensure_resized(smt.optimal_num_instr_executed);
+
+    /* Initialize CPU load arrays.
+     * The array optimal_load[] will be updated
+     * if a suboptimal SMT thread placement is detected. */
+    for (guint i = 0; i < nr_cores; i++)
     {
-        actual_load[i] = base->cpu_data[base->index_to_cpu[i+1]].load;
-        suboptimal[i] = false;
-        movement[i] = false;
-        if (debug)
-            g_info ("actual_load[%u] = %g", i, actual_load[i]);
+        const gfloat load = cpu_data[index_to_cpu[i+1]].load;
+        smt.suboptimal[i] = false;
+        smt.movement[i] = false;
+        smt.actual_load[i] = load;
+        smt.optimal_load[i] = load;
+        smt.actual_num_instr_executed[i] = load;
+        smt.optimal_num_instr_executed[i] = load;
+        if constexpr (debug)
+            g_info ("actual_load[%u] = %g", i, load);
     }
 
-    if (G_LIKELY (base->topology && base->topology->smt))
+    if (G_LIKELY (topology && topology->smt))
     {
-        const auto topo = base->topology.get();
+        const auto topo = topology.get();
 
-        gfloat optimal_load[base->nr_cores];
-        gfloat actual_num_instr_executed[base->nr_cores];
-        gfloat optimal_num_instr_executed[base->nr_cores];
         bool smt_incident = false;
 
-        /* Initialize CPU load arrays.
-         * The array optimal_load[] will be updated
-         * if a suboptimal SMT thread placement is detected. */
-        for (guint i = 0; i < base->nr_cores; i++)
-        {
-            const gfloat load = actual_load[i];
-            optimal_load[i] = load;
-            actual_num_instr_executed[i] = load;
-            optimal_num_instr_executed[i] = load;
-        }
+        constexpr gfloat THRESHOLD = 1.0 + 0.1;       /* A lower bound (this core) */
+        constexpr gfloat THRESHOLD_OTHER = 1.0 - 0.1; /* An upper bound (some other core) */
 
-        const gfloat THRESHOLD = 1.0 + 0.1;       /* A lower bound (this core) */
-        const gfloat THRESHOLD_OTHER = 1.0 - 0.1; /* An upper bound (some other core) */
-
-        for (guint i = 0; i < base->nr_cores; i++)
+        for (guint i = 0; i < nr_cores; i++)
         {
             if (G_LIKELY (i < topo->num_logical_cpus))
             {
@@ -452,8 +456,8 @@ detect_smt_issues (const shared_ptr<CPUGraph> &base)
                     gfloat combined_usage = 0;
                     for (guint cpu : topo->cores[core].logical_cpus)
                     {
-                        if (G_LIKELY (cpu < base->nr_cores))
-                            combined_usage += optimal_load[cpu];
+                        if (G_LIKELY (cpu < nr_cores))
+                            combined_usage += smt.optimal_load[cpu];
                     }
                     if (combined_usage > THRESHOLD)
                     {
@@ -468,8 +472,8 @@ detect_smt_issues (const shared_ptr<CPUGraph> &base)
                                 gfloat combined_usage_other = 0.0;
                                 for (guint other_cpu : topo->cores[other_core].logical_cpus)
                                 {
-                                    if (G_LIKELY (other_cpu < base->nr_cores))
-                                        combined_usage_other += optimal_load[other_cpu];
+                                    if (G_LIKELY (other_cpu < nr_cores))
+                                        combined_usage_other += smt.optimal_load[other_cpu];
                                 }
                                 if (combined_usage_other < THRESHOLD_OTHER)
                                 {
@@ -480,8 +484,8 @@ detect_smt_issues (const shared_ptr<CPUGraph> &base)
                                     smt_incident = true;
                                     for (guint cpu : topo->cores[core].logical_cpus)
                                     {
-                                        if (G_LIKELY (cpu < base->nr_cores))
-                                            suboptimal[cpu] = true;
+                                        if (G_LIKELY (cpu < nr_cores))
+                                            smt.suboptimal[cpu] = true;
                                     }
 
                                     /*
@@ -498,9 +502,9 @@ detect_smt_issues (const shared_ptr<CPUGraph> &base)
                                         gint other_cpu_min = -1;
                                         for (guint other_cpu : topo->cores[other_core].logical_cpus)
                                         {
-                                            if (G_LIKELY (other_cpu < base->nr_cores))
-                                                if (optimal_load[other_cpu] < 0.999f)
-                                                    if (other_cpu_min == -1 || optimal_load[other_cpu_min] > optimal_load[other_cpu])
+                                            if (G_LIKELY (other_cpu < nr_cores))
+                                                if (smt.optimal_load[other_cpu] < 0.999f)
+                                                    if (other_cpu_min == -1 || smt.optimal_load[other_cpu_min] > smt.optimal_load[other_cpu])
                                                         other_cpu_min = other_cpu;
                                         }
                                         if (G_LIKELY (other_cpu_min != -1))
@@ -508,47 +512,47 @@ detect_smt_issues (const shared_ptr<CPUGraph> &base)
                                             gfloat load_to_move;
 
                                             load_to_move = excess_load;
-                                            if (load_to_move > 1.0f - optimal_load[other_cpu_min])
-                                                load_to_move = 1.0f - optimal_load[other_cpu_min];
+                                            if (load_to_move > 1.0f - smt.optimal_load[other_cpu_min])
+                                                load_to_move = 1.0f - smt.optimal_load[other_cpu_min];
 
-                                            if (debug)
+                                            if constexpr (debug)
                                                 g_info ("load_to_move = %g", load_to_move);
 
-                                            optimal_load[other_cpu_min] += load_to_move;
+                                            smt.optimal_load[other_cpu_min] += load_to_move;
 
                                             /* The move negates the SMT slowdown for the work moved onto the underutilized target CPU core */
-                                            movement[other_cpu_min] = true;
-                                            optimal_num_instr_executed[other_cpu_min] += (1.0f + SMT_SLOWDOWN) * load_to_move;
+                                            smt.movement[other_cpu_min] = true;
+                                            smt.optimal_num_instr_executed[other_cpu_min] += (1.0f + SMT_SLOWDOWN) * load_to_move;
 
                                             /* Decrease combined_usage by load_to_move */
                                             for (guint j = topo->cores[core].logical_cpus.size(); load_to_move > 0 && j != 0;)
                                             {
                                                 guint cpu = topo->cores[core].logical_cpus[--j];
-                                                if (G_LIKELY (cpu < base->nr_cores))
+                                                if (G_LIKELY (cpu < nr_cores))
                                                 {
-                                                    if (optimal_load[cpu] >= load_to_move)
+                                                    if (smt.optimal_load[cpu] >= load_to_move)
                                                     {
                                                         const gfloat diff = load_to_move;
 
-                                                        optimal_load[cpu] -= diff;
+                                                        smt.optimal_load[cpu] -= diff;
                                                         load_to_move = 0;
 
                                                         /* The move negates the SMT slowdown for the work remaining on the original CPU core */
-                                                        optimal_num_instr_executed[cpu] -= 1.0f * diff;         /* Moved work */
-                                                        optimal_num_instr_executed[cpu] += SMT_SLOWDOWN * diff; /* Remaining work (speedup) */
-                                                        movement[cpu] = true;
+                                                        smt.optimal_num_instr_executed[cpu] -= 1.0f * diff;         /* Moved work */
+                                                        smt.optimal_num_instr_executed[cpu] += SMT_SLOWDOWN * diff; /* Remaining work (speedup) */
+                                                        smt.movement[cpu] = true;
                                                     }
                                                     else
                                                     {
-                                                        const gfloat diff = optimal_load[cpu];
+                                                        const gfloat diff = smt.optimal_load[cpu];
 
-                                                        optimal_load[cpu] = 0;
+                                                        smt.optimal_load[cpu] = 0;
                                                         load_to_move -= diff;
 
                                                         /* The move negates the SMT slowdown for the work remaining on the original CPU core */
-                                                        optimal_num_instr_executed[cpu] -= 1.0f * diff;         /* Moved work */
-                                                        optimal_num_instr_executed[cpu] += SMT_SLOWDOWN * diff; /* Remaining work (speedup) */
-                                                        movement[cpu] = true;
+                                                        smt.optimal_num_instr_executed[cpu] -= 1.0f * diff;         /* Moved work */
+                                                        smt.optimal_num_instr_executed[cpu] += SMT_SLOWDOWN * diff; /* Remaining work (speedup) */
+                                                        smt.movement[cpu] = true;
                                                     }
                                                 }
                                             }
@@ -568,10 +572,10 @@ detect_smt_issues (const shared_ptr<CPUGraph> &base)
         }
 
         /* Update instruction counters */
-        for (guint i = 0; i < base->nr_cores; i++)
+        for (guint i = 0; i < nr_cores; i++)
         {
-            base->stats.num_instructions_executed.total.actual += actual_num_instr_executed[i];
-            base->stats.num_instructions_executed.total.optimal += optimal_num_instr_executed[i];
+            stats.num_instructions_executed.total.actual += smt.actual_num_instr_executed[i];
+            stats.num_instructions_executed.total.optimal += smt.optimal_num_instr_executed[i];
         }
 
         /* Suboptimal SMT scheduling cases are actually quite rare (at least in Linux):
@@ -581,15 +585,15 @@ detect_smt_issues (const shared_ptr<CPUGraph> &base)
          */
         if (G_UNLIKELY (smt_incident))
         {
-            base->stats.num_smt_incidents++;
+            stats.num_smt_incidents++;
 
             /* Update instruction counters */
-            for (guint i = 0; i < base->nr_cores; i++)
+            for (guint i = 0; i < nr_cores; i++)
             {
-                if (movement[i] || suboptimal[i])
+                if (smt.movement[i] || smt.suboptimal[i])
                 {
-                    base->stats.num_instructions_executed.during_smt_incidents.actual += actual_num_instr_executed[i];
-                    base->stats.num_instructions_executed.during_smt_incidents.optimal += optimal_num_instr_executed[i];
+                    stats.num_instructions_executed.during_smt_incidents.actual += smt.actual_num_instr_executed[i];
+                    stats.num_instructions_executed.during_smt_incidents.optimal += smt.optimal_num_instr_executed[i];
                 }
             }
         }
@@ -606,26 +610,26 @@ detect_smt_issues (const shared_ptr<CPUGraph> &base)
 
             bool positive = false;
             for (guint cpu : core.logical_cpus)
-                if (G_LIKELY (cpu < base->nr_cores))
-                    positive |= suboptimal[cpu];
+                if (G_LIKELY (cpu < nr_cores))
+                    positive |= smt.suboptimal[cpu];
 
             if (positive)
             {
                 gfloat actual_combined_usage = 0;
                 for (guint cpu : core_iterator.second.logical_cpus)
-                    actual_combined_usage += actual_load[cpu];
+                    actual_combined_usage += smt.actual_load[cpu];
 
                 bool false_positive = !(actual_combined_usage > THRESHOLD);
                 if (false_positive)
                     for (guint cpu : core.logical_cpus)
-                        if (G_LIKELY (cpu < base->nr_cores))
-                            suboptimal[cpu] = false;
+                        if (G_LIKELY (cpu < nr_cores))
+                            smt.suboptimal[cpu] = false;
             }
         }
     }
 
-    for (guint i = 0; i < base->nr_cores; i++)
-        base->cpu_data[base->index_to_cpu[i+1]].smt_highlight = suboptimal[i];
+    for (guint i = 0; i < nr_cores; i++)
+        cpu_data[index_to_cpu[i+1]].smt_highlight = smt.suboptimal[i];
 }
 
 static xfce4::TimeoutResponse
@@ -680,7 +684,7 @@ update_cb (const shared_ptr<CPUGraph> &base)
     }
 
     if (base->topology && base->topology->smt && base->is_smt_issues_enabled ())
-        detect_smt_issues (base);
+        base->detect_smt_issues ();
 
     if (!base->history.data.empty())
     {
