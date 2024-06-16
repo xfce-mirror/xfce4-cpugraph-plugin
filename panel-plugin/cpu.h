@@ -167,6 +167,14 @@ struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
     CpuStats stats;
     std::vector<const CpuLoad *> nearest_cache;
     std::vector<CpuLoad> non_linear_cache;
+    struct {
+        std::vector<bool> movement;
+        std::vector<bool> suboptimal;
+        std::vector<gfloat> actual_load;
+        std::vector<gfloat> optimal_load;
+        std::vector<gfloat> actual_num_instr_executed;
+        std::vector<gfloat> optimal_num_instr_executed;
+    } smt;
 
     ~CPUGraph();
 
@@ -193,6 +201,7 @@ struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
 
     // Called inside "cpu.cc"
     bool  is_smt_issues_enabled   () const;
+    void  detect_smt_issues       ();
     void  create_bars             (GtkOrientation orientation);
     void  delete_bars             ();
     void  set_bars_size           ();
