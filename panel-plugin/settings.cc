@@ -34,6 +34,12 @@
 
 using namespace std;
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wc99-designator"
+
 static const xfce4::RGBA g_default_colors[NUM_COLORS] =
 {
     [BG_COLOR]         = {1.0, 1.0, 1.0, 0.0},
@@ -61,6 +67,10 @@ static const gchar *const g_color_keys[NUM_COLORS][2] =
     [FG_COLOR_NICE]    = {"/foreground-nice", "ForegroundNice"},
     [FG_COLOR_IOWAIT]  = {"/foreground-iowait", "ForegroundIOwait"},
 };
+
+#pragma clang diagnostic pop
+
+#pragma GCC diagnostic pop
 
 constexpr auto g_update_interval = "/update-interval";
 constexpr auto g_time_scale = "/time-scale";
