@@ -277,7 +277,7 @@ resize_history (const shared_ptr<CPUGraph> &base, gssize history_size)
 
     if (cap_pow2 != old_cap_pow2)
     {
-        const auto old_data = move(base->history.data);
+        const auto old_data = std::move(base->history.data);
         const gssize old_mask = base->history.mask();
         const gssize old_offset = base->history.offset;
 
@@ -639,22 +639,22 @@ update_cb (const shared_ptr<CPUGraph> &base)
     }
     else if (base->cpu_to_index_cache != base->cpu_to_index) // CPU layout changed
     {
-        const auto old_cpus = move (base->cpu_to_index);
+        const auto old_cpus = std::move (base->cpu_to_index);
 
         // Init CPU data
-        base->cpu_to_index = move (base->cpu_to_index_cache);
+        base->cpu_to_index = std::move (base->cpu_to_index_cache);
         init_cpu_data (base, false);
 
         if (!base->history.data.empty () && old_cpus != base->cpu_to_index)
         {
             // There are changes in CPU layout - (reorder / allocate new / free old) per-core history
 
-            auto old_history_data = move (base->history.data);
+            auto old_history_data = std::move (base->history.data);
 
             base->history.data.resize (base->nr_cores + 1);
 
             // Copy old history pointer for overall CPU usage
-            base->history.data[0] = move(old_history_data[0]);
+            base->history.data[0] = std::move(old_history_data[0]);
 
             // Copy old history pointers to the new CPU layout with the new CPUs order
             for (const auto [cpu, idx] : base->cpu_to_index)
@@ -664,7 +664,7 @@ update_cb (const shared_ptr<CPUGraph> &base)
                     continue; // CPU disappeared, ignore
 
                 const auto old_idx = old_it->second;
-                base->history.data[idx] = move(old_history_data[old_idx]);
+                base->history.data[idx] = std::move(old_history_data[old_idx]);
             }
 
             // Allocate memory for all new CPUs
