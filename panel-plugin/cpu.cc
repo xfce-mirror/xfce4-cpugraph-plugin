@@ -428,140 +428,137 @@ CPUGraph::detect_smt_issues ()
             g_info ("actual_load[%u] = %g", i, load);
     }
 
-    if (G_LIKELY (topology && topology->smt))
+    const auto topo = topology.get();
+
+    bool smt_incident = false;
+
+    constexpr gfloat THRESHOLD = 1.0 + 0.1;       /* A lower bound (this core) */
+    constexpr gfloat THRESHOLD_OTHER = 1.0 - 0.1; /* An upper bound (some other core) */
+
+    for (guint i = 0; i < nr_cores; i++)
     {
-        const auto topo = topology.get();
-
-        bool smt_incident = false;
-
-        constexpr gfloat THRESHOLD = 1.0 + 0.1;       /* A lower bound (this core) */
-        constexpr gfloat THRESHOLD_OTHER = 1.0 - 0.1; /* An upper bound (some other core) */
-
-        for (guint i = 0; i < nr_cores; i++)
+        if (G_LIKELY (i < topo->num_logical_cpus))
         {
-            if (G_LIKELY (i < topo->num_logical_cpus))
+            const gint core = topo->logical_cpu_2_core[i];
+            if (G_LIKELY (core != -1) && topo->cores[core].logical_cpus.size() >= 2)
             {
-                const gint core = topo->logical_cpu_2_core[i];
-                if (G_LIKELY (core != -1) && topo->cores[core].logical_cpus.size() >= 2)
+                /* _Approximate_ slowdown if two threads
+                 * are executed on the same physical core
+                 * instead of being executed on separate cores.
+                 * This number has been determined by measuring
+                 * the slowdown of running two instances of
+                 * "stress-ng --cpu=1" on a Ryzen 3700X CPU. */
+                const gfloat SMT_SLOWDOWN = 0.25f;
+
+            retry:
+                gfloat combined_usage = 0;
+                for (guint cpu : topo->cores[core].logical_cpus)
                 {
-                    /* _Approximate_ slowdown if two threads
-                     * are executed on the same physical core
-                     * instead of being executed on separate cores.
-                     * This number has been determined by measuring
-                     * the slowdown of running two instances of
-                     * "stress-ng --cpu=1" on a Ryzen 3700X CPU. */
-                    const gfloat SMT_SLOWDOWN = 0.25f;
-
-                retry:
-                    gfloat combined_usage = 0;
-                    for (guint cpu : topo->cores[core].logical_cpus)
+                    if (G_LIKELY (cpu < nr_cores))
+                        combined_usage += smt.optimal_load[cpu];
+                }
+                if (combined_usage > THRESHOLD)
+                {
+                    /* Attempt to find a free CPU *core* different from `core`
+                     * that might have had executed the workload
+                     * without resorting to SMT/hyperthreading */
+                    for (const auto &core_iterator : topo->cores)
                     {
-                        if (G_LIKELY (cpu < nr_cores))
-                            combined_usage += smt.optimal_load[cpu];
-                    }
-                    if (combined_usage > THRESHOLD)
-                    {
-                        /* Attempt to find a free CPU *core* different from `core`
-                         * that might have had executed the workload
-                         * without resorting to SMT/hyperthreading */
-                        for (const auto &core_iterator : topo->cores)
+                        guint other_core = core_iterator.first;
+                        if (other_core != (guint) core)
                         {
-                            guint other_core = core_iterator.first;
-                            if (other_core != (guint) core)
+                            gfloat combined_usage_other = 0.0;
+                            for (guint other_cpu : topo->cores[other_core].logical_cpus)
                             {
-                                gfloat combined_usage_other = 0.0;
-                                for (guint other_cpu : topo->cores[other_core].logical_cpus)
+                                if (G_LIKELY (other_cpu < nr_cores))
+                                    combined_usage_other += smt.optimal_load[other_cpu];
+                            }
+                            if (combined_usage_other < THRESHOLD_OTHER)
+                            {
+                                /* The thread might have been executed on 'other_core',
+                                 * instead of on 'core', where it might have enjoyed
+                                 * a much higher IPC (instructions per clock) ratio */
+
+                                smt_incident = true;
+                                for (guint cpu : topo->cores[core].logical_cpus)
                                 {
-                                    if (G_LIKELY (other_cpu < nr_cores))
-                                        combined_usage_other += smt.optimal_load[other_cpu];
+                                    if (G_LIKELY (cpu < nr_cores))
+                                        smt.suboptimal[cpu] = true;
                                 }
-                                if (combined_usage_other < THRESHOLD_OTHER)
+
+                                /*
+                                 * 1.001 and 0.999 are used instead of 1.0 to make sure that:
+                                 *  - the algorithm always terminates
+                                 *  - the algorithm terminates quickly
+                                 *  - it skips unimportant differences such as 1e-5
+                                 */
+
+                                if (G_LIKELY (combined_usage > 1.001f))
                                 {
-                                    /* The thread might have been executed on 'other_core',
-                                     * instead of on 'core', where it might have enjoyed
-                                     * a much higher IPC (instructions per clock) ratio */
-
-                                    smt_incident = true;
-                                    for (guint cpu : topo->cores[core].logical_cpus)
+                                    /* Move as much of excess load to the other core as possible */
+                                    const gfloat excess_load = combined_usage - 1.0f;
+                                    gint other_cpu_min = -1;
+                                    for (guint other_cpu : topo->cores[other_core].logical_cpus)
                                     {
-                                        if (G_LIKELY (cpu < nr_cores))
-                                            smt.suboptimal[cpu] = true;
+                                        if (G_LIKELY (other_cpu < nr_cores))
+                                            if (smt.optimal_load[other_cpu] < 0.999f)
+                                                if (other_cpu_min == -1 || smt.optimal_load[other_cpu_min] > smt.optimal_load[other_cpu])
+                                                    other_cpu_min = other_cpu;
                                     }
-
-                                    /*
-                                     * 1.001 and 0.999 are used instead of 1.0 to make sure that:
-                                     *  - the algorithm always terminates
-                                     *  - the algorithm terminates quickly
-                                     *  - it skips unimportant differences such as 1e-5
-                                     */
-
-                                    if (G_LIKELY (combined_usage > 1.001f))
+                                    if (G_LIKELY (other_cpu_min != -1))
                                     {
-                                        /* Move as much of excess load to the other core as possible */
-                                        const gfloat excess_load = combined_usage - 1.0f;
-                                        gint other_cpu_min = -1;
-                                        for (guint other_cpu : topo->cores[other_core].logical_cpus)
+                                        gfloat load_to_move;
+
+                                        load_to_move = excess_load;
+                                        if (load_to_move > 1.0f - smt.optimal_load[other_cpu_min])
+                                            load_to_move = 1.0f - smt.optimal_load[other_cpu_min];
+
+                                        if constexpr (debug)
+                                            g_info ("load_to_move = %g", load_to_move);
+
+                                        smt.optimal_load[other_cpu_min] += load_to_move;
+
+                                        /* The move negates the SMT slowdown for the work moved onto the underutilized target CPU core */
+                                        smt.movement[other_cpu_min] = true;
+                                        smt.optimal_num_instr_executed[other_cpu_min] += (1.0f + SMT_SLOWDOWN) * load_to_move;
+
+                                        /* Decrease combined_usage by load_to_move */
+                                        for (guint j = topo->cores[core].logical_cpus.size(); load_to_move > 0 && j != 0;)
                                         {
-                                            if (G_LIKELY (other_cpu < nr_cores))
-                                                if (smt.optimal_load[other_cpu] < 0.999f)
-                                                    if (other_cpu_min == -1 || smt.optimal_load[other_cpu_min] > smt.optimal_load[other_cpu])
-                                                        other_cpu_min = other_cpu;
-                                        }
-                                        if (G_LIKELY (other_cpu_min != -1))
-                                        {
-                                            gfloat load_to_move;
-
-                                            load_to_move = excess_load;
-                                            if (load_to_move > 1.0f - smt.optimal_load[other_cpu_min])
-                                                load_to_move = 1.0f - smt.optimal_load[other_cpu_min];
-
-                                            if constexpr (debug)
-                                                g_info ("load_to_move = %g", load_to_move);
-
-                                            smt.optimal_load[other_cpu_min] += load_to_move;
-
-                                            /* The move negates the SMT slowdown for the work moved onto the underutilized target CPU core */
-                                            smt.movement[other_cpu_min] = true;
-                                            smt.optimal_num_instr_executed[other_cpu_min] += (1.0f + SMT_SLOWDOWN) * load_to_move;
-
-                                            /* Decrease combined_usage by load_to_move */
-                                            for (guint j = topo->cores[core].logical_cpus.size(); load_to_move > 0 && j != 0;)
+                                            guint cpu = topo->cores[core].logical_cpus[--j];
+                                            if (G_LIKELY (cpu < nr_cores))
                                             {
-                                                guint cpu = topo->cores[core].logical_cpus[--j];
-                                                if (G_LIKELY (cpu < nr_cores))
+                                                if (smt.optimal_load[cpu] >= load_to_move)
                                                 {
-                                                    if (smt.optimal_load[cpu] >= load_to_move)
-                                                    {
-                                                        const gfloat diff = load_to_move;
+                                                    const gfloat diff = load_to_move;
 
-                                                        smt.optimal_load[cpu] -= diff;
-                                                        load_to_move = 0;
+                                                    smt.optimal_load[cpu] -= diff;
+                                                    load_to_move = 0;
 
-                                                        /* The move negates the SMT slowdown for the work remaining on the original CPU core */
-                                                        smt.optimal_num_instr_executed[cpu] -= 1.0f * diff;         /* Moved work */
-                                                        smt.optimal_num_instr_executed[cpu] += SMT_SLOWDOWN * diff; /* Remaining work (speedup) */
-                                                        smt.movement[cpu] = true;
-                                                    }
-                                                    else
-                                                    {
-                                                        const gfloat diff = smt.optimal_load[cpu];
+                                                    /* The move negates the SMT slowdown for the work remaining on the original CPU core */
+                                                    smt.optimal_num_instr_executed[cpu] -= 1.0f * diff;         /* Moved work */
+                                                    smt.optimal_num_instr_executed[cpu] += SMT_SLOWDOWN * diff; /* Remaining work (speedup) */
+                                                    smt.movement[cpu] = true;
+                                                }
+                                                else
+                                                {
+                                                    const gfloat diff = smt.optimal_load[cpu];
 
-                                                        smt.optimal_load[cpu] = 0;
-                                                        load_to_move -= diff;
+                                                    smt.optimal_load[cpu] = 0;
+                                                    load_to_move -= diff;
 
-                                                        /* The move negates the SMT slowdown for the work remaining on the original CPU core */
-                                                        smt.optimal_num_instr_executed[cpu] -= 1.0f * diff;         /* Moved work */
-                                                        smt.optimal_num_instr_executed[cpu] += SMT_SLOWDOWN * diff; /* Remaining work (speedup) */
-                                                        smt.movement[cpu] = true;
-                                                    }
+                                                    /* The move negates the SMT slowdown for the work remaining on the original CPU core */
+                                                    smt.optimal_num_instr_executed[cpu] -= 1.0f * diff;         /* Moved work */
+                                                    smt.optimal_num_instr_executed[cpu] += SMT_SLOWDOWN * diff; /* Remaining work (speedup) */
+                                                    smt.movement[cpu] = true;
                                                 }
                                             }
-
-                                            /* At this point: load_to_move should be zero or very close to zero */
-                                            g_warn_if_fail (load_to_move < 0.001f);
-
-                                            goto retry;
                                         }
+
+                                        /* At this point: load_to_move should be zero or very close to zero */
+                                        g_warn_if_fail (load_to_move < 0.001f);
+
+                                        goto retry;
                                     }
                                 }
                             }
@@ -570,61 +567,61 @@ CPUGraph::detect_smt_issues ()
                 }
             }
         }
+    }
+
+    /* Update instruction counters */
+    for (guint i = 0; i < nr_cores; i++)
+    {
+        stats.num_instructions_executed.total.actual += smt.actual_num_instr_executed[i];
+        stats.num_instructions_executed.total.optimal += smt.optimal_num_instr_executed[i];
+    }
+
+    /* Suboptimal SMT scheduling cases are actually quite rare (at least in Linux):
+     * - They are impossible to happen if the CPU is under full load
+     * - They are rare if the CPU is running one single-threaded task
+     * - They tend to occur especially when the CPU is running about nr_cores/2 threads
+     */
+    if (G_UNLIKELY (smt_incident))
+    {
+        stats.num_smt_incidents++;
 
         /* Update instruction counters */
         for (guint i = 0; i < nr_cores; i++)
         {
-            stats.num_instructions_executed.total.actual += smt.actual_num_instr_executed[i];
-            stats.num_instructions_executed.total.optimal += smt.optimal_num_instr_executed[i];
-        }
-
-        /* Suboptimal SMT scheduling cases are actually quite rare (at least in Linux):
-         * - They are impossible to happen if the CPU is under full load
-         * - They are rare if the CPU is running one single-threaded task
-         * - They tend to occur especially when the CPU is running about nr_cores/2 threads
-         */
-        if (G_UNLIKELY (smt_incident))
-        {
-            stats.num_smt_incidents++;
-
-            /* Update instruction counters */
-            for (guint i = 0; i < nr_cores; i++)
+            if (smt.movement[i] || smt.suboptimal[i])
             {
-                if (smt.movement[i] || smt.suboptimal[i])
-                {
-                    stats.num_instructions_executed.during_smt_incidents.actual += smt.actual_num_instr_executed[i];
-                    stats.num_instructions_executed.during_smt_incidents.optimal += smt.optimal_num_instr_executed[i];
-                }
+                stats.num_instructions_executed.during_smt_incidents.actual += smt.actual_num_instr_executed[i];
+                stats.num_instructions_executed.during_smt_incidents.optimal += smt.optimal_num_instr_executed[i];
             }
         }
+    }
 
-        /* At this point, the values in suboptimal[] are based on values in optimal_load.
-         * This can falsely mark a CPU as suboptimal if the algoritm moved some work to the CPU from other CPUs.
-         * Fix false positives in suboptimal[] based on values in actual_load.
-         *
-         * It is uncertain whether this correction should be performed before or after instruction counter updates.
-         */
-        for (const auto &core_iterator : topo->cores)
+    /* At this point, the values in suboptimal[] are based on values in optimal_load.
+     * This can falsely mark a CPU as suboptimal if the algoritm moved some work to the CPU from other CPUs.
+     * Fix false positives in suboptimal[] based on values in actual_load.
+     *
+     * It is uncertain whether this correction should be performed before or after instruction counter updates.
+     */
+    for (const auto &core_iterator : topo->cores)
+    {
+        const Topology::CpuCore &core = core_iterator.second;
+
+        bool positive = false;
+        for (guint cpu : core.logical_cpus)
+            if (G_LIKELY (cpu < nr_cores))
+                positive |= smt.suboptimal[cpu];
+
+        if (positive)
         {
-            const Topology::CpuCore &core = core_iterator.second;
+            gfloat actual_combined_usage = 0;
+            for (guint cpu : core_iterator.second.logical_cpus)
+                actual_combined_usage += smt.actual_load[cpu];
 
-            bool positive = false;
-            for (guint cpu : core.logical_cpus)
-                if (G_LIKELY (cpu < nr_cores))
-                    positive |= smt.suboptimal[cpu];
-
-            if (positive)
-            {
-                gfloat actual_combined_usage = 0;
-                for (guint cpu : core_iterator.second.logical_cpus)
-                    actual_combined_usage += smt.actual_load[cpu];
-
-                bool false_positive = !(actual_combined_usage > THRESHOLD);
-                if (false_positive)
-                    for (guint cpu : core.logical_cpus)
-                        if (G_LIKELY (cpu < nr_cores))
-                            smt.suboptimal[cpu] = false;
-            }
+            bool false_positive = !(actual_combined_usage > THRESHOLD);
+            if (false_positive)
+                for (guint cpu : core.logical_cpus)
+                    if (G_LIKELY (cpu < nr_cores))
+                        smt.suboptimal[cpu] = false;
         }
     }
 
