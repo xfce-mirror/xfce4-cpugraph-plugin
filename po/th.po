@@ -26,7 +26,7 @@ msgstr "แสดงโหลดของซีพียูในแบบกร
 #: panel-plugin/cpu.cc:716
 #, c-format
 msgid "CPU usage: %.1f%%"
-msgstr ""
+msgstr "การใช้ CPU: %.1f%%"
 
 #: panel-plugin/properties.cc:74
 msgid ""
@@ -63,11 +63,11 @@ msgstr "สีที่ใช้เน้นการจัดเธรดที
 
 #: panel-plugin/properties.cc:171
 msgid "Display SMT statistics"
-msgstr ""
+msgstr "แสดงสถิติ SMT"
 
 #: panel-plugin/properties.cc:181
 msgid "Highlight suboptimal SMT scheduling"
-msgstr "เน้นการจัดเวลางานด้วย SMT ที่ด้อยประสิทธิภาพ"
+msgstr "เน้นสีการจัดเวลางานด้วย SMT ที่ด้อยประสิทธิภาพ"
 
 #: panel-plugin/properties.cc:188
 msgid "SMT issues color:"
@@ -95,19 +95,19 @@ msgstr "สี 3:"
 
 #: panel-plugin/properties.cc:215
 msgid "System:"
-msgstr ""
+msgstr "ระบบ:"
 
 #: panel-plugin/properties.cc:218
 msgid "User:"
-msgstr ""
+msgstr "ผู้ใช้:"
 
 #: panel-plugin/properties.cc:221
 msgid "Nice:"
-msgstr ""
+msgstr "Nice:"
 
 #: panel-plugin/properties.cc:224
 msgid "IO wait:"
-msgstr ""
+msgstr "รอ IO:"
 
 #: panel-plugin/properties.cc:227
 msgid "Background:"
@@ -200,11 +200,11 @@ msgstr "คำสั่งที่เชื่อมโยง:"
 
 #: panel-plugin/properties.cc:484
 msgid "The command to run when the plugin is left-clicked."
-msgstr ""
+msgstr "คำสั่งที่จะเรียกทำงานเมื่อคลิกซ้ายบนตัวปลั๊กอิน"
 
 #: panel-plugin/properties.cc:485
 msgid "If not specified, it defaults to xfce4-taskmanager, htop or top."
-msgstr ""
+msgstr "ถ้าไม่ระบุ จะพยายามเรียก xfce4-taskmanager, htop หรือ top โดยปริยาย"
 
 #: panel-plugin/properties.cc:513
 msgid "Disabled"
@@ -244,7 +244,7 @@ msgstr "ไฟ"
 
 #: panel-plugin/properties.cc:564
 msgid "Detailed"
-msgstr ""
+msgstr "รายละเอียด"
 
 #: panel-plugin/properties.cc:569
 msgid "Color mode: "
