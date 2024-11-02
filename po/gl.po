@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Daniel Muñiz Fontoira <dani@damufo.eu>, 2019-2021
+# Daniel Muñiz Fontoira <dani@damufo.eu>, 2024
 # Leandro Regueiro <leandro.regueiro@gmail.com>, 2008-2009
 # Xosé, 2018
 msgid ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gitlab.xfce.org/\n"
 "POT-Creation-Date: 2024-05-07 12:58+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
-"Last-Translator: Daniel Muñiz Fontoira <dani@damufo.eu>, 2019-2021\n"
+"Last-Translator: Daniel Muñiz Fontoira <dani@damufo.eu>, 2024\n"
 "Language-Team: Galician (http://app.transifex.com/xfce/xfce-panel-plugins/language/gl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +28,7 @@ msgstr "Representación gráfica da carga da CPU"
 #: panel-plugin/cpu.cc:716
 #, c-format
 msgid "CPU usage: %.1f%%"
-msgstr ""
+msgstr "Utilización da CPU: %.1f%%"
 
 #: panel-plugin/properties.cc:74
 msgid ""
@@ -64,7 +65,7 @@ msgstr "A cor empregada para realzar os fíos nas\nCPUs con SMT non parece ópti
 
 #: panel-plugin/properties.cc:171
 msgid "Display SMT statistics"
-msgstr ""
+msgstr "Amosar as estatísticas SMT"
 
 #: panel-plugin/properties.cc:181
 msgid "Highlight suboptimal SMT scheduling"
@@ -96,19 +97,19 @@ msgstr "Cor 3:"
 
 #: panel-plugin/properties.cc:215
 msgid "System:"
-msgstr ""
+msgstr "Sistema:"
 
 #: panel-plugin/properties.cc:218
 msgid "User:"
-msgstr ""
+msgstr "Persoa usuaria:"
 
 #: panel-plugin/properties.cc:221
 msgid "Nice:"
-msgstr ""
+msgstr "Con prioridade alta:"
 
 #: panel-plugin/properties.cc:224
 msgid "IO wait:"
-msgstr ""
+msgstr "En espera de E/S"
 
 #: panel-plugin/properties.cc:227
 msgid "Background:"
@@ -202,11 +203,11 @@ msgstr "Orde asociada:"
 
 #: panel-plugin/properties.cc:484
 msgid "The command to run when the plugin is left-clicked."
-msgstr ""
+msgstr "A orde a executar cando se fai clic co botón esquerdo no engadido."
 
 #: panel-plugin/properties.cc:485
 msgid "If not specified, it defaults to xfce4-taskmanager, htop or top."
-msgstr ""
+msgstr "Se non se especifica, os valores predeterminados serán xfce4-taskmanager, htop ou top."
 
 #: panel-plugin/properties.cc:513
 msgid "Disabled"
@@ -246,7 +247,7 @@ msgstr "Lume"
 
 #: panel-plugin/properties.cc:564
 msgid "Detailed"
-msgstr ""
+msgstr "Detallado"
 
 #: panel-plugin/properties.cc:569
 msgid "Color mode: "
