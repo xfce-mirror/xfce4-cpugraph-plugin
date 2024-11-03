@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the xfce-panel-plugins.xfce4-cpugraph-plugin package.
 # 
 # Translators:
-# Michal Várady <miko.vaji@gmail.com>, 2019-2022
+# Michal Várady <miko.vaji@gmail.com>, 2019-2022,2024
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: https://gitlab.xfce.org/\n"
 "POT-Creation-Date: 2024-05-07 12:58+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
-"Last-Translator: Michal Várady <miko.vaji@gmail.com>, 2019-2022\n"
+"Last-Translator: Michal Várady <miko.vaji@gmail.com>, 2019-2022,2024\n"
 "Language-Team: Czech (http://app.transifex.com/xfce/xfce-panel-plugins/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +25,7 @@ msgstr "Grafická reprezentace zatížení procesoru"
 #: panel-plugin/cpu.cc:716
 #, c-format
 msgid "CPU usage: %.1f%%"
-msgstr ""
+msgstr "Využití procesoru: %.1f%%"
 
 #: panel-plugin/properties.cc:74
 msgid ""
@@ -62,7 +62,7 @@ msgstr "Barva pro zvýraznění potenciálně neoptimálního\nrozmístění vl�
 
 #: panel-plugin/properties.cc:171
 msgid "Display SMT statistics"
-msgstr ""
+msgstr "Zobrazit statistiky SMT"
 
 #: panel-plugin/properties.cc:181
 msgid "Highlight suboptimal SMT scheduling"
@@ -94,19 +94,19 @@ msgstr "Barva 3:"
 
 #: panel-plugin/properties.cc:215
 msgid "System:"
-msgstr ""
+msgstr "Systém:"
 
 #: panel-plugin/properties.cc:218
 msgid "User:"
-msgstr ""
+msgstr "Uživatel:"
 
 #: panel-plugin/properties.cc:221
 msgid "Nice:"
-msgstr ""
+msgstr "Nice:"
 
 #: panel-plugin/properties.cc:224
 msgid "IO wait:"
-msgstr ""
+msgstr "Čekání na V/V operace:"
 
 #: panel-plugin/properties.cc:227
 msgid "Background:"
@@ -126,7 +126,7 @@ msgstr "Barva sloupců:"
 
 #: panel-plugin/properties.cc:244
 msgid "Show frame"
-msgstr "Zobrazovat rámeček"
+msgstr "Zobrazit rámeček"
 
 #: panel-plugin/properties.cc:249
 msgid "Show border"
@@ -246,11 +246,11 @@ msgstr "Oheň"
 
 #: panel-plugin/properties.cc:564
 msgid "Detailed"
-msgstr ""
+msgstr "Podrobný"
 
 #: panel-plugin/properties.cc:569
 msgid "Color mode: "
-msgstr "Barvený režim:"
+msgstr "Barevný režim:"
 
 #: panel-plugin/properties.cc:679
 msgid "SMT detected: Yes"
