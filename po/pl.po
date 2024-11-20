@@ -23,7 +23,7 @@ msgstr ""
 
 #: panel-plugin/cpu.cc:185 panel-plugin/cpugraph.desktop.in:6
 msgid "Graphical representation of the CPU load"
-msgstr "Dostarcza informacje na temat obciążenia CPU w postaci graficznej"
+msgstr "Dostarcza informacje na temat obciążenia CPU w postaci graficznej"
 
 #: panel-plugin/cpu.cc:716
 #, c-format
@@ -39,7 +39,7 @@ msgstr "„Ogółem” pokazuje wpływ na ogólną wydajność maszyny."
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
-msgstr "„Hotspoty” pokazują chwilowy wpływ wydajności tylko na wątki zaangażowane w nieoptymalne decyzje dotyczące planowania SMT."
+msgstr "„Hotspoty” pokazują chwilowy wpływ wydajności tylko na wątki zaangażowane w nieoptymalne decyzje dotyczące planowania SMT."
 
 #: panel-plugin/properties.cc:110
 msgid "CPU Graph Properties"
@@ -51,11 +51,11 @@ msgstr "Za_mknij"
 
 #: panel-plugin/properties.cc:142
 msgid "Run in terminal"
-msgstr "Uruchamianie w terminalu"
+msgstr "Uruchamianie w terminalu"
 
 #: panel-plugin/properties.cc:148
 msgid "Use startup notification"
-msgstr "Powiadamianie o uruchamianiu"
+msgstr "Powiadamianie o uruchamianiu"
 
 #: panel-plugin/properties.cc:155
 msgid ""
@@ -266,7 +266,7 @@ msgstr "SMT wykryto: nie"
 #: panel-plugin/properties.cc:704
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
-msgstr "Liczba incydentów związanych z planowaniem SMT: %u"
+msgstr "Liczba incydentów związanych z planowaniem SMT: %u"
 
 #: panel-plugin/properties.cc:709
 msgid "Estimated performance impact:"
