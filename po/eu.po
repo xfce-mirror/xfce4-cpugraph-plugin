@@ -5,6 +5,7 @@
 # Translators:
 # beriain, 2019
 # beriain, 2020-2021
+# Eder Etxebarria Rojo, 2024
 # Piarres Beobide <pi@beobide.net>, 2008
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gitlab.xfce.org/\n"
 "POT-Creation-Date: 2024-05-07 12:58+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
-"Last-Translator: beriain, 2020-2021\n"
+"Last-Translator: Eder Etxebarria Rojo, 2024\n"
 "Language-Team: Basque (http://app.transifex.com/xfce/xfce-panel-plugins/language/eu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +28,7 @@ msgstr "CPU lan-kargaren errepresentazio grafikoa"
 #: panel-plugin/cpu.cc:716
 #, c-format
 msgid "CPU usage: %.1f%%"
-msgstr ""
+msgstr "PUZaren erabilera: %.1f%%"
 
 #: panel-plugin/properties.cc:74
 msgid ""
@@ -64,7 +65,7 @@ msgstr "SMT duten PUZetan harien kokatze azpi-optimo\npotentzialak nabarmentzeko
 
 #: panel-plugin/properties.cc:171
 msgid "Display SMT statistics"
-msgstr ""
+msgstr "Erakutsi SMT estatistikak"
 
 #: panel-plugin/properties.cc:181
 msgid "Highlight suboptimal SMT scheduling"
@@ -96,19 +97,19 @@ msgstr "3 Kolorea:"
 
 #: panel-plugin/properties.cc:215
 msgid "System:"
-msgstr ""
+msgstr "Sistema:"
 
 #: panel-plugin/properties.cc:218
 msgid "User:"
-msgstr ""
+msgstr "Erabiltzailea:"
 
 #: panel-plugin/properties.cc:221
 msgid "Nice:"
-msgstr ""
+msgstr "Nice:"
 
 #: panel-plugin/properties.cc:224
 msgid "IO wait:"
-msgstr ""
+msgstr "IO itxaron:"
 
 #: panel-plugin/properties.cc:227
 msgid "Background:"
@@ -246,7 +247,7 @@ msgstr "Sua"
 
 #: panel-plugin/properties.cc:564
 msgid "Detailed"
-msgstr ""
+msgstr "Zehaztua"
 
 #: panel-plugin/properties.cc:569
 msgid "Color mode: "
