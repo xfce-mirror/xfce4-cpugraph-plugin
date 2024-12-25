@@ -8,7 +8,7 @@ dnl Version information
 XDT_VERSION_INIT([1.2.10], [git])
 
 dnl Initialize autoconf
-AC_COPYRIGHT([Copyright (c) 2004-2023 The Xfce development team. All rights reserved.])
+AC_COPYRIGHT([Copyright (c) 2004-2024 The Xfce development team. All rights reserved.])
 AC_INIT([xfce4-cpugraph-plugin],[xdt_version],[https://gitlab.xfce.org/panel-plugins/xfce4-cpugraph-plugin/],[xfce4-cpugraph-plugin])
 AC_PREREQ([2.69])
 AC_CONFIG_MACRO_DIRS([m4])
