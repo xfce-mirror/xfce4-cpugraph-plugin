@@ -1,3 +1,25 @@
+1.2.11 (2024-12-25)
+======
+- Update copyright year
+- Introduce Darwin support
+- Clang: Ignore array designators warning
+- Remove unneeded condition from SMT code
+- Refactor SMT
+- build: clang: Fix -Wunqualified-std-cast-call
+- I18n: Update po/LINGUAS list
+- build: Use XDT_VERSION_INIT and get rid of configure.ac.in
+- build: Switch from intltool to gettext
+- Translation Updates:
+  Albanian, Arabic, Armenian (Armenia), Basque, Belarusian, Bulgarian,
+  Catalan, Chinese (China), Chinese (Taiwan), Croatian, Czech, Danish,
+  Dutch, Eastern Armenian, English (Australia), English (Canada),
+  English (United Kingdom), Estonian, Finnish, French, Galician,
+  German, Greek, Hebrew, Hungarian, Icelandic, Indonesian, Interlingue,
+  Italian, Japanese, Kazakh, Korean, Lithuanian, Malay, Norwegian
+  Bokmål, Occitan (post 1500), Polish, Portuguese, Portuguese
+  (Brazil), Romanian, Russian, Serbian, Slovak, Slovenian, Spanish,
+  Swedish, Thai, Turkish, Ukrainian, Uyghur
+
 1.2.10 (2023-12-03)
 ======
 - Add xfce4cpp to EXTRA_DIST
