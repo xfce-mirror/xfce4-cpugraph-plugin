@@ -5,7 +5,7 @@ dnl 2004 Alexander Nordfelth <alex.nordfelth@telia.com>
 dnl
 
 dnl Version information
-XDT_VERSION_INIT([1.2.11])
+XDT_VERSION_INIT([1.2.11], [git])
 
 dnl Initialize autoconf
 AC_COPYRIGHT([Copyright (c) 2004-2024 The Xfce development team. All rights reserved.])
