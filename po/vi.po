@@ -1,177 +1,286 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR Xfce
+# This file is distributed under the same license as the xfce-panel-plugins.xfce4-cpugraph-plugin package.
 # 
 # Translators:
+# Cas Pascal <casboi86@gmail.com>, 2024
 # Duy Truong Nguyen <truongap.ars@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-13 00:47+0200\n"
-"PO-Revision-Date: 2020-10-12 22:47+0000\n"
-"Last-Translator: Xfce Bot <transifex@xfce.org>\n"
-"Language-Team: Vietnamese (http://www.transifex.com/xfce/xfce-panel-plugins/language/vi/)\n"
+"Report-Msgid-Bugs-To: https://gitlab.xfce.org/\n"
+"POT-Creation-Date: 2024-05-07 12:58+0200\n"
+"PO-Revision-Date: 2013-07-03 18:54+0000\n"
+"Last-Translator: Cas Pascal <casboi86@gmail.com>, 2024\n"
+"Language-Team: Vietnamese (http://app.transifex.com/xfce/xfce-panel-plugins/language/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../panel-plugin/cpu.cc:160 ../panel-plugin/cpugraph.desktop.in.h:2
+#: panel-plugin/cpu.cc:185 panel-plugin/cpugraph.desktop.in:6
 msgid "Graphical representation of the CPU load"
-msgstr ""
+msgstr "Biểu diễn đồ họa của tải CPU"
 
-#: ../panel-plugin/cpu.cc:162
-msgid "Copyright (c) 2003-2019\n"
-msgstr ""
-
-#: ../panel-plugin/cpu.cc:407
+#: panel-plugin/cpu.cc:716
 #, c-format
-msgid "Usage: %u%%"
-msgstr "Mức sử dụng: %u%%"
+msgid "CPU usage: %.1f%%"
+msgstr "Sử dụng CPU: %.1f%%"
 
-#: ../panel-plugin/properties.cc:132
+#: panel-plugin/properties.cc:74
+msgid ""
+"'Overall' is showing the impact on the overall performance of the machine."
+msgstr "'Chung' cho thấy tác động đến hiệu suất chung của máy."
+
+#: panel-plugin/properties.cc:75
+msgid ""
+"'Hotspots' is showing the momentary performance impact on just the threads "
+"involved in suboptimal SMT scheduling decisions."
+msgstr "'Điểm nóng' chỉ hiển thị tác động tức thời đến hiệu suất trên các luồng liên quan đến các SMT scheduling không tối ưu."
+
+#: panel-plugin/properties.cc:110
 msgid "CPU Graph Properties"
 msgstr "Thuộc tính CPU Graph"
 
-#: ../panel-plugin/properties.cc:149
-msgid "Use non-linear time-scale"
-msgstr ""
+#: panel-plugin/properties.cc:114
+msgid "_Close"
+msgstr "Đóng"
 
-#: ../panel-plugin/properties.cc:150
-msgid "Show frame"
-msgstr "Hiện khung"
-
-#: ../panel-plugin/properties.cc:151
-msgid "Show border"
-msgstr "Hiện đường viền"
-
-#: ../panel-plugin/properties.cc:152
-msgid "Show current usage bar"
-msgid_plural "Show current usage bars"
-msgstr[0] ""
-
-#: ../panel-plugin/properties.cc:154
+#: panel-plugin/properties.cc:142
 msgid "Run in terminal"
 msgstr "Chạy trong dòng lệnh"
 
-#: ../panel-plugin/properties.cc:155
+#: panel-plugin/properties.cc:148
 msgid "Use startup notification"
-msgstr ""
+msgstr "Hiển thị thông báo khởi động"
 
-#: ../panel-plugin/properties.cc:158
+#: panel-plugin/properties.cc:155
+msgid ""
+"Color used to highlight potentially suboptimal\n"
+"placement of threads on CPUs with SMT"
+msgstr "Màu sắc được sử dụng để làm nổi bật vị trí có khả năng\nkhông tối ưu của các luồng trên CPU với SMT"
+
+#: panel-plugin/properties.cc:171
+msgid "Display SMT statistics"
+msgstr "Hiển thị thống kê về SMT"
+
+#: panel-plugin/properties.cc:181
+msgid "Highlight suboptimal SMT scheduling"
+msgstr "Làm nổi bật các SMT scheduling không tối ưu"
+
+#: panel-plugin/properties.cc:188
+msgid "SMT issues color:"
+msgstr "Màu sắc của vấn đề từ SMT:"
+
+#: panel-plugin/properties.cc:193
+msgid "Use non-linear time-scale"
+msgstr "Sử dụng thang thời gian không tuyến tính"
+
+#: panel-plugin/properties.cc:198
+msgid "Per-core history graphs"
+msgstr "Vẽ đồ thị lịch sử cho từng lõi"
+
+#: panel-plugin/properties.cc:206
 msgid "Color 1:"
 msgstr "Màu 1:"
 
-#: ../panel-plugin/properties.cc:159
+#: panel-plugin/properties.cc:209
 msgid "Color 2:"
 msgstr "Màu 2:"
 
-#: ../panel-plugin/properties.cc:160
+#: panel-plugin/properties.cc:212
 msgid "Color 3:"
 msgstr "Màu 3:"
 
-#: ../panel-plugin/properties.cc:161
+#: panel-plugin/properties.cc:215
+msgid "System:"
+msgstr "Hệ thống:"
+
+#: panel-plugin/properties.cc:218
+msgid "User:"
+msgstr "Người dùng:"
+
+#: panel-plugin/properties.cc:221
+msgid "Nice:"
+msgstr "Nice:"
+
+#: panel-plugin/properties.cc:224
+msgid "IO wait:"
+msgstr "Độ trễ IO:"
+
+#: panel-plugin/properties.cc:227
 msgid "Background:"
 msgstr "Nền:"
 
-#: ../panel-plugin/properties.cc:165
-msgid "Bars color:"
-msgstr ""
+#: panel-plugin/properties.cc:233
+msgid "Show current usage bar"
+msgid_plural "Show current usage bars"
+msgstr[0] "Hiển thị thanh mức sử dụng hiện tại"
 
-#: ../panel-plugin/properties.cc:170
+#: panel-plugin/properties.cc:239
+msgid "Bars color:"
+msgstr "Màu của thanh:"
+
+#: panel-plugin/properties.cc:244
+msgid "Show frame"
+msgstr "Hiện khung"
+
+#: panel-plugin/properties.cc:249
+msgid "Show border"
+msgstr "Hiện đường viền"
+
+#: panel-plugin/properties.cc:260
 msgid "Appearance"
 msgstr "Diện mạo"
 
-#: ../panel-plugin/properties.cc:172
+#: panel-plugin/properties.cc:261
 msgid "Advanced"
 msgstr "Nâng cao"
 
-#: ../panel-plugin/properties.cc:258
+#: panel-plugin/properties.cc:262
+msgid "Stats"
+msgstr "Thống kê:"
+
+#: panel-plugin/properties.cc:396
 msgid "Fastest (~250ms)"
 msgstr "Nhanh nhất (~250ms)"
 
-#: ../panel-plugin/properties.cc:259
+#: panel-plugin/properties.cc:397
 msgid "Fast (~500ms)"
 msgstr "Nhanh (~500ms)"
 
-#: ../panel-plugin/properties.cc:260
+#: panel-plugin/properties.cc:398
 msgid "Normal (~750ms)"
 msgstr "Thường (~750ms)"
 
-#: ../panel-plugin/properties.cc:261
+#: panel-plugin/properties.cc:399
 msgid "Slow (~1s)"
 msgstr "Chậm (~1s)"
 
-#: ../panel-plugin/properties.cc:262
+#: panel-plugin/properties.cc:400
 msgid "Slowest (~3s)"
-msgstr ""
+msgstr "Chậm nhất (~3s)"
 
-#: ../panel-plugin/properties.cc:266
+#: panel-plugin/properties.cc:403
 msgid "Update Interval:"
 msgstr "Cập nhật:"
 
-#: ../panel-plugin/properties.cc:275
+#: panel-plugin/properties.cc:415
 msgid "All"
 msgstr "Tất cả"
 
-#: ../panel-plugin/properties.cc:282
+#: panel-plugin/properties.cc:419
 msgid "Tracked Core:"
 msgstr "Nhân được theo dõi:"
 
-#: ../panel-plugin/properties.cc:294
+#: panel-plugin/properties.cc:435
 msgid "Width:"
-msgstr ""
+msgstr "Chiều ngang:"
 
-#: ../panel-plugin/properties.cc:296
+#: panel-plugin/properties.cc:437
 msgid "Height:"
-msgstr ""
+msgstr "Chiều cao:"
 
-#: ../panel-plugin/properties.cc:311
+#: panel-plugin/properties.cc:450
+msgid "Threshold (%):"
+msgstr "Ngưỡng (%):"
+
+#: panel-plugin/properties.cc:462
+msgid "Spacing:"
+msgstr "Khoảng cách:"
+
+#: panel-plugin/properties.cc:465
+msgid "Spacing between per-core history graphs"
+msgstr "Khoảng các giữa các đồ thị theo lõi"
+
+#: panel-plugin/properties.cc:476
 msgid "Associated command:"
-msgstr ""
+msgstr "Lệnh được đính kèm:"
 
-#: ../panel-plugin/properties.cc:338
+#: panel-plugin/properties.cc:484
+msgid "The command to run when the plugin is left-clicked."
+msgstr "Lệnh để chạy khi nhấn nút chuột trái vào plugin. "
+
+#: panel-plugin/properties.cc:485
+msgid "If not specified, it defaults to xfce4-taskmanager, htop or top."
+msgstr "Khi không chỉ định, sẽ sử dụng xfce4-taskmanager, htop or top."
+
+#: panel-plugin/properties.cc:513
 msgid "Disabled"
-msgstr ""
+msgstr "Đã vô hiệu"
 
-#: ../panel-plugin/properties.cc:339
+#: panel-plugin/properties.cc:514
 msgid "Normal"
 msgstr "Bình thường"
 
-#: ../panel-plugin/properties.cc:340
+#: panel-plugin/properties.cc:515
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.cc:341
+#: panel-plugin/properties.cc:516
 msgid "No history"
 msgstr "Không có lịch sử"
 
-#: ../panel-plugin/properties.cc:342
+#: panel-plugin/properties.cc:517
 msgid "Grid"
 msgstr "Lưới"
 
-#: ../panel-plugin/properties.cc:350
+#: panel-plugin/properties.cc:530
 msgid "Mode:"
 msgstr "Chế độ:"
 
-#: ../panel-plugin/properties.cc:356
+#: panel-plugin/properties.cc:560
 msgid "Solid"
-msgstr ""
+msgstr "Màu duy nhất"
 
-#: ../panel-plugin/properties.cc:357
+#: panel-plugin/properties.cc:561
 msgid "Gradient"
-msgstr ""
+msgstr "Dải màu"
 
-#: ../panel-plugin/properties.cc:358
+#: panel-plugin/properties.cc:562
 msgid "Fire"
-msgstr ""
+msgstr "Lửa"
 
-#: ../panel-plugin/properties.cc:362
+#: panel-plugin/properties.cc:564
+msgid "Detailed"
+msgstr "Chi tiết"
+
+#: panel-plugin/properties.cc:569
 msgid "Color mode: "
 msgstr "Chế độ màu"
 
-#: ../panel-plugin/cpugraph.desktop.in.h:1
+#: panel-plugin/properties.cc:679
+msgid "SMT detected: Yes"
+msgstr "Phát hiện SMT: có"
+
+#: panel-plugin/properties.cc:679
+msgid "SMT detected: No"
+msgstr "Phát hiện SMT: không"
+
+#: panel-plugin/properties.cc:704
+#, c-format
+msgid "Number of SMT scheduling incidents: %u"
+msgstr "Số sự cố về SMT scheduling: %u"
+
+#: panel-plugin/properties.cc:709
+msgid "Estimated performance impact:"
+msgstr "Tác động hiệu suất xấp xỉ:"
+
+#: panel-plugin/properties.cc:710
+#, c-format
+msgid "Overall: %.3g%%"
+msgstr "Chung: %.3g%%"
+
+#: panel-plugin/properties.cc:711
+#, c-format
+msgid "Hotspots: %.3g%%"
+msgstr "Điểm nóng: %.3g%%"
+
+#: panel-plugin/properties.cc:723
+msgid "SMT detected: N/A"
+msgstr "Phát hiện SMT: không biết"
+
+#: panel-plugin/cpugraph.desktop.in:5
 msgid "CPU Graph"
 msgstr "CPU Graph"
