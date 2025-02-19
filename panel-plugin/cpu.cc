@@ -26,6 +26,9 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#ifdef HAVE_XFCE_REVISION_H
+#include "xfce-revision.h"
+#endif
 
 #include "cpu.h"
 #include "settings.h"
@@ -180,7 +183,7 @@ about_cb ()
     gtk_show_about_dialog (nullptr,
         "logo-icon-name", "org.xfce.panel.cpugraph",
         "license", xfce_get_license_text (XFCE_LICENSE_TEXT_GPL),
-        "version", PACKAGE_VERSION,
+        "version", VERSION_FULL,
         "program-name", PACKAGE_NAME,
         "comments", _("Graphical representation of the CPU load"),
         "website", "https://docs.xfce.org/panel-plugins/xfce4-cpugraph-plugin",
