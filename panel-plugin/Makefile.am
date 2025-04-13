@@ -5,14 +5,20 @@ AM_CPPFLAGS = -I${top_srcdir}
 
 libcpugraph_la_CFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\"$(localedir)\" \
+	@GLIB_CFLAGS@ \
+	@GTK_CFLAGS@ \
 	@LIBXFCE4UI_CFLAGS@ \
+	@LIBXFCE4UTIL_CFLAGS@ \
 	@LIBXFCE4PANEL_CFLAGS@ \
 	@XFCONF_CFLAGS@
 
 libcpugraph_la_CXXFLAGS = $(libcpugraph_la_CFLAGS)
 
 libcpugraph_la_LIBADD = \
+	@GLIB_LIBS@ \
+	@GTK_LIBS@ \
 	@LIBXFCE4UI_LIBS@ \
+	@LIBXFCE4UTIL_LIBS@ \
 	@LIBXFCE4PANEL_LIBS@ \
 	-lm \
 	@XFCONF_LIBS@
