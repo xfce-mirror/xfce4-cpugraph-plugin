@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the xfce-panel-plugins.xfce4-cpugraph-plugin package.
 # 
 # Translators:
-# Steve Harris <steve@jbs.ca>, 2023
+# Steve Harris <steve@jbs.ca>, 2023,2025
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
 "Report-Msgid-Bugs-To: https://gitlab.xfce.org/\n"
 "POT-Creation-Date: 2024-05-07 12:58+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
-"Last-Translator: Steve Harris <steve@jbs.ca>, 2023\n"
+"Last-Translator: Steve Harris <steve@jbs.ca>, 2023,2025\n"
 "Language-Team: English (Canada) (http://app.transifex.com/xfce/xfce-panel-plugins/language/en_CA/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +25,7 @@ msgstr "Graphical representation of the CPU load"
 #: panel-plugin/cpu.cc:716
 #, c-format
 msgid "CPU usage: %.1f%%"
-msgstr ""
+msgstr "CPU usage: %.1f%%"
 
 #: panel-plugin/properties.cc:74
 msgid ""
@@ -62,7 +62,7 @@ msgstr "Colour used to highlight potentially suboptimal\nplacement of threads on
 
 #: panel-plugin/properties.cc:171
 msgid "Display SMT statistics"
-msgstr ""
+msgstr "Display SMT statistics"
 
 #: panel-plugin/properties.cc:181
 msgid "Highlight suboptimal SMT scheduling"
@@ -94,19 +94,19 @@ msgstr "Colour 3:"
 
 #: panel-plugin/properties.cc:215
 msgid "System:"
-msgstr ""
+msgstr "System:"
 
 #: panel-plugin/properties.cc:218
 msgid "User:"
-msgstr ""
+msgstr "User:"
 
 #: panel-plugin/properties.cc:221
 msgid "Nice:"
-msgstr ""
+msgstr "Nice:"
 
 #: panel-plugin/properties.cc:224
 msgid "IO wait:"
-msgstr ""
+msgstr "IO wait:"
 
 #: panel-plugin/properties.cc:227
 msgid "Background:"
@@ -244,7 +244,7 @@ msgstr "Fire"
 
 #: panel-plugin/properties.cc:564
 msgid "Detailed"
-msgstr ""
+msgstr "Detailed"
 
 #: panel-plugin/properties.cc:569
 msgid "Color mode: "
