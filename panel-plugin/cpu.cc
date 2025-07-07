@@ -373,13 +373,13 @@ CPUGraph::set_bars_size ()
 
     if (bars.orientation == GTK_ORIENTATION_HORIZONTAL)
     {
-        h = 6 * nb_bars () - 2 + shadow_width;
+        h = size + shadow_width;
         v = -1;
     }
     else
     {
         h = -1;
-        v = 6 * nb_bars () - 2 + shadow_width;
+        v = size + shadow_width;
     }
 
     gtk_widget_set_size_request (bars.frame, h, v);
@@ -825,7 +825,6 @@ static Propagation
 draw_bars_cb (cairo_t *cr, const shared_ptr<CPUGraph> &base)
 {
     GtkAllocation alloc;
-    gfloat size;
     const bool horizontal = (base->bars.orientation == GTK_ORIENTATION_HORIZONTAL);
 
     gtk_widget_get_allocation (base->bars.draw_area, &alloc);
@@ -837,23 +836,28 @@ draw_bars_cb (cairo_t *cr, const shared_ptr<CPUGraph> &base)
         cairo_fill (cr);
     }
 
-    size = (horizontal ? alloc.height : alloc.width);
+    gfloat length = (horizontal ? alloc.width : alloc.height);
+    gfloat breadth = (horizontal ? alloc.height : alloc.width);
     if (base->tracked_core != 0 || base->nr_cores == 1)
     {
         gfloat usage = base->cpu_data[0].load;
         if (usage < base->load_threshold)
             usage = 0;
-        usage *= size;
+        usage *= length;
 
         xfce4::cairo_set_source_rgba (cr, base->colors[BARS_COLOR]);
         if (horizontal)
-            cairo_rectangle (cr, 0, size-usage, 4, usage);
+            cairo_rectangle (cr, 0, 0, usage, breadth);
         else
-            cairo_rectangle (cr, 0, 0, usage, 4);
+            cairo_rectangle (cr, 0, length-usage, breadth, usage);
         cairo_fill (cr);
     }
     else
     {
+        const guint SPACE = 3;
+        breadth -= SPACE * (base->nr_cores - 1);
+        breadth /= base->nr_cores;
+
         const xfce4::RGBA *active_color = nullptr;
         bool fill = false;
         for (guint i = 0; i < base->nr_cores; i++)
@@ -865,7 +869,7 @@ draw_bars_cb (cairo_t *cr, const shared_ptr<CPUGraph> &base)
             gfloat usage = cpu_data_i_plus_1.load;
             if (usage < base->load_threshold)
                 usage = 0;
-            usage *= size;
+            usage *= length;
 
             /* Suboptimally placed threads on SMT CPUs are optionally painted using a different color. */
             const xfce4::RGBA *color = &base->colors[highlight ? SMT_ISSUES_COLOR : BARS_COLOR];
@@ -881,9 +885,9 @@ draw_bars_cb (cairo_t *cr, const shared_ptr<CPUGraph> &base)
             }
 
             if (horizontal)
-                cairo_rectangle (cr, 6*i, size-usage, 4, usage);
+                cairo_rectangle (cr, 0, (breadth+SPACE)*i, usage, breadth);
             else
-                cairo_rectangle (cr, 0, 6*i, usage, 4);
+                cairo_rectangle (cr, (breadth+SPACE)*i, length-usage, breadth, usage);
             fill = true;
         }
         if (fill)
