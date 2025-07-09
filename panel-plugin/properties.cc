@@ -51,7 +51,7 @@ struct CPUGraphOptions
     GtkBox          *hbox_in_terminal = nullptr;
     GtkBox          *hbox_per_core_spacing = nullptr;
     GtkBox          *hbox_startup_notification = nullptr;
-    GtkToggleButton *per_core = nullptr, *show_bars_checkbox = nullptr;
+    GtkToggleButton *per_core = nullptr, *show_bars_checkbox = nullptr, *bars_perpendicular_checkbox;
     GtkLabel        *smt_stats = nullptr;
     GtkWidget       *notebook = nullptr;
     xfce4::SourceTag timeout_id;
@@ -240,6 +240,12 @@ create_options (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
         base->has_barcolor = true;
         change_color (button, base, BARS_COLOR);
     });
+    create_check_box (vbox2, sg, _("Perpendicular"),
+        base->bars_perpendicular, &dlg_data->bars_perpendicular_checkbox,
+        [dlg_data](GtkToggleButton *button) {
+            dlg_data->base->set_bars_perpendicular (gtk_toggle_button_get_active (button));
+            update_sensitivity (dlg_data);
+        });
     gtk_box_pack_start (vbox2, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), false, false, BORDER/2);
     create_check_box (vbox2, sg, _("Show frame"), base->has_frame, nullptr,
         [dlg_data](GtkToggleButton *button) {
@@ -638,6 +644,7 @@ update_sensitivity (const shared_ptr<CPUGraphOptions> &data, bool initial)
     gtk_widget_set_sensitive (get_color_button_parent(FG_COLOR1),
                               base->mode != MODE_DISABLED);
     gtk_widget_set_sensitive (get_color_button_parent(BARS_COLOR), base->has_bars);
+    gtk_widget_set_sensitive (GTK_WIDGET (data->bars_perpendicular_checkbox), base->has_bars);
     gtk_widget_set_sensitive (get_color_button_parent(SMT_ISSUES_COLOR),
                               base->has_bars && base->highlight_smt && base->topology && base->topology->smt);
 

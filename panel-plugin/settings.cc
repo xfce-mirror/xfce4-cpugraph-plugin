@@ -80,6 +80,7 @@ constexpr auto g_color_mode = "/color-mode";
 constexpr auto g_frame = "/frame";
 constexpr auto g_border = "/border";
 constexpr auto g_bars = "/bars";
+constexpr auto g_bars_perpendicular = "/bars-perpendicular";
 constexpr auto g_per_core = "/per-core";
 constexpr auto g_tracked_core = "/tracked-core";
 constexpr auto g_in_terminal = "/in-terminal";
@@ -117,6 +118,7 @@ Settings::read (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
     CPUGraphMode mode = MODE_NORMAL;
     guint color_mode = 0;
     bool bars = true;
+    bool bars_perpendicular = false;
     bool border = true;
     bool frame = false;
     bool stats_smt = STATS_SMT_BY_DEFAULT;
@@ -164,6 +166,7 @@ Settings::read (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
                     startup_notification = rc->read_int_entry ("StartupNotification", startup_notification);
                     border = rc->read_int_entry ("Border", border);
                     bars = rc->read_int_entry ("Bars", bars);
+                    bars_perpendicular = rc->read_int_entry ("Perpendicular Bars", bars_perpendicular);
                     highlight_smt = rc->read_int_entry ("SmtIssues", highlight_smt);
                     per_core = rc->read_int_entry ("PerCore", per_core);
                     per_core_spacing = rc->read_int_entry ("PerCoreSpacing", per_core_spacing);
@@ -200,6 +203,7 @@ Settings::read (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
             frame = xfconf_channel_get_int (chn, g_frame, frame);
             border = xfconf_channel_get_int (chn, g_border, border);
             bars = xfconf_channel_get_int (chn, g_bars, bars);
+            bars_perpendicular = xfconf_channel_get_int (chn, g_bars_perpendicular, bars_perpendicular);
             per_core = xfconf_channel_get_int (chn, g_per_core, per_core);
             tracked_core = xfconf_channel_get_int (chn, g_tracked_core, tracked_core);
             in_terminal = xfconf_channel_get_int (chn, g_in_terminal, in_terminal);
@@ -262,6 +266,7 @@ Settings::read (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
     }
 
     base->set_bars (bars);
+    base->set_bars_perpendicular (bars_perpendicular);
     base->set_border (border);
     for (guint i = 0; i < NUM_COLORS; i++)
         base->set_color ((CPUGraphColorNumber) i, colors[i]);
@@ -297,6 +302,7 @@ Settings::write (XfcePanelPlugin *plugin, const shared_ptr<const CPUGraph> &base
     xfconf_channel_set_int (chn, g_frame, base->has_frame);
     xfconf_channel_set_int (chn, g_border, base->has_border);
     xfconf_channel_set_int (chn, g_bars, base->has_bars);
+    xfconf_channel_set_int (chn, g_bars_perpendicular, base->bars_perpendicular);
     xfconf_channel_set_int (chn, g_per_core, base->per_core);
     xfconf_channel_set_int (chn, g_tracked_core, base->tracked_core);
     xfconf_channel_set_int (chn, g_in_terminal, base->command_in_terminal);
