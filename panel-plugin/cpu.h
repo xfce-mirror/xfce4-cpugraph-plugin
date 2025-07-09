@@ -38,6 +38,7 @@
 #include "os.h"
 
 constexpr auto BORDER = 8;
+constexpr auto BAR_SPACE = 2;
 constexpr auto STATS_SMT_BY_DEFAULT = false;
 constexpr auto HIGHLIGHT_SMT_BY_DEFAULT = false;
 constexpr auto MAX_HISTORY_SIZE = 100 * 1000;
@@ -143,6 +144,7 @@ struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
     bool command_startup_notification;
     bool has_barcolor;
     bool has_bars;
+    bool bars_perpendicular;
     bool has_border;
     bool has_frame;
     bool stats_smt;
@@ -181,6 +183,7 @@ struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
 
     // Called outside of "cpu.cc"
     void set_bars                 (bool has_bars_arg);
+    void set_bars_perpendicular   (bool bars_perpendicular_arg);
     void set_border               (bool has_border_arg);
     void set_color                (CPUGraphColorNumber number, const xfce4::RGBA &color);
     void set_color_mode           (guint color_mode_arg);

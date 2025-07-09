@@ -828,7 +828,7 @@ static Propagation
 draw_bars_cb (cairo_t *cr, const shared_ptr<CPUGraph> &base)
 {
     GtkAllocation alloc;
-    const bool horizontal = (base->bars.orientation == GTK_ORIENTATION_HORIZONTAL);
+    const bool horizontal = (base->bars.orientation == GTK_ORIENTATION_HORIZONTAL) ^ base->bars_perpendicular;
 
     gtk_widget_get_allocation (base->bars.draw_area, &alloc);
 
@@ -857,8 +857,7 @@ draw_bars_cb (cairo_t *cr, const shared_ptr<CPUGraph> &base)
     }
     else
     {
-        const guint SPACE = 3;
-        breadth -= SPACE * (base->nr_cores - 1);
+        breadth -= BAR_SPACE * (base->nr_cores - 1);
         breadth /= base->nr_cores;
 
         const xfce4::RGBA *active_color = nullptr;
@@ -888,9 +887,9 @@ draw_bars_cb (cairo_t *cr, const shared_ptr<CPUGraph> &base)
             }
 
             if (horizontal)
-                cairo_rectangle (cr, 0, (breadth+SPACE)*i, usage, breadth);
+                cairo_rectangle (cr, 0, (breadth+BAR_SPACE)*i, usage, breadth);
             else
-                cairo_rectangle (cr, (breadth+SPACE)*i, length-usage, breadth, usage);
+                cairo_rectangle (cr, (breadth+BAR_SPACE)*i, length-usage, breadth, usage);
             fill = true;
         }
         if (fill)
@@ -1011,6 +1010,21 @@ CPUGraph::set_bars (bool has_bars_arg)
         else
         {
             delete_bars ();
+        }
+    }
+}
+
+void
+CPUGraph::set_bars_perpendicular (bool bars_perpendicular_arg)
+{
+    if (bars_perpendicular != bars_perpendicular_arg)
+    {
+        bars_perpendicular = bars_perpendicular_arg;
+        if (has_bars)
+        {
+            delete_bars ();
+            create_bars (xfce_panel_plugin_get_orientation (plugin));
+            set_bars_size ();
         }
     }
 }
