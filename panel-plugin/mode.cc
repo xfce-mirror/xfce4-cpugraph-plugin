@@ -213,47 +213,64 @@ nearest_loads (const shared_ptr<CPUGraph> &base, const guint core, const gint64 
 }
 
 static void
-draw_graph_helper (const shared_ptr<CPUGraph> &base, const CpuLoad &load, cairo_t *cr, gint x, gint w, gint h)
+draw_graph_helper (const shared_ptr<CPUGraph> &base, const CpuLoad &load, cairo_t *cr, gint i, gint span, gint breadth)
 {
     if (load.value < base->load_threshold)
         return;
 
-    const gfloat usage = h * load.value;
+    const gfloat usage = breadth * load.value;
 
     if (usage == 0.0f)
         return;
 
+    bool horizontal = base->bars.orientation == GTK_ORIENTATION_HORIZONTAL;
+
     if (base->color_mode == COLOR_MODE_DETAILED)
     {
-        gfloat y_offset = 0.0f;
+        gfloat j_offset = 0.0f;
         auto draw = [&](gfloat value, CPUGraphColorNumber color) {
             if (value > 0.0f)
             {
                 xfce4::cairo_set_source_rgba (cr, base->colors[color]);
-                cairo_rectangle (cr, x, h - value - y_offset, w, value);
+                if (horizontal) {
+                    cairo_rectangle (cr, i, breadth - value - j_offset, span, value);
+                }
+                else {
+                    cairo_rectangle (cr, breadth - value - j_offset, i, value, span);
+                }
                 cairo_fill (cr);
-                y_offset += value;
+                j_offset += value;
             }
         };
-        draw(h * load.system, FG_COLOR_SYSTEM);
-        draw(h * load.user, FG_COLOR_USER);
-        draw(h * load.nice, FG_COLOR_NICE);
-        draw(h * load.iowait, FG_COLOR_IOWAIT);
+        draw(breadth * load.system, FG_COLOR_SYSTEM);
+        draw(breadth * load.user, FG_COLOR_USER);
+        draw(breadth * load.nice, FG_COLOR_NICE);
+        draw(breadth * load.iowait, FG_COLOR_IOWAIT);
     }
     else if (base->color_mode == COLOR_MODE_SOLID)
     {
         xfce4::cairo_set_source_rgba (cr, base->colors[FG_COLOR1]);
-        cairo_rectangle (cr, x, h - usage, w, usage);
+        if (horizontal) {
+            cairo_rectangle (cr, i, breadth - usage, span, usage);
+        }
+        else {
+            cairo_rectangle (cr, breadth - usage, i, usage, span);
+        }
         cairo_fill (cr);
     }
     else
     {
-        const gint h_usage = h - (gint) roundf (usage);
-        for (gint y = h - 1, tmp = 0; y >= h_usage; y--, tmp++)
+        const gint breadth_usage = breadth - (gint) roundf (usage);
+        for (gint j = breadth - 1, tmp = 0; j >= breadth_usage; j--, tmp++)
         {
-            gfloat t = tmp / (base->color_mode == COLOR_MODE_GRADIENT ? (gfloat) h : usage);
+            gfloat t = tmp / (base->color_mode == COLOR_MODE_GRADIENT ? (gfloat) breadth : usage);
             xfce4::cairo_set_source_rgba (cr, mix_colors (t, base->colors[FG_COLOR1], base->colors[FG_COLOR2]));
-            cairo_rectangle (cr, x, y, w, 1);
+            if (horizontal) {
+                cairo_rectangle (cr, i, j, span, 1);
+            }
+            else {
+                cairo_rectangle (cr, j, i, 1, span);
+            }
             cairo_fill (cr);
         }
     }
@@ -267,15 +284,20 @@ draw_graph_normal (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h
 
     const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
     auto &nearest = base->nearest_cache;
-    ensure_vector_size (nearest, w);
+
+    bool horizontal = base->bars.orientation == GTK_ORIENTATION_HORIZONTAL;
+
+    gint span = horizontal ? w : h;
+
+    ensure_vector_size (nearest, span);
 
     gint64 t0 = base->history.data[core][base->history.offset].timestamp;
-    nearest_loads (base, core, t0, -step, w, nearest.data());
+    nearest_loads (base, core, t0, -step, span, nearest.data());
 
-    for (gint x = 0; x < w; x++)
+    for (gint i = 0; i < span; i++)
     {
-        if (const CpuLoad *loadPtr = nearest[w - 1 - x])
-            draw_graph_helper (base, *loadPtr, cr, x, 1, h);
+        if (const CpuLoad *loadPtr = nearest[horizontal ? span - 1 - i : i])
+            draw_graph_helper (base, *loadPtr, cr, i, 1, horizontal ? h : w);
     }
 }
 
@@ -285,41 +307,46 @@ draw_graph_LED (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, g
     if (G_UNLIKELY (core >= base->history.data.size()))
         return;
 
-    const gint nrx = (w + 2) / 3;
-    const gint nry = (h + 1) / 2;
+    bool horizontal = base->bars.orientation == GTK_ORIENTATION_HORIZONTAL;
+
+    gint span = horizontal ? w : h;
+    gint breadth = horizontal ? h : w;
+
+    const gint nri = (span + 2) / 3;
+    const gint nrj = (breadth + 1) / 2;
     const xfce4::RGBA *active_color = NULL;
     const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
     auto &nearest = base->nearest_cache;
-    ensure_vector_size (nearest, w);
+    ensure_vector_size (nearest, span);
 
     gint64 t0 = base->history.data[core][base->history.offset].timestamp;
-    nearest_loads (base, core, t0, -step, nrx, nearest.data());
+    nearest_loads (base, core, t0, -step, nri, nearest.data());
 
-    for (gint x = 0; x * 3 < w; x++)
+    for (gint i = 0; i * 3 < span; i++)
     {
-        const gint idx = nrx - x - 1;
-        gint limit = nry;
+        const gint idi = horizontal ? nri - i - 1 : i;
+        gint limit = nrj;
 
-        if (G_LIKELY (idx >= 0 && idx < nrx))
+        if (G_LIKELY (idi >= 0 && idi < nri))
         {
-            if (const CpuLoad *loadPtr = nearest[idx])
+            if (const CpuLoad *loadPtr = nearest[idi])
             {
                 if (loadPtr->value >= base->load_threshold)
-                    limit = nry - (gint) roundf (nry * loadPtr->value);
+                    limit = nrj - (gint) roundf (nrj * loadPtr->value);
             }
         }
 
-        for (gint y = 0; y * 2 < h; y++)
+        for (gint j = 0; j * 2 < breadth; j++)
         {
-            if (base->color_mode != COLOR_MODE_SOLID && y < limit)
+            if (base->color_mode != COLOR_MODE_SOLID && j < limit)
             {
-                gfloat t = y / (gfloat) (base->color_mode == COLOR_MODE_GRADIENT ? nry : limit);
+                gfloat t = j / (gfloat) (base->color_mode == COLOR_MODE_GRADIENT ? nrj : limit);
                 xfce4::cairo_set_source_rgba (cr, mix_colors (t, base->colors[FG_COLOR3], base->colors[FG_COLOR2]));
                 active_color = NULL;
             }
             else
             {
-                const xfce4::RGBA *color = (y >= limit ? &base->colors[FG_COLOR1] : &base->colors[FG_COLOR2]);
+                const xfce4::RGBA *color = (j >= limit ? &base->colors[FG_COLOR1] : &base->colors[FG_COLOR2]);
                 if (active_color != color)
                 {
                     xfce4::cairo_set_source_rgba (cr, *color);
@@ -328,7 +355,12 @@ draw_graph_LED (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, g
             }
 
             /* draw rectangle */
-            cairo_rectangle (cr, x * 3, y * 2, 2, 1);
+            if (horizontal) {
+                cairo_rectangle (cr, i * 3, j * 2, 2, 1);
+            }
+            else {
+                cairo_rectangle (cr, j * 2, i * 3, 1, 2);
+            }
             cairo_fill (cr);
         }
     }
@@ -340,8 +372,10 @@ draw_graph_no_history (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gi
     if (G_UNLIKELY (core >= base->history.data.size()))
         return;
 
+    bool horizontal = base->bars.orientation == GTK_ORIENTATION_HORIZONTAL;
+
     const CpuLoad &load = base->history.data[core][base->history.offset];
-    draw_graph_helper (base, load, cr, 0, w, h);
+    draw_graph_helper (base, load, cr, 0, horizontal ? w : h, horizontal ? h : w);
 }
 
 void
@@ -350,13 +384,18 @@ draw_graph_grid (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, 
     if (G_UNLIKELY (core >= base->history.data.size()))
         return;
 
+    bool horizontal = base->bars.orientation == GTK_ORIENTATION_HORIZONTAL;
+
+    gint span = horizontal ? w : h;
+    gint breadth = horizontal ? h : w;
+
     const gfloat thickness = 1.75f;
     const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
     auto &nearest = base->nearest_cache;
-    ensure_vector_size (nearest, w);
+    ensure_vector_size (nearest, span);
 
     gint64 t0 = base->history.data[core][base->history.offset].timestamp;
-    nearest_loads (base, core, t0, -step, w, nearest.data());
+    nearest_loads (base, core, t0, -step, span, nearest.data());
 
     cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
 
@@ -365,26 +404,38 @@ draw_graph_grid (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, 
         cairo_save (cr);
         cairo_set_line_width (cr, 1);
         xfce4::cairo_set_source_rgba (cr, base->colors[FG_COLOR1]);
-        for (gint x = 0; x < w; x += 6)
+        for (gint i = 0; i < span; i += 6)
         {
-            gint x1 = x;
+            gint i1 = i;
 
             if (base->non_linear)
             {
-                x1 *= pow (1.02, x1);
-                if (x1 >= w)
+                i1 *= pow (1.02, i1);
+                if (i1 >= span)
                     break;
             }
 
-            /* draw vertical line */
-            cairo_move_to (cr, w - 1 - x1 + 0.5, 0.5);
-            cairo_line_to (cr, w - 1 - x1 + 0.5, h - 1 + 0.5);
+            /* draw perpendicular line */
+            if (horizontal) {
+                cairo_move_to (cr, span - 1 - i1 + 0.5, 0.5);
+                cairo_line_to (cr, span - 1 - i1 + 0.5, breadth - 1 + 0.5);
+            }
+            else {
+                cairo_move_to (cr, 0.5, span - 1 - i1 + 0.5);
+                cairo_line_to (cr, breadth - 1 + 0.5, span - 1 - i1 + 0.5);
+            }
         }
-        for (gint y = 0; y < h; y += 4)
+        for (gint j = 0; j < breadth; j += 4)
         {
-            /* draw horizontal line */
-            cairo_move_to (cr, 0.5, h - 1 - y + 0.5);
-            cairo_line_to (cr, w - 1  + 0.5, h - 1 - y + 0.5);
+            /* draw parallel line */
+            if (horizontal) {
+                cairo_move_to (cr, 0.5, breadth - 1 - j + 0.5);
+                cairo_line_to (cr, span - 1  + 0.5, breadth - 1 - j + 0.5);
+            }
+            else {
+                cairo_move_to (cr, breadth - 1 - j + 0.5, 0.5);
+                cairo_line_to (cr, breadth - 1 - j + 0.5, span - 1  + 0.5);
+            }
         }
         cairo_stroke (cr);
         cairo_restore (cr);
@@ -397,17 +448,24 @@ draw_graph_grid (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, 
         cairo_save (cr);
         cairo_set_line_width (cr, thickness);
         xfce4::cairo_set_source_rgba (cr, base->colors[2]);
-        for (gint x = 0; x < w; x++)
+        for (gint i = 0; i < span; i++)
         {
             gfloat usage = 0.0f;
-            if (const CpuLoad *loadPtr = nearest[w - 1 - x])
+            if (const CpuLoad *loadPtr = nearest[horizontal ? span - 1 - i : i])
             {
                 if (loadPtr->value >= base->load_threshold)
-                    usage = h * loadPtr->value;
+                    usage = breadth * loadPtr->value;
             }
 
-            Point current(x, h + (thickness-1)/2 - usage);
-            if (x == 0)
+            Point current;
+            if (horizontal) {
+                current = Point(i, breadth + (thickness-1)/2 - usage);
+            }
+            else {
+                current = Point(breadth + (thickness-1)/2 - usage, i);
+            }
+
+            if (i == 0)
                 last = current;
 
             /* draw line */
