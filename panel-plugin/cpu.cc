@@ -847,7 +847,12 @@ draw_bars_cb (cairo_t *cr, const shared_ptr<CPUGraph> &base)
 
         xfce4::cairo_set_source_rgba (cr, base->colors[BARS_COLOR]);
         if (horizontal)
-            cairo_rectangle (cr, 0, 0, usage, breadth);
+            if (base->bars_perpendicular) {
+                cairo_rectangle (cr, length-usage, 0, usage, breadth);
+            }
+            else {
+                cairo_rectangle (cr, 0, 0, usage, breadth);
+            }
         else
             cairo_rectangle (cr, 0, length-usage, breadth, usage);
         cairo_fill (cr);
@@ -884,7 +889,12 @@ draw_bars_cb (cairo_t *cr, const shared_ptr<CPUGraph> &base)
             }
 
             if (horizontal)
-                cairo_rectangle (cr, 0, (breadth+BAR_SPACE)*i, usage, breadth);
+                if (base->bars_perpendicular) {
+                    cairo_rectangle (cr, length-usage, (breadth+BAR_SPACE)*i, usage, breadth);
+                }
+                else {
+                    cairo_rectangle (cr, 0, (breadth+BAR_SPACE)*i, usage, breadth);
+                }
             else
                 cairo_rectangle (cr, (breadth+BAR_SPACE)*i, length-usage, breadth, usage);
             fill = true;
