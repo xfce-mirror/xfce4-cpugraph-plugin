@@ -828,7 +828,7 @@ static Propagation
 draw_bars_cb (cairo_t *cr, const shared_ptr<CPUGraph> &base)
 {
     GtkAllocation alloc;
-    const bool horizontal = (base->bars.orientation == GTK_ORIENTATION_HORIZONTAL) ^ base->bars_perpendicular;
+    bool horizontal = (base->bars.orientation == GTK_ORIENTATION_HORIZONTAL) ^ base->bars_perpendicular;
 
     gtk_widget_get_allocation (base->bars.draw_area, &alloc);
 
