@@ -126,6 +126,7 @@ struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
     GtkWidget *tooltip_text;
 
     /* Settings */
+    GtkWidget *settings_dialog;
     XfconfChannel *channel;
     CPUGraphUpdateRate update_interval;
     guint size;
