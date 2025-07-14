@@ -104,7 +104,11 @@ static void       update_stats_smt_cb (const shared_ptr<CPUGraphOptions> &data);
 void
 create_options (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
 {
-    xfce_panel_plugin_block_menu (plugin);
+    if (base->settings_dialog != NULL)
+    {
+        gtk_window_present (GTK_WINDOW (base->settings_dialog));
+        return;
+    }
 
     GtkWidget *dlg = xfce_titled_dialog_new_with_mixed_buttons (
         _("CPU Graph Properties"),
@@ -115,6 +119,8 @@ create_options (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
         GTK_RESPONSE_OK,
         nullptr
     );
+    base->settings_dialog = dlg;
+    g_object_add_weak_pointer (G_OBJECT (dlg), (gpointer *) &base->settings_dialog);
 
     auto dlg_data = make_shared<CPUGraphOptions>(base);
 
@@ -123,7 +129,6 @@ create_options (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
     });
     xfce4::connect_response (GTK_DIALOG (dlg), [base, dlg](GtkDialog*, gint response) {
         gtk_widget_destroy (dlg);
-        xfce_panel_plugin_unblock_menu (base->plugin);
         Settings::write (base->plugin, base);
     });
 
