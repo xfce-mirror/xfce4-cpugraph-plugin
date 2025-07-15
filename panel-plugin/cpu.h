@@ -24,10 +24,6 @@
 #ifndef _XFCE_CPUGRAPH_CPU_H_
 #define _XFCE_CPUGRAPH_CPU_H_
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-
 #include <libxfce4panel/libxfce4panel.h>
 #include <xfconf/xfconf.h>
 #include <string>
