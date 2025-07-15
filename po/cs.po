@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Xfce
-# This file is distributed under the same license as the xfce-panel-plugins.xfce4-cpugraph-plugin package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
 # Michal Várady <miko.vaji@gmail.com>, 2019-2022,2024
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
-"Report-Msgid-Bugs-To: https://gitlab.xfce.org/\n"
-"POT-Creation-Date: 2024-05-07 12:58+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-07-15 12:51+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
 "Last-Translator: Michal Várady <miko.vaji@gmail.com>, 2019-2022,2024\n"
 "Language-Team: Czech (http://app.transifex.com/xfce/xfce-panel-plugins/language/cs/)\n"
@@ -18,101 +18,101 @@ msgstr ""
 "Language: cs\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
-#: panel-plugin/cpu.cc:185 panel-plugin/cpugraph.desktop.in:6
+#: ../panel-plugin/cpu.cc:188
 msgid "Graphical representation of the CPU load"
 msgstr "Grafická reprezentace zatížení procesoru"
 
-#: panel-plugin/cpu.cc:716
+#: ../panel-plugin/cpu.cc:720
 #, c-format
 msgid "CPU usage: %.1f%%"
 msgstr "Využití procesoru: %.1f%%"
 
-#: panel-plugin/properties.cc:74
+#: ../panel-plugin/properties.cc:74
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
 msgstr "Sekce „Celkový“ zobrazuje vliv na celkový výkon stroje."
 
-#: panel-plugin/properties.cc:75
+#: ../panel-plugin/properties.cc:75
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
 msgstr "Sekce „Aktivní oblasti“ zobrazuje aktuální vliv na výkon pouze ve vláknech využívajících neoptimální rozhodnutí v plánování SMT."
 
-#: panel-plugin/properties.cc:110
+#: ../panel-plugin/properties.cc:114
 msgid "CPU Graph Properties"
 msgstr "Vlastnosti Grafu procesoru"
 
-#: panel-plugin/properties.cc:114
+#: ../panel-plugin/properties.cc:118
 msgid "_Close"
 msgstr "_Zavřít"
 
-#: panel-plugin/properties.cc:142
+#: ../panel-plugin/properties.cc:147
 msgid "Run in terminal"
 msgstr "Spustit v terminálu"
 
-#: panel-plugin/properties.cc:148
+#: ../panel-plugin/properties.cc:153
 msgid "Use startup notification"
 msgstr "Použít oznámení o spuštění"
 
-#: panel-plugin/properties.cc:155
+#: ../panel-plugin/properties.cc:160
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
 msgstr "Barva pro zvýraznění potenciálně neoptimálního\nrozmístění vláken na procesorech s funkcí SMT"
 
-#: panel-plugin/properties.cc:171
+#: ../panel-plugin/properties.cc:176
 msgid "Display SMT statistics"
 msgstr "Zobrazit statistiky SMT"
 
-#: panel-plugin/properties.cc:181
+#: ../panel-plugin/properties.cc:186
 msgid "Highlight suboptimal SMT scheduling"
 msgstr "Zvýraznit neoptimální plánování SMT"
 
-#: panel-plugin/properties.cc:188
+#: ../panel-plugin/properties.cc:193
 msgid "SMT issues color:"
 msgstr "Barva potíží se SMT:"
 
-#: panel-plugin/properties.cc:193
+#: ../panel-plugin/properties.cc:198
 msgid "Use non-linear time-scale"
 msgstr "Nelineární časová osa"
 
-#: panel-plugin/properties.cc:198
+#: ../panel-plugin/properties.cc:203
 msgid "Per-core history graphs"
 msgstr "Grafy historie pro jednotlivá jádra"
 
-#: panel-plugin/properties.cc:206
+#: ../panel-plugin/properties.cc:211
 msgid "Color 1:"
 msgstr "Barva 1:"
 
-#: panel-plugin/properties.cc:209
+#: ../panel-plugin/properties.cc:214
 msgid "Color 2:"
 msgstr "Barva 2:"
 
-#: panel-plugin/properties.cc:212
+#: ../panel-plugin/properties.cc:217
 msgid "Color 3:"
 msgstr "Barva 3:"
 
-#: panel-plugin/properties.cc:215
+#: ../panel-plugin/properties.cc:220
 msgid "System:"
 msgstr "Systém:"
 
-#: panel-plugin/properties.cc:218
+#: ../panel-plugin/properties.cc:223
 msgid "User:"
 msgstr "Uživatel:"
 
-#: panel-plugin/properties.cc:221
+#: ../panel-plugin/properties.cc:226
 msgid "Nice:"
 msgstr "Nice:"
 
-#: panel-plugin/properties.cc:224
+#: ../panel-plugin/properties.cc:229
 msgid "IO wait:"
 msgstr "Čekání na V/V operace:"
 
-#: panel-plugin/properties.cc:227
+#: ../panel-plugin/properties.cc:232
 msgid "Background:"
 msgstr "Pozadí:"
 
-#: panel-plugin/properties.cc:233
+#: ../panel-plugin/properties.cc:238
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Zobrazit sloupec aktuálního využití"
@@ -120,169 +120,165 @@ msgstr[1] "Zobrazit sloupce aktuálního využití"
 msgstr[2] "Zobrazit sloupce aktuálního využití"
 msgstr[3] "Zobrazit sloupce aktuálního využití"
 
-#: panel-plugin/properties.cc:239
+#: ../panel-plugin/properties.cc:244
 msgid "Bars color:"
 msgstr "Barva sloupců:"
 
-#: panel-plugin/properties.cc:244
+#: ../panel-plugin/properties.cc:249
 msgid "Show frame"
 msgstr "Zobrazit rámeček"
 
-#: panel-plugin/properties.cc:249
+#: ../panel-plugin/properties.cc:254
 msgid "Show border"
 msgstr "Zobrazit okraje"
 
-#: panel-plugin/properties.cc:260
+#: ../panel-plugin/properties.cc:265
 msgid "Appearance"
 msgstr "Vzhled"
 
-#: panel-plugin/properties.cc:261
+#: ../panel-plugin/properties.cc:266
 msgid "Advanced"
 msgstr "Pokročilé"
 
-#: panel-plugin/properties.cc:262
+#: ../panel-plugin/properties.cc:267
 msgid "Stats"
 msgstr "Statistiky"
 
-#: panel-plugin/properties.cc:396
+#: ../panel-plugin/properties.cc:401
 msgid "Fastest (~250ms)"
 msgstr "Nejrychlejší (~250 ms)"
 
-#: panel-plugin/properties.cc:397
+#: ../panel-plugin/properties.cc:402
 msgid "Fast (~500ms)"
 msgstr "Rychlý (~500 ms)"
 
-#: panel-plugin/properties.cc:398
+#: ../panel-plugin/properties.cc:403
 msgid "Normal (~750ms)"
 msgstr "Standardní (~750 ms)"
 
-#: panel-plugin/properties.cc:399
+#: ../panel-plugin/properties.cc:404
 msgid "Slow (~1s)"
 msgstr "Pomalý (~1 s)"
 
-#: panel-plugin/properties.cc:400
+#: ../panel-plugin/properties.cc:405
 msgid "Slowest (~3s)"
 msgstr "Nejpomalejší (~3 s)"
 
-#: panel-plugin/properties.cc:403
+#: ../panel-plugin/properties.cc:408
 msgid "Update Interval:"
 msgstr "Interval obnovení:"
 
-#: panel-plugin/properties.cc:415
+#: ../panel-plugin/properties.cc:420
 msgid "All"
 msgstr "Vše"
 
-#: panel-plugin/properties.cc:419
+#: ../panel-plugin/properties.cc:424
 msgid "Tracked Core:"
 msgstr "Sledované jádro:"
 
-#: panel-plugin/properties.cc:435
+#: ../panel-plugin/properties.cc:440
 msgid "Width:"
 msgstr "Šířka:"
 
-#: panel-plugin/properties.cc:437
+#: ../panel-plugin/properties.cc:442
 msgid "Height:"
 msgstr "Výška:"
 
-#: panel-plugin/properties.cc:450
+#: ../panel-plugin/properties.cc:455
 msgid "Threshold (%):"
 msgstr "Práh (%):"
 
-#: panel-plugin/properties.cc:462
+#: ../panel-plugin/properties.cc:467
 msgid "Spacing:"
 msgstr "Mezery:"
 
-#: panel-plugin/properties.cc:465
+#: ../panel-plugin/properties.cc:470
 msgid "Spacing between per-core history graphs"
 msgstr "Mezery mezi grafy historie pro jednotlivá jádra"
 
-#: panel-plugin/properties.cc:476
+#: ../panel-plugin/properties.cc:481
 msgid "Associated command:"
 msgstr "Přiřazený příkaz:"
 
-#: panel-plugin/properties.cc:484
+#: ../panel-plugin/properties.cc:489
 msgid "The command to run when the plugin is left-clicked."
 msgstr "Příkaz spuštěný po kliknutí levým tlačítkem na zásuvný modul."
 
-#: panel-plugin/properties.cc:485
+#: ../panel-plugin/properties.cc:490
 msgid "If not specified, it defaults to xfce4-taskmanager, htop or top."
 msgstr "Pokud není zadán, je výchozí možností xfce4-taskmanager, htop nebo top."
 
-#: panel-plugin/properties.cc:513
+#: ../panel-plugin/properties.cc:518
 msgid "Disabled"
 msgstr "Zakázáno"
 
-#: panel-plugin/properties.cc:514
+#: ../panel-plugin/properties.cc:519
 msgid "Normal"
 msgstr "Běžný"
 
-#: panel-plugin/properties.cc:515
+#: ../panel-plugin/properties.cc:520
 msgid "LED"
 msgstr "LED diody"
 
-#: panel-plugin/properties.cc:516
+#: ../panel-plugin/properties.cc:521
 msgid "No history"
 msgstr "Bez historie"
 
-#: panel-plugin/properties.cc:517
+#: ../panel-plugin/properties.cc:522
 msgid "Grid"
 msgstr "Mřížka"
 
-#: panel-plugin/properties.cc:530
+#: ../panel-plugin/properties.cc:535
 msgid "Mode:"
 msgstr "Režim:"
 
-#: panel-plugin/properties.cc:560
+#: ../panel-plugin/properties.cc:565
 msgid "Solid"
 msgstr "Jednobarevný"
 
-#: panel-plugin/properties.cc:561
+#: ../panel-plugin/properties.cc:566
 msgid "Gradient"
 msgstr "Stupňovaný"
 
-#: panel-plugin/properties.cc:562
+#: ../panel-plugin/properties.cc:567
 msgid "Fire"
 msgstr "Oheň"
 
-#: panel-plugin/properties.cc:564
+#: ../panel-plugin/properties.cc:569
 msgid "Detailed"
 msgstr "Podrobný"
 
-#: panel-plugin/properties.cc:569
+#: ../panel-plugin/properties.cc:574
 msgid "Color mode: "
 msgstr "Barevný režim:"
 
-#: panel-plugin/properties.cc:679
+#: ../panel-plugin/properties.cc:684
 msgid "SMT detected: Yes"
 msgstr "SMT rozpoznáno: Ano"
 
-#: panel-plugin/properties.cc:679
+#: ../panel-plugin/properties.cc:684
 msgid "SMT detected: No"
 msgstr "SMT rozpoznáno: Ne"
 
-#: panel-plugin/properties.cc:704
+#: ../panel-plugin/properties.cc:709
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
 msgstr "Počet incidentů v plánování SMT: %u"
 
-#: panel-plugin/properties.cc:709
+#: ../panel-plugin/properties.cc:714
 msgid "Estimated performance impact:"
 msgstr "Odhadovaný vliv na výkon:"
 
-#: panel-plugin/properties.cc:710
+#: ../panel-plugin/properties.cc:715
 #, c-format
 msgid "Overall: %.3g%%"
 msgstr "Celkový: %.3g%%"
 
-#: panel-plugin/properties.cc:711
+#: ../panel-plugin/properties.cc:716
 #, c-format
 msgid "Hotspots: %.3g%%"
 msgstr "Aktivní oblasti: %.3g%%"
 
-#: panel-plugin/properties.cc:723
+#: ../panel-plugin/properties.cc:728
 msgid "SMT detected: N/A"
 msgstr "SMT rozpoznáno: Výsledek není k dispozici"
-
-#: panel-plugin/cpugraph.desktop.in:5
-msgid "CPU Graph"
-msgstr "Graf procesoru"
