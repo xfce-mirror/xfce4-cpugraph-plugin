@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Xfce
-# This file is distributed under the same license as the xfce-panel-plugins.xfce4-cpugraph-plugin package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
 # Theppitak Karoonboonyanan <thep@linux.thai.net>, 2014
@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
-"Report-Msgid-Bugs-To: https://gitlab.xfce.org/\n"
-"POT-Creation-Date: 2024-05-07 12:58+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-07-15 12:51+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
 "Last-Translator: Theppitak Karoonboonyanan <theppitak@gmail.com>, 2014,2019,2021\n"
 "Language-Team: Thai (http://app.transifex.com/xfce/xfce-panel-plugins/language/th/)\n"
@@ -19,268 +19,264 @@ msgstr ""
 "Language: th\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: panel-plugin/cpu.cc:185 panel-plugin/cpugraph.desktop.in:6
+#: ../panel-plugin/cpu.cc:188
 msgid "Graphical representation of the CPU load"
 msgstr "แสดงโหลดของซีพียูในแบบกราฟิกส์"
 
-#: panel-plugin/cpu.cc:716
+#: ../panel-plugin/cpu.cc:720
 #, c-format
 msgid "CPU usage: %.1f%%"
 msgstr "การใช้ CPU: %.1f%%"
 
-#: panel-plugin/properties.cc:74
+#: ../panel-plugin/properties.cc:74
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
 msgstr "'ภาพรวม' แสดงผลกระทบต่อสมรรถนะโดยรวมของเครื่อง"
 
-#: panel-plugin/properties.cc:75
+#: ../panel-plugin/properties.cc:75
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
 msgstr "'เฉพาะจุด' แสดงผลกระทบด้านสมรรถนะชั่วคราวที่มีผลต่อเธรดที่เกี่ยวข้องเท่านั้น จากการเลือกจัดเวลาที่ด้อยประสิทธิภาพของ SMT"
 
-#: panel-plugin/properties.cc:110
+#: ../panel-plugin/properties.cc:114
 msgid "CPU Graph Properties"
 msgstr "คุณสมบัติของกราฟซีพียู"
 
-#: panel-plugin/properties.cc:114
+#: ../panel-plugin/properties.cc:118
 msgid "_Close"
 msgstr "ปิ_ด"
 
-#: panel-plugin/properties.cc:142
+#: ../panel-plugin/properties.cc:147
 msgid "Run in terminal"
 msgstr "เรียกทำงานในเทอร์มินัล"
 
-#: panel-plugin/properties.cc:148
+#: ../panel-plugin/properties.cc:153
 msgid "Use startup notification"
 msgstr "ใช้การแจ้งเหตุขณะเริ่ม"
 
-#: panel-plugin/properties.cc:155
+#: ../panel-plugin/properties.cc:160
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
 msgstr "สีที่ใช้เน้นการจัดเธรดที่อาจด้อยประสิทธิภาพ\nในซีพียูเมื่อใช้ SMT"
 
-#: panel-plugin/properties.cc:171
+#: ../panel-plugin/properties.cc:176
 msgid "Display SMT statistics"
 msgstr "แสดงสถิติ SMT"
 
-#: panel-plugin/properties.cc:181
+#: ../panel-plugin/properties.cc:186
 msgid "Highlight suboptimal SMT scheduling"
 msgstr "เน้นสีการจัดเวลางานด้วย SMT ที่ด้อยประสิทธิภาพ"
 
-#: panel-plugin/properties.cc:188
+#: ../panel-plugin/properties.cc:193
 msgid "SMT issues color:"
 msgstr "สีของปัญหา SMT:"
 
-#: panel-plugin/properties.cc:193
+#: ../panel-plugin/properties.cc:198
 msgid "Use non-linear time-scale"
 msgstr "ใช้มาตราส่วนเวลาแบบไม่เชิงเส้น"
 
-#: panel-plugin/properties.cc:198
+#: ../panel-plugin/properties.cc:203
 msgid "Per-core history graphs"
 msgstr "แสดงกราฟประวัติของแต่ละคอร์แยกกัน"
 
-#: panel-plugin/properties.cc:206
+#: ../panel-plugin/properties.cc:211
 msgid "Color 1:"
 msgstr "สี 1:"
 
-#: panel-plugin/properties.cc:209
+#: ../panel-plugin/properties.cc:214
 msgid "Color 2:"
 msgstr "สี 2:"
 
-#: panel-plugin/properties.cc:212
+#: ../panel-plugin/properties.cc:217
 msgid "Color 3:"
 msgstr "สี 3:"
 
-#: panel-plugin/properties.cc:215
+#: ../panel-plugin/properties.cc:220
 msgid "System:"
 msgstr "ระบบ:"
 
-#: panel-plugin/properties.cc:218
+#: ../panel-plugin/properties.cc:223
 msgid "User:"
 msgstr "ผู้ใช้:"
 
-#: panel-plugin/properties.cc:221
+#: ../panel-plugin/properties.cc:226
 msgid "Nice:"
 msgstr "Nice:"
 
-#: panel-plugin/properties.cc:224
+#: ../panel-plugin/properties.cc:229
 msgid "IO wait:"
 msgstr "รอ IO:"
 
-#: panel-plugin/properties.cc:227
+#: ../panel-plugin/properties.cc:232
 msgid "Background:"
 msgstr "พื้นหลัง:"
 
-#: panel-plugin/properties.cc:233
+#: ../panel-plugin/properties.cc:238
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "แสดงแถบการใช้งานปัจจุบัน"
 
-#: panel-plugin/properties.cc:239
+#: ../panel-plugin/properties.cc:244
 msgid "Bars color:"
 msgstr "สีแถบ:"
 
-#: panel-plugin/properties.cc:244
+#: ../panel-plugin/properties.cc:249
 msgid "Show frame"
 msgstr "แสดงเส้นกรอบ"
 
-#: panel-plugin/properties.cc:249
+#: ../panel-plugin/properties.cc:254
 msgid "Show border"
 msgstr "แสดงขอบ"
 
-#: panel-plugin/properties.cc:260
+#: ../panel-plugin/properties.cc:265
 msgid "Appearance"
 msgstr "รูปลักษณ์"
 
-#: panel-plugin/properties.cc:261
+#: ../panel-plugin/properties.cc:266
 msgid "Advanced"
 msgstr "ขั้นสูง"
 
-#: panel-plugin/properties.cc:262
+#: ../panel-plugin/properties.cc:267
 msgid "Stats"
 msgstr "สถิติ"
 
-#: panel-plugin/properties.cc:396
+#: ../panel-plugin/properties.cc:401
 msgid "Fastest (~250ms)"
 msgstr "เร็วที่สุด (~250ms)"
 
-#: panel-plugin/properties.cc:397
+#: ../panel-plugin/properties.cc:402
 msgid "Fast (~500ms)"
 msgstr "เร็ว (~500ms)"
 
-#: panel-plugin/properties.cc:398
+#: ../panel-plugin/properties.cc:403
 msgid "Normal (~750ms)"
 msgstr "ปกติ (~750ms)"
 
-#: panel-plugin/properties.cc:399
+#: ../panel-plugin/properties.cc:404
 msgid "Slow (~1s)"
 msgstr "ช้า (~1s)"
 
-#: panel-plugin/properties.cc:400
+#: ../panel-plugin/properties.cc:405
 msgid "Slowest (~3s)"
 msgstr "ช้าที่สุด (~3s)"
 
-#: panel-plugin/properties.cc:403
+#: ../panel-plugin/properties.cc:408
 msgid "Update Interval:"
 msgstr "ช่วงเวลาปรับข้อมูล:"
 
-#: panel-plugin/properties.cc:415
+#: ../panel-plugin/properties.cc:420
 msgid "All"
 msgstr "ทั้งหมด"
 
-#: panel-plugin/properties.cc:419
+#: ../panel-plugin/properties.cc:424
 msgid "Tracked Core:"
 msgstr "คอร์ที่ติดตาม:"
 
-#: panel-plugin/properties.cc:435
+#: ../panel-plugin/properties.cc:440
 msgid "Width:"
 msgstr "ความกว้าง:"
 
-#: panel-plugin/properties.cc:437
+#: ../panel-plugin/properties.cc:442
 msgid "Height:"
 msgstr "ความสูง:"
 
-#: panel-plugin/properties.cc:450
+#: ../panel-plugin/properties.cc:455
 msgid "Threshold (%):"
 msgstr "ขีดเริ่ม (%):"
 
-#: panel-plugin/properties.cc:462
+#: ../panel-plugin/properties.cc:467
 msgid "Spacing:"
 msgstr "ช่องไฟ:"
 
-#: panel-plugin/properties.cc:465
+#: ../panel-plugin/properties.cc:470
 msgid "Spacing between per-core history graphs"
 msgstr "ช่องไฟระหว่างกราฟประวัติของแต่ละคอร์"
 
-#: panel-plugin/properties.cc:476
+#: ../panel-plugin/properties.cc:481
 msgid "Associated command:"
 msgstr "คำสั่งที่เชื่อมโยง:"
 
-#: panel-plugin/properties.cc:484
+#: ../panel-plugin/properties.cc:489
 msgid "The command to run when the plugin is left-clicked."
 msgstr "คำสั่งที่จะเรียกทำงานเมื่อคลิกซ้ายบนตัวปลั๊กอิน"
 
-#: panel-plugin/properties.cc:485
+#: ../panel-plugin/properties.cc:490
 msgid "If not specified, it defaults to xfce4-taskmanager, htop or top."
 msgstr "ถ้าไม่ระบุ จะพยายามเรียก xfce4-taskmanager, htop หรือ top โดยปริยาย"
 
-#: panel-plugin/properties.cc:513
+#: ../panel-plugin/properties.cc:518
 msgid "Disabled"
 msgstr "ปิดใช้งาน"
 
-#: panel-plugin/properties.cc:514
+#: ../panel-plugin/properties.cc:519
 msgid "Normal"
 msgstr "ปกติ"
 
-#: panel-plugin/properties.cc:515
+#: ../panel-plugin/properties.cc:520
 msgid "LED"
 msgstr "LED"
 
-#: panel-plugin/properties.cc:516
+#: ../panel-plugin/properties.cc:521
 msgid "No history"
 msgstr "ไม่มีประวัติ"
 
-#: panel-plugin/properties.cc:517
+#: ../panel-plugin/properties.cc:522
 msgid "Grid"
 msgstr "ตะแกรง"
 
-#: panel-plugin/properties.cc:530
+#: ../panel-plugin/properties.cc:535
 msgid "Mode:"
 msgstr "รูปแบบ:"
 
-#: panel-plugin/properties.cc:560
+#: ../panel-plugin/properties.cc:565
 msgid "Solid"
 msgstr "ทึบ"
 
-#: panel-plugin/properties.cc:561
+#: ../panel-plugin/properties.cc:566
 msgid "Gradient"
 msgstr "ไล่สี"
 
-#: panel-plugin/properties.cc:562
+#: ../panel-plugin/properties.cc:567
 msgid "Fire"
 msgstr "ไฟ"
 
-#: panel-plugin/properties.cc:564
+#: ../panel-plugin/properties.cc:569
 msgid "Detailed"
 msgstr "รายละเอียด"
 
-#: panel-plugin/properties.cc:569
+#: ../panel-plugin/properties.cc:574
 msgid "Color mode: "
 msgstr "รูปแบบสี:"
 
-#: panel-plugin/properties.cc:679
+#: ../panel-plugin/properties.cc:684
 msgid "SMT detected: Yes"
 msgstr "ตรวจพบ SMT: พบ"
 
-#: panel-plugin/properties.cc:679
+#: ../panel-plugin/properties.cc:684
 msgid "SMT detected: No"
 msgstr "ตรวจพบ SMT: ไม่พบ"
 
-#: panel-plugin/properties.cc:704
+#: ../panel-plugin/properties.cc:709
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
 msgstr "จำนวนเหตุผิดปกติของการจัดเวลาของ SMT: %u"
 
-#: panel-plugin/properties.cc:709
+#: ../panel-plugin/properties.cc:714
 msgid "Estimated performance impact:"
 msgstr "ผลกระทบต่อสมรรถนะโดยประมาณ:"
 
-#: panel-plugin/properties.cc:710
+#: ../panel-plugin/properties.cc:715
 #, c-format
 msgid "Overall: %.3g%%"
 msgstr "ภาพรวม: %.3g%%"
 
-#: panel-plugin/properties.cc:711
+#: ../panel-plugin/properties.cc:716
 #, c-format
 msgid "Hotspots: %.3g%%"
 msgstr "เฉพาะจุด: %.3g%%"
 
-#: panel-plugin/properties.cc:723
+#: ../panel-plugin/properties.cc:728
 msgid "SMT detected: N/A"
 msgstr "ตรวจพบ SMT: ไม่ทราบ"
-
-#: panel-plugin/cpugraph.desktop.in:5
-msgid "CPU Graph"
-msgstr "กราฟซีพียู"
