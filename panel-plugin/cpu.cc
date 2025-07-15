@@ -376,13 +376,13 @@ CPUGraph::set_bars_size ()
 
     if (bars.orientation == GTK_ORIENTATION_HORIZONTAL)
     {
-        h = size + shadow_width;
+        h = size_bars + shadow_width;
         v = -1;
     }
     else
     {
         h = -1;
-        v = size + shadow_width;
+        v = size_bars + shadow_width;
     }
 
     gtk_widget_set_size_request (bars.frame, h, v);
@@ -1144,6 +1144,18 @@ CPUGraph::set_size (guint size_arg)
         size = MAX_SIZE;
 
     size = size_arg;
+    size_cb (plugin, xfce_panel_plugin_get_size (plugin), shared_from_this ());
+}
+
+void
+CPUGraph::set_size_bars (guint size_bars_arg)
+{
+    if (G_UNLIKELY (size_bars < MIN_SIZE))
+        size_bars = MIN_SIZE;
+    if (G_UNLIKELY (size_bars > MAX_SIZE))
+        size_bars = MAX_SIZE;
+
+    size_bars = size_bars_arg;
     size_cb (plugin, xfce_panel_plugin_get_size (plugin), shared_from_this ());
 }
 
