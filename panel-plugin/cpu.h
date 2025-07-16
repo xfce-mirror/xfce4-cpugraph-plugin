@@ -34,6 +34,7 @@
 #include "os.h"
 
 constexpr auto BORDER = 8;
+constexpr auto BAR_SPACE = 2;
 constexpr auto STATS_SMT_BY_DEFAULT = false;
 constexpr auto HIGHLIGHT_SMT_BY_DEFAULT = false;
 constexpr auto MAX_HISTORY_SIZE = 100 * 1000;
@@ -126,6 +127,7 @@ struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
     XfconfChannel *channel;
     CPUGraphUpdateRate update_interval;
     guint size;
+    guint size_bars;
     CPUGraphMode mode;
     guint color_mode;
     std::string command;
@@ -139,6 +141,7 @@ struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
     bool command_startup_notification;
     bool has_barcolor;
     bool has_bars;
+    bool bars_perpendicular;
     bool has_border;
     bool has_frame;
     bool stats_smt;
@@ -177,6 +180,7 @@ struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
 
     // Called outside of "cpu.cc"
     void set_bars                 (bool has_bars_arg);
+    void set_bars_perpendicular   (bool bars_perpendicular_arg);
     void set_border               (bool has_border_arg);
     void set_color                (CPUGraphColorNumber number, const xfce4::RGBA &color);
     void set_color_mode           (guint color_mode_arg);
@@ -189,6 +193,7 @@ struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
     void set_per_core             (bool per_core_arg);
     void set_per_core_spacing     (guint spacing);
     void set_size                 (guint size_arg);
+    void set_size_bars            (guint size_bars_arg);
     void set_stats_smt            (bool stats_smt_arg);
     void set_smt                  (bool highlight_smt_arg);
     void set_startup_notification (bool startup_notification);

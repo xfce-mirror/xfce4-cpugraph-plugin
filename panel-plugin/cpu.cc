@@ -373,13 +373,13 @@ CPUGraph::set_bars_size ()
 
     if (bars.orientation == GTK_ORIENTATION_HORIZONTAL)
     {
-        h = 6 * nb_bars () - 2 + shadow_width;
+        h = size_bars + shadow_width;
         v = -1;
     }
     else
     {
         h = -1;
-        v = 6 * nb_bars () - 2 + shadow_width;
+        v = size_bars + shadow_width;
     }
 
     gtk_widget_set_size_request (bars.frame, h, v);
@@ -825,8 +825,7 @@ static Propagation
 draw_bars_cb (cairo_t *cr, const shared_ptr<CPUGraph> &base)
 {
     GtkAllocation alloc;
-    gfloat size;
-    const bool horizontal = (base->bars.orientation == GTK_ORIENTATION_HORIZONTAL);
+    bool horizontal = (base->bars.orientation == GTK_ORIENTATION_HORIZONTAL) ^ base->bars_perpendicular;
 
     gtk_widget_get_allocation (base->bars.draw_area, &alloc);
 
@@ -837,23 +836,32 @@ draw_bars_cb (cairo_t *cr, const shared_ptr<CPUGraph> &base)
         cairo_fill (cr);
     }
 
-    size = (horizontal ? alloc.height : alloc.width);
+    gfloat length = (horizontal ? alloc.width : alloc.height);
+    gfloat breadth = (horizontal ? alloc.height : alloc.width);
     if (base->tracked_core != 0 || base->nr_cores == 1)
     {
         gfloat usage = base->cpu_data[0].load;
         if (usage < base->load_threshold)
             usage = 0;
-        usage *= size;
+        usage *= length;
 
         xfce4::cairo_set_source_rgba (cr, base->colors[BARS_COLOR]);
         if (horizontal)
-            cairo_rectangle (cr, 0, size-usage, 4, usage);
+            if (base->bars_perpendicular) {
+                cairo_rectangle (cr, length-usage, 0, usage, breadth);
+            }
+            else {
+                cairo_rectangle (cr, 0, 0, usage, breadth);
+            }
         else
-            cairo_rectangle (cr, 0, 0, usage, 4);
+            cairo_rectangle (cr, 0, length-usage, breadth, usage);
         cairo_fill (cr);
     }
     else
     {
+        breadth -= BAR_SPACE * (base->nr_cores - 1);
+        breadth /= base->nr_cores;
+
         const xfce4::RGBA *active_color = nullptr;
         bool fill = false;
         for (guint i = 0; i < base->nr_cores; i++)
@@ -865,7 +873,7 @@ draw_bars_cb (cairo_t *cr, const shared_ptr<CPUGraph> &base)
             gfloat usage = cpu_data_i_plus_1.load;
             if (usage < base->load_threshold)
                 usage = 0;
-            usage *= size;
+            usage *= length;
 
             /* Suboptimally placed threads on SMT CPUs are optionally painted using a different color. */
             const xfce4::RGBA *color = &base->colors[highlight ? SMT_ISSUES_COLOR : BARS_COLOR];
@@ -881,9 +889,14 @@ draw_bars_cb (cairo_t *cr, const shared_ptr<CPUGraph> &base)
             }
 
             if (horizontal)
-                cairo_rectangle (cr, 6*i, size-usage, 4, usage);
+                if (base->bars_perpendicular) {
+                    cairo_rectangle (cr, length-usage, (breadth+BAR_SPACE)*i, usage, breadth);
+                }
+                else {
+                    cairo_rectangle (cr, 0, (breadth+BAR_SPACE)*i, usage, breadth);
+                }
             else
-                cairo_rectangle (cr, 0, 6*i, usage, 4);
+                cairo_rectangle (cr, (breadth+BAR_SPACE)*i, length-usage, breadth, usage);
             fill = true;
         }
         if (fill)
@@ -1009,6 +1022,21 @@ CPUGraph::set_bars (bool has_bars_arg)
 }
 
 void
+CPUGraph::set_bars_perpendicular (bool bars_perpendicular_arg)
+{
+    if (bars_perpendicular != bars_perpendicular_arg)
+    {
+        bars_perpendicular = bars_perpendicular_arg;
+        if (has_bars)
+        {
+            delete_bars ();
+            create_bars (xfce_panel_plugin_get_orientation (plugin));
+            set_bars_size ();
+        }
+    }
+}
+
+void
 CPUGraph::set_border (bool has_border_arg)
 {
     if (has_border != has_border_arg)
@@ -1113,6 +1141,18 @@ CPUGraph::set_size (guint size_arg)
         size = MAX_SIZE;
 
     size = size_arg;
+    size_cb (plugin, xfce_panel_plugin_get_size (plugin), shared_from_this ());
+}
+
+void
+CPUGraph::set_size_bars (guint size_bars_arg)
+{
+    if (G_UNLIKELY (size_bars < MIN_SIZE))
+        size_bars = MIN_SIZE;
+    if (G_UNLIKELY (size_bars > MAX_SIZE))
+        size_bars = MAX_SIZE;
+
+    size_bars = size_bars_arg;
     size_cb (plugin, xfce_panel_plugin_get_size (plugin), shared_from_this ());
 }
 
