@@ -198,7 +198,7 @@ create_options (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
             dlg_data->base->set_nonlinear_time (gtk_toggle_button_get_active (button));
             update_sensitivity (dlg_data);
         });
-    create_check_box (vbox, sg, _("Per-core history graphs"), base->per_core, &dlg_data->per_core,
+    create_check_box (vbox, sg, _("Per-core"), base->per_core, &dlg_data->per_core,
         [dlg_data](GtkToggleButton *button) {
             dlg_data->base->set_per_core (gtk_toggle_button_get_active (button));
             update_sensitivity (dlg_data);
@@ -474,7 +474,7 @@ setup_per_core_spacing_option (GtkBox *vbox, GtkSizeGroup *sg, const shared_ptr<
     GtkBox *hbox = create_option_line (vbox, sg, _("Spacing:"), nullptr);
     GtkWidget *spacing = gtk_spin_button_new_with_range (PER_CORE_SPACING_MIN, PER_CORE_SPACING_MAX, 1);
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (spacing), base->per_core_spacing);
-    gtk_widget_set_tooltip_text (GTK_WIDGET (hbox), _("Spacing between per-core history graphs"));
+    gtk_widget_set_tooltip_text (GTK_WIDGET (hbox), _("Spacing between rendered items"));
     gtk_box_pack_start (GTK_BOX (hbox), spacing, false, false, 0);
     xfce4::connect (GTK_SPIN_BUTTON (spacing), "value-changed", [base](GtkSpinButton *button) {
         base->set_per_core_spacing (gtk_spin_button_get_value_as_int (button));
@@ -596,7 +596,7 @@ update_sensitivity (const shared_ptr<CPUGraphOptions> &data, bool initial)
 {
     const shared_ptr<CPUGraph> base = data->base;
     const bool default_command = base->command.empty();
-    const bool per_core = base->nr_cores > 1 && base->tracked_core == 0 && base->mode != MODE_DISABLED;
+    const bool per_core = base->nr_cores > 1 && base->tracked_core == 0;
 
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_highlight_smt),
                               base->has_bars && base->topology && base->topology->smt);
@@ -613,7 +613,6 @@ update_sensitivity (const shared_ptr<CPUGraphOptions> &data, bool initial)
         gtk_widget_set_visible (GTK_WIDGET (data->hbox_startup_notification), true);
     }
     gtk_widget_set_sensitive (GTK_WIDGET (data->per_core), per_core);
-    gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_per_core_spacing), per_core && base->per_core);
 
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_size), base->mode != MODE_DISABLED);
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_size_bars), base->has_bars);
