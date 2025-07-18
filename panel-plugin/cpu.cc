@@ -712,7 +712,7 @@ draw_stat(cairo_t *cr, const shared_ptr<CPUGraph> &base, guint offset, guint cor
             if (horizontal)
                 cairo_rectangle (cr, 0, breadth-usage, span, usage);
             else
-                cairo_rectangle (cr, 0, 0, usage, span);
+                cairo_rectangle (cr, breadth-usage, 0, usage, span);
             cairo_fill (cr);
         }
         else
