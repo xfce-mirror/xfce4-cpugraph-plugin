@@ -219,7 +219,7 @@ draw_graph_helper (const shared_ptr<CPUGraph> &base, const CpuLoad &load, cairo_
     if (usage == 0.0f)
         return;
 
-    bool horizontal = base->bars.orientation == GTK_ORIENTATION_HORIZONTAL;
+    bool horizontal = (xfce_panel_plugin_get_orientation (base->plugin) == GTK_ORIENTATION_HORIZONTAL);
 
     if (base->color_mode == COLOR_MODE_DETAILED)
     {
@@ -281,7 +281,7 @@ draw_graph_normal (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h
     const gint64 step = 1000 * (gint64) get_update_interval_ms (base->update_interval);
     auto &nearest = base->nearest_cache;
 
-    bool horizontal = base->bars.orientation == GTK_ORIENTATION_HORIZONTAL;
+    bool horizontal = (xfce_panel_plugin_get_orientation (base->plugin) == GTK_ORIENTATION_HORIZONTAL);
 
     gint span = horizontal ? w : h;
 
@@ -303,7 +303,7 @@ draw_graph_LED (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, g
     if (G_UNLIKELY (core >= base->history.data.size()))
         return;
 
-    bool horizontal = base->bars.orientation == GTK_ORIENTATION_HORIZONTAL;
+    bool horizontal = (xfce_panel_plugin_get_orientation (base->plugin) == GTK_ORIENTATION_HORIZONTAL);
 
     gint span = horizontal ? w : h;
     gint breadth = horizontal ? h : w;
@@ -368,7 +368,7 @@ draw_graph_no_history (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gi
     if (G_UNLIKELY (core >= base->history.data.size()))
         return;
 
-    bool horizontal = base->bars.orientation == GTK_ORIENTATION_HORIZONTAL;
+    bool horizontal = (xfce_panel_plugin_get_orientation (base->plugin) == GTK_ORIENTATION_HORIZONTAL);
 
     const CpuLoad &load = base->history.data[core][base->history.offset];
     draw_graph_helper (base, load, cr, 0, horizontal ? w : h, horizontal ? h : w);
@@ -380,7 +380,7 @@ draw_graph_grid (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, 
     if (G_UNLIKELY (core >= base->history.data.size()))
         return;
 
-    bool horizontal = base->bars.orientation == GTK_ORIENTATION_HORIZONTAL;
+    bool horizontal = (xfce_panel_plugin_get_orientation (base->plugin) == GTK_ORIENTATION_HORIZONTAL);
 
     gint span = horizontal ? w : h;
     gint breadth = horizontal ? h : w;
