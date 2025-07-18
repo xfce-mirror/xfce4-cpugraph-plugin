@@ -228,10 +228,12 @@ draw_graph_helper (const shared_ptr<CPUGraph> &base, const CpuLoad &load, cairo_
             if (value > 0.0f)
             {
                 xfce4::cairo_set_source_rgba (cr, base->colors[color]);
-                if (horizontal) {
+                if (horizontal)
+                {
                     cairo_rectangle (cr, i, breadth - value - j_offset, span, value);
                 }
-                else {
+                else
+                {
                     cairo_rectangle (cr, breadth - value - j_offset, i, value, span);
                 }
                 cairo_fill (cr);
@@ -246,10 +248,12 @@ draw_graph_helper (const shared_ptr<CPUGraph> &base, const CpuLoad &load, cairo_
     else if (base->color_mode == COLOR_MODE_SOLID)
     {
         xfce4::cairo_set_source_rgba (cr, base->colors[FG_COLOR1]);
-        if (horizontal) {
+        if (horizontal)
+        {
             cairo_rectangle (cr, i, breadth - usage, span, usage);
         }
-        else {
+        else
+        {
             cairo_rectangle (cr, breadth - usage, i, usage, span);
         }
         cairo_fill (cr);
@@ -261,10 +265,12 @@ draw_graph_helper (const shared_ptr<CPUGraph> &base, const CpuLoad &load, cairo_
         {
             gfloat t = tmp / (base->color_mode == COLOR_MODE_GRADIENT ? (gfloat) breadth : usage);
             xfce4::cairo_set_source_rgba (cr, mix_colors (t, base->colors[FG_COLOR1], base->colors[FG_COLOR2]));
-            if (horizontal) {
+            if (horizontal)
+            {
                 cairo_rectangle (cr, i, j, span, 1);
             }
-            else {
+            else
+            {
                 cairo_rectangle (cr, j, i, 1, span);
             }
             cairo_fill (cr);
@@ -351,10 +357,12 @@ draw_graph_LED (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, g
             }
 
             /* draw rectangle */
-            if (horizontal) {
+            if (horizontal)
+            {
                 cairo_rectangle (cr, i * 3, j * 2, 2, 1);
             }
-            else {
+            else
+            {
                 cairo_rectangle (cr, j * 2, i * 3, 1, 2);
             }
             cairo_fill (cr);
@@ -396,7 +404,8 @@ draw_graph_grid (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, 
     cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
 
     /* Paint the grid using a single call to cairo_stroke() */
-    if (G_LIKELY (!base->colors[FG_COLOR1].is_transparent())) {
+    if (G_LIKELY (!base->colors[FG_COLOR1].is_transparent()))
+    {
         cairo_save (cr);
         cairo_set_line_width (cr, 1);
         xfce4::cairo_set_source_rgba (cr, base->colors[FG_COLOR1]);
@@ -412,11 +421,13 @@ draw_graph_grid (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, 
             }
 
             /* draw perpendicular line */
-            if (horizontal) {
+            if (horizontal)
+            {
                 cairo_move_to (cr, span - 1 - i1 + 0.5, 0.5);
                 cairo_line_to (cr, span - 1 - i1 + 0.5, breadth - 1 + 0.5);
             }
-            else {
+            else
+            {
                 cairo_move_to (cr, 0.5, span - 1 - i1 + 0.5);
                 cairo_line_to (cr, breadth - 1 + 0.5, span - 1 - i1 + 0.5);
             }
@@ -424,11 +435,13 @@ draw_graph_grid (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, 
         for (gint j = 0; j < breadth; j += 4)
         {
             /* draw parallel line */
-            if (horizontal) {
+            if (horizontal)
+            {
                 cairo_move_to (cr, 0.5, breadth - 1 - j + 0.5);
                 cairo_line_to (cr, span - 1  + 0.5, breadth - 1 - j + 0.5);
             }
-            else {
+            else
+            {
                 cairo_move_to (cr, breadth - 1 - j + 0.5, 0.5);
                 cairo_line_to (cr, breadth - 1 - j + 0.5, span - 1  + 0.5);
             }
@@ -438,7 +451,8 @@ draw_graph_grid (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, 
     }
 
     /* Paint a line on top of the grid, using a single call to cairo_stroke() */
-    if (G_LIKELY (!base->colors[2].is_transparent())) {
+    if (G_LIKELY (!base->colors[2].is_transparent()))
+    {
         Point last;
 
         cairo_save (cr);
@@ -454,10 +468,12 @@ draw_graph_grid (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, 
             }
 
             Point current;
-            if (horizontal) {
+            if (horizontal)
+            {
                 current = Point(i, breadth + (thickness-1)/2 - usage);
             }
-            else {
+            else
+            {
                 current = Point(breadth + (thickness-1)/2 - usage, i);
             }
 
