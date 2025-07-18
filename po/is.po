@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR Xfce
+# This file is distributed under the same license as the xfce-panel-plugins.xfce4-cpugraph-plugin package.
 # 
 # Translators:
 # Sveinn í Felli <sv1@fellsnet.is>, 2013-2014,2019
@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-15 12:51+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.xfce.org/\n"
+"POT-Creation-Date: 2025-07-18 11:06+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
 "Last-Translator: Sveinn í Felli <sveinki@nett.is>, 2013\n"
 "Language-Team: Icelandic (http://app.transifex.com/xfce/xfce-panel-plugins/language/is/)\n"
@@ -19,265 +19,269 @@ msgstr ""
 "Language: is\n"
 "Plural-Forms: nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);\n"
 
-#: ../panel-plugin/cpu.cc:188
+#: panel-plugin/cpu.cc:185 panel-plugin/cpugraph.desktop.in:6
 msgid "Graphical representation of the CPU load"
 msgstr "Myndræn framsetning örgjörvaálags"
 
-#: ../panel-plugin/cpu.cc:720
+#: panel-plugin/cpu.cc:717
 #, c-format
 msgid "CPU usage: %.1f%%"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:74
+#: panel-plugin/properties.cc:70
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
 msgstr ""
 
-#: ../panel-plugin/properties.cc:75
+#: panel-plugin/properties.cc:71
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
 msgstr ""
 
-#: ../panel-plugin/properties.cc:114
+#: panel-plugin/properties.cc:110
 msgid "CPU Graph Properties"
 msgstr "Eiginleikar CPU örgjörvagrafs"
 
-#: ../panel-plugin/properties.cc:118
+#: panel-plugin/properties.cc:114
 msgid "_Close"
 msgstr "_Loka"
 
-#: ../panel-plugin/properties.cc:147
+#: panel-plugin/properties.cc:143
 msgid "Run in terminal"
 msgstr "Keyra í skjáhermi (terminal)"
 
-#: ../panel-plugin/properties.cc:153
+#: panel-plugin/properties.cc:149
 msgid "Use startup notification"
 msgstr "Nota tilkynningu í ræsingu"
 
-#: ../panel-plugin/properties.cc:160
+#: panel-plugin/properties.cc:156
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:176
+#: panel-plugin/properties.cc:172
 msgid "Display SMT statistics"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:186
+#: panel-plugin/properties.cc:182
 msgid "Highlight suboptimal SMT scheduling"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:193
+#: panel-plugin/properties.cc:189
 msgid "SMT issues color:"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:198
+#: panel-plugin/properties.cc:194
 msgid "Use non-linear time-scale"
 msgstr "Nota ólínulegan tímakvarða"
 
-#: ../panel-plugin/properties.cc:203
+#: panel-plugin/properties.cc:199
 msgid "Per-core history graphs"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:211
+#: panel-plugin/properties.cc:207
 msgid "Color 1:"
 msgstr "Litur 1:"
 
-#: ../panel-plugin/properties.cc:214
+#: panel-plugin/properties.cc:210
 msgid "Color 2:"
 msgstr "Litur 2:"
 
-#: ../panel-plugin/properties.cc:217
+#: panel-plugin/properties.cc:213
 msgid "Color 3:"
 msgstr "Litur 3:"
 
-#: ../panel-plugin/properties.cc:220
+#: panel-plugin/properties.cc:216
 msgid "System:"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:223
+#: panel-plugin/properties.cc:219
 msgid "User:"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:226
+#: panel-plugin/properties.cc:222
 msgid "Nice:"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:229
+#: panel-plugin/properties.cc:225
 msgid "IO wait:"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:232
+#: panel-plugin/properties.cc:228
 msgid "Background:"
 msgstr "Bakgrunnur:"
 
-#: ../panel-plugin/properties.cc:238
+#: panel-plugin/properties.cc:234
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
 msgstr[0] "Birta núverandi notkunarstöpul"
 msgstr[1] "Birta núverandi notkunarstöpla"
 
-#: ../panel-plugin/properties.cc:244
+#: panel-plugin/properties.cc:240
 msgid "Bars color:"
 msgstr "Litur stöpla"
 
-#: ../panel-plugin/properties.cc:249
+#: panel-plugin/properties.cc:245
 msgid "Show frame"
 msgstr "Sýna ramma"
 
-#: ../panel-plugin/properties.cc:254
+#: panel-plugin/properties.cc:250
 msgid "Show border"
 msgstr "Sýna jaðar"
 
-#: ../panel-plugin/properties.cc:265
+#: panel-plugin/properties.cc:261
 msgid "Appearance"
 msgstr "Útlit"
 
-#: ../panel-plugin/properties.cc:266
+#: panel-plugin/properties.cc:262
 msgid "Advanced"
 msgstr "Nánar"
 
-#: ../panel-plugin/properties.cc:267
+#: panel-plugin/properties.cc:263
 msgid "Stats"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:401
+#: panel-plugin/properties.cc:397
 msgid "Fastest (~250ms)"
 msgstr "Hraðast (~250ms)"
 
-#: ../panel-plugin/properties.cc:402
+#: panel-plugin/properties.cc:398
 msgid "Fast (~500ms)"
 msgstr "Hratt (~500ms)"
 
-#: ../panel-plugin/properties.cc:403
+#: panel-plugin/properties.cc:399
 msgid "Normal (~750ms)"
 msgstr "Venjulegt (~750ms)"
 
-#: ../panel-plugin/properties.cc:404
+#: panel-plugin/properties.cc:400
 msgid "Slow (~1s)"
 msgstr "Hægt (~1s)"
 
-#: ../panel-plugin/properties.cc:405
+#: panel-plugin/properties.cc:401
 msgid "Slowest (~3s)"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:408
+#: panel-plugin/properties.cc:404
 msgid "Update Interval:"
 msgstr "Uppfærslutíðni:"
 
-#: ../panel-plugin/properties.cc:420
+#: panel-plugin/properties.cc:416
 msgid "All"
 msgstr "Allt"
 
-#: ../panel-plugin/properties.cc:424
+#: panel-plugin/properties.cc:420
 msgid "Tracked Core:"
 msgstr "Kjarni sem fylgst er með:"
 
-#: ../panel-plugin/properties.cc:440
+#: panel-plugin/properties.cc:436
 msgid "Width:"
 msgstr "Breidd:"
 
-#: ../panel-plugin/properties.cc:442
+#: panel-plugin/properties.cc:438
 msgid "Height:"
 msgstr "Hæð:"
 
-#: ../panel-plugin/properties.cc:455
+#: panel-plugin/properties.cc:451
 msgid "Threshold (%):"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:467
+#: panel-plugin/properties.cc:463
 msgid "Spacing:"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:470
+#: panel-plugin/properties.cc:466
 msgid "Spacing between per-core history graphs"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:481
+#: panel-plugin/properties.cc:477
 msgid "Associated command:"
 msgstr "Tengd skipun:"
 
-#: ../panel-plugin/properties.cc:489
+#: panel-plugin/properties.cc:485
 msgid "The command to run when the plugin is left-clicked."
 msgstr ""
 
-#: ../panel-plugin/properties.cc:490
+#: panel-plugin/properties.cc:486
 msgid "If not specified, it defaults to xfce4-taskmanager, htop or top."
 msgstr ""
 
-#: ../panel-plugin/properties.cc:518
+#: panel-plugin/properties.cc:514
 msgid "Disabled"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:519
+#: panel-plugin/properties.cc:515
 msgid "Normal"
 msgstr "Venjulegt"
 
-#: ../panel-plugin/properties.cc:520
+#: panel-plugin/properties.cc:516
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.cc:521
+#: panel-plugin/properties.cc:517
 msgid "No history"
 msgstr "Enginn ferill"
 
-#: ../panel-plugin/properties.cc:522
+#: panel-plugin/properties.cc:518
 msgid "Grid"
 msgstr "Hnitanet"
 
-#: ../panel-plugin/properties.cc:535
+#: panel-plugin/properties.cc:531
 msgid "Mode:"
 msgstr "Hamur:"
 
-#: ../panel-plugin/properties.cc:565
+#: panel-plugin/properties.cc:561
 msgid "Solid"
 msgstr "Gegnheilt"
 
-#: ../panel-plugin/properties.cc:566
+#: panel-plugin/properties.cc:562
 msgid "Gradient"
 msgstr "Litstigull"
 
-#: ../panel-plugin/properties.cc:567
+#: panel-plugin/properties.cc:563
 msgid "Fire"
 msgstr "Eldur"
 
-#: ../panel-plugin/properties.cc:569
+#: panel-plugin/properties.cc:565
 msgid "Detailed"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:574
+#: panel-plugin/properties.cc:570
 msgid "Color mode: "
 msgstr "Litahamur: "
 
-#: ../panel-plugin/properties.cc:684
+#: panel-plugin/properties.cc:680
 msgid "SMT detected: Yes"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:684
+#: panel-plugin/properties.cc:680
 msgid "SMT detected: No"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:709
+#: panel-plugin/properties.cc:705
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:714
+#: panel-plugin/properties.cc:710
 msgid "Estimated performance impact:"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:715
+#: panel-plugin/properties.cc:711
 #, c-format
 msgid "Overall: %.3g%%"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:716
+#: panel-plugin/properties.cc:712
 #, c-format
 msgid "Hotspots: %.3g%%"
 msgstr ""
 
-#: ../panel-plugin/properties.cc:728
+#: panel-plugin/properties.cc:724
 msgid "SMT detected: N/A"
 msgstr ""
+
+#: panel-plugin/cpugraph.desktop.in:5
+msgid "CPU Graph"
+msgstr "CPU graf"
