@@ -112,12 +112,6 @@ struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
     GtkWidget *draw_area;
     GtkWidget *box;
     GtkWidget *ebox;
-    struct {
-        /* Widget pointers are NULL if bars are disabled */
-        GtkWidget *frame;
-        GtkWidget *draw_area;
-        GtkOrientation orientation;
-    } bars;
     gint tooltip_last_value;
     GtkWidget *tooltip_text;
 
@@ -201,10 +195,6 @@ struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
     // Called inside "cpu.cc"
     bool  is_smt_issues_enabled   () const;
     void  detect_smt_issues       ();
-    void  create_bars             (GtkOrientation orientation);
-    void  delete_bars             ();
-    void  set_bars_size           ();
-    guint nb_bars                 ();
     void  ebox_revalidate         ();
 };
 
