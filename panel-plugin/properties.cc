@@ -597,6 +597,7 @@ update_sensitivity (const shared_ptr<CPUGraphOptions> &data, bool initial)
     const shared_ptr<CPUGraph> base = data->base;
     const bool default_command = base->command.empty();
     const bool per_core = base->nr_cores > 1 && base->tracked_core == 0;
+    const bool single_drawn = (base->nr_cores > 1 && base->per_core) || (base->has_bars && base->mode != MODE_DISABLED);
 
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_highlight_smt),
                               base->has_bars && base->topology && base->topology->smt);
@@ -613,6 +614,7 @@ update_sensitivity (const shared_ptr<CPUGraphOptions> &data, bool initial)
         gtk_widget_set_visible (GTK_WIDGET (data->hbox_startup_notification), true);
     }
     gtk_widget_set_sensitive (GTK_WIDGET (data->per_core), per_core);
+    gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_per_core_spacing), single_drawn);
 
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_size), base->mode != MODE_DISABLED);
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_size_bars), base->has_bars);
