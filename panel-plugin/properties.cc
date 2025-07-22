@@ -435,10 +435,9 @@ static GtkBox*
 setup_size_option (GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base, bool graph)
 {
     GtkBox *hbox;
-    if (xfce_panel_plugin_get_orientation (plugin) == GTK_ORIENTATION_HORIZONTAL)
-        hbox = create_option_line (vbox, sg, _("Width:"), nullptr);
-    else
-        hbox = create_option_line (vbox, sg, _("Height:"), nullptr);
+
+    hbox = create_option_line (vbox, sg, _(xfce_panel_plugin_get_orientation (plugin) == GTK_ORIENTATION_HORIZONTAL ?
+        (graph ? "Graph width:": "Bar width:") : (graph ? "Graph height:": "Bar height:")), nullptr);
 
     GtkWidget *size = gtk_spin_button_new_with_range (MIN_SIZE, MAX_SIZE, 1);
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (size), graph ? base->size : base->size_bars);
