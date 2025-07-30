@@ -23,7 +23,7 @@ msgstr ""
 
 #: panel-plugin/cpu.cc:185 panel-plugin/cpugraph.desktop.in:6
 msgid "Graphical representation of the CPU load"
-msgstr "Dostarcza informacje na temat obciążenia CPU w postaci graficznej"
+msgstr "Graficzne przedstawienie obciążenia procesora."
 
 #: panel-plugin/cpu.cc:717
 #, c-format
