@@ -49,7 +49,7 @@ struct CPUGraphOptions
     GtkBox          *hbox_startup_notification = nullptr;
     GtkBox          *hbox_size = nullptr;
     GtkBox          *hbox_size_bars = nullptr;
-    GtkToggleButton *per_core = nullptr, *show_bars_checkbox = nullptr;
+    GtkToggleButton *per_core = nullptr, *per_core_bars = nullptr, *show_bars_checkbox = nullptr;
     GtkLabel        *smt_stats = nullptr;
     GtkWidget       *notebook = nullptr;
     xfce4::SourceTag timeout_id;
@@ -198,7 +198,7 @@ create_options (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
             dlg_data->base->set_nonlinear_time (gtk_toggle_button_get_active (button));
             update_sensitivity (dlg_data);
         });
-    create_check_box (vbox, sg, _("Per-core"), base->per_core, &dlg_data->per_core,
+    create_check_box (vbox, sg, _("Per-core graphs"), base->per_core, &dlg_data->per_core,
         [dlg_data](GtkToggleButton *button) {
             dlg_data->base->set_per_core (gtk_toggle_button_get_active (button));
             update_sensitivity (dlg_data);
@@ -237,6 +237,11 @@ create_options (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
         base->has_bars, &dlg_data->show_bars_checkbox,
         [dlg_data](GtkToggleButton *button) {
             dlg_data->base->set_bars (gtk_toggle_button_get_active (button));
+            update_sensitivity (dlg_data);
+        });
+    create_check_box (vbox2, sg, _("Per-core bars"), base->per_core_bars, &dlg_data->per_core_bars,
+        [dlg_data](GtkToggleButton *button) {
+            dlg_data->base->set_per_core_bars (gtk_toggle_button_get_active (button));
             update_sensitivity (dlg_data);
         });
     dlg_data->hbox_size_bars = setup_size_option (vbox2, sg, plugin, base, false);
@@ -424,9 +429,15 @@ setup_tracked_core_option (GtkBox *vbox, GtkSizeGroup *sg, const shared_ptr<CPUG
         [data](GtkComboBox *combo) {
             data->base->set_tracked_core (gtk_combo_box_get_active (combo));
             if (data->base->tracked_core != 0)
+            {
                 data->base->set_per_core (false);
+                data->base->set_per_core_bars (false);
+            }
             else
+            {
                 data->base->set_per_core (gtk_toggle_button_get_active (data->per_core));
+                data->base->set_per_core_bars (gtk_toggle_button_get_active (data->per_core_bars));
+            }
             update_sensitivity (data);
         });
 }
@@ -612,7 +623,7 @@ update_sensitivity (const shared_ptr<CPUGraphOptions> &data, bool initial)
         gtk_widget_set_visible (GTK_WIDGET (data->hbox_in_terminal), true);
         gtk_widget_set_visible (GTK_WIDGET (data->hbox_startup_notification), true);
     }
-    gtk_widget_set_sensitive (GTK_WIDGET (data->per_core), per_core);
+    gtk_widget_set_sensitive (GTK_WIDGET (data->per_core), per_core && base->mode != MODE_DISABLED);
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_per_core_spacing), single_drawn);
 
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_size), base->mode != MODE_DISABLED);
@@ -621,6 +632,9 @@ update_sensitivity (const shared_ptr<CPUGraphOptions> &data, bool initial)
     auto get_color_button_parent = [&](CPUGraphColorNumber color) {
         return gtk_widget_get_parent (GTK_WIDGET (data->color_buttons[color]));
     };
+
+    gtk_widget_set_sensitive (GTK_WIDGET (data->per_core_bars), per_core && base->has_bars);
+
     auto set_colors_visibility = [&](bool detailed_mode) {
         gtk_widget_set_visible (get_color_button_parent (FG_COLOR1), !detailed_mode);
         gtk_widget_set_visible (get_color_button_parent (FG_COLOR2), !detailed_mode);

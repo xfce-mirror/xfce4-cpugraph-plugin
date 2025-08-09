@@ -271,7 +271,7 @@ size_cb (XfcePanelPlugin *plugin, guint plugin_size, const shared_ptr<CPUGraph> 
     if (base->has_bars)
     {
         total_bar = base->size_bars;
-        if (base->per_core && base->nr_cores >= 2)
+        if (base->per_core_bars && base->nr_cores >= 2)
         {
             total_bar *= base->nr_cores;
             total_bar += (base->nr_cores - 1) * base->per_core_spacing;
@@ -780,39 +780,40 @@ draw_area_cb (cairo_t *cr, const shared_ptr<CPUGraph> &base)
         hgraph = base->size;
     }
 
-    guint baroffset = (horizontal ? wbar : hbar) + base->per_core_spacing;
+    guint barOffset = (horizontal ? wbar : hbar) + base->per_core_spacing;
+    guint totalOffset = 0;
 
-    if (!base->per_core || base->nr_cores == 1)
+    guint core = base->tracked_core;
+    if (G_UNLIKELY (core > base->nr_cores + 1))
+        core = 0;
+
+    if (base->has_bars)
     {
-        guint core = base->tracked_core;
-        if (G_UNLIKELY (core > base->nr_cores + 1))
-            core = 0;
-        if (base->has_bars)
+        if (!base->per_core_bars || base->nr_cores == 1)
         {
             draw_stat(cr, base, 0, core, wbar, hbar, true);
-            draw_stat(cr, base, baroffset, core, wgraph, hgraph, false);
+            totalOffset = barOffset;
         }
         else
         {
-            draw_stat(cr, base, 0, core, wgraph, hgraph, false);
+            for (guint coreID = 1; coreID <= base->nr_cores; coreID++)
+            {
+                draw_stat(cr, base, totalOffset, coreID, wbar, hbar, true);
+                totalOffset += barOffset;
+            }
         }
+    }
 
+    if (!base->per_core || base->nr_cores == 1)
+    {
+        draw_stat(cr, base, totalOffset, core, wgraph, hgraph, false);
     }
     else
     {
-        guint offset = 0;
-        if (base->has_bars)
+        for (guint coreID = 1; coreID <= base->nr_cores; coreID++)
         {
-            for (guint core = 1; core <= base->nr_cores; core++)
-            {
-                draw_stat(cr, base, offset, core, wbar, hbar, true);
-                offset += baroffset;
-            }
-        }
-        for (guint core = 1; core <= base->nr_cores; core++)
-        {
-            draw_stat(cr, base, offset, core, wgraph, hgraph, false);
-            offset += (horizontal ? wgraph : hgraph) + base->per_core_spacing;
+            draw_stat(cr, base, totalOffset, coreID, wgraph, hgraph, false);
+            totalOffset += (horizontal ? wgraph : hgraph) + base->per_core_spacing;
         }
     }
 
@@ -963,6 +964,16 @@ CPUGraph::set_per_core (bool per_core_arg)
     if (per_core != per_core_arg)
     {
         per_core = per_core_arg;
+        size_cb (plugin, xfce_panel_plugin_get_size (plugin), shared_from_this ());
+    }
+}
+
+void
+CPUGraph::set_per_core_bars (bool per_core_bars_arg)
+{
+    if (per_core_bars != per_core_bars_arg)
+    {
+        per_core_bars = per_core_bars_arg;
         size_cb (plugin, xfce_panel_plugin_get_size (plugin), shared_from_this ());
     }
 }

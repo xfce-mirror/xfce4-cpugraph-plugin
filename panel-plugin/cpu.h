@@ -140,6 +140,7 @@ struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
     bool highlight_smt;
     bool non_linear;
     bool per_core;
+    bool per_core_bars;
 
     /* Runtime data */
     std::unordered_map<guint, guint> cpu_to_index_cache;
@@ -182,6 +183,7 @@ struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
     void set_mode                 (CPUGraphMode mode_arg);
     void set_nonlinear_time       (bool non_linear_arg);
     void set_per_core             (bool per_core_arg);
+    void set_per_core_bars        (bool per_core_bars_arg);
     void set_per_core_spacing     (guint spacing);
     void set_size                 (guint size_arg);
     void set_size_bars            (guint size_bars_arg);
