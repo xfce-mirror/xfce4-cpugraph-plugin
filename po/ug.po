@@ -19,27 +19,27 @@ msgstr ""
 
 #: panel-plugin/cpu.cc:185 panel-plugin/cpugraph.desktop.in:6
 msgid "Graphical representation of the CPU load"
-msgstr "س پ ئۇ(CPU) يۈكىنى گرافىك شەكلىدە قىلىپ كۆرسىتىدۇ"
+msgstr "‫CPU يۈكىنى گىرافىك شەكلىدە قىلىپ كۆرسىتىدۇ"
 
 #: panel-plugin/cpu.cc:717
 #, c-format
 msgid "CPU usage: %.1f%%"
-msgstr ""
+msgstr "CPU ئىشلىتىلىشى: %.1f%%"
 
 #: panel-plugin/properties.cc:70
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
-msgstr ""
+msgstr "«ئومۇمىي» ماشىنىنىڭ ئومۇمىي ئىقتىدارىغا بولغان تەسىرىنى بىلدۈرىدۇ."
 
 #: panel-plugin/properties.cc:71
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
-msgstr ""
+msgstr "«قىزىق نۇقتا» پەقەت ئىككىنچى ئورۇندىكى SMT كۈنتەرتىپ قارارىدىكى جەريانچاق شۇئان ئىقتىدارىنىڭ تەسىرىنى كۆرسىتىدۇ."
 
 #: panel-plugin/properties.cc:110
 msgid "CPU Graph Properties"
-msgstr "س پ ئۇ(CPU) گرافىك خاسلىقىCPU گرافىك خاسلىقى"
+msgstr "CPU گىرافىك خاسلىقى"
 
 #: panel-plugin/properties.cc:114
 msgid "_Close"
@@ -57,19 +57,19 @@ msgstr "قوزغالغاندا ئۇقتۇرۇش قىل"
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
-msgstr ""
+msgstr "SMT نىڭ CPU دىكى جەريانچاقنىڭ ئىككىنچى ئورۇندىكى\nرەڭگىنى يورۇتۇپ كۆرسىتىشكە ئىشلىتىدىغان رەڭ"
 
 #: panel-plugin/properties.cc:172
 msgid "Display SMT statistics"
-msgstr ""
+msgstr "SMT ئىستاتىستىكىسىنى كۆرسىتىدۇ"
 
 #: panel-plugin/properties.cc:182
 msgid "Highlight suboptimal SMT scheduling"
-msgstr ""
+msgstr "ئىككىنچى SMT كۈنتەرتىپىنى يورۇتىدۇ"
 
 #: panel-plugin/properties.cc:189
 msgid "SMT issues color:"
-msgstr ""
+msgstr "SMT مەسىلە رەڭگى:"
 
 #: panel-plugin/properties.cc:194
 msgid "Use non-linear time-scale"
@@ -77,35 +77,35 @@ msgstr "سىزىقسىز ۋاقىت ئۆلچىكى ئىشلەت"
 
 #: panel-plugin/properties.cc:199
 msgid "Per-core history graphs"
-msgstr ""
+msgstr "ھەر بىر يادرونىڭ تارىخى گىرافىكى"
 
 #: panel-plugin/properties.cc:207
 msgid "Color 1:"
-msgstr "رەڭ 1:"
+msgstr "1-رەڭ‎‏:"
 
 #: panel-plugin/properties.cc:210
 msgid "Color 2:"
-msgstr "رەڭ 2:"
+msgstr "2-رەڭ‎‏:"
 
 #: panel-plugin/properties.cc:213
 msgid "Color 3:"
-msgstr "رەڭ 3:"
+msgstr "3-رەڭ‎‏:"
 
 #: panel-plugin/properties.cc:216
 msgid "System:"
-msgstr ""
+msgstr "سىستېما:"
 
 #: panel-plugin/properties.cc:219
 msgid "User:"
-msgstr ""
+msgstr "ئىشلەتكۈچى:"
 
 #: panel-plugin/properties.cc:222
 msgid "Nice:"
-msgstr ""
+msgstr "ياخشى:"
 
 #: panel-plugin/properties.cc:225
 msgid "IO wait:"
-msgstr ""
+msgstr "كىرگۈزۈش چىقىرىش كۈتۈش ۋاقتى:"
 
 #: panel-plugin/properties.cc:228
 msgid "Background:"
@@ -114,12 +114,12 @@ msgstr "تەگلىك:"
 #: panel-plugin/properties.cc:234
 msgid "Show current usage bar"
 msgid_plural "Show current usage bars"
-msgstr[0] ""
-msgstr[1] "ئىشلىتىلىشىنى كۆرسىتىدىغان بالداقنى كۆرسەت"
+msgstr[0] "نۆۋەتتىكى ئىشلىتىلىش بالدىقىنى كۆرسىتىدۇ"
+msgstr[1] "نۆۋەتتىكى ئىشلىتىلىش بالدىقىنى كۆرسىتىدۇ"
 
 #: panel-plugin/properties.cc:240
 msgid "Bars color:"
-msgstr "بالداقلارنىڭ رەڭگى:"
+msgstr "بالداق رەڭگى:"
 
 #: panel-plugin/properties.cc:245
 msgid "Show frame"
@@ -139,27 +139,27 @@ msgstr "ئالىي"
 
 #: panel-plugin/properties.cc:263
 msgid "Stats"
-msgstr ""
+msgstr "ئىستاتىستىكا"
 
 #: panel-plugin/properties.cc:397
 msgid "Fastest (~250ms)"
-msgstr "بەك تەز (~250 مىللىسېكۇنت)"
+msgstr "ئەڭ تېز (~250ms)"
 
 #: panel-plugin/properties.cc:398
 msgid "Fast (~500ms)"
-msgstr "تەز (~500 مىللىسېكۇنت)"
+msgstr "تېز (~500ms)"
 
 #: panel-plugin/properties.cc:399
 msgid "Normal (~750ms)"
-msgstr "نورمال (~750 مىللىسېكۇنت)"
+msgstr "ئادەتتىكى (~750ms)"
 
 #: panel-plugin/properties.cc:400
 msgid "Slow (~1s)"
-msgstr "ئاستا (~1 سېكۇنت)"
+msgstr "ئاستا (~1s)"
 
 #: panel-plugin/properties.cc:401
 msgid "Slowest (~3s)"
-msgstr ""
+msgstr "ئەڭ ئاستا (~3s)"
 
 #: panel-plugin/properties.cc:404
 msgid "Update Interval:"
@@ -183,15 +183,15 @@ msgstr "ئېگىزلىك:"
 
 #: panel-plugin/properties.cc:451
 msgid "Threshold (%):"
-msgstr ""
+msgstr "بوسۇغا قىممىتى(%):"
 
 #: panel-plugin/properties.cc:463
 msgid "Spacing:"
-msgstr ""
+msgstr "ئارىلىق:"
 
 #: panel-plugin/properties.cc:466
 msgid "Spacing between per-core history graphs"
-msgstr ""
+msgstr "ھەر بىر يادرونىڭ تارىخى گىرافىكىنىڭ ئارىسىدىكى ئارىلىق"
 
 #: panel-plugin/properties.cc:477
 msgid "Associated command:"
@@ -199,15 +199,15 @@ msgstr "مۇناسىۋەتلىك بۇيرۇق:"
 
 #: panel-plugin/properties.cc:485
 msgid "The command to run when the plugin is left-clicked."
-msgstr ""
+msgstr "قىستۇرما سول چېكىلگەندە ئىجرا قىلىنىدىغان بۇيرۇق."
 
 #: panel-plugin/properties.cc:486
 msgid "If not specified, it defaults to xfce4-taskmanager, htop or top."
-msgstr ""
+msgstr "ئەگەر بەلگىلەنمىگەن بولسا، كۆڭۈلدىكى xfce4-taskmanager، htop ياكى top بولىدۇ."
 
 #: panel-plugin/properties.cc:514
 msgid "Disabled"
-msgstr ""
+msgstr "چەكلەنگەن"
 
 #: panel-plugin/properties.cc:515
 msgid "Normal"
@@ -219,7 +219,7 @@ msgstr "LED"
 
 #: panel-plugin/properties.cc:517
 msgid "No history"
-msgstr "ئىز يوق"
+msgstr "تارىخ خاتىرىسى يوق"
 
 #: panel-plugin/properties.cc:518
 msgid "Grid"
@@ -231,7 +231,7 @@ msgstr "ئۇسۇلى:"
 
 #: panel-plugin/properties.cc:561
 msgid "Solid"
-msgstr "لىق تولغان"
+msgstr "ﻣﯘﻗﯩﻢ"
 
 #: panel-plugin/properties.cc:562
 msgid "Gradient"
@@ -243,7 +243,7 @@ msgstr "ئۇچقۇن"
 
 #: panel-plugin/properties.cc:565
 msgid "Detailed"
-msgstr ""
+msgstr "تەپسىلاتى"
 
 #: panel-plugin/properties.cc:570
 msgid "Color mode: "
@@ -251,35 +251,35 @@ msgstr "رەڭگى: "
 
 #: panel-plugin/properties.cc:680
 msgid "SMT detected: Yes"
-msgstr ""
+msgstr "SMT بايقالدى: ھەئە"
 
 #: panel-plugin/properties.cc:680
 msgid "SMT detected: No"
-msgstr ""
+msgstr "SMT بايقالدى: ياق"
 
 #: panel-plugin/properties.cc:705
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
-msgstr ""
+msgstr "SMT كۈنتەرتىپتىكى ھادىسە سانى: %u"
 
 #: panel-plugin/properties.cc:710
 msgid "Estimated performance impact:"
-msgstr ""
+msgstr "مۆلچەردىكى ئۈنۈم تەسىرى:"
 
 #: panel-plugin/properties.cc:711
 #, c-format
 msgid "Overall: %.3g%%"
-msgstr ""
+msgstr "ئومۇمىي: %.3g%%"
 
 #: panel-plugin/properties.cc:712
 #, c-format
 msgid "Hotspots: %.3g%%"
-msgstr ""
+msgstr "قىزىق نۇقتا: %.3g%%"
 
 #: panel-plugin/properties.cc:724
 msgid "SMT detected: N/A"
-msgstr ""
+msgstr "SMT بايقالدى: ماس كەلمەيدۇ"
 
 #: panel-plugin/cpugraph.desktop.in:5
 msgid "CPU Graph"
-msgstr "س پ ئۇ(CPU) گرافىكى"
+msgstr "‫CPU گىرافىكى"
