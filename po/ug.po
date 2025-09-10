@@ -43,7 +43,7 @@ msgstr "س پ ئۇ(CPU) گرافىك خاسلىقىCPU گرافىك خاسلىق
 
 #: panel-plugin/properties.cc:114
 msgid "_Close"
-msgstr ""
+msgstr "ياپ(_C)"
 
 #: panel-plugin/properties.cc:143
 msgid "Run in terminal"
