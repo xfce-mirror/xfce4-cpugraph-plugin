@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Efstathios Iosifidis <iosifidis@opensuse.org>, 2012
+# Ioannis LM, 2025
 # Πέτρος Σαμαράς <psamaras1@gmail.com>, 2019
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gitlab.xfce.org/\n"
 "POT-Creation-Date: 2025-07-18 11:06+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
-"Last-Translator: Πέτρος Σαμαράς <psamaras1@gmail.com>, 2019\n"
+"Last-Translator: Ioannis LM, 2025\n"
 "Language-Team: Greek (http://app.transifex.com/xfce/xfce-panel-plugins/language/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -53,7 +54,7 @@ msgstr "Εκτέλεση σε τερματικό"
 
 #: panel-plugin/properties.cc:149
 msgid "Use startup notification"
-msgstr "Χρήση γνωστοποίησης εκκίνησης"
+msgstr "Ειδοποίηση στην εκκίνηση"
 
 #: panel-plugin/properties.cc:156
 msgid ""
