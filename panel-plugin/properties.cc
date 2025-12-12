@@ -47,7 +47,9 @@ struct CPUGraphOptions
     GtkBox          *hbox_in_terminal = nullptr;
     GtkBox          *hbox_per_core_spacing = nullptr;
     GtkBox          *hbox_startup_notification = nullptr;
-    GtkToggleButton *per_core = nullptr, *show_bars_checkbox = nullptr;
+    GtkBox          *hbox_size = nullptr;
+    GtkBox          *hbox_size_bars = nullptr;
+    GtkToggleButton *per_core = nullptr, *per_core_bars = nullptr, *show_bars_checkbox = nullptr;
     GtkLabel        *smt_stats = nullptr;
     GtkWidget       *notebook = nullptr;
     xfce4::SourceTag timeout_id;
@@ -83,7 +85,7 @@ static GtkWidget* create_drop_down (GtkBox *tab, GtkSizeGroup *sg, const gchar *
                                     bool text_only = true);
 static void       setup_update_interval_option (GtkBox *vbox, GtkSizeGroup *sg, const shared_ptr<CPUGraphOptions> &data);
 static void       setup_tracked_core_option (GtkBox *vbox, GtkSizeGroup *sg, const shared_ptr<CPUGraphOptions> &data);
-static void       setup_size_option (GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base);
+static GtkBox*    setup_size_option (GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base, bool graph);
 static void       setup_command_option (GtkBox *vbox, GtkSizeGroup *sg, const shared_ptr<CPUGraphOptions> &data);
 static void       setup_color_option (GtkBox *vbox, GtkSizeGroup *sg, const shared_ptr<CPUGraphOptions> &data,
                                       CPUGraphColorNumber number, const gchar *name, const gchar *tooltip,
@@ -135,7 +137,7 @@ create_options (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
     GtkBox *vbox = create_tab ();
     setup_update_interval_option (vbox, sg, dlg_data);
     setup_tracked_core_option (vbox, sg, dlg_data);
-    setup_size_option (vbox, sg, plugin, base);
+    dlg_data->hbox_size = setup_size_option (vbox, sg, plugin, base, true);
     setup_load_threshold_option (vbox, sg, base);
 
     gtk_box_pack_start (vbox, gtk_separator_new (GTK_ORIENTATION_HORIZONTAL), false, false, BORDER/2);
@@ -196,7 +198,7 @@ create_options (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
             dlg_data->base->set_nonlinear_time (gtk_toggle_button_get_active (button));
             update_sensitivity (dlg_data);
         });
-    create_check_box (vbox, sg, _("Per-core history graphs"), base->per_core, &dlg_data->per_core,
+    create_check_box (vbox, sg, _("Per-core graphs"), base->per_core, &dlg_data->per_core,
         [dlg_data](GtkToggleButton *button) {
             dlg_data->base->set_per_core (gtk_toggle_button_get_active (button));
             update_sensitivity (dlg_data);
@@ -237,6 +239,12 @@ create_options (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
             dlg_data->base->set_bars (gtk_toggle_button_get_active (button));
             update_sensitivity (dlg_data);
         });
+    create_check_box (vbox2, sg, _("Per-core bars"), base->per_core_bars, &dlg_data->per_core_bars,
+        [dlg_data](GtkToggleButton *button) {
+            dlg_data->base->set_per_core_bars (gtk_toggle_button_get_active (button));
+            update_sensitivity (dlg_data);
+        });
+    dlg_data->hbox_size_bars = setup_size_option (vbox2, sg, plugin, base, false);
     setup_color_option (vbox2, sg, dlg_data, BARS_COLOR, _("Bars color:"), nullptr, [base](GtkColorButton *button) {
         base->has_barcolor = true;
         change_color (button, base, BARS_COLOR);
@@ -421,28 +429,41 @@ setup_tracked_core_option (GtkBox *vbox, GtkSizeGroup *sg, const shared_ptr<CPUG
         [data](GtkComboBox *combo) {
             data->base->set_tracked_core (gtk_combo_box_get_active (combo));
             if (data->base->tracked_core != 0)
+            {
                 data->base->set_per_core (false);
+                data->base->set_per_core_bars (false);
+            }
             else
+            {
                 data->base->set_per_core (gtk_toggle_button_get_active (data->per_core));
+                data->base->set_per_core_bars (gtk_toggle_button_get_active (data->per_core_bars));
+            }
             update_sensitivity (data);
         });
 }
 
-static void
-setup_size_option (GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
+static GtkBox*
+setup_size_option (GtkBox *vbox, GtkSizeGroup *sg, XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base, bool graph)
 {
     GtkBox *hbox;
-    if (xfce_panel_plugin_get_orientation (plugin) == GTK_ORIENTATION_HORIZONTAL)
-        hbox = create_option_line (vbox, sg, _("Width:"), nullptr);
-    else
-        hbox = create_option_line (vbox, sg, _("Height:"), nullptr);
+
+    hbox = create_option_line (vbox, sg, _(xfce_panel_plugin_get_orientation (plugin) == GTK_ORIENTATION_HORIZONTAL ?
+        (graph ? "Graph width:": "Bar width:") : (graph ? "Graph height:": "Bar height:")), nullptr);
 
     GtkWidget *size = gtk_spin_button_new_with_range (MIN_SIZE, MAX_SIZE, 1);
-    gtk_spin_button_set_value (GTK_SPIN_BUTTON (size), base->size);
+    gtk_spin_button_set_value (GTK_SPIN_BUTTON (size), graph ? base->size : base->size_bars);
     gtk_box_pack_start (GTK_BOX (hbox), size, false, false, 0);
-    xfce4::connect (GTK_SPIN_BUTTON (size), "value-changed", [base](GtkSpinButton *button) {
-        base->set_size (gtk_spin_button_get_value_as_int (button));
+    xfce4::connect (GTK_SPIN_BUTTON (size), "value-changed", [base, graph](GtkSpinButton *button) {
+        guint value = gtk_spin_button_get_value_as_int(button);
+        if (graph) {
+            base->set_size(value);
+        }
+        else {
+            base->set_size_bars(value);
+        }
     });
+
+    return hbox;
 }
 
 static void
@@ -463,7 +484,7 @@ setup_per_core_spacing_option (GtkBox *vbox, GtkSizeGroup *sg, const shared_ptr<
     GtkBox *hbox = create_option_line (vbox, sg, _("Spacing:"), nullptr);
     GtkWidget *spacing = gtk_spin_button_new_with_range (PER_CORE_SPACING_MIN, PER_CORE_SPACING_MAX, 1);
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (spacing), base->per_core_spacing);
-    gtk_widget_set_tooltip_text (GTK_WIDGET (hbox), _("Spacing between per-core history graphs"));
+    gtk_widget_set_tooltip_text (GTK_WIDGET (hbox), _("Spacing between rendered items"));
     gtk_box_pack_start (GTK_BOX (hbox), spacing, false, false, 0);
     xfce4::connect (GTK_SPIN_BUTTON (spacing), "value-changed", [base](GtkSpinButton *button) {
         base->set_per_core_spacing (gtk_spin_button_get_value_as_int (button));
@@ -585,7 +606,8 @@ update_sensitivity (const shared_ptr<CPUGraphOptions> &data, bool initial)
 {
     const shared_ptr<CPUGraph> base = data->base;
     const bool default_command = base->command.empty();
-    const bool per_core = base->nr_cores > 1 && base->tracked_core == 0 && base->mode != MODE_DISABLED;
+    const bool per_core = base->nr_cores > 1 && base->tracked_core == 0;
+    const bool single_drawn = (base->nr_cores > 1 && base->per_core) || (base->has_bars && base->mode != MODE_DISABLED);
 
     gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_highlight_smt),
                               base->has_bars && base->topology && base->topology->smt);
@@ -601,12 +623,18 @@ update_sensitivity (const shared_ptr<CPUGraphOptions> &data, bool initial)
         gtk_widget_set_visible (GTK_WIDGET (data->hbox_in_terminal), true);
         gtk_widget_set_visible (GTK_WIDGET (data->hbox_startup_notification), true);
     }
-    gtk_widget_set_sensitive (GTK_WIDGET (data->per_core), per_core);
-    gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_per_core_spacing), per_core && base->per_core);
+    gtk_widget_set_sensitive (GTK_WIDGET (data->per_core), per_core && base->mode != MODE_DISABLED);
+    gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_per_core_spacing), single_drawn);
+
+    gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_size), base->mode != MODE_DISABLED);
+    gtk_widget_set_sensitive (GTK_WIDGET (data->hbox_size_bars), base->has_bars);
 
     auto get_color_button_parent = [&](CPUGraphColorNumber color) {
         return gtk_widget_get_parent (GTK_WIDGET (data->color_buttons[color]));
     };
+
+    gtk_widget_set_sensitive (GTK_WIDGET (data->per_core_bars), per_core && base->has_bars);
+
     auto set_colors_visibility = [&](bool detailed_mode) {
         gtk_widget_set_visible (get_color_button_parent (FG_COLOR1), !detailed_mode);
         gtk_widget_set_visible (get_color_button_parent (FG_COLOR2), !detailed_mode);
