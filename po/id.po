@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the xfce-panel-plugins.xfce4-cpugraph-plugin package.
 # 
 # Translators:
+# Arif Budiman <arifpedia@gmail.com>, 2026
 # Triyan W. Nugroho <triyan.wn@gmail.com>, 2020-2021
 msgid ""
 msgstr ""
@@ -10,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gitlab.xfce.org/\n"
 "POT-Creation-Date: 2025-07-18 11:06+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
-"Last-Translator: Triyan W. Nugroho <triyan.wn@gmail.com>, 2020-2021\n"
+"Last-Translator: Arif Budiman <arifpedia@gmail.com>, 2026\n"
 "Language-Team: Indonesian (http://app.transifex.com/xfce/xfce-panel-plugins/language/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +26,7 @@ msgstr "Representasi grafik beban kerja CPU"
 #: panel-plugin/cpu.cc:717
 #, c-format
 msgid "CPU usage: %.1f%%"
-msgstr ""
+msgstr "Penggunaan CPU: %.1f%%"
 
 #: panel-plugin/properties.cc:70
 msgid ""
@@ -62,7 +63,7 @@ msgstr "Warna yang digunakan untuk menyorot peletakan ulir yang berpotensi subop
 
 #: panel-plugin/properties.cc:172
 msgid "Display SMT statistics"
-msgstr ""
+msgstr "Tampilkan statistik SMT"
 
 #: panel-plugin/properties.cc:182
 msgid "Highlight suboptimal SMT scheduling"
@@ -94,19 +95,19 @@ msgstr "Warna 3:"
 
 #: panel-plugin/properties.cc:216
 msgid "System:"
-msgstr ""
+msgstr "Sistem:"
 
 #: panel-plugin/properties.cc:219
 msgid "User:"
-msgstr ""
+msgstr "Pengguna:"
 
 #: panel-plugin/properties.cc:222
 msgid "Nice:"
-msgstr ""
+msgstr "Nice:"
 
 #: panel-plugin/properties.cc:225
 msgid "IO wait:"
-msgstr ""
+msgstr "Tunggu IO:"
 
 #: panel-plugin/properties.cc:228
 msgid "Background:"
@@ -243,7 +244,7 @@ msgstr "Corak Api"
 
 #: panel-plugin/properties.cc:565
 msgid "Detailed"
-msgstr ""
+msgstr "Terperinci"
 
 #: panel-plugin/properties.cc:570
 msgid "Color mode: "
