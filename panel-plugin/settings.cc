@@ -71,12 +71,14 @@ static const gchar *const g_color_keys[NUM_COLORS][2] =
 constexpr auto g_update_interval = "/update-interval";
 constexpr auto g_time_scale = "/time-scale";
 constexpr auto g_size = "/size";
+constexpr auto g_size_bars = "/size-bars";
 constexpr auto g_mode = "/mode";
 constexpr auto g_color_mode = "/color-mode";
 constexpr auto g_frame = "/frame";
 constexpr auto g_border = "/border";
 constexpr auto g_bars = "/bars";
 constexpr auto g_per_core = "/per-core";
+constexpr auto g_per_core_bars = "/per-core-bars";
 constexpr auto g_tracked_core = "/tracked-core";
 constexpr auto g_in_terminal = "/in-terminal";
 constexpr auto g_startup_notification = "/startup-notification";
@@ -119,6 +121,7 @@ Settings::read (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
     bool highlight_smt = HIGHLIGHT_SMT_BY_DEFAULT;
     bool nonlinear = false;
     bool per_core = false;
+    bool per_core_bars = false;
     guint per_core_spacing = PER_CORE_SPACING_DEFAULT;
     guint tracked_core = 0;
 
@@ -132,6 +135,7 @@ Settings::read (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
         colors[i] = g_default_colors[i];
 
     gint size = xfce_panel_plugin_get_size (plugin);
+    gint size_bars = size;
 
     if (const auto chn = base->channel)
     {
@@ -153,6 +157,7 @@ Settings::read (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
                     rate = (CPUGraphUpdateRate) rc->read_int_entry ("UpdateInterval", rate);
                     nonlinear = rc->read_int_entry ("TimeScale", nonlinear);
                     size = rc->read_int_entry ("Size", size);
+                    size_bars = rc->read_int_entry ("BarSize", size_bars);
                     mode = (CPUGraphMode) (rc->read_int_entry ("Mode", mode - 1) + 1); // 'Disabled' mode was introduced in 1.1.0 as '-1', in 1.2.8 it was changed to 0.
                     color_mode = rc->read_int_entry ("ColorMode", color_mode);
                     frame = rc->read_int_entry ("Frame", frame);
@@ -162,6 +167,7 @@ Settings::read (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
                     bars = rc->read_int_entry ("Bars", bars);
                     highlight_smt = rc->read_int_entry ("SmtIssues", highlight_smt);
                     per_core = rc->read_int_entry ("PerCore", per_core);
+                    per_core_bars = rc->read_int_entry ("PerCoreBars", per_core_bars);
                     per_core_spacing = rc->read_int_entry ("PerCoreSpacing", per_core_spacing);
                     tracked_core = rc->read_int_entry ("TrackedCore", tracked_core);
                     load_threshold = rc->read_int_entry ("LoadThreshold", load_threshold);
@@ -191,12 +197,14 @@ Settings::read (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
             rate = (CPUGraphUpdateRate) xfconf_channel_get_int (chn, g_update_interval, rate);
             nonlinear = xfconf_channel_get_int (chn, g_time_scale, nonlinear);
             size = xfconf_channel_get_int (chn, g_size, size);
+            size_bars = xfconf_channel_get_int (chn, g_size_bars, size_bars);
             mode = (CPUGraphMode) xfconf_channel_get_int (chn, g_mode, mode);
             color_mode = xfconf_channel_get_int (chn, g_color_mode, color_mode);
             frame = xfconf_channel_get_int (chn, g_frame, frame);
             border = xfconf_channel_get_int (chn, g_border, border);
             bars = xfconf_channel_get_int (chn, g_bars, bars);
             per_core = xfconf_channel_get_int (chn, g_per_core, per_core);
+            per_core_bars = xfconf_channel_get_int (chn, g_per_core_bars, per_core_bars);
             tracked_core = xfconf_channel_get_int (chn, g_tracked_core, tracked_core);
             in_terminal = xfconf_channel_get_int (chn, g_in_terminal, in_terminal);
             startup_notification = xfconf_channel_get_int (chn, g_startup_notification, startup_notification);
@@ -269,8 +277,10 @@ Settings::read (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base)
     base->set_mode (mode);
     base->set_nonlinear_time (nonlinear);
     base->set_per_core (per_core);
+    base->set_per_core_bars (per_core_bars);
     base->set_per_core_spacing (per_core_spacing);
     base->set_size (size);
+    base->set_size_bars (size_bars);
     base->set_stats_smt (stats_smt);
     base->set_smt (highlight_smt);
     base->set_startup_notification (startup_notification);
@@ -288,12 +298,14 @@ Settings::write (XfcePanelPlugin *plugin, const shared_ptr<const CPUGraph> &base
     xfconf_channel_set_int (chn, g_update_interval, base->update_interval);
     xfconf_channel_set_int (chn, g_time_scale, base->non_linear);
     xfconf_channel_set_int (chn, g_size, base->size);
+    xfconf_channel_set_int (chn, g_size_bars, base->size_bars);
     xfconf_channel_set_int (chn, g_mode, base->mode);
     xfconf_channel_set_int (chn, g_color_mode, base->color_mode);
     xfconf_channel_set_int (chn, g_frame, base->has_frame);
     xfconf_channel_set_int (chn, g_border, base->has_border);
     xfconf_channel_set_int (chn, g_bars, base->has_bars);
     xfconf_channel_set_int (chn, g_per_core, base->per_core);
+    xfconf_channel_set_int (chn, g_per_core_bars, base->per_core_bars);
     xfconf_channel_set_int (chn, g_tracked_core, base->tracked_core);
     xfconf_channel_set_int (chn, g_in_terminal, base->command_in_terminal);
     xfconf_channel_set_int (chn, g_startup_notification, base->command_startup_notification);
