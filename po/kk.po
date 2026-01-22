@@ -25,22 +25,22 @@ msgstr "Процессор жүктелудің графикалық бейне�
 #: panel-plugin/cpu.cc:717
 #, c-format
 msgid "CPU usage: %.1f%%"
-msgstr ""
+msgstr "Процессор қолданылуы: %.1f%%"
 
 #: panel-plugin/properties.cc:70
 msgid ""
 "'Overall' is showing the impact on the overall performance of the machine."
-msgstr ""
+msgstr "'Жалпы' мәні машинаның жалпы өнімділігіне әсерін көрсетеді."
 
 #: panel-plugin/properties.cc:71
 msgid ""
 "'Hotspots' is showing the momentary performance impact on just the threads "
 "involved in suboptimal SMT scheduling decisions."
-msgstr ""
+msgstr "'Ыстық нүктелер' тек оңтайлы емес SMT жоспарлау шешімдеріне қатысатын ағындарға ғана лезде өнімділік әсерін көрсетеді."
 
 #: panel-plugin/properties.cc:110
 msgid "CPU Graph Properties"
-msgstr "CPU Graph модуль қасиеттері "
+msgstr "Процессор графигі модуль қасиеттері"
 
 #: panel-plugin/properties.cc:114
 msgid "_Close"
@@ -58,19 +58,19 @@ msgstr "Қосылу ескертуін қолдану"
 msgid ""
 "Color used to highlight potentially suboptimal\n"
 "placement of threads on CPUs with SMT"
-msgstr ""
+msgstr "SMT бар процессорларда ағындардың оңтайлы емес орналасуын ерекшелеу үшін қолданылатын түс"
 
 #: panel-plugin/properties.cc:172
 msgid "Display SMT statistics"
-msgstr ""
+msgstr "SMT статистикасын көрсету"
 
 #: panel-plugin/properties.cc:182
 msgid "Highlight suboptimal SMT scheduling"
-msgstr ""
+msgstr "Оңтайлы емес SMT жоспарлауын ерекшелеу"
 
 #: panel-plugin/properties.cc:189
 msgid "SMT issues color:"
-msgstr ""
+msgstr "SMT мәселелерінің түсі:"
 
 #: panel-plugin/properties.cc:194
 msgid "Use non-linear time-scale"
@@ -78,7 +78,7 @@ msgstr "Сызықты емес уақыт шкаласы"
 
 #: panel-plugin/properties.cc:199
 msgid "Per-core history graphs"
-msgstr ""
+msgstr "Әр ядро бойынша тарих графиктері"
 
 #: panel-plugin/properties.cc:207
 msgid "Color 1:"
@@ -94,19 +94,19 @@ msgstr "Түс 3:"
 
 #: panel-plugin/properties.cc:216
 msgid "System:"
-msgstr ""
+msgstr "Жүйе:"
 
 #: panel-plugin/properties.cc:219
 msgid "User:"
-msgstr ""
+msgstr "Пайдаланушы:"
 
 #: panel-plugin/properties.cc:222
 msgid "Nice:"
-msgstr ""
+msgstr "Ергіштік:"
 
 #: panel-plugin/properties.cc:225
 msgid "IO wait:"
-msgstr ""
+msgstr "IO күту:"
 
 #: panel-plugin/properties.cc:228
 msgid "Background:"
@@ -140,27 +140,27 @@ msgstr "Кеңейтілген"
 
 #: panel-plugin/properties.cc:263
 msgid "Stats"
-msgstr ""
+msgstr "Статистика"
 
 #: panel-plugin/properties.cc:397
 msgid "Fastest (~250ms)"
-msgstr "Ең жылдам (~250ms)"
+msgstr "Ең жылдам (~250мс)"
 
 #: panel-plugin/properties.cc:398
 msgid "Fast (~500ms)"
-msgstr "Жылдам (~500ms)"
+msgstr "Жылдам (~500мс)"
 
 #: panel-plugin/properties.cc:399
 msgid "Normal (~750ms)"
-msgstr "Қалыпты (~750ms)"
+msgstr "Қалыпты (~750мс)"
 
 #: panel-plugin/properties.cc:400
 msgid "Slow (~1s)"
-msgstr "Баяу (~1s)"
+msgstr "Баяу (~1с)"
 
 #: panel-plugin/properties.cc:401
 msgid "Slowest (~3s)"
-msgstr ""
+msgstr "Ең баяу (~3с)"
 
 #: panel-plugin/properties.cc:404
 msgid "Update Interval:"
@@ -184,15 +184,15 @@ msgstr "Биіктігі:"
 
 #: panel-plugin/properties.cc:451
 msgid "Threshold (%):"
-msgstr ""
+msgstr "Табалдырықты мәні (%):"
 
 #: panel-plugin/properties.cc:463
 msgid "Spacing:"
-msgstr ""
+msgstr "Аралық:"
 
 #: panel-plugin/properties.cc:466
 msgid "Spacing between per-core history graphs"
-msgstr ""
+msgstr "Әр ядро бойынша тарих графиктері арасындағы аралық"
 
 #: panel-plugin/properties.cc:477
 msgid "Associated command:"
@@ -200,11 +200,11 @@ msgstr "Сәйкес команда:"
 
 #: panel-plugin/properties.cc:485
 msgid "The command to run when the plugin is left-clicked."
-msgstr ""
+msgstr "Плагинді сол жақ батырмамен шерткенде орындалатын команда."
 
 #: panel-plugin/properties.cc:486
 msgid "If not specified, it defaults to xfce4-taskmanager, htop or top."
-msgstr ""
+msgstr "Көрсетілмеген жағдайда, әдепкі бойынша xfce4-taskmanager, htop немесе top қолданылады."
 
 #: panel-plugin/properties.cc:514
 msgid "Disabled"
@@ -244,42 +244,42 @@ msgstr "Жалын"
 
 #: panel-plugin/properties.cc:565
 msgid "Detailed"
-msgstr ""
+msgstr "Толығырақ"
 
 #: panel-plugin/properties.cc:570
 msgid "Color mode: "
-msgstr "Түс режимі:"
+msgstr "Түс режимі: "
 
 #: panel-plugin/properties.cc:680
 msgid "SMT detected: Yes"
-msgstr ""
+msgstr "SMT анықталды: Иә"
 
 #: panel-plugin/properties.cc:680
 msgid "SMT detected: No"
-msgstr ""
+msgstr "SMT анықталды: Жоқ"
 
 #: panel-plugin/properties.cc:705
 #, c-format
 msgid "Number of SMT scheduling incidents: %u"
-msgstr ""
+msgstr "SMT жоспарлау оқиғаларының саны: %u"
 
 #: panel-plugin/properties.cc:710
 msgid "Estimated performance impact:"
-msgstr ""
+msgstr "Болжалды өнімділік әсері:"
 
 #: panel-plugin/properties.cc:711
 #, c-format
 msgid "Overall: %.3g%%"
-msgstr ""
+msgstr "Жалпы: %.3g%%"
 
 #: panel-plugin/properties.cc:712
 #, c-format
 msgid "Hotspots: %.3g%%"
-msgstr ""
+msgstr "Ыстық нүктелер: %.3g%%"
 
 #: panel-plugin/properties.cc:724
 msgid "SMT detected: N/A"
-msgstr ""
+msgstr "SMT анықталды: N/A"
 
 #: panel-plugin/cpugraph.desktop.in:5
 msgid "CPU Graph"
