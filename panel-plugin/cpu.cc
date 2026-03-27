@@ -52,7 +52,6 @@ static void                 about_cb       ();
 static Propagation          command_cb     (GdkEventButton *event, const shared_ptr<CPUGraph> &base);
 static shared_ptr<CPUGraph> create_gui     (XfcePanelPlugin *plugin);
 static Propagation          draw_area_cb   (cairo_t *cr, const shared_ptr<CPUGraph> &base);
-static Propagation          draw_bars_cb   (cairo_t *cr, const shared_ptr<CPUGraph> &base);
 static void                 mode_cb        (XfcePanelPlugin *plugin, const shared_ptr<CPUGraph> &base);
 static void                 shutdown       (const shared_ptr<CPUGraph> &base);
 static PluginShape          size_cb        (XfcePanelPlugin *plugin, guint size, const shared_ptr<CPUGraph> &base);
@@ -146,7 +145,6 @@ create_gui (XfcePanelPlugin *plugin)
 
     base->has_bars = false;
     base->has_barcolor = false;
-    base->bars.orientation = orientation;
     base->stats_smt = STATS_SMT_BY_DEFAULT;
     base->highlight_smt = HIGHLIGHT_SMT_BY_DEFAULT;
     base->per_core_spacing = PER_CORE_SPACING_DEFAULT;
@@ -195,26 +193,6 @@ CPUGraph::ebox_revalidate ()
     gtk_event_box_set_above_child (GTK_EVENT_BOX (ebox), true);
 }
 
-guint
-CPUGraph::nb_bars ()
-{
-    return tracked_core == 0 ? nr_cores : 1;
-}
-
-void
-CPUGraph::create_bars (GtkOrientation orientation)
-{
-    bars.frame = gtk_frame_new (nullptr);
-    bars.draw_area = gtk_drawing_area_new ();
-    bars.orientation = orientation;
-    set_frame (has_frame);
-    gtk_container_add (GTK_CONTAINER (bars.frame), bars.draw_area);
-    gtk_box_pack_end (GTK_BOX (box), bars.frame, true, true, 0);
-    xfce4::connect_after_draw (bars.draw_area, [base = shared_from_this ()](cairo_t *cr) { return draw_bars_cb(cr, base); });
-    gtk_widget_show_all (bars.frame);
-    ebox_revalidate ();
-}
-
 CPUGraph::~CPUGraph ()
 {
     g_info ("%s", __PRETTY_FUNCTION__);
@@ -234,32 +212,11 @@ CPUGraph::is_smt_issues_enabled () const
 static void
 shutdown (const shared_ptr<CPUGraph> &base)
 {
-    base->delete_bars ();
     gtk_widget_destroy (base->ebox);
     base->ebox = nullptr;
     g_object_unref (base->tooltip_text);
     base->tooltip_text = nullptr;
     xfce4::source_remove (base->timeout_id);
-}
-
-void
-CPUGraph::delete_bars ()
-{
-    if (bars.frame)
-    {
-        gtk_widget_destroy (bars.frame);
-        bars.frame = nullptr;
-        bars.draw_area = nullptr;
-    }
-}
-
-static void
-queue_draw (const shared_ptr<CPUGraph> &base)
-{
-    if (base->mode != MODE_DISABLED)
-        gtk_widget_queue_draw (base->draw_area);
-    if (base->bars.draw_area)
-        gtk_widget_queue_draw (base->bars.draw_area);
 }
 
 static void
@@ -307,20 +264,34 @@ size_cb (XfcePanelPlugin *plugin, guint plugin_size, const shared_ptr<CPUGraph> 
 {
     gint frame_h, frame_v, size;
     gssize history;
-    GtkOrientation orientation;
     guint border_width;
     const gint shadow_width = base->has_frame ? 2*1 : 0;
 
-    size = base->size;
-    if (base->per_core && base->nr_cores >= 2)
+    gint total_bar = 0;
+    if (base->has_bars)
     {
-        size *= base->nr_cores;
-        size += (base->nr_cores - 1) * base->per_core_spacing;
+        total_bar = base->size_bars;
+        if (base->per_core_bars && base->nr_cores >= 2)
+        {
+            total_bar *= base->nr_cores;
+            total_bar += (base->nr_cores - 1) * base->per_core_spacing;
+        }
     }
 
-    orientation = xfce_panel_plugin_get_orientation (plugin);
+    gint total_graph = 0;
+    if (base->mode != MODE_DISABLED)
+    {
+        total_graph = base->size;
+        if (base->per_core && base->nr_cores >= 2)
+        {
+            total_graph *= base->nr_cores;
+            total_graph += (base->nr_cores - 1) * base->per_core_spacing;
+        }
+    }
 
-    if (orientation == GTK_ORIENTATION_HORIZONTAL)
+    size = total_bar + (base->has_bars && base->mode != MODE_DISABLED ? base->per_core_spacing : 0) + total_graph;
+
+    if (xfce_panel_plugin_get_orientation (plugin) == GTK_ORIENTATION_HORIZONTAL)
     {
         frame_h = size + shadow_width;
         frame_v = plugin_size;
@@ -347,10 +318,6 @@ size_cb (XfcePanelPlugin *plugin, guint plugin_size, const shared_ptr<CPUGraph> 
         base->history.size = history;
 
     gtk_widget_set_size_request (GTK_WIDGET (base->frame_widget), frame_h, frame_v);
-    if (base->has_bars) {
-        base->bars.orientation = orientation;
-        base->set_bars_size ();
-    }
 
     if (base->has_border)
         border_width = (xfce_panel_plugin_get_size (base->plugin) > 26 ? 2 : 1);
@@ -361,28 +328,6 @@ size_cb (XfcePanelPlugin *plugin, guint plugin_size, const shared_ptr<CPUGraph> 
     base->set_border (base->has_border);
 
     return xfce4::PluginShape::Rectangle();
-}
-
-void
-CPUGraph::set_bars_size ()
-{
-    gint h, v;
-    gint shadow_width;
-
-    shadow_width = has_frame ? 2*1 : 0;
-
-    if (bars.orientation == GTK_ORIENTATION_HORIZONTAL)
-    {
-        h = 6 * nb_bars () - 2 + shadow_width;
-        v = -1;
-    }
-    else
-    {
-        h = -1;
-        v = 6 * nb_bars () - 2 + shadow_width;
-    }
-
-    gtk_widget_set_size_request (bars.frame, h, v);
 }
 
 static void
@@ -702,7 +647,7 @@ update_cb (const shared_ptr<CPUGraph> &base)
         }
     }
 
-    queue_draw (base);
+    gtk_widget_queue_draw (base->draw_area);
     update_tooltip (base, false);
 
     return xfce4::TimeoutResponse::Again();
@@ -728,167 +673,150 @@ tooltip_cb (GtkTooltip *tooltip, const shared_ptr<CPUGraph> &base)
     return xfce4::TooltipTime::Now();
 }
 
+static void
+draw_stat(cairo_t *cr, const shared_ptr<CPUGraph> &base, guint offset, guint core, gint w1, gint h1, bool bar)
+{
+    cairo_save (cr);
+    {
+        bool horizontal = (xfce_panel_plugin_get_orientation (base->plugin) == GTK_ORIENTATION_HORIZONTAL);
+
+        cairo_rectangle_t translation = {};
+        *(horizontal ? &translation.x : &translation.y) = offset;
+        cairo_translate (cr, translation.x, translation.y);
+
+        if (!base->colors[BG_COLOR].is_transparent())
+        {
+            xfce4::cairo_set_source_rgba (cr, base->colors[BG_COLOR]);
+            cairo_rectangle (cr, 0, 0, w1, h1);
+            cairo_fill (cr);
+        }
+
+        if (bar)
+        {
+            gfloat span = (horizontal ? w1 : h1);
+            gfloat breadth = (horizontal ? h1 : w1);
+            gfloat usage;
+            bool highlight;
+
+            const auto &cpu_data_i = base->cpu_data[base->index_to_cpu[core]];
+            highlight = base->highlight_smt && cpu_data_i.smt_highlight;
+            usage = cpu_data_i.load;
+
+            if (usage < base->load_threshold)
+                usage = 0;
+            usage *= breadth;
+
+            /* Suboptimally placed threads on SMT CPUs are optionally painted using a different color. */
+            const xfce4::RGBA *color = &base->colors[highlight ? SMT_ISSUES_COLOR : BARS_COLOR];
+            xfce4::cairo_set_source_rgba (cr, *color);
+            if (horizontal)
+                cairo_rectangle (cr, 0, breadth-usage, span, usage);
+            else
+                cairo_rectangle (cr, breadth-usage, 0, usage, span);
+            cairo_fill (cr);
+        }
+        else
+        {
+            void (*draw) (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core) = nullptr;
+            switch (base->mode)
+            {
+                case MODE_DISABLED:
+                    break;
+                case MODE_NORMAL:
+                    if (base->size > 1)
+                        draw = draw_graph_normal;
+                    else
+                        draw = draw_graph_no_history;
+                    break;
+                case MODE_LED:
+                    draw = draw_graph_LED;
+                    break;
+                case MODE_NO_HISTORY:
+                    draw = draw_graph_no_history;
+                    break;
+                case MODE_GRID:
+                    draw = draw_graph_grid;
+                    break;
+            }
+
+            if (draw)
+            {
+                cairo_rectangle (cr, 0, 0, w1, h1);
+                cairo_clip (cr);
+                draw (base, cr, w1, h1, core);
+            }
+        }
+    }
+    cairo_restore (cr);
+}
+
 static Propagation
 draw_area_cb (cairo_t *cr, const shared_ptr<CPUGraph> &base)
 {
     GtkAllocation alloc;
     gint w, h;
-    void (*draw) (const shared_ptr<CPUGraph> &base, cairo_t *cr, gint w, gint h, guint core) = nullptr;
 
     gtk_widget_get_allocation (base->draw_area, &alloc);
     w = alloc.width;
     h = alloc.height;
 
-    switch (base->mode)
+    bool horizontal = (xfce_panel_plugin_get_orientation (base->plugin) == GTK_ORIENTATION_HORIZONTAL);
+
+    gint wbar, hbar;
+    gint wgraph, hgraph;
+
+    if (horizontal)
     {
-        case MODE_DISABLED:
-            break;
-        case MODE_NORMAL:
-            if (base->size > 1)
-                draw = draw_graph_normal;
-            else
-                draw = draw_graph_no_history;
-            break;
-        case MODE_LED:
-            draw = draw_graph_LED;
-            break;
-        case MODE_NO_HISTORY:
-            draw = draw_graph_no_history;
-            break;
-        case MODE_GRID:
-            draw = draw_graph_grid;
-            break;
-    }
-
-    if (draw)
-    {
-        if (!base->per_core || base->nr_cores == 1)
-        {
-            guint core;
-
-            if (!base->colors[BG_COLOR].is_transparent())
-            {
-                xfce4::cairo_set_source_rgba (cr, base->colors[BG_COLOR]);
-                cairo_rectangle (cr, 0, 0, w, h);
-                cairo_fill (cr);
-            }
-
-            core = base->tracked_core;
-            if (G_UNLIKELY (core > base->nr_cores + 1))
-                core = 0;
-            draw (base, cr, w, h, core);
-        }
-        else
-        {
-            bool horizontal;
-            gint w1, h1;
-
-            horizontal = (xfce_panel_plugin_get_orientation (base->plugin) == GTK_ORIENTATION_HORIZONTAL);
-            if (horizontal)
-            {
-                w1 = base->size;
-                h1 = h;
-            }
-            else
-            {
-                w1 = w;
-                h1 = base->size;
-            }
-
-            for (guint core = 0; core < base->nr_cores; core++)
-            {
-                cairo_save (cr);
-                {
-                    cairo_rectangle_t translation = {};
-                    *(horizontal ? &translation.x : &translation.y) = core * (base->size + base->per_core_spacing);
-                    cairo_translate (cr, translation.x, translation.y);
-
-                    if (!base->colors[BG_COLOR].is_transparent())
-                    {
-                        xfce4::cairo_set_source_rgba (cr, base->colors[BG_COLOR]);
-                        cairo_rectangle (cr, 0, 0, w1, h1);
-                        cairo_fill (cr);
-                    }
-
-                    cairo_rectangle (cr, 0, 0, w1, h1);
-                    cairo_clip (cr);
-                    draw (base, cr, w1, h1, core+1);
-                }
-                cairo_restore (cr);
-            }
-        }
-    }
-    return xfce4::Propagation::Propagate();
-}
-
-static Propagation
-draw_bars_cb (cairo_t *cr, const shared_ptr<CPUGraph> &base)
-{
-    GtkAllocation alloc;
-    gfloat size;
-    const bool horizontal = (base->bars.orientation == GTK_ORIENTATION_HORIZONTAL);
-
-    gtk_widget_get_allocation (base->bars.draw_area, &alloc);
-
-    if (!base->colors[BG_COLOR].is_transparent())
-    {
-        xfce4::cairo_set_source_rgba (cr, base->colors[BG_COLOR]);
-        cairo_rectangle (cr, 0, 0, alloc.width, alloc.height);
-        cairo_fill (cr);
-    }
-
-    size = (horizontal ? alloc.height : alloc.width);
-    if (base->tracked_core != 0 || base->nr_cores == 1)
-    {
-        gfloat usage = base->cpu_data[0].load;
-        if (usage < base->load_threshold)
-            usage = 0;
-        usage *= size;
-
-        xfce4::cairo_set_source_rgba (cr, base->colors[BARS_COLOR]);
-        if (horizontal)
-            cairo_rectangle (cr, 0, size-usage, 4, usage);
-        else
-            cairo_rectangle (cr, 0, 0, usage, 4);
-        cairo_fill (cr);
+        wbar = base->size_bars;
+        hbar = h;
+        wgraph = base->size;
+        hgraph = h;
     }
     else
     {
-        const xfce4::RGBA *active_color = nullptr;
-        bool fill = false;
-        for (guint i = 0; i < base->nr_cores; i++)
-        {
-            const auto &cpu_data_i_plus_1 = base->cpu_data[base->index_to_cpu[i+1]];
-
-            const bool highlight = base->highlight_smt && cpu_data_i_plus_1.smt_highlight;
-
-            gfloat usage = cpu_data_i_plus_1.load;
-            if (usage < base->load_threshold)
-                usage = 0;
-            usage *= size;
-
-            /* Suboptimally placed threads on SMT CPUs are optionally painted using a different color. */
-            const xfce4::RGBA *color = &base->colors[highlight ? SMT_ISSUES_COLOR : BARS_COLOR];
-            if (active_color != color)
-            {
-                if (fill)
-                {
-                    cairo_fill (cr);
-                    fill = false;
-                }
-                xfce4::cairo_set_source_rgba (cr, *color);
-                active_color = color;
-            }
-
-            if (horizontal)
-                cairo_rectangle (cr, 6*i, size-usage, 4, usage);
-            else
-                cairo_rectangle (cr, 0, 6*i, usage, 4);
-            fill = true;
-        }
-        if (fill)
-            cairo_fill (cr);
+        wbar = w;
+        hbar = base->size_bars;
+        wgraph = w;
+        hgraph = base->size;
     }
+
+    guint barOffset = (horizontal ? wbar : hbar) + base->per_core_spacing;
+    guint totalOffset = 0;
+
+    guint core = base->tracked_core;
+    if (G_UNLIKELY (core > base->nr_cores + 1))
+        core = 0;
+
+    if (base->has_bars)
+    {
+        if (!base->per_core_bars || base->nr_cores == 1)
+        {
+            draw_stat(cr, base, 0, core, wbar, hbar, true);
+            totalOffset = barOffset;
+        }
+        else
+        {
+            for (guint coreID = 1; coreID <= base->nr_cores; coreID++)
+            {
+                draw_stat(cr, base, totalOffset, coreID, wbar, hbar, true);
+                totalOffset += barOffset;
+            }
+        }
+    }
+
+    if (!base->per_core || base->nr_cores == 1)
+    {
+        draw_stat(cr, base, totalOffset, core, wgraph, hgraph, false);
+    }
+    else
+    {
+        for (guint coreID = 1; coreID <= base->nr_cores; coreID++)
+        {
+            draw_stat(cr, base, totalOffset, coreID, wgraph, hgraph, false);
+            totalOffset += (horizontal ? wgraph : hgraph) + base->per_core_spacing;
+        }
+    }
+
     return xfce4::Propagation::Propagate();
 }
 
@@ -996,15 +924,7 @@ CPUGraph::set_bars (bool has_bars_arg)
     if (has_bars != has_bars_arg)
     {
         has_bars = has_bars_arg;
-        if (has_bars)
-        {
-            create_bars (xfce_panel_plugin_get_orientation (plugin));
-            set_bars_size ();
-        }
-        else
-        {
-            delete_bars ();
-        }
+        size_cb (plugin, xfce_panel_plugin_get_size (plugin), shared_from_this ());
     }
 }
 
@@ -1023,8 +943,6 @@ CPUGraph::set_frame (bool has_frame_arg)
 {
     has_frame = has_frame_arg;
     gtk_frame_set_shadow_type (GTK_FRAME (frame_widget), has_frame ? GTK_SHADOW_IN : GTK_SHADOW_NONE);
-    if (bars.frame)
-        gtk_frame_set_shadow_type (GTK_FRAME (bars.frame), has_frame ? GTK_SHADOW_IN : GTK_SHADOW_NONE);
     size_cb (plugin, xfce_panel_plugin_get_size (plugin), shared_from_this ());
 }
 
@@ -1036,7 +954,7 @@ CPUGraph::set_nonlinear_time (bool non_linear_arg)
         non_linear = non_linear_arg;
         if (!non_linear)
             non_linear_cache = {};
-        queue_draw (shared_from_this ());
+        gtk_widget_queue_draw (shared_from_this ()->draw_area);
     }
 }
 
@@ -1046,6 +964,16 @@ CPUGraph::set_per_core (bool per_core_arg)
     if (per_core != per_core_arg)
     {
         per_core = per_core_arg;
+        size_cb (plugin, xfce_panel_plugin_get_size (plugin), shared_from_this ());
+    }
+}
+
+void
+CPUGraph::set_per_core_bars (bool per_core_bars_arg)
+{
+    if (per_core_bars != per_core_bars_arg)
+    {
+        per_core_bars = per_core_bars_arg;
         size_cb (plugin, xfce_panel_plugin_get_size (plugin), shared_from_this ());
     }
 }
@@ -1093,7 +1021,7 @@ CPUGraph::set_update_rate (CPUGraphUpdateRate rate)
         timeout_id = xfce4::timeout_add (interval, [base = shared_from_this ()]() { return update_cb (base); });
 
         if (change && !init)
-            queue_draw (shared_from_this ());
+            gtk_widget_queue_draw (shared_from_this ()->draw_area);
     }
 }
 
@@ -1117,12 +1045,24 @@ CPUGraph::set_size (guint size_arg)
 }
 
 void
+CPUGraph::set_size_bars (guint size_bars_arg)
+{
+    if (G_UNLIKELY (size_bars < MIN_SIZE))
+        size_bars = MIN_SIZE;
+    if (G_UNLIKELY (size_bars > MAX_SIZE))
+        size_bars = MAX_SIZE;
+
+    size_bars = size_bars_arg;
+    size_cb (plugin, xfce_panel_plugin_get_size (plugin), shared_from_this ());
+}
+
+void
 CPUGraph::set_color_mode (guint color_mode_arg)
 {
     if (color_mode != color_mode_arg)
     {
         color_mode = color_mode_arg;
-        queue_draw (shared_from_this ());
+        gtk_widget_queue_draw (shared_from_this ()->draw_area);
     }
 }
 
@@ -1132,15 +1072,7 @@ CPUGraph::set_mode (CPUGraphMode mode_arg)
     mode = mode_arg;
     nearest_cache = {};
     non_linear_cache = {};
-    if (mode == MODE_DISABLED)
-    {
-        gtk_widget_hide (frame_widget);
-    }
-    else
-    {
-        gtk_widget_show (frame_widget);
-        ebox_revalidate ();
-    }
+    size_cb (plugin, xfce_panel_plugin_get_size (plugin), shared_from_this ());
 }
 
 void
@@ -1149,7 +1081,7 @@ CPUGraph::set_color (CPUGraphColorNumber number, const xfce4::RGBA &color)
     if (colors[number] != color)
     {
         colors[number] = color;
-        queue_draw (shared_from_this ());
+        gtk_widget_queue_draw (shared_from_this ()->draw_area);
     }
 }
 
