@@ -112,12 +112,6 @@ struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
     GtkWidget *draw_area;
     GtkWidget *box;
     GtkWidget *ebox;
-    struct {
-        /* Widget pointers are NULL if bars are disabled */
-        GtkWidget *frame;
-        GtkWidget *draw_area;
-        GtkOrientation orientation;
-    } bars;
     gint tooltip_last_value;
     GtkWidget *tooltip_text;
 
@@ -126,6 +120,7 @@ struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
     XfconfChannel *channel;
     CPUGraphUpdateRate update_interval;
     guint size;
+    guint size_bars;
     CPUGraphMode mode;
     guint color_mode;
     std::string command;
@@ -145,6 +140,7 @@ struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
     bool highlight_smt;
     bool non_linear;
     bool per_core;
+    bool per_core_bars;
 
     /* Runtime data */
     std::unordered_map<guint, guint> cpu_to_index_cache;
@@ -187,8 +183,10 @@ struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
     void set_mode                 (CPUGraphMode mode_arg);
     void set_nonlinear_time       (bool non_linear_arg);
     void set_per_core             (bool per_core_arg);
+    void set_per_core_bars        (bool per_core_bars_arg);
     void set_per_core_spacing     (guint spacing);
     void set_size                 (guint size_arg);
+    void set_size_bars            (guint size_bars_arg);
     void set_stats_smt            (bool stats_smt_arg);
     void set_smt                  (bool highlight_smt_arg);
     void set_startup_notification (bool startup_notification);
@@ -199,10 +197,6 @@ struct CPUGraph final : public std::enable_shared_from_this<CPUGraph>
     // Called inside "cpu.cc"
     bool  is_smt_issues_enabled   () const;
     void  detect_smt_issues       ();
-    void  create_bars             (GtkOrientation orientation);
-    void  delete_bars             ();
-    void  set_bars_size           ();
-    guint nb_bars                 ();
     void  ebox_revalidate         ();
 };
 
