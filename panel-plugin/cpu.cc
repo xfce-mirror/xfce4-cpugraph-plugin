@@ -177,7 +177,11 @@ about_cb ()
         nullptr
     };
 
+#if LIBXFCE4PANEL_CHECK_VERSION(4, 21, 4)
+    xfce_panel_gtk_show_about_dialog (
+#else
     gtk_show_about_dialog (nullptr,
+#endif
         "logo-icon-name", "org.xfce.panel.cpugraph",
         "license", xfce_get_license_text (XFCE_LICENSE_TEXT_GPL),
         "version", VERSION_FULL,
