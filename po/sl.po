@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the xfce-panel-plugins.xfce4-cpugraph-plugin package.
 # 
 # Translators:
+# Dejweed, 2026
 # Arnold Marko <arnold.marko@gmail.com>, 2019-2021,2023
 msgid ""
 msgstr ""
@@ -10,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gitlab.xfce.org/\n"
 "POT-Creation-Date: 2025-07-18 11:06+0200\n"
 "PO-Revision-Date: 2013-07-03 18:54+0000\n"
-"Last-Translator: Arnold Marko <arnold.marko@gmail.com>, 2019-2021,2023\n"
+"Last-Translator: Dejweed, 2026\n"
 "Language-Team: Slovenian (http://app.transifex.com/xfce/xfce-panel-plugins/language/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -174,7 +175,7 @@ msgstr "Vse"
 
 #: panel-plugin/properties.cc:420
 msgid "Tracked Core:"
-msgstr "Zasledovano jedro:"
+msgstr "Opazovano jedro:"
 
 #: panel-plugin/properties.cc:436
 msgid "Width:"
@@ -222,7 +223,7 @@ msgstr "LED"
 
 #: panel-plugin/properties.cc:517
 msgid "No history"
-msgstr "Ni zogodovine"
+msgstr "Ni zgodovine"
 
 #: panel-plugin/properties.cc:518
 msgid "Grid"
