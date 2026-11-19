@@ -1,180 +1,289 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR Xfce
+# This file is distributed under the same license as the xfce-panel-plugins.xfce4-cpugraph-plugin package.
 # 
 # Translators:
 # Rihards Priedītis <rprieditis@gmail.com>, 2009
+# Rihards Priedītis <rprieditis@gmail.com>, 2007,2009
 # Rihards Prieditis <rprieditis@inbox.lv>, 2007
 msgid ""
 msgstr ""
 "Project-Id-Version: Xfce Panel Plugins\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-13 00:47+0200\n"
-"PO-Revision-Date: 2020-10-12 22:47+0000\n"
-"Last-Translator: Xfce Bot <transifex@xfce.org>\n"
-"Language-Team: Latvian (http://www.transifex.com/xfce/xfce-panel-plugins/language/lv/)\n"
+"Report-Msgid-Bugs-To: https://gitlab.xfce.org/\n"
+"POT-Creation-Date: 2025-07-18 11:06+0200\n"
+"PO-Revision-Date: 2013-07-03 18:54+0000\n"
+"Last-Translator: Rihards Priedītis <rprieditis@gmail.com>, 2007,2009\n"
+"Language-Team: Latvian (http://app.transifex.com/xfce/xfce-panel-plugins/language/lv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: lv\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);\n"
 
-#: ../panel-plugin/cpu.cc:160 ../panel-plugin/cpugraph.desktop.in.h:2
+#: panel-plugin/cpu.cc:185 panel-plugin/cpugraph.desktop.in:6
 msgid "Graphical representation of the CPU load"
 msgstr "Grafiska CPU noslodzes attēlošana"
 
-#: ../panel-plugin/cpu.cc:162
-msgid "Copyright (c) 2003-2019\n"
-msgstr ""
-
-#: ../panel-plugin/cpu.cc:407
+#: panel-plugin/cpu.cc:717
 #, c-format
-msgid "Usage: %u%%"
-msgstr ""
+msgid "CPU usage: %.1f%%"
+msgstr "CPU noslodze: %.1f%%"
 
-#: ../panel-plugin/properties.cc:132
+#: panel-plugin/properties.cc:70
+msgid ""
+"'Overall' is showing the impact on the overall performance of the machine."
+msgstr "„Kopumā” rāda ietekmi uz datora kopējo veiktspēju."
+
+#: panel-plugin/properties.cc:71
+msgid ""
+"'Hotspots' is showing the momentary performance impact on just the threads "
+"involved in suboptimal SMT scheduling decisions."
+msgstr "„Karstie punkti” rāda tūlītējo ietekmi uz veiktspēju tikai tiem pavedieniem, kurus skar neoptimāli SMT plānošanas lēmumi."
+
+#: panel-plugin/properties.cc:110
 msgid "CPU Graph Properties"
-msgstr ""
+msgstr "CPU grafika īpašības"
 
-#: ../panel-plugin/properties.cc:149
-msgid "Use non-linear time-scale"
-msgstr "Ne lineārs laika mērogs"
+#: panel-plugin/properties.cc:114
+msgid "_Close"
+msgstr "_Aizvērt"
 
-#: ../panel-plugin/properties.cc:150
-msgid "Show frame"
-msgstr "Rādīt kadrus:"
-
-#: ../panel-plugin/properties.cc:151
-msgid "Show border"
-msgstr ""
-
-#: ../panel-plugin/properties.cc:152
-msgid "Show current usage bar"
-msgid_plural "Show current usage bars"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-
-#: ../panel-plugin/properties.cc:154
+#: panel-plugin/properties.cc:143
 msgid "Run in terminal"
-msgstr ""
+msgstr "Palaist terminālī"
 
-#: ../panel-plugin/properties.cc:155
+#: panel-plugin/properties.cc:149
 msgid "Use startup notification"
-msgstr ""
+msgstr "Izmantot startēšanas paziņojumu"
 
-#: ../panel-plugin/properties.cc:158
+#: panel-plugin/properties.cc:156
+msgid ""
+"Color used to highlight potentially suboptimal\n"
+"placement of threads on CPUs with SMT"
+msgstr "Krāsa, ar ko izcelt iespējami neoptimālu pavedienu\nizvietojumu CPU ar SMT"
+
+#: panel-plugin/properties.cc:172
+msgid "Display SMT statistics"
+msgstr "Rādīt SMT statistiku"
+
+#: panel-plugin/properties.cc:182
+msgid "Highlight suboptimal SMT scheduling"
+msgstr "Izcelt neoptimālu SMT plānošanu"
+
+#: panel-plugin/properties.cc:189
+msgid "SMT issues color:"
+msgstr "SMT problēmu krāsa:"
+
+#: panel-plugin/properties.cc:194
+msgid "Use non-linear time-scale"
+msgstr "Izmantot nelineāru laika mērogu"
+
+#: panel-plugin/properties.cc:199
+msgid "Per-core history graphs"
+msgstr "Katra kodola vēstures grafiki"
+
+#: panel-plugin/properties.cc:207
 msgid "Color 1:"
-msgstr "Krāsa 1:"
+msgstr "1. krāsa:"
 
-#: ../panel-plugin/properties.cc:159
+#: panel-plugin/properties.cc:210
 msgid "Color 2:"
-msgstr "Krāsa 2:"
+msgstr "2. krāsa:"
 
-#: ../panel-plugin/properties.cc:160
+#: panel-plugin/properties.cc:213
 msgid "Color 3:"
-msgstr "Krāsa 3:"
+msgstr "3. krāsa:"
 
-#: ../panel-plugin/properties.cc:161
+#: panel-plugin/properties.cc:216
+msgid "System:"
+msgstr "Sistēma:"
+
+#: panel-plugin/properties.cc:219
+msgid "User:"
+msgstr "Lietotājs:"
+
+#: panel-plugin/properties.cc:222
+msgid "Nice:"
+msgstr "Nice:"
+
+#: panel-plugin/properties.cc:225
+msgid "IO wait:"
+msgstr "IO gaidīšana:"
+
+#: panel-plugin/properties.cc:228
 msgid "Background:"
 msgstr "Fons:"
 
-#: ../panel-plugin/properties.cc:165
-msgid "Bars color:"
-msgstr ""
+#: panel-plugin/properties.cc:234
+msgid "Show current usage bar"
+msgid_plural "Show current usage bars"
+msgstr[0] "Rādīt pašreizējās noslodzes joslu"
+msgstr[1] "Rādīt pašreizējās noslodzes joslas"
+msgstr[2] "Rādīt pašreizējās noslodzes joslas"
 
-#: ../panel-plugin/properties.cc:170
+#: panel-plugin/properties.cc:240
+msgid "Bars color:"
+msgstr "Joslu krāsa:"
+
+#: panel-plugin/properties.cc:245
+msgid "Show frame"
+msgstr "Rādīt rāmi"
+
+#: panel-plugin/properties.cc:250
+msgid "Show border"
+msgstr "Rādīt apmali"
+
+#: panel-plugin/properties.cc:261
 msgid "Appearance"
 msgstr "Izskats"
 
-#: ../panel-plugin/properties.cc:172
+#: panel-plugin/properties.cc:262
 msgid "Advanced"
-msgstr "Paplašināti"
+msgstr "Papildu"
 
-#: ../panel-plugin/properties.cc:258
+#: panel-plugin/properties.cc:263
+msgid "Stats"
+msgstr "Statistika"
+
+#: panel-plugin/properties.cc:397
 msgid "Fastest (~250ms)"
-msgstr "Ātrākais (~250ms)"
+msgstr "Ātrākais (~250 ms)"
 
-#: ../panel-plugin/properties.cc:259
+#: panel-plugin/properties.cc:398
 msgid "Fast (~500ms)"
-msgstr "Ātrs (~500ms)"
+msgstr "Ātrs (~500 ms)"
 
-#: ../panel-plugin/properties.cc:260
+#: panel-plugin/properties.cc:399
 msgid "Normal (~750ms)"
-msgstr "Parasts (~750ms)"
+msgstr "Parasts (~750 ms)"
 
-#: ../panel-plugin/properties.cc:261
+#: panel-plugin/properties.cc:400
 msgid "Slow (~1s)"
-msgstr "Lēns (~1s)"
+msgstr "Lēns (~1 s)"
 
-#: ../panel-plugin/properties.cc:262
+#: panel-plugin/properties.cc:401
 msgid "Slowest (~3s)"
-msgstr ""
+msgstr "Lēnākais (~3 s)"
 
-#: ../panel-plugin/properties.cc:266
+#: panel-plugin/properties.cc:404
 msgid "Update Interval:"
-msgstr "Atjaunināšanas intervāls: "
+msgstr "Atjaunināšanas intervāls:"
 
-#: ../panel-plugin/properties.cc:275
+#: panel-plugin/properties.cc:416
 msgid "All"
-msgstr ""
+msgstr "Visi"
 
-#: ../panel-plugin/properties.cc:282
+#: panel-plugin/properties.cc:420
 msgid "Tracked Core:"
-msgstr ""
+msgstr "Sekotais kodols:"
 
-#: ../panel-plugin/properties.cc:294
+#: panel-plugin/properties.cc:436
 msgid "Width:"
 msgstr "Platums:"
 
-#: ../panel-plugin/properties.cc:296
+#: panel-plugin/properties.cc:438
 msgid "Height:"
 msgstr "Augstums:"
 
-#: ../panel-plugin/properties.cc:311
+#: panel-plugin/properties.cc:451
+msgid "Threshold (%):"
+msgstr "Slieksnis (%):"
+
+#: panel-plugin/properties.cc:463
+msgid "Spacing:"
+msgstr "Atstarpe:"
+
+#: panel-plugin/properties.cc:466
+msgid "Spacing between per-core history graphs"
+msgstr "Atstarpe starp kodolu vēstures grafikiem"
+
+#: panel-plugin/properties.cc:477
 msgid "Associated command:"
-msgstr "Saistītās komandas:"
+msgstr "Saistītā komanda:"
 
-#: ../panel-plugin/properties.cc:338
+#: panel-plugin/properties.cc:485
+msgid "The command to run when the plugin is left-clicked."
+msgstr "Komanda, ko palaist, noklikšķinot uz spraudņa ar kreiso pogu."
+
+#: panel-plugin/properties.cc:486
+msgid "If not specified, it defaults to xfce4-taskmanager, htop or top."
+msgstr "Ja nav norādīta, pēc noklusējuma tiek izmantots xfce4-taskmanager, htop vai top."
+
+#: panel-plugin/properties.cc:514
 msgid "Disabled"
-msgstr ""
+msgstr "Atspējots"
 
-#: ../panel-plugin/properties.cc:339
+#: panel-plugin/properties.cc:515
 msgid "Normal"
 msgstr "Parasts"
 
-#: ../panel-plugin/properties.cc:340
+#: panel-plugin/properties.cc:516
 msgid "LED"
 msgstr "LED"
 
-#: ../panel-plugin/properties.cc:341
+#: panel-plugin/properties.cc:517
 msgid "No history"
 msgstr "Nav vēstures"
 
-#: ../panel-plugin/properties.cc:342
+#: panel-plugin/properties.cc:518
 msgid "Grid"
-msgstr ""
+msgstr "Režģis"
 
-#: ../panel-plugin/properties.cc:350
+#: panel-plugin/properties.cc:531
 msgid "Mode:"
 msgstr "Režīms:"
 
-#: ../panel-plugin/properties.cc:356
+#: panel-plugin/properties.cc:561
 msgid "Solid"
-msgstr ""
+msgstr "Vienlaidu"
 
-#: ../panel-plugin/properties.cc:357
+#: panel-plugin/properties.cc:562
 msgid "Gradient"
-msgstr "Gradients"
+msgstr "Krāsu pāreja"
 
-#: ../panel-plugin/properties.cc:358
+#: panel-plugin/properties.cc:563
 msgid "Fire"
 msgstr "Uguns"
 
-#: ../panel-plugin/properties.cc:362
+#: panel-plugin/properties.cc:565
+msgid "Detailed"
+msgstr "Detalizēts"
+
+#: panel-plugin/properties.cc:570
 msgid "Color mode: "
 msgstr "Krāsu režīms: "
 
-#: ../panel-plugin/cpugraph.desktop.in.h:1
+#: panel-plugin/properties.cc:680
+msgid "SMT detected: Yes"
+msgstr "SMT konstatēts: jā"
+
+#: panel-plugin/properties.cc:680
+msgid "SMT detected: No"
+msgstr "SMT konstatēts: nē"
+
+#: panel-plugin/properties.cc:705
+#, c-format
+msgid "Number of SMT scheduling incidents: %u"
+msgstr "SMT plānošanas incidentu skaits: %u"
+
+#: panel-plugin/properties.cc:710
+msgid "Estimated performance impact:"
+msgstr "Aptuvenā ietekme uz veiktspēju:"
+
+#: panel-plugin/properties.cc:711
+#, c-format
+msgid "Overall: %.3g%%"
+msgstr "Kopumā: %.3g%%"
+
+#: panel-plugin/properties.cc:712
+#, c-format
+msgid "Hotspots: %.3g%%"
+msgstr "Karstie punkti: %.3g%%"
+
+#: panel-plugin/properties.cc:724
+msgid "SMT detected: N/A"
+msgstr "SMT konstatēts: n/p"
+
+#: panel-plugin/cpugraph.desktop.in:5
 msgid "CPU Graph"
-msgstr "CPU grafs"
+msgstr "CPU grafiks"
